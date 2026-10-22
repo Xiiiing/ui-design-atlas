@@ -1,0 +1,26 @@
+name: Verify Atlas pull request
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install locked dependencies
+        run: |
+          npm ci
+          npm run setup:examples
+      - name: Validate sources, shell types and local previews
+        run: |
+          npm run check
+          npm run build
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+      - name: Verify market and shell interactions
+        run: npm test

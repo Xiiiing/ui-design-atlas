@@ -1,6 +1,6 @@
 import entries from "./archive/resources.json";
 import { installBlockAdapter } from "./archive/block-adapter";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider, useTheme } from "next-themes";
 import { MotionConfig } from "motion/react";
@@ -47,7 +47,12 @@ function App() {
     return () => window.removeEventListener("atlas:demo-success", done);
   }, []);
   const { setTheme, resolvedTheme } = useTheme();
+  const themeInitialized = useRef(false);
   useEffect(() => {
+    // next-themes changes setTheme's identity when the theme changes. Apply
+    // the URL once; subsequent user/parent choices must remain in effect.
+    if (themeInitialized.current) return;
+    themeInitialized.current = true;
     setTheme(
       new URLSearchParams(location.search).get("theme") === "dark"
         ? "dark"

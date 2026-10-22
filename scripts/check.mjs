@@ -182,3 +182,20 @@ for (const [id, source] of Object.entries(sourceLock.sources)) {
   }
 }
 console.log("Verified pinned upstream snapshots and SHA-256 checksums.");
+
+const shellSources = JSON.parse(
+  await readFile(new URL("vendor/yingxu-ui/sources.lock.json", base), "utf8"),
+);
+assert.equal(
+  shellSources.sourceCommit,
+  "b3cc662ce5cfe7947d6e5cec84ae54719f5d1062",
+);
+for (const [file, hash] of Object.entries(shellSources.files)) {
+  const content = await readFile(new URL("vendor/yingxu-ui/" + file, base));
+  assert.equal(
+    createHash("sha256").update(content).digest("hex"),
+    hash,
+    "Yingxu source changed: " + file,
+  );
+}
+console.log("Verified pinned Yingxu UI components and design tokens.");

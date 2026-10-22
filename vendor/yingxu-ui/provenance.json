@@ -1,0 +1,22 @@
+{
+  "source_repository": "https://github.com/Xiiiing/ai-studio",
+  "source_commit": "b3cc662ce5cfe7947d6e5cec84ae54719f5d1062",
+  "ui_base_commit": "f775817076202ee9a415a069a2c141fba3257b43",
+  "captured": "2026-10-19",
+  "source_prs": [
+    86,
+    87
+  ],
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "@radix-ui/react-dropdown-menu": "2.2.1",
+    "@radix-ui/react-select": "2.4.1",
+    "motion": "14.3.1",
+    "lucide-react": "0.468.0"
+  },
+  "classification": {
+    "actual-*": "Existing browser verification images/video of synthetic acceptance projects; original screen captures, no generated artwork.",
+    "specimen-*": "New offline specimens using copied production tokens and real React/Radix/Motion components; synthetic generic business content."
+  }
+}
