@@ -23,6 +23,7 @@ const assets = [
   "preview.html",
   "component-preview.html",
   "styles.css",
+  "market.css",
   "components.css",
   "preview.css",
   "app.js",

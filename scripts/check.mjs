@@ -10,7 +10,11 @@ import {
   getPage,
   upstream,
   promptFor,
-  resources, sourceProjects, libraries, resourcePreview, resourcePrompt,
+  resources,
+  sourceProjects,
+  libraries,
+  resourcePreview,
+  resourcePrompt,
 } from "../catalog.js";
 import { components as originals } from "../data.js";
 import { componentMarkup } from "../components.js";
@@ -101,7 +105,11 @@ const license = await readFile(
 assert.ok(license.includes("Copyright (c) 2024 Sat Naing"));
 for (const weight of [400, 500, 600, 700])
   await access(new URL(`assets/fonts/inter-${weight}.woff2`, base));
-for (const file of ["vendor/shadcn-ui/LICENSE.md", "vendor/lucide/LICENSE", "vendor/inter/LICENSE"])
+for (const file of [
+  "vendor/shadcn-ui/LICENSE.md",
+  "vendor/lucide/LICENSE",
+  "vendor/inter/LICENSE",
+])
   await access(new URL(file, base));
 const pkg = JSON.parse(
   await readFile(new URL("examples/shadcn-admin/package.json", base)),
@@ -111,10 +119,16 @@ console.log(
   `Verified ${cases.length} systems, ${pages.length} pages, ${components.length} components; bilingual content, prompt coverage, source references and licenses.`,
 );
 
-assert.equal(new Set(resources.map(r => `${r.type}:${r.id}`)).size, resources.length);
+assert.equal(
+  new Set(resources.map((r) => `${r.type}:${r.id}`)).size,
+  resources.length,
+);
 for (const r of resources) {
   assert.ok(sourceProjects[r.sourceId], `${r.id}: source`);
-  assert.ok(r.libraryIds.length && r.libraryIds.every(id => libraries[id]), `${r.id}: libraries`);
+  assert.ok(
+    r.libraryIds.length && r.libraryIds.every((id) => libraries[id]),
+    `${r.id}: libraries`,
+  );
   if (r.caseId) assert.ok(getCase(r.caseId));
   for (const id of r.pageIds || []) assert.ok(getPage(id));
   for (const lang of ["zh-CN", "en"]) {
@@ -123,4 +137,6 @@ for (const r of resources) {
     assert.ok(resourcePreview(r, lang).startsWith("./"));
   }
 }
-console.log(`Verified ${resources.length} unified resources and library provenance.`);
+console.log(
+  `Verified ${resources.length} unified resources and library provenance.`,
+);

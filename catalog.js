@@ -1,4 +1,8 @@
-import { marketResources, marketSources, marketLibraries } from "./market-catalog.js";
+import {
+  marketResources,
+  marketSources,
+  marketLibraries,
+} from "./market-catalog.js";
 import {
   styles as originals,
   kinds as originalKinds,
@@ -461,38 +465,124 @@ export function previewURL(c, item, locale = "zh-CN", theme = "light") {
 // A resource's provenance and its implementation libraries are separate concepts.
 // Legacy objects and IDs remain exported above for existing links and downloads.
 export const sourceProjects = {
-  original: { id: "original", name: "UI Design Atlas", author: "UI Design Atlas", repo: "https://github.com/Xiiiing/ui-design-atlas", license: "Atlas original", original: true },
-  "shadcn-admin": { id: "shadcn-admin", ...upstream, docs: "https://shadcn-admin.netlify.app/" },
+  original: {
+    id: "original",
+    name: "UI Design Atlas",
+    author: "UI Design Atlas",
+    repo: "https://github.com/Xiiiing/ui-design-atlas",
+    license: "Atlas original",
+    original: true,
+  },
+  "shadcn-admin": {
+    id: "shadcn-admin",
+    ...upstream,
+    docs: "https://shadcn-admin.netlify.app/",
+  },
   ...marketSources,
 };
 export const libraries = {
-  native: { id: "native", name: "HTML / CSS / JavaScript", version: "Web standards", docs: "https://developer.mozilla.org/en-US/docs/Web", aliases: ["原生", "CSS", "HTML"] },
-  shadcn: { id: "shadcn", name: "shadcn/ui", version: "e16c87f · Radix 1.3.1", docs: "https://ui.shadcn.com/", aliases: ["shadcn", "Radix"] },
-  recharts: { id: "recharts", name: "Recharts", version: "3.10.1", docs: "https://recharts.github.io/", aliases: ["图表", "chart"] },
+  native: {
+    id: "native",
+    name: "HTML / CSS / JavaScript",
+    version: "Web standards",
+    docs: "https://developer.mozilla.org/en-US/docs/Web",
+    aliases: ["原生", "CSS", "HTML"],
+  },
+  shadcn: {
+    id: "shadcn",
+    name: "shadcn/ui",
+    version: "e16c87f · Radix 1.3.1",
+    docs: "https://ui.shadcn.com/",
+    aliases: ["shadcn", "Radix"],
+  },
+  recharts: {
+    id: "recharts",
+    name: "Recharts",
+    version: "3.10.1",
+    docs: "https://recharts.github.io/",
+    aliases: ["图表", "chart"],
+  },
   ...marketLibraries,
 };
-const categoryFor = (kind) => ({ button: "buttons", navigation: "navigation", form: "forms", dialog: "feedback", filter: "forms", table: "data", stats: "data", chart: "data", card: "cards", pricing: "cards" })[kind] || "cards";
+const categoryFor = (kind) =>
+  ({
+    button: "buttons",
+    navigation: "navigation",
+    form: "forms",
+    dialog: "feedback",
+    filter: "forms",
+    table: "data",
+    stats: "data",
+    chart: "data",
+    card: "cards",
+    pricing: "cards",
+  })[kind] || "cards";
 export const resources = [
   ...marketResources,
   ...[...components, ...pages, ...cases].map((item) => {
     const type = item.pages ? "case" : item.pageIds ? "component" : "page";
     const c = type === "case" ? item : getCase(item.caseId);
-    return { ...item, type, sourceId: c.source === "original" ? "original" : "shadcn-admin", libraryIds: c.source === "original" ? ["native"] : item.key === "trend-chart" ? ["shadcn", "recharts"] : ["shadcn"], category: type === "component" ? categoryFor(item.kind) : "layout", interactions: type === "component" ? ["click"] : [], motion: false, styleId: c.id, style: c.style, audience: c.audience, tags: c.tags, cover: `./assets/previews/${type}-${item.id}.png`, preview: { width: type === "component" ? (item.kind === "table" || item.kind === "navigation" ? 1100 : 640) : 1280, height: type === "component" ? 480 : 800 } };
+    return {
+      ...item,
+      type,
+      sourceId: c.source === "original" ? "original" : "shadcn-admin",
+      libraryIds:
+        c.source === "original"
+          ? ["native"]
+          : item.key === "trend-chart"
+            ? ["shadcn", "recharts"]
+            : ["shadcn"],
+      category: type === "component" ? categoryFor(item.kind) : "layout",
+      interactions: type === "component" ? ["click"] : [],
+      motion: false,
+      styleId: c.id,
+      style: c.style,
+      audience: c.audience,
+      tags: item.tags || bi([c.style["zh-CN"]], [c.style.en]),
+      cover: `./assets/previews/${type}-${item.id}.png`,
+      preview: {
+        width:
+          type === "component"
+            ? item.kind === "table" || item.kind === "navigation"
+              ? 1100
+              : 640
+            : 1280,
+        height: type === "component" ? 480 : 800,
+      },
+    };
   }),
 ];
-export const findResource = (id, type) => resources.find((r) => r.id === id && (!type || r.type === type));
+export const findResource = (id, type) =>
+  resources.find((r) => r.id === id && (!type || r.type === type));
 export const resourceSource = (r) => sourceProjects[r.sourceId];
 export function resourcePreview(r, lang = "zh-CN", theme = "light") {
-  if (r.preview.url) return `${r.preview.url}${r.preview.url.includes("?") ? "&" : "?"}lang=${lang}&theme=${theme}`;
+  if (r.preview.url)
+    return `${r.preview.url}${r.preview.url.includes("?") ? "&" : "?"}lang=${lang}&theme=${theme}`;
   const c = r.type === "case" ? getCase(r.id) : getCase(r.caseId);
-  if (r.type === "component" && c.source === "original") return `./component-preview.html?id=${r.id}&lang=${lang}`;
+  if (r.type === "component" && c.source === "original")
+    return `./component-preview.html?id=${r.id}&lang=${lang}`;
   return previewURL(c, r.type === "case" ? c.pages[0] : r, lang, theme);
 }
 export function resourcePrompt(r, lang = "zh-CN", scope = r.type) {
   if (r.prompt) return r.prompt[lang];
   const c = r.type === "case" ? getCase(r.id) : getCase(r.caseId);
-  return promptFor(c, r.type === "case" ? c.pages[0] : r, scope === "case" ? "system" : scope, lang);
+  return promptFor(
+    c,
+    r.type === "case" ? c.pages[0] : r,
+    scope === "case" ? "system" : scope,
+    lang,
+  );
 }
 export function resourceSearch(r) {
-  return JSON.stringify([r.name, r.description, r.tags, r.category, r.interactions, r.style, r.aliases, r.libraryIds.flatMap((id) => [libraries[id]?.name, libraries[id]?.aliases]), resourceSource(r)?.name]).toLowerCase();
+  return JSON.stringify([
+    r.name,
+    r.description,
+    r.tags,
+    r.category,
+    r.interactions,
+    r.style,
+    r.aliases,
+    r.libraryIds.flatMap((id) => [libraries[id]?.name, libraries[id]?.aliases]),
+    resourceSource(r)?.name,
+  ]).toLowerCase();
 }

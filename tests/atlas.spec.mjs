@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { cases, pages, components } from "../catalog.js";
+import { cases, pages, components, resources } from "../catalog.js";
 const example = (path = "/", lang = "en", extra = "") =>
   `examples/shadcn-admin/index.html?lang=${lang}${extra}#${path}`;
 function watch(page) {
@@ -17,14 +17,30 @@ async function noOverflow(page) {
     ),
   ).toBe(true);
 }
-test("Pages subpath: local previews, sidebar navigation, prompts, code and legacy favorites", async ({
+test("Market quick view preserves filters, navigation context, prompt and source", async ({
   page,
   context,
 }) => {
   const errors = watch(page);
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.goto("#explore?lang=en");
+  await expect(page.locator("#results .card")).toHaveCount(24);
+  await page.locator("[name=q]").fill("用户编辑");
+  await page.locator("[data-open]").last().click();
+  await expect(page.locator("#asset-dialog")).toBeVisible();
+  await expect(page.locator(".inspector-head h2")).toHaveText(
+    "User editor dialog",
+  );
+  await expect(page.locator(".inline-prompt")).toContainText(
+    "User editor dialog",
+  );
+  await page.getByRole("tab", { name: "Code", exact: true }).click();
+  await expect(page.locator("#code-text")).toContainText("UsersActionDialog");
+  await page
+    .getByRole("button", { name: "Close preview", exact: true })
+    .click();
+  await expect(page.locator("[name=q]")).toHaveValue("用户编辑");
   await page.goto("#case/shadcn-admin?lang=en");
-  await expect(page.locator("#case-preview")).toBeVisible();
   const demo = page.frameLocator("#case-preview");
   await expect(
     demo.getByRole("heading", { name: "Dashboard", exact: true }),
@@ -33,19 +49,13 @@ test("Pages subpath: local previews, sidebar navigation, prompts, code and legac
   await expect(page.locator(".inspector-head h2")).toHaveText("Tasks");
   await expect(page).toHaveURL(/page=tasks/);
   await page.getByRole("tab", { name: "Prompt", exact: true }).click();
-  await expect(page.locator(".prompt-text")).toContainText(
-    "Task table with search",
-  );
-  await page.getByRole("button", { name: "Copy prompt", exact: true }).click();
+  await page
+    .locator("#inspector")
+    .getByRole("button", { name: "Copy prompt", exact: true })
+    .click();
   expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(
     "Task table with search",
   );
-  await page.getByRole("tab", { name: "Code", exact: true }).click();
-  await expect(page.locator("#code-text")).toContainText(
-    "export function Tasks",
-  );
-  await page.locator("#code-file").selectOption("package.json");
-  await expect(page.locator("#code-text")).toContainText("react");
   await page.getByRole("tab", { name: "Components", exact: true }).click();
   await page
     .locator('#related a[href*="component/shadcn-admin-task-table"]')
@@ -55,20 +65,13 @@ test("Pages subpath: local previews, sidebar navigation, prompts, code and legac
   await expect(
     page.frameLocator("#case-preview").getByRole("table"),
   ).toBeVisible();
-  await page.getByRole("tab", { name: "Prompt", exact: true }).click();
-  await expect(page.locator(".prompt-text")).toContainText("Task table");
-  await page.getByRole("tab", { name: "Notes", exact: true }).click();
+  await page.getByRole("tab", { name: "Components", exact: true }).click();
   await page
-    .locator('.inspector-content a[href*="page/shadcn-admin-tasks"]')
+    .locator('#related a[href*="page/shadcn-admin-tasks"]')
+    .first()
     .click();
-  await expect(page.locator(".inspector-head h2")).toHaveText("Tasks");
   await page.locator("#locale").selectOption("zh-CN");
   await expect(page.locator(".inspector-head h2")).toHaveText("任务管理");
-  await expect(
-    page
-      .frameLocator("#case-preview")
-      .getByRole("heading", { name: "任务", exact: true }),
-  ).toBeVisible();
   await page.reload();
   await expect(page.locator(".inspector-head h2")).toHaveText("任务管理");
   await page.goto("#component/folio-button?lang=en");
@@ -79,18 +82,9 @@ test("Pages subpath: local previews, sidebar navigation, prompts, code and legac
   ).toBeVisible();
   await page.getByRole("tab", { name: "Code", exact: true }).click();
   await expect(page.locator("#code-text")).toContainText("<!doctype html>");
-  await page.evaluate(() =>
-    localStorage.setItem(
-      "design-atlas-favorites",
-      JSON.stringify(["case:folio", "component:orbit-table"]),
-    ),
-  );
-  await page.goto("#favorites?lang=en");
-  await page.reload();
-  await expect(page.locator("#results .card")).toHaveCount(2);
   expect(errors).toEqual([]);
 });
-test("Bilingual directory searches and source/audience filters preserve original content", async ({
+test("Bilingual market searches, library and source filters retain existing content", async ({
   page,
 }) => {
   const errors = watch(page);
@@ -453,60 +447,28 @@ test("Table filters, sorting, pagination and form validation survive hash refres
   expect(errors).toEqual([]);
 });
 
-test("Atlas layout, native preview widths and mobile navigation remain usable", async ({
+test("Market and quick-view layouts remain usable at all viewport sizes", async ({
   page,
 }) => {
   const errors = watch(page);
   for (const lang of ["en", "zh-CN"])
     for (const width of [1440, 768, 375]) {
       await page.setViewportSize({ width, height: 1000 });
-      await page.goto(`#case/shadcn-admin?lang=${lang}`);
-      if (
-        (await page
-          .locator(".inspector-toggle")
-          .getAttribute("aria-expanded")) === "false"
-      )
-        await page.locator(".inspector-toggle").click();
+      await page.goto(`#explore?lang=${lang}`);
+      await noOverflow(page);
+      await page.locator("[name=q]").fill("用户编辑");
+      await page.locator("[data-open]").last().click();
+      await expect(page.locator("#asset-dialog")).toBeVisible();
       await expect(page.locator("#inspector h2")).toBeVisible();
       await noOverflow(page);
-      await page.locator('[data-device="375"]').click();
-      await expect
-        .poll(() =>
-          page
-            .locator("#case-preview")
-            .evaluate((el) => el.contentWindow.innerWidth),
-        )
-        .toBe(375);
-      if (await page.locator("[data-fit]").isVisible()) {
-        await page.locator("[data-fit]").click();
-        await noOverflow(page);
-        await page.locator("[data-fit]").click();
-      }
       await page.locator('[data-tab="code"]').click();
       await expect(page.locator("#code-text")).toBeVisible();
-      await noOverflow(page);
-      if (
-        (await page
-          .locator(".inspector-toggle")
-          .getAttribute("aria-expanded")) === "true"
-      )
-        await page.locator(".inspector-toggle").click();
-      await page.goto(`#pages?lang=${lang}`);
-      await expect(page.locator("#results .card")).toHaveCount(pages.length);
-      await noOverflow(page);
-      if (width === 375) {
-        await page.locator(".mobile-menu").click();
-        await expect(page.locator("#sidebar")).toBeInViewport();
-        await page.keyboard.press("Escape");
-        await expect(page.locator(".mobile-menu")).toHaveAttribute(
-          "aria-expanded",
-          "false",
-        );
-      }
+      await page.locator("[data-close-viewer]").last().click();
+      await expect(page.locator("#asset-dialog")).not.toBeVisible();
+      await expect(page.locator("[name=q]")).toHaveValue("用户编辑");
     }
   expect(errors).toEqual([]);
 });
-
 test("Favorites export/import retains legacy and page IDs", async ({
   page,
 }) => {
@@ -515,7 +477,7 @@ test("Favorites export/import retains legacy and page IDs", async ({
   await page.goto("#favorites?lang=en");
   await expect(page.locator("#results .card")).toHaveCount(1);
   const event = page.waitForEvent("download");
-  await page.getByRole("button", { name: "Export favorites" }).click();
+  await page.getByRole("button", { name: "Export saved" }).click();
   const file = await event;
   const stream = await file.createReadStream();
   let text = "";
@@ -535,7 +497,7 @@ test("Favorites export/import retains legacy and page IDs", async ({
   await expect(page.locator("#results .card")).toHaveCount(3);
 });
 
-test("Immersive viewer uses native dimensions and keeps browsing and reuse available", async ({
+test("Native page canvases, browser history, keyboard search and preview limits", async ({
   page,
 }) => {
   const errors = watch(page);
@@ -546,47 +508,46 @@ test("Immersive viewer uses native dimensions and keeps browsing and reuse avail
       .getByRole("heading", { name: "Dashboard", exact: true }),
   ).toBeVisible();
   expect(
-    await page.locator("#case-preview").evaluate((f) => ({
-      native: f.contentWindow.innerWidth,
-      display: f.getBoundingClientRect().width,
-    })),
-  ).toEqual({ native: 1070, display: 1070 });
-  await page.locator(".inspector-toggle").click();
-  await expect(page.locator(".inspector-toggle")).toHaveAttribute(
-    "aria-expanded",
-    "false",
+    await page
+      .locator("#case-preview")
+      .evaluate((f) => f.contentWindow.innerWidth),
+  ).toBe(
+    await page.locator("#preview-viewport").evaluate((el) => el.clientWidth),
   );
+  await page.locator('[data-device="375"]').click();
   await expect
     .poll(() =>
       page.locator("#case-preview").evaluate((f) => f.contentWindow.innerWidth),
     )
-    .toBe(1440);
-  await page.getByRole("link", { name: "Next design", exact: true }).click();
-  await expect(page.locator("#case-preview")).toHaveAttribute(
-    "src",
-    /style=folio/,
-  );
-  await expect(page.locator(".inspector-toggle")).toHaveAttribute(
-    "aria-expanded",
-    "false",
-  );
-  await page
-    .getByRole("link", { name: "Previous design", exact: true })
-    .click();
-  await page.getByRole("button", { name: "View prompt", exact: true }).click();
-  await expect(page.locator(".prompt-text")).toContainText(
-    "Design interpretation",
-  );
-  await page.getByRole("tab", { name: "Components", exact: true }).click();
-  await expect(page.locator("#related .part-list>a")).toHaveCount(8);
+    .toBe(375);
   await page.goto("#explore?lang=en");
+  await page.locator("[data-more]").click();
+  await expect(page.locator("#results .card")).toHaveCount(48);
+  await page.locator(".asset-card").nth(30).scrollIntoViewIfNeeded();
+  const scroll = await page.evaluate(() => scrollY);
+  await page
+    .locator(".asset-card")
+    .nth(30)
+    .locator("[data-open]")
+    .last()
+    .click();
+  await expect(page.locator("#asset-dialog")).toBeVisible();
+  await page.goBack();
+  await expect(page.locator("#asset-dialog")).not.toBeVisible();
+  await expect(page.locator("#results .card")).toHaveCount(48);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(scroll);
   await page.keyboard.press("Control+k");
-  await expect(page.locator("#search-dialog")).toBeVisible();
   await page.locator("#quick-search").fill("用户编辑");
-  await page.locator("#search-results a").first().click();
-  await expect(page).toHaveURL(/component\/shadcn-admin-user-dialog/);
+  await page.locator("#quick-search").press("Enter");
   await expect(page.locator(".inspector-head h2")).toHaveText(
     "User editor dialog",
+  );
+  await expect(page.locator("#search-dialog")).not.toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#asset-dialog")).not.toBeVisible();
+  for (let i = 0; i < 4; i++) await page.locator(".asset-card").nth(i).hover();
+  expect(await page.locator(".asset-live iframe").count()).toBeLessThanOrEqual(
+    2,
   );
   expect(errors).toEqual([]);
 });
