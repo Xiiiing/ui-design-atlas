@@ -1,12 +1,15 @@
+import { observeLegacy,translateLegacyString as tr } from './legacy-i18n.js';
 import { styles, getStyle } from './data.js';
 import { escapeHTML as esc } from './components.js';
 const params = new URLSearchParams(location.search);
+const lang=params.get('lang')==='en'?'en':'zh-CN';
+document.documentElement.lang=lang;
 const style = getStyle(params.get('style')) || styles[0];
 const page = ['home', 'work', 'about'].includes(params.get('page')) ? params.get('page') : 'home';
 const root = document.getElementById('preview-root');
 document.body.className = `theme-${style.id}${params.has('thumb') ? ' thumbnail' : ''}`;
 document.title = `${style.name} · ${style.pages.find(p => p.id === page).name} · 原创演示案例`;
-const url = (p = 'home', extra = '') => `./preview.html?style=${style.id}&page=${p}${extra}`;
+const url = (p = 'home', extra = '') => `./preview.html?style=${style.id}&page=${p}&lang=${lang}${extra}`;
 const btn = (text, href, secondary = false) => `<a class="p-button ${secondary ? 'p-secondary' : ''}" href="${href}">${text} <span>↗</span></a>`;
 function header() {
   const names = { folio: ['首页', '精选项目', '关于 / 联系'], orbit: ['概览', '项目', '设置'], forma: ['工作室', '项目档案', '合作咨询'], bloom: ['商店', '精选商品', '购物袋'] }[style.id];
@@ -64,9 +67,11 @@ function bloom() {
   return `<div class="bloom-content"><section class="bloom-hero"><div><p class="p-overline">SMALL THINGS. SLOW LIVING.</p><h1>A little softer.<br><em>A little slower.</em></h1><p>把日常过成喜欢的样子。<br>为家，为自己，挑一点温柔的物件。</p>${btn('看看日常好物', '#products')}</div><div class="bloom-hero-scene">${productArt(products[0])}${productArt(products[2])}<span>OBJECTS FOR QUIET MOMENTS</span></div></section><section id="products"><div class="p-section-title"><h2>日常的好物</h2><span>CURATED WITH CARE</span></div><div class="bloom-filters" role="group" aria-label="商品分类">${['全部', '家居', '灯具', '器物'].map((v, i) => `<button data-product-filter="${v}" aria-pressed="${i === 0}">${v}</button>`).join('')}</div><div class="bloom-products">${products.map(p => `<article data-product-category="${p.category}"><a href="${url('work', `&product=${p.id}`)}">${productArt(p)}<div class="bloom-product-meta"><div><h3>${p.name}</h3><p>${p.category} / 自然色</p></div><strong>¥${p.price}</strong></div></a></article>`).join('')}</div><p class="p-help">商品与价格均为演示，插画由 CSS 绘制。</p></section><section class="bloom-philosophy"><p class="p-overline">FEWER, BETTER, EVERYDAY.</p><h2>为日常留一点，<br>刚刚好的喜欢。</h2><p>我们相信，好设计存在于日常的使用中。让一只杯子、一盏灯、一个花器，陪伴那些不必着急的时刻。</p>${btn('看看精选商品', url('work'), true)}</section></div>`;
 }
 let timer;
-function announce(text) { const el = document.getElementById('demo-toast'); el.textContent = text; el.classList.add('visible'); clearTimeout(timer); timer = setTimeout(() => el.classList.remove('visible'), 4200); }
+function announce(text) { const el = document.getElementById('demo-toast'); el.textContent = tr(text,lang); el.classList.add('visible'); clearTimeout(timer); timer = setTimeout(() => el.classList.remove('visible'), 4200); }
 function render() { root.innerHTML = header() + ({ folio, orbit, forma, bloom }[style.id])() + footer(); }
 render();
+observeLegacy(root,lang);
+if(parent!==window)parent.postMessage({type:'atlas:preview-state',caseId:style.id,page,locale:lang},location.origin);
 function filterProjects() { const q = document.getElementById('project-search').value.toLowerCase(), status = document.getElementById('project-status').value; document.getElementById('projects-table').innerHTML = projectsTable(projects.filter(p => p.name.toLowerCase().includes(q) && (status === 'all' || p.status === status))); }
 document.addEventListener('input', event => { if (event.target.id === 'project-search') filterProjects(); });
 document.addEventListener('change', event => { if (event.target.id === 'project-status') filterProjects(); });

@@ -21,8 +21,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Install locked dependencies
+        run: |
+          npm ci
+          npm run setup:examples
       - name: Validate content and build static site
         run: node scripts/build.mjs
+      - name: Install browser for acceptance checks
+        run: npx playwright install --with-deps chromium
+      - name: Verify previews and reuse flows
+        run: npm test
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

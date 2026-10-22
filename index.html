@@ -1,47 +1,65 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="UI Design Atlas · UI 设计图鉴。收藏完整设计案例、可复用组件与分层设计提示词，为下一个项目找到合适的视觉方向。">
-  <meta name="theme-color" content="#f8f9f6">
-  <title>UI Design Atlas · UI 设计图鉴</title>
-  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css">
-  <link rel="stylesheet" href="./components.css">
-</head>
-<body>
-  <a class="skip" href="#main">跳转到内容</a>
-  <aside class="sidebar" id="sidebar">
-    <button class="icon-button sidebar-close" id="sidebar-close" aria-label="关闭导航">×</button>
-    <a class="brand" href="#explore" aria-label="UI Design Atlas 首页"><span class="brand-symbol" aria-hidden="true">✳</span><span>Design Atlas<small>UI 设计图鉴</small></span></a>
-    <p class="nav-label">你的设计工具箱</p>
-    <nav aria-label="主导航">
-      <a href="#explore" data-nav="explore"><span data-icon="compass"></span>探索图鉴<span class="nav-arrow">↗</span></a>
-      <a href="#components" data-nav="components"><span data-icon="grid"></span>通用组件<span class="nav-count">32</span></a>
-      <a href="#cases" data-nav="cases"><span data-icon="layers"></span>完整案例<span class="nav-count">04</span></a>
-      <a href="#favorites" data-nav="favorites"><span data-icon="bookmark"></span>我的收藏<span class="nav-count" id="favorite-count">0</span></a>
-    </nav>
-    <div class="sidebar-separator"></div>
-    <p class="nav-label">从想法到界面</p>
-    <nav aria-label="使用资源">
-      <a href="#resources" data-nav="resources"><span data-icon="link"></span>设计资源</a>
-      <a href="#guide" data-nav="guide"><span data-icon="book"></span>使用指南</a>
-    </nav>
-    <div class="sidebar-note"><span class="tiny-star">✳</span><p>为下一次灵感<br>留一张地图。</p><span>LOOK. UNDERSTAND. CREATE.</span></div>
-    <a class="sidebar-footer" href="https://xiiiing.github.io/" target="_blank" rel="noopener noreferrer"><span class="avatar">X</span><span>Xiiiing<small>个人设计收藏</small></span><span>↗</span></a>
-  </aside>
-  <div class="workspace">
-    <header class="topbar">
-      <button class="icon-button mobile-menu" id="menu-toggle" aria-label="打开导航" aria-expanded="false"><span data-icon="menu"></span></button>
-      <div class="breadcrumb">设计工作台 <span>/</span> <strong id="breadcrumb">探索图鉴</strong></div>
-      <div class="topbar-links"><span class="edition"><i></i> PERSONAL COLLECTION</span><a href="https://github.com/Xiiiing/ui-design-atlas" target="_blank" rel="noopener noreferrer" aria-label="GitHub 源代码"><span data-icon="github"></span><span>GitHub ↗</span></a></div>
-    </header>
-    <main id="main" tabindex="-1"></main>
-    <footer class="site-footer"><span>UI DESIGN ATLAS <span class="footer-dot">·</span> 为下一次创造积累。</span><span>原创演示案例 / HTML + CSS + JavaScript</span></footer>
-  </div>
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <dialog id="copy-fallback"><div class="fallback-head"><h2>复制内容</h2><button class="icon-button" id="fallback-close" aria-label="关闭复制窗口">×</button></div><p>浏览器暂未允许自动复制，请选中下面内容后复制。</p><textarea id="fallback-text" readonly aria-label="待复制内容"></textarea></dialog>
-  <script type="module" src="./app.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="UI Design Atlas — interactive open-source interfaces, design notes, prompts and reusable code."
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <title>UI Design Atlas</title>
+    <link rel="icon" href="./favicon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a
+      class="skip"
+      href="#main"
+      onclick="
+        event.preventDefault();
+        document.getElementById('main').focus();
+      "
+      >跳转到内容 / Skip to content</a
+    >
+    <aside id="sidebar"></aside>
+    <div class="workspace">
+      <header id="topbar"></header>
+      <main id="main" tabindex="-1"></main>
+      <footer id="footer"></footer>
+    </div>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <dialog id="copy-fallback">
+      <div class="dialog-head">
+        <strong id="copy-title"></strong
+        ><button id="fallback-close" aria-label="Close">×</button>
+      </div>
+      <p id="copy-help"></p>
+      <textarea id="fallback-text" readonly></textarea>
+    </dialog>
+    <dialog id="search-dialog" aria-label="搜索设计 / Search designs">
+      <div class="search-dialog-input">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          aria-hidden="true"
+        >
+          <circle cx="10.5" cy="10.5" r="7.5" />
+          <path d="m16 16 5 5" /></svg
+        ><input
+          id="quick-search"
+          type="search"
+          autocomplete="off"
+          aria-label="搜索设计 / Search designs"
+        /><button data-close-search aria-label="Close search">Esc</button>
+      </div>
+      <div id="search-results"></div>
+      <div class="search-dialog-footer">
+        UI Design Atlas <span>↵ ${'Open'} · Esc ${'Close'}</span>
+      </div>
+    </dialog>
+    <script type="module" src="./app.js"></script>
+  </body>
 </html>
