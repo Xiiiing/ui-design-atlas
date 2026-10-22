@@ -918,6 +918,590 @@ export const marketResources = [
       en: "Apply these visual and motion rules to my content, preserving its structure: A three-column asymmetric desktop grid collapsing to one column; titles, descriptions and actions sit above the original notifications, beams, file lists and calendar. Use neutral surfaces, fine borders, readable text and the original feedback.",
     },
   },
+  {
+    id: "antd-table",
+    key: "table",
+    type: "component",
+    sourceId: "antd",
+    libraryIds: ["antd"],
+    category: "data",
+    interactions: ["click"],
+    motion: false,
+    styleId: "enterprise-antd",
+    style: {
+      "zh-CN": "企业应用 · Ant Design",
+      en: "Enterprise · Ant Design",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "筛选排序表格",
+      en: "Filterable Table",
+    },
+    description: {
+      "zh-CN": "表头筛选、列排序、分页及带状态的示例数据。",
+      en: "Column filters, sorting, pagination and local sample records.",
+    },
+    tags: {
+      "zh-CN": ["筛选排序表格", "业务组件", "企业应用"],
+      en: ["Filterable Table", "business", "enterprise"],
+    },
+    useCases: {
+      "zh-CN": "企业管理、协作工具与需要清晰信息层级的业务界面。",
+      en: "Administration, collaboration tools and information-dense business interfaces.",
+    },
+    principle: {
+      "zh-CN":
+        "归档解读：以组件库既有规范保证一致性。表头筛选、列排序、分页及带状态的示例数据。",
+      en: "Archive interpretation: use the library’s established conventions for consistency. Column filters, sorting, pagination and local sample records.",
+    },
+    rules: {
+      "zh-CN": [
+        "保留 Ant Design 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。",
+        "保留键盘焦点、状态文本、输入校验和原版弹层行为。",
+      ],
+      en: [
+        "Preserve Ant Design official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.",
+        "Keep keyboard focus, state text, input validation and original portal behavior.",
+      ],
+    },
+    files: ["src/demos/antd/table.tsx"],
+    supportFiles: [
+      "src/archive/ant-provider.tsx",
+      "src/archive/i18n.ts",
+      "src/archive/zh.json",
+    ],
+    originalUrl:
+      "https://ant.design/components/table/#components-table-demo-head",
+    sourceUrl:
+      "https://github.com/ant-design/ant-design/blob/f8f5595ab5e891fff6a2a06c5b3b98af643d008e/components/table/demo/head.tsx",
+    cover: "./assets/previews/component-antd-table.png",
+    preview: {
+      width: 960,
+      height: 480,
+      url: "./examples/ui-market/index.html?item=antd-table",
+    },
+    prompt: {
+      "zh-CN":
+        "请基于本站提供的 Ant Design 6.6.7 官方示例源码复用「筛选排序表格」。\n\n目标行为：表头筛选、列排序、分页及带状态的示例数据。\n\n保留 Ant Design 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。\n使用 React、TypeScript 及真实 Ant Design 依赖，保留必要 Provider、主题与组件结构。提供本地示例数据、中文与英文界面、键盘焦点和可读的状态反馈。表单数据不发送到外部，密码不持久化。范围限于当前组件或区块。",
+      en: "Reuse Filterable Table from the supplied official Ant Design 6.6.7 example.\n\nBehavior: Column filters, sorting, pagination and local sample records.\n\nPreserve Ant Design official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.\nUse React, TypeScript and the actual Ant Design dependency, preserving its provider, theme and component structure. Include local fixtures, Chinese/English, keyboard focus and readable feedback. Send no form data externally and never persist passwords. Keep the scope to this component or block.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "将 Ant Design 的企业界面规范用于现有业务：保留 Ant Design 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。 强调标签、状态和操作的层级，保持信息密度与可读性。",
+      en: "Apply Ant Design visual conventions to my existing content: Preserve Ant Design official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens. Clarify labels, states and actions while retaining readable density.",
+    },
+  },
+  {
+    id: "antd-form",
+    key: "form",
+    type: "component",
+    sourceId: "antd",
+    libraryIds: ["antd"],
+    category: "forms",
+    interactions: ["click", "input"],
+    motion: false,
+    styleId: "enterprise-antd",
+    style: {
+      "zh-CN": "企业应用 · Ant Design",
+      en: "Enterprise · Ant Design",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "校验登录表单",
+      en: "Validated Form",
+    },
+    description: {
+      "zh-CN": "带必填校验、密码输入和提交反馈的原版表单。",
+      en: "An original form with required validation, password input and local submission feedback.",
+    },
+    tags: {
+      "zh-CN": ["校验登录表单", "业务组件", "企业应用"],
+      en: ["Validated Form", "business", "enterprise"],
+    },
+    useCases: {
+      "zh-CN": "企业管理、协作工具与需要清晰信息层级的业务界面。",
+      en: "Administration, collaboration tools and information-dense business interfaces.",
+    },
+    principle: {
+      "zh-CN":
+        "归档解读：以组件库既有规范保证一致性。带必填校验、密码输入和提交反馈的原版表单。",
+      en: "Archive interpretation: use the library’s established conventions for consistency. An original form with required validation, password input and local submission feedback.",
+    },
+    rules: {
+      "zh-CN": [
+        "保留 Ant Design 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。",
+        "保留键盘焦点、状态文本、输入校验和原版弹层行为。",
+      ],
+      en: [
+        "Preserve Ant Design official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.",
+        "Keep keyboard focus, state text, input validation and original portal behavior.",
+      ],
+    },
+    files: ["src/demos/antd/form.tsx"],
+    supportFiles: [
+      "src/archive/ant-provider.tsx",
+      "src/archive/i18n.ts",
+      "src/archive/zh.json",
+    ],
+    originalUrl:
+      "https://ant.design/components/form/#components-form-demo-basic",
+    sourceUrl:
+      "https://github.com/ant-design/ant-design/blob/f8f5595ab5e891fff6a2a06c5b3b98af643d008e/components/form/demo/basic.tsx",
+    cover: "./assets/previews/component-antd-form.png",
+    preview: {
+      width: 640,
+      height: 480,
+      url: "./examples/ui-market/index.html?item=antd-form",
+    },
+    prompt: {
+      "zh-CN":
+        "请基于本站提供的 Ant Design 6.6.7 官方示例源码复用「校验登录表单」。\n\n目标行为：带必填校验、密码输入和提交反馈的原版表单。\n\n保留 Ant Design 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。\n使用 React、TypeScript 及真实 Ant Design 依赖，保留必要 Provider、主题与组件结构。提供本地示例数据、中文与英文界面、键盘焦点和可读的状态反馈。表单数据不发送到外部，密码不持久化。范围限于当前组件或区块。",
+      en: "Reuse Validated Form from the supplied official Ant Design 6.6.7 example.\n\nBehavior: An original form with required validation, password input and local submission feedback.\n\nPreserve Ant Design official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.\nUse React, TypeScript and the actual Ant Design dependency, preserving its provider, theme and component structure. Include local fixtures, Chinese/English, keyboard focus and readable feedback. Send no form data externally and never persist passwords. Keep the scope to this component or block.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "将 Ant Design 的企业界面规范用于现有业务：保留 Ant Design 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。 强调标签、状态和操作的层级，保持信息密度与可读性。",
+      en: "Apply Ant Design visual conventions to my existing content: Preserve Ant Design official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens. Clarify labels, states and actions while retaining readable density.",
+    },
+  },
+  {
+    id: "antd-search",
+    key: "search",
+    type: "block",
+    sourceId: "antd",
+    libraryIds: ["antd"],
+    category: "forms",
+    interactions: ["click", "input"],
+    motion: false,
+    styleId: "enterprise-antd",
+    style: {
+      "zh-CN": "企业应用 · Ant Design",
+      en: "Enterprise · Ant Design",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "高级搜索区块",
+      en: "Advanced Search",
+    },
+    description: {
+      "zh-CN": "可展开筛选字段、清空条件和提交反馈的业务搜索区域。",
+      en: "A business search area with expandable fields, reset and local submission feedback.",
+    },
+    tags: {
+      "zh-CN": ["高级搜索区块", "业务组件", "企业应用"],
+      en: ["Advanced Search", "business", "enterprise"],
+    },
+    useCases: {
+      "zh-CN": "企业管理、协作工具与需要清晰信息层级的业务界面。",
+      en: "Administration, collaboration tools and information-dense business interfaces.",
+    },
+    principle: {
+      "zh-CN":
+        "归档解读：以组件库既有规范保证一致性。可展开筛选字段、清空条件和提交反馈的业务搜索区域。",
+      en: "Archive interpretation: use the library’s established conventions for consistency. A business search area with expandable fields, reset and local submission feedback.",
+    },
+    rules: {
+      "zh-CN": [
+        "保留 Ant Design 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。",
+        "保留键盘焦点、状态文本、输入校验和原版弹层行为。",
+      ],
+      en: [
+        "Preserve Ant Design official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.",
+        "Keep keyboard focus, state text, input validation and original portal behavior.",
+      ],
+    },
+    files: ["src/demos/antd/search.tsx"],
+    supportFiles: [
+      "src/archive/ant-provider.tsx",
+      "src/archive/i18n.ts",
+      "src/archive/zh.json",
+    ],
+    originalUrl:
+      "https://ant.design/components/form/#components-form-demo-advanced-search",
+    sourceUrl:
+      "https://github.com/ant-design/ant-design/blob/f8f5595ab5e891fff6a2a06c5b3b98af643d008e/components/form/demo/advanced-search.tsx",
+    cover: "./assets/previews/block-antd-search.png",
+    preview: {
+      width: 960,
+      height: 600,
+      url: "./examples/ui-market/index.html?item=antd-search",
+    },
+    prompt: {
+      "zh-CN":
+        "请基于本站提供的 Ant Design 6.6.7 官方示例源码复用「高级搜索区块」。\n\n目标行为：可展开筛选字段、清空条件和提交反馈的业务搜索区域。\n\n保留 Ant Design 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。\n使用 React、TypeScript 及真实 Ant Design 依赖，保留必要 Provider、主题与组件结构。提供本地示例数据、中文与英文界面、键盘焦点和可读的状态反馈。表单数据不发送到外部，密码不持久化。范围限于当前组件或区块。",
+      en: "Reuse Advanced Search from the supplied official Ant Design 6.6.7 example.\n\nBehavior: A business search area with expandable fields, reset and local submission feedback.\n\nPreserve Ant Design official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.\nUse React, TypeScript and the actual Ant Design dependency, preserving its provider, theme and component structure. Include local fixtures, Chinese/English, keyboard focus and readable feedback. Send no form data externally and never persist passwords. Keep the scope to this component or block.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "将 Ant Design 的企业界面规范用于现有业务：保留 Ant Design 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。 强调标签、状态和操作的层级，保持信息密度与可读性。",
+      en: "Apply Ant Design visual conventions to my existing content: Preserve Ant Design official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens. Clarify labels, states and actions while retaining readable density.",
+    },
+  },
+  {
+    id: "antd-modal-form",
+    key: "modal-form",
+    type: "block",
+    sourceId: "antd",
+    libraryIds: ["antd"],
+    category: "forms",
+    interactions: ["click", "input"],
+    motion: false,
+    styleId: "enterprise-antd",
+    style: {
+      "zh-CN": "企业应用 · Ant Design",
+      en: "Enterprise · Ant Design",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "弹窗创建表单",
+      en: "Modal Creation Form",
+    },
+    description: {
+      "zh-CN": "在原版 Modal 中填写集合信息，校验后展示本地提交结果。",
+      en: "Enter collection details in the original Modal, validate and display the local result.",
+    },
+    tags: {
+      "zh-CN": ["弹窗创建表单", "业务组件", "企业应用"],
+      en: ["Modal Creation Form", "business", "enterprise"],
+    },
+    useCases: {
+      "zh-CN": "企业管理、协作工具与需要清晰信息层级的业务界面。",
+      en: "Administration, collaboration tools and information-dense business interfaces.",
+    },
+    principle: {
+      "zh-CN":
+        "归档解读：以组件库既有规范保证一致性。在原版 Modal 中填写集合信息，校验后展示本地提交结果。",
+      en: "Archive interpretation: use the library’s established conventions for consistency. Enter collection details in the original Modal, validate and display the local result.",
+    },
+    rules: {
+      "zh-CN": [
+        "保留 Ant Design 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。",
+        "保留键盘焦点、状态文本、输入校验和原版弹层行为。",
+      ],
+      en: [
+        "Preserve Ant Design official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.",
+        "Keep keyboard focus, state text, input validation and original portal behavior.",
+      ],
+    },
+    files: ["src/demos/antd/modal-form.tsx"],
+    supportFiles: [
+      "src/archive/ant-provider.tsx",
+      "src/archive/i18n.ts",
+      "src/archive/zh.json",
+    ],
+    originalUrl:
+      "https://ant.design/components/form/#components-form-demo-form-in-modal",
+    sourceUrl:
+      "https://github.com/ant-design/ant-design/blob/f8f5595ab5e891fff6a2a06c5b3b98af643d008e/components/form/demo/form-in-modal.tsx",
+    cover: "./assets/previews/block-antd-modal-form.png",
+    preview: {
+      width: 960,
+      height: 600,
+      url: "./examples/ui-market/index.html?item=antd-modal-form",
+    },
+    prompt: {
+      "zh-CN":
+        "请基于本站提供的 Ant Design 6.6.7 官方示例源码复用「弹窗创建表单」。\n\n目标行为：在原版 Modal 中填写集合信息，校验后展示本地提交结果。\n\n保留 Ant Design 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。\n使用 React、TypeScript 及真实 Ant Design 依赖，保留必要 Provider、主题与组件结构。提供本地示例数据、中文与英文界面、键盘焦点和可读的状态反馈。表单数据不发送到外部，密码不持久化。范围限于当前组件或区块。",
+      en: "Reuse Modal Creation Form from the supplied official Ant Design 6.6.7 example.\n\nBehavior: Enter collection details in the original Modal, validate and display the local result.\n\nPreserve Ant Design official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.\nUse React, TypeScript and the actual Ant Design dependency, preserving its provider, theme and component structure. Include local fixtures, Chinese/English, keyboard focus and readable feedback. Send no form data externally and never persist passwords. Keep the scope to this component or block.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "将 Ant Design 的企业界面规范用于现有业务：保留 Ant Design 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。 强调标签、状态和操作的层级，保持信息密度与可读性。",
+      en: "Apply Ant Design visual conventions to my existing content: Preserve Ant Design official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens. Clarify labels, states and actions while retaining readable density.",
+    },
+  },
+  {
+    id: "fluent-data-grid",
+    key: "data-grid",
+    type: "component",
+    sourceId: "fluent",
+    libraryIds: ["fluent"],
+    category: "data",
+    interactions: ["click"],
+    motion: false,
+    styleId: "enterprise-fluent",
+    style: {
+      "zh-CN": "企业应用 · Fluent UI",
+      en: "Enterprise · Fluent UI",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "文件排序表格",
+      en: "Sortable DataGrid",
+    },
+    description: {
+      "zh-CN": "文件图标、作者状态、更新时间和可排序列，保留 Fluent 原版视觉。",
+      en: "File icons, author presence, timestamps and sortable columns with original Fluent visuals.",
+    },
+    tags: {
+      "zh-CN": ["文件排序表格", "业务组件", "企业应用"],
+      en: ["Sortable DataGrid", "business", "enterprise"],
+    },
+    useCases: {
+      "zh-CN": "企业管理、协作工具与需要清晰信息层级的业务界面。",
+      en: "Administration, collaboration tools and information-dense business interfaces.",
+    },
+    principle: {
+      "zh-CN":
+        "归档解读：以组件库既有规范保证一致性。文件图标、作者状态、更新时间和可排序列，保留 Fluent 原版视觉。",
+      en: "Archive interpretation: use the library’s established conventions for consistency. File icons, author presence, timestamps and sortable columns with original Fluent visuals.",
+    },
+    rules: {
+      "zh-CN": [
+        "保留 Fluent UI 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。",
+        "保留键盘焦点、状态文本、输入校验和原版弹层行为。",
+      ],
+      en: [
+        "Preserve Fluent UI official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.",
+        "Keep keyboard focus, state text, input validation and original portal behavior.",
+      ],
+    },
+    files: ["src/demos/fluent/data-grid.tsx"],
+    supportFiles: [
+      "src/archive/fluent-provider.tsx",
+      "src/archive/i18n.ts",
+      "src/archive/zh.json",
+    ],
+    originalUrl:
+      "https://react.fluentui.dev/?path=/docs/components-datagrid--docs",
+    sourceUrl:
+      "https://github.com/microsoft/fluentui/blob/036f9a210cd8d72924c33dd9ff0fbb16d6aae885/packages/react-components/react-table/stories/src/DataGrid/Sort.stories.tsx",
+    cover: "./assets/previews/component-fluent-data-grid.png",
+    preview: {
+      width: 960,
+      height: 480,
+      url: "./examples/ui-market/index.html?item=fluent-data-grid",
+    },
+    prompt: {
+      "zh-CN":
+        "请基于本站提供的 Fluent UI 9.74.10 官方示例源码复用「文件排序表格」。\n\n目标行为：文件图标、作者状态、更新时间和可排序列，保留 Fluent 原版视觉。\n\n保留 Fluent UI 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。\n使用 React、TypeScript 及真实 Fluent UI 依赖，保留必要 Provider、主题与组件结构。提供本地示例数据、中文与英文界面、键盘焦点和可读的状态反馈。表单数据不发送到外部，密码不持久化。范围限于当前组件或区块。",
+      en: "Reuse Sortable DataGrid from the supplied official Fluent UI 9.74.10 example.\n\nBehavior: File icons, author presence, timestamps and sortable columns with original Fluent visuals.\n\nPreserve Fluent UI official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.\nUse React, TypeScript and the actual Fluent UI dependency, preserving its provider, theme and component structure. Include local fixtures, Chinese/English, keyboard focus and readable feedback. Send no form data externally and never persist passwords. Keep the scope to this component or block.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "将 Fluent UI 的企业界面规范用于现有业务：保留 Fluent UI 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。 强调标签、状态和操作的层级，保持信息密度与可读性。",
+      en: "Apply Fluent UI visual conventions to my existing content: Preserve Fluent UI official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens. Clarify labels, states and actions while retaining readable density.",
+    },
+  },
+  {
+    id: "fluent-toolbar",
+    key: "toolbar",
+    type: "component",
+    sourceId: "fluent",
+    libraryIds: ["fluent"],
+    category: "navigation",
+    interactions: ["click"],
+    motion: false,
+    styleId: "enterprise-fluent",
+    style: {
+      "zh-CN": "企业应用 · Fluent UI",
+      en: "Enterprise · Fluent UI",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "自动溢出工具栏",
+      en: "Overflow Toolbar",
+    },
+    description: {
+      "zh-CN": "工具按组收纳，缩窄容器后多余操作进入更多菜单。",
+      en: "Grouped tools move into an overflow menu as the resizable container narrows.",
+    },
+    tags: {
+      "zh-CN": ["自动溢出工具栏", "业务组件", "企业应用"],
+      en: ["Overflow Toolbar", "business", "enterprise"],
+    },
+    useCases: {
+      "zh-CN": "企业管理、协作工具与需要清晰信息层级的业务界面。",
+      en: "Administration, collaboration tools and information-dense business interfaces.",
+    },
+    principle: {
+      "zh-CN":
+        "归档解读：以组件库既有规范保证一致性。工具按组收纳，缩窄容器后多余操作进入更多菜单。",
+      en: "Archive interpretation: use the library’s established conventions for consistency. Grouped tools move into an overflow menu as the resizable container narrows.",
+    },
+    rules: {
+      "zh-CN": [
+        "保留 Fluent UI 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。",
+        "保留键盘焦点、状态文本、输入校验和原版弹层行为。",
+      ],
+      en: [
+        "Preserve Fluent UI official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.",
+        "Keep keyboard focus, state text, input validation and original portal behavior.",
+      ],
+    },
+    files: ["src/demos/fluent/toolbar.tsx"],
+    supportFiles: [
+      "src/archive/fluent-provider.tsx",
+      "src/archive/i18n.ts",
+      "src/archive/zh.json",
+    ],
+    originalUrl:
+      "https://react.fluentui.dev/?path=/docs/components-toolbar--docs",
+    sourceUrl:
+      "https://github.com/microsoft/fluentui/blob/036f9a210cd8d72924c33dd9ff0fbb16d6aae885/packages/react-components/react-toolbar/stories/src/Toolbar/ToolbarOverflow.stories.tsx",
+    cover: "./assets/previews/component-fluent-toolbar.png",
+    preview: {
+      width: 640,
+      height: 480,
+      url: "./examples/ui-market/index.html?item=fluent-toolbar",
+    },
+    prompt: {
+      "zh-CN":
+        "请基于本站提供的 Fluent UI 9.74.10 官方示例源码复用「自动溢出工具栏」。\n\n目标行为：工具按组收纳，缩窄容器后多余操作进入更多菜单。\n\n保留 Fluent UI 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。\n使用 React、TypeScript 及真实 Fluent UI 依赖，保留必要 Provider、主题与组件结构。提供本地示例数据、中文与英文界面、键盘焦点和可读的状态反馈。表单数据不发送到外部，密码不持久化。范围限于当前组件或区块。",
+      en: "Reuse Overflow Toolbar from the supplied official Fluent UI 9.74.10 example.\n\nBehavior: Grouped tools move into an overflow menu as the resizable container narrows.\n\nPreserve Fluent UI official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.\nUse React, TypeScript and the actual Fluent UI dependency, preserving its provider, theme and component structure. Include local fixtures, Chinese/English, keyboard focus and readable feedback. Send no form data externally and never persist passwords. Keep the scope to this component or block.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "将 Fluent UI 的企业界面规范用于现有业务：保留 Fluent UI 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。 强调标签、状态和操作的层级，保持信息密度与可读性。",
+      en: "Apply Fluent UI visual conventions to my existing content: Preserve Fluent UI official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens. Clarify labels, states and actions while retaining readable density.",
+    },
+  },
+  {
+    id: "fluent-dialog",
+    key: "dialog",
+    type: "component",
+    sourceId: "fluent",
+    libraryIds: ["fluent"],
+    category: "feedback",
+    interactions: ["click"],
+    motion: false,
+    styleId: "enterprise-fluent",
+    style: {
+      "zh-CN": "企业应用 · Fluent UI",
+      en: "Enterprise · Fluent UI",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "标准确认对话框",
+      en: "Confirmation Dialog",
+    },
+    description: {
+      "zh-CN": "包含标题、说明与操作区的原版对话框，支持焦点管理和键盘关闭。",
+      en: "An original dialog with title, description and actions, focus management and keyboard dismissal.",
+    },
+    tags: {
+      "zh-CN": ["标准确认对话框", "业务组件", "企业应用"],
+      en: ["Confirmation Dialog", "business", "enterprise"],
+    },
+    useCases: {
+      "zh-CN": "企业管理、协作工具与需要清晰信息层级的业务界面。",
+      en: "Administration, collaboration tools and information-dense business interfaces.",
+    },
+    principle: {
+      "zh-CN":
+        "归档解读：以组件库既有规范保证一致性。包含标题、说明与操作区的原版对话框，支持焦点管理和键盘关闭。",
+      en: "Archive interpretation: use the library’s established conventions for consistency. An original dialog with title, description and actions, focus management and keyboard dismissal.",
+    },
+    rules: {
+      "zh-CN": [
+        "保留 Fluent UI 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。",
+        "保留键盘焦点、状态文本、输入校验和原版弹层行为。",
+      ],
+      en: [
+        "Preserve Fluent UI official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.",
+        "Keep keyboard focus, state text, input validation and original portal behavior.",
+      ],
+    },
+    files: ["src/demos/fluent/dialog.tsx"],
+    supportFiles: [
+      "src/archive/fluent-provider.tsx",
+      "src/archive/i18n.ts",
+      "src/archive/zh.json",
+    ],
+    originalUrl:
+      "https://react.fluentui.dev/?path=/docs/components-dialog--docs",
+    sourceUrl:
+      "https://github.com/microsoft/fluentui/blob/036f9a210cd8d72924c33dd9ff0fbb16d6aae885/packages/react-components/react-dialog/stories/src/Dialog/DialogDefault.stories.tsx",
+    cover: "./assets/previews/component-fluent-dialog.png",
+    preview: {
+      width: 640,
+      height: 480,
+      url: "./examples/ui-market/index.html?item=fluent-dialog",
+    },
+    prompt: {
+      "zh-CN":
+        "请基于本站提供的 Fluent UI 9.74.10 官方示例源码复用「标准确认对话框」。\n\n目标行为：包含标题、说明与操作区的原版对话框，支持焦点管理和键盘关闭。\n\n保留 Fluent UI 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。\n使用 React、TypeScript 及真实 Fluent UI 依赖，保留必要 Provider、主题与组件结构。提供本地示例数据、中文与英文界面、键盘焦点和可读的状态反馈。表单数据不发送到外部，密码不持久化。范围限于当前组件或区块。",
+      en: "Reuse Confirmation Dialog from the supplied official Fluent UI 9.74.10 example.\n\nBehavior: An original dialog with title, description and actions, focus management and keyboard dismissal.\n\nPreserve Fluent UI official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.\nUse React, TypeScript and the actual Fluent UI dependency, preserving its provider, theme and component structure. Include local fixtures, Chinese/English, keyboard focus and readable feedback. Send no form data externally and never persist passwords. Keep the scope to this component or block.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "将 Fluent UI 的企业界面规范用于现有业务：保留 Fluent UI 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。 强调标签、状态和操作的层级，保持信息密度与可读性。",
+      en: "Apply Fluent UI visual conventions to my existing content: Preserve Fluent UI official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens. Clarify labels, states and actions while retaining readable density.",
+    },
+  },
+  {
+    id: "fluent-toast",
+    key: "toast",
+    type: "component",
+    sourceId: "fluent",
+    libraryIds: ["fluent"],
+    category: "feedback",
+    interactions: ["click"],
+    motion: false,
+    styleId: "enterprise-fluent",
+    style: {
+      "zh-CN": "企业应用 · Fluent UI",
+      en: "Enterprise · Fluent UI",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "多状态通知",
+      en: "Toast Intents",
+    },
+    description: {
+      "zh-CN": "切换成功、信息、警告、错误及自定义图标，体验原版 Toast。",
+      en: "Switch success, info, warning, error and custom media in original Toast notifications.",
+    },
+    tags: {
+      "zh-CN": ["多状态通知", "业务组件", "企业应用"],
+      en: ["Toast Intents", "business", "enterprise"],
+    },
+    useCases: {
+      "zh-CN": "企业管理、协作工具与需要清晰信息层级的业务界面。",
+      en: "Administration, collaboration tools and information-dense business interfaces.",
+    },
+    principle: {
+      "zh-CN":
+        "归档解读：以组件库既有规范保证一致性。切换成功、信息、警告、错误及自定义图标，体验原版 Toast。",
+      en: "Archive interpretation: use the library’s established conventions for consistency. Switch success, info, warning, error and custom media in original Toast notifications.",
+    },
+    rules: {
+      "zh-CN": [
+        "保留 Fluent UI 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。",
+        "保留键盘焦点、状态文本、输入校验和原版弹层行为。",
+      ],
+      en: [
+        "Preserve Fluent UI official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.",
+        "Keep keyboard focus, state text, input validation and original portal behavior.",
+      ],
+    },
+    files: ["src/demos/fluent/toast.tsx"],
+    supportFiles: [
+      "src/archive/fluent-provider.tsx",
+      "src/archive/i18n.ts",
+      "src/archive/zh.json",
+    ],
+    originalUrl:
+      "https://react.fluentui.dev/?path=/docs/components-toast--docs",
+    sourceUrl:
+      "https://github.com/microsoft/fluentui/blob/036f9a210cd8d72924c33dd9ff0fbb16d6aae885/packages/react-components/react-toast/stories/src/Toast/Intent.stories.tsx",
+    cover: "./assets/previews/component-fluent-toast.png",
+    preview: {
+      width: 640,
+      height: 480,
+      url: "./examples/ui-market/index.html?item=fluent-toast",
+    },
+    prompt: {
+      "zh-CN":
+        "请基于本站提供的 Fluent UI 9.74.10 官方示例源码复用「多状态通知」。\n\n目标行为：切换成功、信息、警告、错误及自定义图标，体验原版 Toast。\n\n保留 Fluent UI 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。\n使用 React、TypeScript 及真实 Fluent UI 依赖，保留必要 Provider、主题与组件结构。提供本地示例数据、中文与英文界面、键盘焦点和可读的状态反馈。表单数据不发送到外部，密码不持久化。范围限于当前组件或区块。",
+      en: "Reuse Toast Intents from the supplied official Fluent UI 9.74.10 example.\n\nBehavior: Switch success, info, warning, error and custom media in original Toast notifications.\n\nPreserve Fluent UI official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens.\nUse React, TypeScript and the actual Fluent UI dependency, preserving its provider, theme and component structure. Include local fixtures, Chinese/English, keyboard focus and readable feedback. Send no form data externally and never persist passwords. Keep the scope to this component or block.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "将 Fluent UI 的企业界面规范用于现有业务：保留 Fluent UI 官方组件、语义色、排版、间距和交互；仅替换业务数据。桌面按原版结构展示，窄屏表单换行、表格横向滚动。 强调标签、状态和操作的层级，保持信息密度与可读性。",
+      en: "Apply Fluent UI visual conventions to my existing content: Preserve Fluent UI official components, semantic colours, typography, spacing and interactions; replace business data only. Keep the original desktop structure, wrap forms and scroll wide tables on narrow screens. Clarify labels, states and actions while retaining readable density.",
+    },
+  },
 ];
 export const marketSources = {
   magicui: {
@@ -930,6 +1514,26 @@ export const marketSources = {
     license: "MIT",
     licenseFile: "./examples/ui-market/licenses/magicui-LICENSE.md",
   },
+  antd: {
+    id: "antd",
+    name: "Ant Design",
+    author: "Ant Group and Ant Design contributors",
+    repo: "https://github.com/ant-design/ant-design",
+    docs: "https://ant.design/",
+    commit: "f8f5595ab5e891fff6a2a06c5b3b98af643d008e",
+    license: "MIT",
+    licenseFile: "./examples/ui-market/licenses/antd-LICENSE",
+  },
+  fluent: {
+    id: "fluent",
+    name: "Fluent UI React v9",
+    author: "Microsoft and Fluent UI contributors",
+    repo: "https://github.com/microsoft/fluentui",
+    docs: "https://react.fluentui.dev/",
+    commit: "036f9a210cd8d72924c33dd9ff0fbb16d6aae885",
+    license: "MIT",
+    licenseFile: "./examples/ui-market/licenses/fluentui-LICENSE",
+  },
 };
 export const marketLibraries = {
   magicui: {
@@ -938,5 +1542,19 @@ export const marketLibraries = {
     version: "efe76fc · Motion 12.43.0",
     docs: "https://magicui.design/",
     aliases: ["MagicUI", "动效", "motion"],
+  },
+  antd: {
+    id: "antd",
+    name: "Ant Design",
+    version: "6.6.7",
+    docs: "https://ant.design/",
+    aliases: ["Ant Design", "antd", "蚂蚁", "阿里", "Ant Group"],
+  },
+  fluent: {
+    id: "fluent",
+    name: "Fluent UI React v9",
+    version: "9.74.10",
+    docs: "https://react.fluentui.dev/",
+    aliases: ["Fluent", "Fluent UI", "Microsoft", "微软"],
   },
 };

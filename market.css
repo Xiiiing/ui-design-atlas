@@ -1316,3 +1316,12 @@ input:focus-visible {
     padding: 0 18px;
   }
 }
+
+.asset-cover-link {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+.asset-live iframe {
+  pointer-events: none;
+}

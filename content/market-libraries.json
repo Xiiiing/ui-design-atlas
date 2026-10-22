@@ -9,5 +9,30 @@
       "动效",
       "motion"
     ]
+  },
+  "antd": {
+    "id": "antd",
+    "name": "Ant Design",
+    "version": "6.6.7",
+    "docs": "https://ant.design/",
+    "aliases": [
+      "Ant Design",
+      "antd",
+      "蚂蚁",
+      "阿里",
+      "Ant Group"
+    ]
+  },
+  "fluent": {
+    "id": "fluent",
+    "name": "Fluent UI React v9",
+    "version": "9.74.10",
+    "docs": "https://react.fluentui.dev/",
+    "aliases": [
+      "Fluent",
+      "Fluent UI",
+      "Microsoft",
+      "微软"
+    ]
   }
 }

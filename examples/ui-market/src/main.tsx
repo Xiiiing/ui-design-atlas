@@ -38,6 +38,12 @@ function App() {
     [duration, setDuration] = useState(id === "magicui-shimmer-button" ? 3 : 8),
     [quantity, setQuantity] = useState(100),
     [value, setValue] = useState(100);
+  const [feedback, setFeedback] = useState("");
+  useEffect(() => {
+    const done = (e: Event) => setFeedback((e as CustomEvent<string>).detail);
+    window.addEventListener("atlas:demo-success", done);
+    return () => window.removeEventListener("atlas:demo-success", done);
+  }, []);
   const { setTheme, resolvedTheme } = useTheme();
   const Demo = demos[id as keyof typeof demos];
   useEffect(() => {
@@ -54,6 +60,17 @@ function App() {
           setLocale(e.data.locale);
           languageChanged(e.data.locale);
         }
+      }
+      if (e.data?.type === "atlas:preview-pointer") {
+        const { x, y } = e.data;
+        const target = document.elementFromPoint(x, y);
+        target?.dispatchEvent(
+          new MouseEvent("mousemove", {
+            clientX: x,
+            clientY: y,
+            bubbles: true,
+          }),
+        );
       }
       if (e.data?.type === "atlas:replay") replay((x) => x + 1);
     };
@@ -137,6 +154,11 @@ function App() {
             </label>
           )}
         </div>
+      )}
+      {feedback && (
+        <output className="demo-feedback" role="status">
+          {t(feedback)}
+        </output>
       )}
       <PreviewSettings value={{ duration, quantity, value }}>
         <MotionConfig reducedMotion="user">

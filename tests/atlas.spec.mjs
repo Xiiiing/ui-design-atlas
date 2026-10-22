@@ -593,3 +593,49 @@ test("Independent upstream resources load locally with source, prompts and reduc
   await expect(page.locator(".demo-surface")).toContainText("粒子背景");
   expect(errors).toEqual([]);
 });
+
+test("Library examples use real Ant Design and Fluent UI with working validation and nested dialogs", async ({
+  page,
+}) => {
+  const errors = watch(page);
+  await page.goto("examples/ui-market/index.html?item=antd-form&lang=en");
+  await page.getByRole("button", { name: "Submit", exact: true }).click();
+  await expect(
+    page.getByText("Please input your username!", { exact: true }),
+  ).toBeVisible();
+  await page.getByLabel("Username", { exact: true }).fill("Atlas");
+  await page.getByLabel("Password", { exact: true }).fill("OnlyForThisDemo");
+  await page.getByRole("button", { name: "Submit", exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText("Form submitted locally.");
+  expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain(
+    "OnlyForThisDemo",
+  );
+  await page.goto(
+    "examples/ui-market/index.html?item=fluent-data-grid&lang=en",
+  );
+  await expect(page.getByRole("grid")).toBeVisible();
+  const first = await page.getByRole("row").nth(1).innerText();
+  await page.getByRole("columnheader", { name: "File", exact: true }).click();
+  await expect(page.getByRole("row").nth(1)).not.toHaveText(first);
+  await page.goto("#explore?lang=en");
+  await page.locator("[name=q]").fill("微软");
+  await expect(page.locator(".asset-card")).toHaveCount(4);
+  await page.locator('[data-open="component:fluent-dialog"]').last().click();
+  const demo = page.frameLocator("#case-preview");
+  await demo.getByRole("button", { name: "Open dialog", exact: true }).click();
+  await expect(demo.getByRole("dialog")).toBeVisible();
+  await demo.getByRole("button", { name: "Close", exact: true }).click();
+  await expect(demo.getByRole("dialog")).not.toBeVisible();
+  await expect(page.locator("#asset-dialog")).toBeVisible();
+  await demo.getByRole("button", { name: "Open dialog", exact: true }).click();
+  await demo
+    .getByRole("button", { name: "Close", exact: true })
+    .press("Escape");
+  await expect(demo.getByRole("dialog")).not.toBeVisible();
+  await expect(page.locator("#asset-dialog")).toBeVisible();
+  await page
+    .getByRole("button", { name: "Close preview", exact: true })
+    .click();
+  await expect(page.locator("[name=q]")).toHaveValue("微软");
+  expect(errors).toEqual([]);
+});

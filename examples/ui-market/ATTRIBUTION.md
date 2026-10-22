@@ -9,3 +9,10 @@
 - **Atlas preview adapters**: bilingual display, local preview data, source navigation, replay, limited parameter controls, same-origin messaging and static deployment. These adaptations do not claim authorship of upstream designs.
 
 Each imported project is pinned in `sources.lock.json`. Dependency notices are included in the built download as `THIRD_PARTY_NOTICES.md`.
+
+- **Ant Group and Ant Design contributors**, MIT: https://github.com/ant-design/ant-design/tree/f8f5595ab5e891fff6a2a06c5b3b98af643d008e
+  - Official table filtering/sorting and form basic, advanced-search and form-in-modal demos are retained in `upstream/antd/` and adapted in `src/demos/antd/`.
+  - Adaptations: bilingual display, visible local-only submit feedback, readable local select values, responsive search columns, and keyboard-accessible expand control. No credentials are stored or logged.
+- **Microsoft and Fluent UI contributors**, MIT: https://github.com/microsoft/fluentui/tree/036f9a210cd8d72924c33dd9ff0fbb16d6aae885
+  - Original DataGrid Sort, Toolbar OverflowItems, Dialog Default and Toast Intent stories are retained in `upstream/fluent/`.
+  - Adapters remove the Storybook dependency, supply FluentProvider and the original light/dark themes, and provide bilingual labels. Dialog confirmation dismisses the dialog and displays local feedback.

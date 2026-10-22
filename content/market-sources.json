@@ -8,5 +8,25 @@
     "commit": "efe76fc5755eca1142dd4f74c1d6f0ace2887e3c",
     "license": "MIT",
     "licenseFile": "./examples/ui-market/licenses/magicui-LICENSE.md"
+  },
+  "antd": {
+    "id": "antd",
+    "name": "Ant Design",
+    "author": "Ant Group and Ant Design contributors",
+    "repo": "https://github.com/ant-design/ant-design",
+    "docs": "https://ant.design/",
+    "commit": "f8f5595ab5e891fff6a2a06c5b3b98af643d008e",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/antd-LICENSE"
+  },
+  "fluent": {
+    "id": "fluent",
+    "name": "Fluent UI React v9",
+    "author": "Microsoft and Fluent UI contributors",
+    "repo": "https://github.com/microsoft/fluentui",
+    "docs": "https://react.fluentui.dev/",
+    "commit": "036f9a210cd8d72924c33dd9ff0fbb16d6aae885",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/fluentui-LICENSE"
   }
 }

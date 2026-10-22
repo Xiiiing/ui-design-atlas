@@ -13,3 +13,5 @@
 .demo-surface[data-source=blocks]{padding:0;display:block}.demo-error{padding:32px;font-size:14px}
 @media(max-width:500px){.demo-surface{padding:20px}.demo-surface .text-8xl{font-size:4rem}.demo-controls{gap:8px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+.demo-feedback{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:1000;border:1px solid var(--border);background:var(--background);color:var(--foreground);padding:10px 16px;border-radius:8px;font-size:12px;max-width:90vw}

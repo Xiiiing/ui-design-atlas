@@ -142,6 +142,60 @@
           "sha256": "f930175f91cea4af8547aa0b6f1b71599b75de6c456fd5476d3f459f06b1de3e"
         }
       ]
+    },
+    "antd": {
+      "repo": "https://github.com/ant-design/ant-design",
+      "commit": "f8f5595ab5e891fff6a2a06c5b3b98af643d008e",
+      "license": "MIT",
+      "files": [
+        {
+          "upstream": "components/table/demo/head.tsx",
+          "original": "upstream/antd/table.tsx",
+          "sha256": "9309f970828d282647c5f8590ec09480afe514d2c45ad7715973d3f635a6e4db"
+        },
+        {
+          "upstream": "components/form/demo/basic.tsx",
+          "original": "upstream/antd/form.tsx",
+          "sha256": "849217d9bc251368660e8791d1c3fbde92b98336a258dd05e16debdd7b844354"
+        },
+        {
+          "upstream": "components/form/demo/advanced-search.tsx",
+          "original": "upstream/antd/search.tsx",
+          "sha256": "f5eb4b367eb4891c0d93ea37004cb9908fb5656457e1860eba0a56bd58981d45"
+        },
+        {
+          "upstream": "components/form/demo/form-in-modal.tsx",
+          "original": "upstream/antd/modal-form.tsx",
+          "sha256": "f7b8aa12ea7c562d5805664b3b9af61a020ad7cdce332a2793950f27e5265462"
+        }
+      ]
+    },
+    "fluent": {
+      "repo": "https://github.com/microsoft/fluentui",
+      "commit": "036f9a210cd8d72924c33dd9ff0fbb16d6aae885",
+      "license": "MIT",
+      "files": [
+        {
+          "upstream": "packages/react-components/react-table/stories/src/DataGrid/Sort.stories.tsx",
+          "original": "upstream/fluent/data-grid.tsx",
+          "sha256": "f0917448357d69791d8979fbe22015cf0d0557dbae45f499aecb3c02346daf24"
+        },
+        {
+          "upstream": "packages/react-components/react-toolbar/stories/src/Toolbar/ToolbarOverflow.stories.tsx",
+          "original": "upstream/fluent/toolbar.tsx",
+          "sha256": "9b8050ae4bdf082b6c9c6af5345dab15053e2043643cdc5113f7746bf42f4542"
+        },
+        {
+          "upstream": "packages/react-components/react-dialog/stories/src/Dialog/DialogDefault.stories.tsx",
+          "original": "upstream/fluent/dialog.tsx",
+          "sha256": "a2e17b6e76725026bfe1a67922f9d1b98e7e50c9972ac2708cc224d765643070"
+        },
+        {
+          "upstream": "packages/react-components/react-toast/stories/src/Toast/Intent.stories.tsx",
+          "original": "upstream/fluent/toast.tsx",
+          "sha256": "828090cac49e5648723de22fcae1dea46b99bfcf9927e9c6addff1e92fd78c3d"
+        }
+      ]
     }
   },
   "foundation": {

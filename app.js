@@ -111,7 +111,7 @@ function header() {
   );
 }
 function card(r) {
-  return `<article class="asset-card card" data-resource="${key(r)}"><div class="asset-preview" style="--canvas-width:${r.preview.width}px;--canvas-height:${r.preview.height}px"><img src="${esc(r.cover)}" alt="${esc(l(r.name))}" loading="lazy" width="640" height="420"><div class="asset-live" data-live="${key(r)}"></div>${saveButton(r)}<a class="asset-open" href="${href(r.type, r.id)}" data-open="${key(r)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}">${icon("arrow-up-right")}</a>${r.motion ? `<span class="motion-badge">${icon("play")}${t("动效", "Motion")}</span>` : ""}</div><div class="asset-caption"><a data-open="${key(r)}" href="${href(r.type, r.id)}">${esc(l(r.name))}</a><span class="asset-type">${labelType(r)}</span><p>${esc(l(r.description))}</p><div class="asset-meta"><span>${r.libraryIds.map((id) => esc(libraries[id].name)).join(" · ")}</span><span>${r.sourceId === "original" ? t("本站原创", "Original") : esc(resourceSource(r).name)}</span></div></div></article>`;
+  return `<article class="asset-card card" data-resource="${key(r)}"><div class="asset-preview" style="--canvas-width:${r.preview.width}px;--canvas-height:${r.preview.height}px"><img src="${esc(r.cover)}" alt="${esc(l(r.name))}" loading="lazy" width="640" height="420"><div class="asset-live" data-live="${key(r)}"></div><a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}"></a>${saveButton(r)}<a class="asset-open" href="${href(r.type, r.id)}" data-open="${key(r)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}">${icon("arrow-up-right")}</a>${r.motion ? `<span class="motion-badge">${icon("play")}${t("动效", "Motion")}</span>` : ""}</div><div class="asset-caption"><a data-open="${key(r)}" href="${href(r.type, r.id)}">${esc(l(r.name))}</a><span class="asset-type">${labelType(r)}</span><p>${esc(l(r.description))}</p><div class="asset-meta"><span>${r.libraryIds.map((id) => esc(libraries[id].name)).join(" · ")}</span><span>${r.sourceId === "original" ? t("本站原创", "Original") : esc(resourceSource(r).name)}</span></div></div></article>`;
 }
 function selectFilter(name, label, entries) {
   return `<label><span class="sr-only">${label}</span><select name="${name}" aria-label="${label}"><option value="all">${label}</option>${entries.map(([v, label]) => `<option value="${v}">${esc(label)}</option>`).join("")}</select></label>`;
@@ -1035,3 +1035,21 @@ window.addEventListener("storage", (e) => {
 });
 new ResizeObserver(scalePreview).observe(document.body);
 render();
+
+document.addEventListener("pointermove", (e) => {
+  const card = e.target.closest(".asset-card");
+  if (!card) return;
+  const el = card.querySelector("[data-live]"),
+    f = liveFrames.get(el);
+  if (!f) return;
+  const box = f.getBoundingClientRect(),
+    r = findResource(...card.dataset.resource.split(":").reverse());
+  f.contentWindow.postMessage(
+    {
+      type: "atlas:preview-pointer",
+      x: ((e.clientX - box.left) * r.preview.width) / box.width,
+      y: ((e.clientY - box.top) * r.preview.height) / box.height,
+    },
+    location.origin,
+  );
+});
