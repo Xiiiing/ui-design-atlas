@@ -97,7 +97,7 @@ function header() {
   document.documentElement.lang = locale;
   document.querySelector("#sidebar").innerHTML = "";
   document.querySelector("#topbar").innerHTML =
-    `<div class="market-header"><a class="brand" href="${href()}">${icon("layers")}<span>atlas<span class="brand-dot">.</span></span></a><nav aria-label="${t("主导航", "Main navigation")}"><a href="${href()}" class="${route.view === "explore" ? "active" : ""}">${t("探索 UI", "Explore UI")}</a><a href="${href("cases")}" class="${route.view === "cases" ? "active" : ""}">${t("完整案例", "Systems")}</a><a href="${href("favorites")}" class="${route.view === "favorites" ? "active" : ""}">${t("我的收藏", "Saved")}<span>${favorites.size || ""}</span></a></nav><div class="market-header-actions"><button class="icon-button" data-search aria-label="${t("搜索设计", "Search designs")}">${icon("search")}</button>${language()}${external("https://github.com/Xiiiing/ui-design-atlas", "GitHub")}</div></div>`;
+    `<div class="market-header"><a class="brand" href="${href()}"><span class="brand-mark">${icon("layers")}</span><span>atlas<span class="brand-dot">.</span></span></a><nav aria-label="${t("主导航", "Main navigation")}"><a href="${href()}" class="${["explore", "motion", "components", "blocks", "pages"].includes(route.view) ? "active" : ""}">${t("探索 UI", "Explore UI")}</a><a href="${href("cases")}" class="${route.view === "cases" ? "active" : ""}">${t("完整案例", "Systems")}</a><a href="${href("favorites")}" class="${route.view === "favorites" ? "active" : ""}">${icon("bookmark")}${t("我的收藏", "Saved")}<span>${favorites.size || ""}</span></a></nav><div class="market-header-actions"><button class="icon-button" data-search aria-label="${t("搜索设计", "Search designs")}">${icon("search")}</button>${language()}${external("https://github.com/Xiiiing/ui-design-atlas", "GitHub")}</div></div>`;
   document.querySelector("#footer").innerHTML =
     `<div class="market-footer"><a class="brand" href="${href()}">atlas.</a><span>${t("找到喜欢的界面，把设计与代码一起带走。", "Find an interface. Take its ideas and code.")}</span><a href="${href("resources")}">${t("来源与许可", "Sources & licenses")}</a><a href="${href("guide")}">${t("使用指南", "How to reuse")}</a></div>`;
   document.querySelector("#copy-title").textContent = t(
@@ -108,17 +108,30 @@ function header() {
     "请选择并复制下方内容。",
     "Select and copy the text below.",
   );
+  document.querySelector(".search-dialog-footer span").textContent = t(
+    "↵ 打开 · Esc 关闭",
+    "↵ Open · Esc Close",
+  );
   document.querySelector("#quick-search").placeholder = t(
     "搜索流光边框、表格、Fluent…",
     "Search a UI, effect or library…",
   );
 }
 function card(r) {
-  return `<article class="asset-card card" data-resource="${key(r)}"><div class="asset-preview" style="--canvas-width:${r.preview.width}px;--canvas-height:${r.preview.height}px"><img src="${esc(r.cover)}" alt="${esc(l(r.name))}" loading="lazy" width="640" height="420"><div class="asset-live" data-live="${key(r)}"></div><a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}"></a>${saveButton(r)}<a class="asset-open" href="${href(r.type, r.id)}" data-open="${key(r)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}">${icon("arrow-up-right")}</a>${r.motion ? `<span class="motion-badge">${icon("play")}${t("动效", "Motion")}</span>` : ""}</div><div class="asset-caption"><a data-open="${key(r)}" href="${href(r.type, r.id)}">${esc(l(r.name))}</a><span class="asset-type">${labelType(r)}</span><p>${esc(l(r.description))}</p><div class="asset-meta"><span>${r.libraryIds.map((id) => esc(libraries[id].name)).join(" · ")}</span><span>${r.sourceId === "original" ? t("本站原创", "Original") : esc(resourceSource(r).name)}</span></div></div></article>`;
+  const source = resourceSource(r);
+  return `<article class="asset-card card" data-resource="${key(r)}"><div class="asset-preview" style="--canvas-width:${r.preview.width}px;--canvas-height:${r.preview.height}px"><img src="${esc(r.cover)}" alt="${esc(l(r.name))}" loading="lazy" width="640" height="420"><div class="asset-live" data-live="${key(r)}"></div><a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}"></a>${saveButton(r)}<a class="asset-open" href="${href(r.type, r.id)}" data-open="${key(r)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}">${icon("arrow-up-right")}</a>${r.motion ? `<span class="motion-badge">${icon("play")}${t("动效", "Motion")}</span>` : ""}</div><div class="asset-caption"><a data-open="${key(r)}" href="${href(r.type, r.id)}">${esc(l(r.name))}</a><span class="asset-type">${labelType(r)}</span><p>${esc(l(r.description))}</p><div class="asset-meta"><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" data-library="${esc(id)}">${esc(libraries[id].name)}</span>`).join("") || `<span class="library-badge">${t("原生 UI", "Native UI")}</span>`}</span><span class="asset-origin" title="${esc(source.name)}">${r.sourceId === "original" ? t("本站原创", "Original") : esc(source.license)}</span></div></div></article>`;
 }
 function selectFilter(name, label, entries) {
-  return `<label><span class="sr-only">${label}</span><select name="${name}" aria-label="${label}"><option value="all">${label}</option>${entries.map(([v, label]) => `<option value="${v}">${esc(label)}</option>`).join("")}</select></label>`;
+  return `<label class="filter-select"><span class="sr-only">${label}</span><select name="${name}" aria-label="${label}"><option value="all">${label}</option>${entries.map(([v, label]) => `<option value="${v}">${esc(label)}</option>`).join("")}</select>${icon("chevron-right")}</label>`;
 }
+const viewIcons = {
+  explore: "grid-2x2",
+  motion: "play",
+  components: "layers",
+  blocks: "layout-template",
+  pages: "monitor",
+  cases: "code-xml",
+};
 const viewModes = {
   explore: ["全部", "All"],
   motion: ["动效", "Motion"],
@@ -129,16 +142,16 @@ const viewModes = {
 };
 function listing() {
   const favorite = route.view === "favorites";
-  return `<section class="market-intro"><div><p class="eyebrow">A LIBRARY OF LITTLE POSSIBILITIES</p><h1>${favorite ? t("留住灵感，随时复用。", "Good finds. Kept close.") : t("下一个好界面，从这里开始。", "Your next interface starts here.")}</h1><p>${t("一个动效，一个组件，或一整套系统。先体验，再带走提示词与代码。", "An effect, a component, or an entire system. Try it. Take the prompt and code.")}</p></div>${favorite ? `<div class="button-row"><button class="button" data-export-favorites>${t("导出收藏", "Export saved")}</button><label class="button">${t("导入收藏", "Import saved")}<input type="file" hidden id="import-favorites" accept=".json"></label></div>` : `<span class="resource-total"><b>${resources.length}</b>${t("个可体验的 UI", "interfaces to explore")}</span>`}</section><section class="market-collection" id="collection"><div class="market-tabs">${Object.entries(
+  return `<section class="market-intro"><div><p class="eyebrow"><span class="status-dot"></span>${t("UI 资源集 · 为下一次创造收藏", "THE UI COLLECTION · MADE TO BE REUSED")}</p><h1>${favorite ? t("留住灵感，随时复用。", "Good finds. Kept close.") : t("发现好界面，<em>即取即用。</em>", "Good interfaces.<em> Yours to build.</em>")}</h1><p>${t("从一个细节到一整套系统。发现、体验，带走设计思路与代码。", "From a thoughtful detail to a complete system. Explore, try, and make it yours.")}</p></div>${favorite ? `<div class="button-row"><button class="button" data-export-favorites>${t("导出收藏", "Export saved")}</button><label class="button">${t("导入收藏", "Import saved")}<input type="file" hidden id="import-favorites" accept=".json"></label></div>` : `<div class="reuse-trail" aria-label="${t("资源复用流程", "Resource reuse workflow")}"><span>${icon("play")}${t("交互预览", "Try it live")}</span>${icon("chevron-right")}<span>${icon("copy")}${t("设计提示词", "Get the prompt")}</span>${icon("chevron-right")}<span>${icon("code-xml")}${t("带走源码", "Take the code")}</span></div>`}</section><section class="market-collection" id="collection"><div class="market-tabs">${Object.entries(
     viewModes,
   )
     .map(
       ([v, labels]) =>
-        `<a href="${href(v)}" class="${route.view === v ? "active" : ""}" ${route.view === v ? 'aria-current="page"' : ""}>${t(...labels)}${v === "motion" ? `<span>${resources.filter((r) => r.motion).length}</span>` : ""}</a>`,
+        `<a href="${href(v)}" class="${route.view === v ? "active" : ""}" ${route.view === v ? 'aria-current="page"' : ""}>${icon(viewIcons[v])}${t(...labels)}${v === "explore" || v === "motion" ? `<span>${v === "explore" ? resources.length : resources.filter((r) => r.motion).length}</span>` : ""}</a>`,
     )
     .join(
       "",
-    )}</div><form id="filters" class="market-filters"><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(route.params.get("q") || "")}"><kbd>/</kbd></label>${selectFilter(
+    )}</div><form id="filters" class="market-filters"><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(route.params.get("q") || "")}"><kbd>/</kbd></label><div class="filter-strip"><span class="filter-label">${icon("sliders-horizontal")}${t("筛选", "Filter")}</span>${selectFilter(
     "category",
     t("全部分类", "All categories"),
     Object.entries(categories).map(([id, labels]) => [id, t(...labels)]),
@@ -160,7 +173,7 @@ function listing() {
   )}${selectFilter("audience", t("全部场景", "All audiences"), [
     ["b2b", t("B 端 / 工作工具", "B2B / Work tools")],
     ["b2c", t("C 端 / 网站", "B2C / Websites")],
-  ])}<button type="button" class="icon-button" data-reset-filters aria-label="${t("重置筛选", "Reset filters")}">${icon("rotate-ccw")}</button></form><div id="results" aria-live="polite"></div></section>`;
+  ])}<button type="button" class="icon-button" data-reset-filters aria-label="${t("重置筛选", "Reset filters")}">${icon("rotate-ccw")}</button></div></form><div id="results" aria-live="polite"></div></section>`;
 }
 function filtered() {
   const values = document.querySelector("#filters")
@@ -222,7 +235,7 @@ function updateResults(updateURL = false) {
   stopAllLive();
   const items = filtered();
   document.querySelector("#results").innerHTML =
-    `<div class="market-results-line"><span>${items.length} ${t("个界面，等你发现", "interfaces to discover")}</span><span>${t("真实预览 · 本站可用", "REAL PREVIEWS · READY TO REUSE")}</span></div>${items.length ? `<div class="market-grid">${items.slice(0, limit).map(card).join("")}</div>${items.length > limit ? `<button class="button load-more" data-more>${t("再看一些", "Explore more")} ${icon("arrow-down")}</button>` : ""}` : `<div class="market-empty">${icon("search")}<h2>${t("换个关键词试试", "Try another search")}</h2><p>${t("也可以清空筛选，看看其他界面。", "Clear the filters to discover more interfaces.")}</p><button class="button" data-reset-filters>${t("清空筛选", "Clear filters")}</button></div>`}`;
+    `<div class="market-results-line"><span><strong>${items.length}</strong> ${t("个设计资源", "design resources")}</span><span><i class="status-dot"></i>${t("真实交互预览 · 提示词与源码", "LIVE PREVIEWS · PROMPTS & SOURCE")}</span></div>${items.length ? `<div class="market-grid">${items.slice(0, limit).map(card).join("")}</div>${items.length > limit ? `<button class="button load-more" data-more>${t("再看一些", "Explore more")} ${icon("arrow-down")}</button>` : ""}` : `<div class="market-empty">${icon("search")}<h2>${t("换个关键词试试", "Try another search")}</h2><p>${t("也可以清空筛选，看看其他界面。", "Clear the filters to discover more interfaces.")}</p><button class="button" data-reset-filters>${t("清空筛选", "Clear filters")}</button></div>`}`;
   if (updateURL) {
     const params = Object.fromEntries(
       new FormData(document.querySelector("#filters")),
