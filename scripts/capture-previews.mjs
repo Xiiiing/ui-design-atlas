@@ -21,7 +21,11 @@ try {
   if (!ready) throw Error("Preview server did not start");
   await mkdir("assets/previews", { recursive: true });
   const jobs = resources.filter(
-    (r) => !process.argv[2] || r.id.includes(process.argv[2]),
+    (r) =>
+      !process.argv[2] ||
+      (process.argv[2] === "--new"
+        ? Boolean(r.preview.url)
+        : r.id.includes(process.argv[2])),
   );
   let index = 0;
   await Promise.all(

@@ -16,3 +16,11 @@ Each imported project is pinned in `sources.lock.json`. Dependency notices are i
 - **Microsoft and Fluent UI contributors**, MIT: https://github.com/microsoft/fluentui/tree/036f9a210cd8d72924c33dd9ff0fbb16d6aae885
   - Original DataGrid Sort, Toolbar OverflowItems, Dialog Default and Toast Intent stories are retained in `upstream/fluent/`.
   - Adapters remove the Storybook dependency, supply FluentProvider and the original light/dark themes, and provide bilingual labels. Dialog confirmation dismisses the dialog and displays local feedback.
+
+- **shadcn and contributors**, MIT: https://github.com/shadcn-ui/ui/tree/25af02b1b467fcd53b63e0c6d6d324c57c16ef18
+  - Public `login-01`, `signup-01`, `sidebar-07` and `dashboard-01` blocks, with their original UI dependencies, are retained in `upstream/shadcn/` and used in `src/blocks/`.
+  - Adaptations: path aliases, local avatar, Chinese text/date labels, explicit local-only form submission, signup password confirmation/minimum length, and a separate sidebar cookie namespace. Source layout, icons and styles are retained.
+  - `sidebar-07` deliberately contains the upstream skeleton content. Dashboard's additional tabs and placeholder links are layout examples, rather than connected business pages; the complete archived Shadcn Admin remains available separately.
+  - The dashboard uses the upstream TanStack Table v9 API and Recharts 3.8.0, isolated from the existing Shadcn Admin project's dependencies.
+
+Original Magic UI neutral colour tokens and animation definitions are preserved in `src/styles/source-themes.css` and `magic-animations.css`. The shadcn blocks use their own original scoped colour/chart tokens from `apps/v4/app/globals.css`. Geist is bundled locally (OFL). Thumbnail previews are inert so upstream dialogs never take keyboard focus away from the marketplace; full previews retain normal interaction.

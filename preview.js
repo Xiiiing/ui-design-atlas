@@ -1,3 +1,4 @@
+if (new URLSearchParams(location.search).has("thumb")) document.body.inert = true;
 import { observeLegacy,translateLegacyString as tr } from './legacy-i18n.js';
 import { styles, getStyle } from './data.js';
 import { escapeHTML as esc } from './components.js';

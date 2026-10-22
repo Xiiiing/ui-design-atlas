@@ -196,6 +196,238 @@
           "sha256": "828090cac49e5648723de22fcae1dea46b99bfcf9927e9c6addff1e92fd78c3d"
         }
       ]
+    },
+    "shadcn-ui": {
+      "repo": "https://github.com/shadcn-ui/ui",
+      "commit": "25af02b1b467fcd53b63e0c6d6d324c57c16ef18",
+      "license": "MIT",
+      "files": [
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/dashboard-01/components/app-sidebar.tsx",
+          "original": "upstream/shadcn/dashboard-01/components/app-sidebar.tsx",
+          "sha256": "57cc03e28d2e69dd759f3ae9ebd5126a4b892aae1dfc5099485f2e818b929465"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/dashboard-01/components/chart-area-interactive.tsx",
+          "original": "upstream/shadcn/dashboard-01/components/chart-area-interactive.tsx",
+          "sha256": "9f98897edb06856c3648515a45e204f1383a2670479f36b7b1cf00d3c7e3a4c7"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/dashboard-01/components/data-table.tsx",
+          "original": "upstream/shadcn/dashboard-01/components/data-table.tsx",
+          "sha256": "08124de84ae1706e5ddc3e9f66c6bb7020e317cff7cc196b8f09b5d825dca44d"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/dashboard-01/components/nav-documents.tsx",
+          "original": "upstream/shadcn/dashboard-01/components/nav-documents.tsx",
+          "sha256": "da01b11902a4c020b920c596ce857fbe7f9841fa5b389ce5d3d7b38057f76e61"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/dashboard-01/components/nav-main.tsx",
+          "original": "upstream/shadcn/dashboard-01/components/nav-main.tsx",
+          "sha256": "dcb0f52820a8b715e5e873e6ae8107acfef7bb743816c0e7b2e5294f3d694522"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/dashboard-01/components/nav-secondary.tsx",
+          "original": "upstream/shadcn/dashboard-01/components/nav-secondary.tsx",
+          "sha256": "7b29a992caf9eb2cfac2f0a3dc189ad13e68891e2e0d4d92532ad3e24b6c37ff"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/dashboard-01/components/nav-user.tsx",
+          "original": "upstream/shadcn/dashboard-01/components/nav-user.tsx",
+          "sha256": "9242919aad52c8a4f89cf826c93b1e011b46ab437a6a47c494997e05e88f2d3b"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/dashboard-01/components/section-cards.tsx",
+          "original": "upstream/shadcn/dashboard-01/components/section-cards.tsx",
+          "sha256": "d6aeef170643888f314c78eddb21856de0bfa10096bd9dc003dcf092e229b2db"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/dashboard-01/components/site-header.tsx",
+          "original": "upstream/shadcn/dashboard-01/components/site-header.tsx",
+          "sha256": "66ae05f81d40331704cbee78d2d7c82d493f5b308e28c5369d03fd6f17fc1afe"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/dashboard-01/data.json",
+          "original": "upstream/shadcn/dashboard-01/data.json",
+          "sha256": "735bcce5a396d08bab189d2225863a3164a598a14a1ed3c153c292f5367ffab6"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/dashboard-01/page.tsx",
+          "original": "upstream/shadcn/dashboard-01/page.tsx",
+          "sha256": "b77ae6c22cb4ac1a2e5e8b180916dcf0ed3ca5d99b834a114e9458621f3b18ee"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/login-01/components/login-form.tsx",
+          "original": "upstream/shadcn/login-01/components/login-form.tsx",
+          "sha256": "3ed276fd6df6b27bcff1fc94e6ff0bdba9e932371d31bea959614dafde10167e"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/login-01/page.tsx",
+          "original": "upstream/shadcn/login-01/page.tsx",
+          "sha256": "d53f4834974717d39d364a955b05b3c5acce831f6c3be3cbe7c515ee96deaada"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/sidebar-07/components/app-sidebar.tsx",
+          "original": "upstream/shadcn/sidebar-07/components/app-sidebar.tsx",
+          "sha256": "af98fb0c244b7d4df8b41bb1af9b04919634da8e1d3006879e6cb3e7e5a68afa"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/sidebar-07/components/nav-main.tsx",
+          "original": "upstream/shadcn/sidebar-07/components/nav-main.tsx",
+          "sha256": "d2f7e2cd7508625b094f98bb68b4d90bb4b35274fec0b68ce763868a0d447863"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/sidebar-07/components/nav-projects.tsx",
+          "original": "upstream/shadcn/sidebar-07/components/nav-projects.tsx",
+          "sha256": "9731e9bcf1d77f79acb39b2eab14dfe52439572501a2368241ce20bc170256ed"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/sidebar-07/components/nav-user.tsx",
+          "original": "upstream/shadcn/sidebar-07/components/nav-user.tsx",
+          "sha256": "363a619987a09daefce41c11cf66147f5ac887e807f30dc3fc838794c79c463b"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/sidebar-07/components/team-switcher.tsx",
+          "original": "upstream/shadcn/sidebar-07/components/team-switcher.tsx",
+          "sha256": "20e5b17223fd944d0227a76662e26537d063c01cbee13cf27151fa5c5fe81bfb"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/sidebar-07/page.tsx",
+          "original": "upstream/shadcn/sidebar-07/page.tsx",
+          "sha256": "2e2712f0dc1800890e0e7b6f7bdba47cd3f406c55146bda44a318732b7800314"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/signup-01/components/signup-form.tsx",
+          "original": "upstream/shadcn/signup-01/components/signup-form.tsx",
+          "sha256": "b0cabf4dda200ef05dd5d83c5746feb5bb254dfe84c0c4d479ed19bacf2e0fa5"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/blocks/signup-01/page.tsx",
+          "original": "upstream/shadcn/signup-01/page.tsx",
+          "sha256": "054d1e971acb2cb1b411f992e093fb39f6907c7850fed77e189ec92d6b5106c2"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/avatar.tsx",
+          "original": "upstream/shadcn/ui/avatar.tsx",
+          "sha256": "1bf43faa3ff4aff3c2fca9f71a8af5a620ff463c47682e2f5362bf25ffc2cea5"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/badge.tsx",
+          "original": "upstream/shadcn/ui/badge.tsx",
+          "sha256": "3731e0316d0f5f76a70e7547be307ec62c5c9121eabadbb2f4556ae75d543cee"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/breadcrumb.tsx",
+          "original": "upstream/shadcn/ui/breadcrumb.tsx",
+          "sha256": "a9fab46149973eb40a6d440270a9a8767a47128fc47b7f0c26e21d700f959892"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/button.tsx",
+          "original": "upstream/shadcn/ui/button.tsx",
+          "sha256": "7bd33448ef1b2898d6c575606190c0da21a063c8c7e4bd65d74e5ecc582c6241"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/card.tsx",
+          "original": "upstream/shadcn/ui/card.tsx",
+          "sha256": "37948c3f974cd6d8732e817546387eea44ea470b2b5660af036d83f07564f94e"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/chart.tsx",
+          "original": "upstream/shadcn/ui/chart.tsx",
+          "sha256": "a41a44f1cd8626a3a0b65da7133bd88ea532af0966bba6c2dd042d01bedf258c"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/checkbox.tsx",
+          "original": "upstream/shadcn/ui/checkbox.tsx",
+          "sha256": "b6ecea6cfb93a82508236e8805428c93b30a60dd805322c7f4db5061525a3d30"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/collapsible.tsx",
+          "original": "upstream/shadcn/ui/collapsible.tsx",
+          "sha256": "f9d34bb60ea09a48b7fdc4c33fab153eebd829973f4919258fbb10066a18aa22"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/drawer.tsx",
+          "original": "upstream/shadcn/ui/drawer.tsx",
+          "sha256": "db4b7cf47d8c398cbd4538eb18f3e7c9a7c80475bba8a8cb310674405b1b3be0"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/dropdown-menu.tsx",
+          "original": "upstream/shadcn/ui/dropdown-menu.tsx",
+          "sha256": "62b16d6d91bd7ba6f6297332fc2133dad6da5dee818d777116b9bd1f6b23b97b"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/field.tsx",
+          "original": "upstream/shadcn/ui/field.tsx",
+          "sha256": "ac825ed5898945e270e4c33195598a6cabe6ea46319cfbf39cff50d599dc5e01"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/input.tsx",
+          "original": "upstream/shadcn/ui/input.tsx",
+          "sha256": "87f88e15dfda8281256ca9ccadd4329cb1666977f097dd9e3eaaff7fbb4c32f5"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/label.tsx",
+          "original": "upstream/shadcn/ui/label.tsx",
+          "sha256": "4cf86ead6b2bcec24f05bbb34e51945469c41942026a00c92e27b5e8cb42201d"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/select.tsx",
+          "original": "upstream/shadcn/ui/select.tsx",
+          "sha256": "1483a11458872cd62d9ae125a5b14d65bd27c478f904877260148c96ab3a9fa0"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/separator.tsx",
+          "original": "upstream/shadcn/ui/separator.tsx",
+          "sha256": "41688fb485057c1e6a9936916a9c52536f57840d689cb8c684d9bb7a6cc2823e"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/sheet.tsx",
+          "original": "upstream/shadcn/ui/sheet.tsx",
+          "sha256": "330cc631ee430ae0f894f1ef753d18007b47ac38041822fcd1f399677c124aed"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/sidebar.tsx",
+          "original": "upstream/shadcn/ui/sidebar.tsx",
+          "sha256": "3eccf52b851910254705f4ff37db44f16a090d3b9c1f53d1ce97c1f3b6897643"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/skeleton.tsx",
+          "original": "upstream/shadcn/ui/skeleton.tsx",
+          "sha256": "b76b8c92ea0fea5d7454bcf54caf46bd22d1d7097bb33add50980bd9efb7134a"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/table.tsx",
+          "original": "upstream/shadcn/ui/table.tsx",
+          "sha256": "09bf3d94557db8949ad1840723fa3039cf4f5adf60d576dc3c3295da36c92c51"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/tabs.tsx",
+          "original": "upstream/shadcn/ui/tabs.tsx",
+          "sha256": "507a200d3e823ccc164567bffaa25c9cf81cf04319b5b5e63f42a326da90e4a9"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/toggle-group.tsx",
+          "original": "upstream/shadcn/ui/toggle-group.tsx",
+          "sha256": "9ba4a7132dfde2ff25e8580add70c5057adfc0dfe3b0347ea3792c9dba8383af"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/toggle.tsx",
+          "original": "upstream/shadcn/ui/toggle.tsx",
+          "sha256": "ddd0300f0ffaad3490515c4b697e0076bb0f4313bad0ecf30d781b1cbb6e2704"
+        },
+        {
+          "upstream": "apps/v4/registry/new-york-v4/ui/tooltip.tsx",
+          "original": "upstream/shadcn/ui/tooltip.tsx",
+          "sha256": "ffbcc89cc88ba5d0a18789c6556be81bf709850c3b27c961ab62a3da6f7e3cf4"
+        },
+        {
+          "upstream": "apps/v4/app/globals.css",
+          "original": "upstream/shadcn/globals.css",
+          "sha256": "e91035187ca51719f3ff1ed776033b151bf177d71dfdaac0c01546ca7febb7ce"
+        }
+      ]
     }
   },
   "foundation": {

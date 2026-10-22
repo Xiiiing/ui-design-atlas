@@ -22,4 +22,8 @@ export const demos = {
   "fluent-toolbar": lazy(() => import("./demos/fluent/toolbar")),
   "fluent-dialog": lazy(() => import("./demos/fluent/dialog")),
   "fluent-toast": lazy(() => import("./demos/fluent/toast")),
+  "shadcn-login-01": lazy(() => import("./demos/shadcn/login-01")),
+  "shadcn-signup-01": lazy(() => import("./demos/shadcn/signup-01")),
+  "shadcn-sidebar-07": lazy(() => import("./demos/shadcn/sidebar-07")),
+  "shadcn-dashboard-01": lazy(() => import("./demos/shadcn/dashboard-01")),
 };

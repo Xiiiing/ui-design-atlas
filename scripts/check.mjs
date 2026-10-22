@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFile, access } from "node:fs/promises";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
@@ -159,3 +160,25 @@ if (!process.argv.includes("--capture-previews"))
   for (const r of resources) await access(new URL(r.cover, base));
 for (const s of Object.values(sourceProjects).filter((s) => !s.original))
   assert.ok(s.commit?.length === 40 && s.repo && s.licenseFile);
+
+const sourceLock = JSON.parse(
+  await readFile(new URL("examples/ui-market/sources.lock.json", base), "utf8"),
+);
+for (const [id, source] of Object.entries(sourceLock.sources)) {
+  assert.equal(
+    sourceProjects[id].commit,
+    source.commit,
+    `${id}: pin must match registry`,
+  );
+  for (const file of source.files) {
+    const data = await readFile(
+      new URL("examples/ui-market/" + file.original, base),
+    );
+    assert.equal(
+      createHash("sha256").update(data).digest("hex"),
+      file.sha256,
+      `${id}: original source changed: ${file.original}`,
+    );
+  }
+}
+console.log("Verified pinned upstream snapshots and SHA-256 checksums.");

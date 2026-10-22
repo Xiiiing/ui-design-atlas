@@ -1,11 +1,13 @@
+import entries from "./archive/resources.json";
+import { installBlockAdapter } from "./archive/block-adapter";
 import React, { Suspense, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider, useTheme } from "next-themes";
 import { MotionConfig } from "motion/react";
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/500.css";
-import "@fontsource/inter/600.css";
-import "@fontsource/inter/700.css";
+import "@fontsource/geist/400.css";
+import "@fontsource/geist/500.css";
+import "@fontsource/geist/600.css";
+import "@fontsource/geist/700.css";
 import "./styles/index.css";
 import { demos } from "./registry";
 import { PreviewSettings } from "./archive/settings";
@@ -45,9 +47,38 @@ function App() {
     return () => window.removeEventListener("atlas:demo-success", done);
   }, []);
   const { setTheme, resolvedTheme } = useTheme();
+  useEffect(() => {
+    setTheme(
+      new URLSearchParams(location.search).get("theme") === "dark"
+        ? "dark"
+        : "light",
+    );
+  }, [setTheme]);
+  useEffect(
+    () => (id.startsWith("shadcn-") ? installBlockAdapter() : undefined),
+    [id],
+  );
   const Demo = demos[id as keyof typeof demos];
   useEffect(() => {
+    document.body.inert = thumb;
+  }, [thumb]);
+  useEffect(() => {
+    if (parent !== window && resolvedTheme)
+      parent.postMessage(
+        {
+          type: "atlas:resource-state",
+          resourceId: id,
+          theme: resolvedTheme,
+          locale: language,
+        },
+        location.origin,
+      );
+  }, [id, resolvedTheme, language]);
+  useEffect(() => {
     document.documentElement.lang = language;
+    document.documentElement.dataset.library = id.startsWith("shadcn-")
+      ? "shadcn"
+      : "magicui";
     setLocale(language);
     return localizeDemo();
   }, [language]);
@@ -96,7 +127,10 @@ function App() {
       {!thumb && (
         <div className="demo-controls">
           <span>
-            {id} · {t("Local archive preview")}
+            {entries[id as keyof typeof entries]?.name[
+              language as "en" | "zh-CN"
+            ] || id}{" "}
+            · {t("Local archive preview")}
           </span>
           <button onClick={() => replay((x) => x + 1)}>{t("Replay")}</button>
           <button

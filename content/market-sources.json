@@ -28,5 +28,15 @@
     "commit": "036f9a210cd8d72924c33dd9ff0fbb16d6aae885",
     "license": "MIT",
     "licenseFile": "./examples/ui-market/licenses/fluentui-LICENSE"
+  },
+  "shadcn-ui": {
+    "id": "shadcn-ui",
+    "name": "shadcn/ui Blocks",
+    "author": "shadcn and contributors",
+    "repo": "https://github.com/shadcn-ui/ui",
+    "docs": "https://ui.shadcn.com/blocks",
+    "commit": "25af02b1b467fcd53b63e0c6d6d324c57c16ef18",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/shadcn-ui-LICENSE.md"
   }
 }

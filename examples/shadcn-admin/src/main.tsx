@@ -1,3 +1,5 @@
+// Thumbnail previews are visual only and must never take keyboard focus.
+if (new URLSearchParams(location.search).has("thumb")) document.body.inert = true;
 import { createArchiveHistory } from "./archive/history";
 import "@fontsource/inter/latin-400.css";
 import "@fontsource/inter/latin-500.css";

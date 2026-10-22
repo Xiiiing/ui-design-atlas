@@ -639,3 +639,116 @@ test("Library examples use real Ant Design and Fluent UI with working validation
   await expect(page.locator("[name=q]")).toHaveValue("微软");
   expect(errors).toEqual([]);
 });
+
+for (const lang of ["en", "zh-CN"])
+  test(`New source previews: responsive, themed and self-contained (${lang})`, async ({
+    page,
+  }) => {
+    test.setTimeout(90000);
+    const errors = watch(page);
+    await page.route("**/*", (route) =>
+      new URL(route.request().url()).origin === "http://127.0.0.1:4173"
+        ? route.continue()
+        : route.abort(),
+    );
+    const independent = resources.filter((r) => r.preview.url);
+    async function check(r, width, theme) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(
+        `examples/ui-market/index.html?item=${r.id}&lang=${lang}&theme=${theme}`,
+      );
+      await expect(page.locator(".demo-surface")).not.toContainText(
+        /Loading preview|正在加载演示/,
+      );
+      await expect(page.locator(".demo-surface [role=alert]")).toHaveCount(0);
+      await noOverflow(page);
+      await expect(page.locator("html")).toHaveAttribute("lang", lang);
+      await expect
+        .poll(() =>
+          page.locator("html").evaluate((el) => el.classList.contains("dark")),
+        )
+        .toBe(theme === "dark");
+    }
+    for (const r of independent) await check(r, 1440, "light");
+    for (const id of [
+      "magicui-border-beam",
+      "magicui-dock",
+      "magicui-bento-grid",
+      "antd-search",
+      "antd-table",
+      "fluent-data-grid",
+      "fluent-dialog",
+      "shadcn-login-01",
+      "shadcn-sidebar-07",
+      "shadcn-dashboard-01",
+    ])
+      for (const width of [768, 375])
+        for (const theme of ["light", "dark"])
+          await check(
+            resources.find((r) => r.id === id),
+            width,
+            theme,
+          );
+    expect(errors).toEqual([]);
+  });
+
+test("Original shadcn blocks validate local forms and preserve native dashboard interactions", async ({
+  page,
+}) => {
+  const errors = watch(page);
+  await page.goto(
+    "examples/ui-market/index.html?item=shadcn-signup-01&lang=en",
+  );
+  await page.getByLabel("Full Name", { exact: true }).fill("Atlas");
+  await page.getByLabel("Email", { exact: true }).fill("atlas@example.test");
+  await page.getByLabel("Password", { exact: true }).fill("ExamplePass123");
+  await page
+    .getByLabel("Confirm Password", { exact: true })
+    .fill("Mismatch123");
+  await page
+    .getByRole("button", { name: "Create Account", exact: true })
+    .click();
+  await expect
+    .poll(() =>
+      page
+        .getByLabel("Confirm Password", { exact: true })
+        .evaluate((el) => el.validationMessage),
+    )
+    .toBe("Passwords do not match.");
+  await page
+    .getByLabel("Confirm Password", { exact: true })
+    .fill("ExamplePass123");
+  await page
+    .getByRole("button", { name: "Create Account", exact: true })
+    .click();
+  await expect(page.getByRole("status")).toHaveText(
+    "Local demo complete. No account was created.",
+  );
+  expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain(
+    "ExamplePass123",
+  );
+  await page.goto(
+    "examples/ui-market/index.html?item=shadcn-dashboard-01&lang=en",
+  );
+  await expect(page.getByRole("table")).toBeVisible();
+  const first = await page.getByRole("row").nth(1).innerText();
+  await page
+    .getByRole("button", { name: "Go to next page", exact: true })
+    .click();
+  await expect(page.getByRole("row").nth(1)).not.toHaveText(first);
+  await page
+    .getByRole("checkbox", { name: "Select row", exact: true })
+    .first()
+    .check();
+  await expect(
+    page.getByRole("checkbox", { name: "Select row", exact: true }).first(),
+  ).toBeChecked();
+  await page.goto("#blocks?lang=en");
+  await page.locator("[name=q]").fill("registration");
+  await page.locator("[name=q]").fill("signup");
+  await page.locator('[data-open="block:shadcn-signup-01"]').last().click();
+  await expect(page.locator("#asset-dialog")).toBeVisible();
+  await page.getByRole("tab", { name: "Code", exact: true }).click();
+  await expect(page.locator("#code-text")).toContainText("SignupForm");
+  expect(errors).toEqual([]);
+});

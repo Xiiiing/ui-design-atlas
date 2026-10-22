@@ -1,0 +1,170 @@
+{
+  "magicui-border-beam": {
+    "name": {
+      "zh-CN": "流光边框",
+      "en": "Border Beam"
+    },
+    "sourceId": "magicui"
+  },
+  "antd-table": {
+    "name": {
+      "zh-CN": "筛选排序表格",
+      "en": "Filterable Table"
+    },
+    "sourceId": "antd"
+  },
+  "magicui-ripple-button": {
+    "name": {
+      "zh-CN": "点击涟漪按钮",
+      "en": "Ripple Button"
+    },
+    "sourceId": "magicui"
+  },
+  "fluent-dialog": {
+    "name": {
+      "zh-CN": "标准确认对话框",
+      "en": "Confirmation Dialog"
+    },
+    "sourceId": "fluent"
+  },
+  "magicui-bento-grid": {
+    "name": {
+      "zh-CN": "功能便当网格",
+      "en": "Bento Grid"
+    },
+    "sourceId": "magicui"
+  },
+  "magicui-particles": {
+    "name": {
+      "zh-CN": "交互粒子背景",
+      "en": "Particles"
+    },
+    "sourceId": "magicui"
+  },
+  "fluent-toolbar": {
+    "name": {
+      "zh-CN": "自动溢出工具栏",
+      "en": "Overflow Toolbar"
+    },
+    "sourceId": "fluent"
+  },
+  "magicui-shimmer-button": {
+    "name": {
+      "zh-CN": "微光按钮",
+      "en": "Shimmer Button"
+    },
+    "sourceId": "magicui"
+  },
+  "antd-search": {
+    "name": {
+      "zh-CN": "高级搜索区块",
+      "en": "Advanced Search"
+    },
+    "sourceId": "antd"
+  },
+  "magicui-text-animate": {
+    "name": {
+      "zh-CN": "逐字模糊上移",
+      "en": "Text Animate"
+    },
+    "sourceId": "magicui"
+  },
+  "shadcn-login-01": {
+    "name": {
+      "zh-CN": "简洁登录区块",
+      "en": "Login 01"
+    },
+    "sourceId": "shadcn-ui"
+  },
+  "magicui-magic-card": {
+    "name": {
+      "zh-CN": "聚光悬停卡片",
+      "en": "Magic Card"
+    },
+    "sourceId": "magicui"
+  },
+  "magicui-number-ticker": {
+    "name": {
+      "zh-CN": "数字滚动",
+      "en": "Number Ticker"
+    },
+    "sourceId": "magicui"
+  },
+  "fluent-data-grid": {
+    "name": {
+      "zh-CN": "文件排序表格",
+      "en": "Sortable DataGrid"
+    },
+    "sourceId": "fluent"
+  },
+  "shadcn-sidebar-07": {
+    "name": {
+      "zh-CN": "可折叠侧栏布局",
+      "en": "Sidebar 07"
+    },
+    "sourceId": "shadcn-ui"
+  },
+  "magicui-marquee": {
+    "name": {
+      "zh-CN": "无限滚动评价",
+      "en": "Marquee"
+    },
+    "sourceId": "magicui"
+  },
+  "antd-form": {
+    "name": {
+      "zh-CN": "校验登录表单",
+      "en": "Validated Form"
+    },
+    "sourceId": "antd"
+  },
+  "shadcn-signup-01": {
+    "name": {
+      "zh-CN": "账户注册区块",
+      "en": "Signup 01"
+    },
+    "sourceId": "shadcn-ui"
+  },
+  "magicui-animated-list": {
+    "name": {
+      "zh-CN": "动态通知列表",
+      "en": "Animated List"
+    },
+    "sourceId": "magicui"
+  },
+  "fluent-toast": {
+    "name": {
+      "zh-CN": "多状态通知",
+      "en": "Toast Intents"
+    },
+    "sourceId": "fluent"
+  },
+  "magicui-dock": {
+    "name": {
+      "zh-CN": "放大导航栏",
+      "en": "Dock"
+    },
+    "sourceId": "magicui"
+  },
+  "antd-modal-form": {
+    "name": {
+      "zh-CN": "弹窗创建表单",
+      "en": "Modal Creation Form"
+    },
+    "sourceId": "antd"
+  },
+  "magicui-blur-fade": {
+    "name": {
+      "zh-CN": "模糊渐入",
+      "en": "Blur Fade"
+    },
+    "sourceId": "magicui"
+  },
+  "shadcn-dashboard-01": {
+    "name": {
+      "zh-CN": "数据看板区块",
+      "en": "Dashboard 01"
+    },
+    "sourceId": "shadcn-ui"
+  }
+}

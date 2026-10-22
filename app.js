@@ -14,7 +14,10 @@ import {
 } from "./catalog.js";
 import { componentDocument, escapeHTML as esc } from "./components.js";
 const main = document.querySelector("#main");
-let locale = localStorage.getItem("atlas-language") === "en" ? "en" : "zh-CN";
+let locale = "zh-CN";
+try {
+  locale = localStorage.getItem("atlas-language") === "en" ? "en" : "zh-CN";
+} catch {}
 let favorites;
 try {
   favorites = new Set(
@@ -256,7 +259,7 @@ function provenance(r) {
   return `<section class="detail-section provenance"><h3>${t("来源与组件库", "Source & libraries")}</h3>${r.libraryIds
     .map((id) => {
       const lib = libraries[id];
-      return `<div class="library-credit"><strong>${esc(lib.name)}</strong><code>${esc(lib.version)}</code>${external(lib.docs, t("官方文档", "Official docs"))}</div>`;
+      return `<div class="library-credit"><strong>${esc(lib.name)}</strong><code>${esc(r.libraryVersions?.[id] || lib.version)}</code>${external(lib.docs, t("官方文档", "Official docs"))}</div>`;
     })
     .join(
       "",
@@ -372,7 +375,7 @@ async function loadCode(r) {
         .querySelector(".detail-section")
         .insertAdjacentHTML(
           "afterbegin",
-          `<p class="dependency-note">${external(lib.docs, lib.name)} <code>${esc(lib.version)}</code></p>`,
+          `<p class="dependency-note">${external(lib.docs, lib.name)} <code>${esc(r.libraryVersions?.[id] || lib.version)}</code></p>`,
         );
     }
   } catch {
@@ -590,6 +593,7 @@ function startLive(card) {
   f.src = base + "&thumb=1" + (hash ? "#" + hash : "");
   f.title = l(r.name);
   f.tabIndex = -1;
+  f.inert = true;
   f.setAttribute("aria-hidden", "true");
   el.append(f);
   liveFrames.set(el, f);
@@ -760,6 +764,7 @@ document.addEventListener("click", async (e) => {
   }
   if (b.hasAttribute("data-theme")) {
     theme = theme === "light" ? "dark" : "light";
+    updateThemeURL();
     b.innerHTML = icon(theme === "dark" ? "sun" : "moon");
     document
       .querySelector("#case-preview")
@@ -905,6 +910,19 @@ window.addEventListener("message", (e) => {
     return;
   if (e.data?.type === "atlas:escape") return closeViewer();
   if (
+    e.data?.type === "atlas:resource-state" &&
+    e.data.resourceId === selected.id
+  ) {
+    if (["light", "dark"].includes(e.data.theme)) {
+      theme = e.data.theme;
+      document.querySelector("[data-theme]").innerHTML = icon(
+        theme === "dark" ? "sun" : "moon",
+      );
+      updateThemeURL();
+    }
+    return;
+  }
+  if (
     e.data?.type !== "atlas:preview-state" ||
     e.data.caseId !== selected.caseId
   )
@@ -1017,9 +1035,6 @@ window.addEventListener("hashchange", () => {
   render();
   if (!selected && !history.state?.browse) scrollTo(0, 0);
 });
-window.addEventListener("popstate", () => {
-  render();
-});
 window.addEventListener("resize", () => {
   scalePreview();
   document.querySelectorAll(".asset-card.is-live").forEach(sizeLive);
@@ -1053,3 +1068,18 @@ document.addEventListener("pointermove", (e) => {
     location.origin,
   );
 });
+
+function updateThemeURL() {
+  const p = parse();
+  p.params.set("theme", theme);
+  history.replaceState(
+    history.state,
+    "",
+    "#" + p.view + (p.id ? "/" + p.id : "") + "?" + p.params,
+  );
+  document.querySelector("#standalone").href = resourcePreview(
+    selected,
+    locale,
+    theme,
+  );
+}
