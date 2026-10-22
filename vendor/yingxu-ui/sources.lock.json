@@ -1,0 +1,14 @@
+{
+  "sourceCommit": "b3cc662ce5cfe7947d6e5cec84ae54719f5d1062",
+  "files": {
+    "reference/css/accents.css": "21f6402bd2bcaba83ae9e37b01a957c9653cfec355bc6320f3e4a39747ae4064",
+    "reference/css/controls.css": "085dbfd347f2c34c62aa9de5447cba46df1d975b979c6c0adbf8103bfd3801c4",
+    "reference/css/final-overrides.css": "f7fdad1484935bc6a4aef7e25e0c6c63a2a0e13fd9400c3f4688b377fe9ca77e",
+    "reference/css/selection.css": "9928ee1d0106ccda3ac73fd36e0cabdaebca14e2e1550255a9427ebd0c16c27c",
+    "reference/css/tokens.css": "ea2d9b16d753b489467ad81932050b2bf79fee0536bfa6d6d7c0164678e902c1",
+    "reference/react/ScrollLock.ts": "05cc6b37eff84a40a91d8f5b8879933f3b30021247dd64e9ee53b06c2a8ae131",
+    "reference/react/SelectionGroup.tsx": "f392ffac1092ea3cda8ca48f62e9276da147e7dd12daefe7c559fa18143a9255",
+    "reference/react/StudioMenu.tsx": "77976047863eb08adcc4868b7aab84be8a4c868c7d43a03b98c089017ec857e9",
+    "reference/react/StudioSelect.tsx": "e0b8f213ce383108b1d132a99b2fcb194178c08492c5bf87a853522757713a42"
+  }
+}

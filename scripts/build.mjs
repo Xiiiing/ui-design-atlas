@@ -1,4 +1,5 @@
 import "./check.mjs";
+import { build } from "esbuild";
 import { mkdir, cp, rm, readdir, readFile, writeFile } from "node:fs/promises";
 import { createWriteStream } from "node:fs";
 import { spawnSync } from "node:child_process";
@@ -8,6 +9,11 @@ import archiver from "archiver";
 import { upstream } from "../catalog.js";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const example = path.join(root, "examples/shadcn-admin");
+const shellCheck = spawnSync("npm", ["run", "check:shell"], {
+  cwd: root,
+  stdio: "inherit",
+});
+if (shellCheck.status !== 0) process.exit(shellCheck.status || 1);
 for (const command of ["build"]) {
   const result = spawnSync("npm", ["run", command], {
     cwd: example,
@@ -43,6 +49,17 @@ for (const file of assets)
   await cp(path.join(root, file), path.join(out, file));
 await cp(path.join(root, "assets"), path.join(out, "assets"), {
   recursive: true,
+});
+await build({
+  entryPoints: [path.join(root, "app.js")],
+  bundle: true,
+  format: "esm",
+  target: "es2022",
+  jsx: "automatic",
+  minify: true,
+  outfile: path.join(out, "atlas-shell.js"),
+  define: { "process.env.NODE_ENV": '"production"' },
+  legalComments: "linked",
 });
 await cp(path.join(root, "vendor"), path.join(out, "vendor"), {
   recursive: true,

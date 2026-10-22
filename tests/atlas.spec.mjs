@@ -70,7 +70,8 @@ test("Market quick view preserves filters, navigation context, prompt and source
     .locator('#related a[href*="page/shadcn-admin-tasks"]')
     .first()
     .click();
-  await page.locator("#locale").selectOption("zh-CN");
+  await page.locator("#locale").click();
+  await page.getByRole("option", { name: "中文", exact: true }).click();
   await expect(page.locator(".inspector-head h2")).toHaveText("任务管理");
   await page.reload();
   await expect(page.locator(".inspector-head h2")).toHaveText("任务管理");
@@ -93,13 +94,17 @@ test("Bilingual market searches, library and source filters retain existing cont
   await page.locator("[name=q]").fill("任务");
   await expect(page.locator("#results .card")).toHaveCount(1);
   await page.locator("[data-reset-filters]").click();
-  await page.locator("[name=source]").selectOption("open-source");
+  await page.locator("#filter-source").click();
+  await page.getByRole("option", { name: "Open source", exact: true }).click();
   await expect(page.locator("#results .card")).toHaveCount(6);
   await page.reload();
   await expect(page.locator("#results .card")).toHaveCount(6);
   await page.goto("#cases?lang=zh-CN");
   await expect(page.locator("#results .card")).toHaveCount(cases.length);
-  await page.locator("[name=audience]").selectOption("b2b");
+  await page.locator("#filter-audience").click();
+  await page
+    .getByRole("option", { name: "B 端 / 工作工具", exact: true })
+    .click();
   await expect(page.locator("#results .card")).toHaveCount(2);
   expect(errors).toEqual([]);
 });
@@ -524,7 +529,11 @@ test("Native page canvases, browser history, keyboard search and preview limits"
   await page.locator("[data-more]").click();
   await expect(page.locator("#results .card")).toHaveCount(48);
   await page.locator(".asset-card").nth(30).scrollIntoViewIfNeeded();
-  const scroll = await page.evaluate(() => scrollY);
+  const scroll = await page.evaluate(() =>
+    innerWidth > 1023
+      ? document.querySelector(".main-shell").scrollTop
+      : scrollY,
+  );
   await page
     .locator(".asset-card")
     .nth(30)
@@ -535,7 +544,15 @@ test("Native page canvases, browser history, keyboard search and preview limits"
   await page.goBack();
   await expect(page.locator("#asset-dialog")).not.toBeVisible();
   await expect(page.locator("#results .card")).toHaveCount(48);
-  await expect.poll(() => page.evaluate(() => scrollY)).toBe(scroll);
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        innerWidth > 1023
+          ? document.querySelector(".main-shell").scrollTop
+          : scrollY,
+      ),
+    )
+    .toBe(scroll);
   await page.keyboard.press("Control+k");
   await page.locator("#quick-search").fill("用户编辑");
   await page.locator("#quick-search").press("Enter");

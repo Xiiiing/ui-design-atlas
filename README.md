@@ -16,6 +16,13 @@ Find a UI effect, component, block or system; try it and take its notes, prompts
 
 The marketplace provides bilingual search, library/category/style/interaction filters, quick-view dialogs, preserved browsing context, source code and prompts. Existing links and favorites remain compatible. Covers are captured from real demos; at most two live thumbnail previews run at once.
 
+## 图鉴界面 / Atlas interface
+
+图鉴外层采用映序 UI 的固定设计基线与实际共享组件：中性明暗表面、黑白主操作、系统字级、44px 交互目标、统一选择器与连续选中标记。保留资源市场的预览墙和快速浏览流程。
+The Atlas shell uses the pinned Yingxu UI tokens and real shared controls, with neutral light/dark surfaces, monochrome actions, 44px targets and continuous selection markers. The resource marketplace and immersive previews are retained.
+
+查看 [设计映射、源码与验收证据 / Design mapping and verification](docs/ui/yingxu-shell.md) 和 [来源说明 / Attribution](vendor/yingxu-ui/ATTRIBUTION.md)。
+
 ## 收录内容 / Included sources
 
 | 来源 / Source | 本站演示 / Included demos | 固定提交 / Pinned commit |
@@ -80,8 +87,8 @@ For a subset, build with `--capture-previews`, then pass an ID substring to the 
 所有开源收录均保留作者、仓库、固定提交和 MIT 许可证。实际使用的组件库及锁定版本显示在详情中，原始示例和文档可从详情打开。`examples/ui-market/upstream/` 保留原文，`sources.lock.json` 记录来源和原文校验值。
 Source authors, repositories, pinned commits and MIT licenses are retained. Actual library versions and original documentation/example links are shown per resource. Original files and checksums are retained alongside adapted runtime sources.
 
-设计理念标为本站解读，提示词标为本站整理。浏览方式参考 21st.dev、Uiverse 和 React Bits；不再分发 React Bits 组件。图标使用 Lucide（ISC），字体使用 Inter 和 Geist（OFL）。
-Design interpretations and prompts are curated by Atlas. Discovery patterns reference 21st.dev, Uiverse and React Bits; React Bits components are not redistributed. Icons: Lucide (ISC). Fonts: Inter and Geist (OFL).
+设计理念标为本站解读，提示词标为本站整理。浏览方式参考 21st.dev、Uiverse 和 React Bits；不再分发 React Bits 组件。图标使用 Lucide（ISC）。图鉴外层使用系统字体，演示使用 Inter 和 Geist（OFL）。
+Design interpretations and prompts are curated by Atlas. Discovery patterns reference 21st.dev, Uiverse and React Bits; React Bits components are not redistributed. Icons: Lucide (ISC). The shell uses system fonts; previews use Inter and Geist (OFL).
 
 ## GitHub Pages
 

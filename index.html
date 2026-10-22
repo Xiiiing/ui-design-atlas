@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-accent="slate">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -7,10 +7,23 @@
       name="description"
       content="UI Design Atlas — interactive open-source interfaces, design notes, prompts and reusable code."
     />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      try {
+        const preference = localStorage.getItem("atlas-shell-theme");
+        document.documentElement.dataset.theme =
+          preference === "light" || preference === "dark"
+            ? preference
+            : matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+      } catch {
+        document.documentElement.dataset.theme = "light";
+      }
+    </script>
     <title>UI Design Atlas</title>
     <link rel="icon" href="./favicon.svg" />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./atlas-shell.css" />
     <link rel="stylesheet" href="./market.css" />
   </head>
   <body>
@@ -26,8 +39,10 @@
     <aside id="sidebar"></aside>
     <div class="workspace">
       <header id="topbar"></header>
-      <main id="main" tabindex="-1"></main>
-      <footer id="footer"></footer>
+      <div class="main-shell" id="browse-scroll">
+        <main id="main" tabindex="-1"></main>
+        <footer id="footer"></footer>
+      </div>
     </div>
     <div id="toast" role="status" aria-live="polite"></div>
     <dialog id="copy-fallback">
@@ -58,9 +73,9 @@
       </div>
       <div id="search-results"></div>
       <div class="search-dialog-footer">
-        UI Design Atlas <span>↵ ${'Open'} · Esc ${'Close'}</span>
+        UI Design Atlas <span>↵ Open · Esc Close</span>
       </div>
     </dialog>
-    <script type="module" src="./app.js"></script>
+    <script type="module" src="./atlas-shell.js"></script>
   </body>
 </html>

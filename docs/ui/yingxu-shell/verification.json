@@ -1,0 +1,55 @@
+{
+  "baseline": "b3cc662ce5cfe7947d6e5cec84ae54719f5d1062",
+  "screens": [
+    {
+      "width": 1982,
+      "height": 1000,
+      "mode": "light",
+      "locale": "zh-CN",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 1982,
+      "height": 1000,
+      "mode": "dark",
+      "locale": "zh-CN",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "light",
+      "locale": "zh-CN",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "dark",
+      "locale": "zh-CN",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 1000,
+      "mode": "light",
+      "locale": "zh-CN",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 1000,
+      "mode": "dark",
+      "locale": "zh-CN",
+      "overflow": false,
+      "errors": []
+    }
+  ],
+  "interactionRecording": "selection-interaction.webm",
+  "data": "Existing local archive demo data; browser captures, no generated mockups."
+}

@@ -10,15 +10,28 @@
   "scripts": {
     "dev": "node scripts/build.mjs && node scripts/serve.mjs --dist",
     "setup:examples": "npm ci --prefix examples/shadcn-admin && npm ci --prefix examples/ui-market",
-    "check": "node scripts/check.mjs && npm run typecheck --prefix examples/shadcn-admin && npm run typecheck --prefix examples/ui-market",
+    "check": "node scripts/check.mjs && npm run check:shell && npm run typecheck --prefix examples/shadcn-admin && npm run typecheck --prefix examples/ui-market",
     "build": "node scripts/build.mjs",
     "preview": "node scripts/serve.mjs --dist",
     "test": "playwright test",
-    "capture:previews": "node scripts/build.mjs --capture-previews && node scripts/capture-previews.mjs"
+    "capture:previews": "node scripts/build.mjs --capture-previews && node scripts/capture-previews.mjs",
+    "check:shell": "tsc -p tsconfig.shell.json"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
     "archiver": "^7.0.1",
-    "prettier": "^3.8.3"
+    "esbuild": "0.28.2",
+    "prettier": "^3.8.3",
+    "typescript": "6.0.3"
+  },
+  "dependencies": {
+    "@radix-ui/react-dropdown-menu": "2.2.1",
+    "@radix-ui/react-select": "2.4.1",
+    "lucide-react": "0.468.0",
+    "motion": "14.3.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   }
 }
