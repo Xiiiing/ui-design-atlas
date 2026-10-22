@@ -551,3 +551,45 @@ test("Native page canvases, browser history, keyboard search and preview limits"
   );
   expect(errors).toEqual([]);
 });
+
+test("Independent upstream resources load locally with source, prompts and reduced motion", async ({
+  page,
+  context,
+}) => {
+  const errors = watch(page);
+  const independent = resources.filter((r) => !r.caseId && r.type !== "case");
+  await page.route("**/*", (route) =>
+    new URL(route.request().url()).origin === "http://127.0.0.1:4173"
+      ? route.continue()
+      : route.abort(),
+  );
+  for (const r of independent) {
+    await page.goto(`examples/ui-market/index.html?item=${r.id}&lang=en`);
+    await expect(page.locator(".demo-surface")).not.toContainText(
+      "Loading preview…",
+    );
+    await expect(page.locator(".demo-surface [role=alert]")).toHaveCount(0);
+    await expect(page.locator(".demo-surface")).not.toContainText(
+      "Resource not found.",
+    );
+  }
+  await page.goto("#component/magicui-border-beam?lang=en");
+  await expect(page.locator(".inspector-head h2")).toHaveText("Border Beam");
+  await expect(page.locator(".inline-prompt")).toContainText("8-second");
+  await expect(page.locator(".provenance")).toContainText("Magic UI");
+  await page.getByRole("tab", { name: "Code", exact: true }).click();
+  await expect(page.locator("#code-text")).toContainText("BorderBeam");
+  const demo = page.frameLocator("#case-preview");
+  await demo
+    .getByRole("spinbutton", { name: "Duration", exact: true })
+    .fill("4");
+  await expect(
+    demo.getByRole("spinbutton", { name: "Duration", exact: true }),
+  ).toHaveValue("4");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto(
+    "examples/ui-market/index.html?item=magicui-particles&lang=zh-CN",
+  );
+  await expect(page.locator(".demo-surface")).toContainText("粒子背景");
+  expect(errors).toEqual([]);
+});

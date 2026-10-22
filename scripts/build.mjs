@@ -164,3 +164,87 @@ await done;
 console.log(
   "Built Atlas, local React demo, source manifest, license notices and standalone project ZIP in dist/.",
 );
+
+// Independent UI sources are built separately and keep their own providers and lockfile.
+const market = path.join(root, "examples/ui-market");
+const marketBuild = spawnSync("npm", ["run", "build"], {
+  cwd: market,
+  stdio: "inherit",
+});
+if (marketBuild.status !== 0) process.exit(marketBuild.status || 1);
+const marketOut = path.join(out, "examples/ui-market");
+await mkdir(marketOut, { recursive: true });
+await cp(path.join(market, "dist"), marketOut, { recursive: true });
+for (const file of [
+  "licenses",
+  "LICENSE",
+  "ATTRIBUTION.md",
+  "sources.lock.json",
+])
+  await cp(path.join(market, file), path.join(marketOut, file), {
+    recursive: true,
+  });
+const marketFiles = {};
+for (const file of await walk(
+  market,
+  new Set(["node_modules", "dist", ".git"]),
+)) {
+  const rel = path.relative(market, file).split(path.sep).join("/");
+  if (/\.(tsx?|css|json|md|html)$/.test(rel) || rel === "LICENSE")
+    marketFiles[rel] = await readFile(file, "utf8");
+}
+await writeFile(
+  path.join(out, "code/ui-market.json"),
+  JSON.stringify({ files: marketFiles }),
+);
+const marketNotices = [
+  "# Third-party notices\n\nLocked dependencies for Atlas UI Market.\n",
+];
+for (const dir of (await packages(path.join(market, "node_modules"))).sort()) {
+  try {
+    const pkg = JSON.parse(
+      await readFile(path.join(dir, "package.json"), "utf8"),
+    );
+    marketNotices.push(
+      `\n## ${pkg.name} ${pkg.version}\n\nLicense: ${typeof pkg.license === "string" ? pkg.license : JSON.stringify(pkg.license) || "See package license"}\n`,
+    );
+    for (const f of await readdir(dir))
+      if (/^(license|licence|copying|ofl|notice)(\.|$|-)/i.test(f)) {
+        try {
+          marketNotices.push(
+            "\n" + (await readFile(path.join(dir, f), "utf8")) + "\n",
+          );
+        } catch {}
+      }
+  } catch {}
+}
+const marketZip = archiver("zip", { zlib: { level: 6 } });
+const marketStream = createWriteStream(
+  path.join(out, "downloads/ui-market.zip"),
+);
+const marketDone = new Promise((resolve, reject) => {
+  marketStream.on("close", resolve);
+  marketStream.on("error", reject);
+  marketZip.on("error", reject);
+});
+marketZip.pipe(marketStream);
+for (const file of await walk(
+  market,
+  new Set(["node_modules", "dist", ".git"]),
+)) {
+  const rel = path.relative(market, file).split(path.sep).join("/");
+  if (!rel.endsWith(".tsbuildinfo"))
+    marketZip.file(file, { name: "ui-market/" + rel });
+}
+marketZip.append(marketNotices.join(""), {
+  name: "ui-market/THIRD_PARTY_NOTICES.md",
+});
+await marketZip.finalize();
+await marketDone;
+await writeFile(
+  path.join(marketOut, "THIRD_PARTY_NOTICES.md"),
+  marketNotices.join(""),
+);
+console.log(
+  "Built independent UI Market previews, actual source manifest and runnable ZIP.",
+);

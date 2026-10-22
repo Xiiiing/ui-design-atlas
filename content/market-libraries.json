@@ -1,0 +1,13 @@
+{
+  "magicui": {
+    "id": "magicui",
+    "name": "Magic UI",
+    "version": "efe76fc · Motion 12.43.0",
+    "docs": "https://magicui.design/",
+    "aliases": [
+      "MagicUI",
+      "动效",
+      "motion"
+    ]
+  }
+}

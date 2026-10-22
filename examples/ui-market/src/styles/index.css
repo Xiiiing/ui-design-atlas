@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import './theme.css';
+@import './magic-animations.css';
+@custom-variant dark (&:is(.dark *));
+@layer base { * { @apply border-border outline-ring/50; } body { @apply bg-background text-foreground; margin:0;font-family:Inter,system-ui,sans-serif; } }
+:root {--font-geist-sans:Inter,system-ui,sans-serif;--font-geist-mono:monospace}
+.demo-surface{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:32px;overflow:hidden}
+.demo-surface>div{max-width:100%;width:100%}.demo-surface[data-source=magicui]>div{display:flex;justify-content:center;align-items:center}
+.demo-controls{position:sticky;top:0;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:11px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--background);z-index:20}
+.demo-controls button,.demo-controls input{border:1px solid var(--border);border-radius:5px;padding:4px 8px;background:var(--background)}
+.demo-controls label{display:flex;align-items:center;gap:6px}.demo-controls input{width:70px}.demo-controls span{margin-right:auto;color:var(--muted-foreground)}
+.demo-surface[data-source=blocks]{padding:0;display:block}.demo-error{padding:32px;font-size:14px}
+@media(max-width:500px){.demo-surface{padding:20px}.demo-surface .text-8xl{font-size:4rem}.demo-controls{gap:8px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}

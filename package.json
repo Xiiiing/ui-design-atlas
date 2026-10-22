@@ -9,11 +9,12 @@
   },
   "scripts": {
     "dev": "node scripts/build.mjs && node scripts/serve.mjs --dist",
-    "setup:examples": "npm ci --prefix examples/shadcn-admin",
-    "check": "node scripts/check.mjs && npm run typecheck --prefix examples/shadcn-admin",
+    "setup:examples": "npm ci --prefix examples/shadcn-admin && npm ci --prefix examples/ui-market",
+    "check": "node scripts/check.mjs && npm run typecheck --prefix examples/shadcn-admin && npm run typecheck --prefix examples/ui-market",
     "build": "node scripts/build.mjs",
     "preview": "node scripts/serve.mjs --dist",
-    "test": "playwright test"
+    "test": "playwright test",
+    "capture:previews": "node scripts/capture-previews.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",

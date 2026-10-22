@@ -564,7 +564,7 @@ export function resourcePreview(r, lang = "zh-CN", theme = "light") {
   return previewURL(c, r.type === "case" ? c.pages[0] : r, lang, theme);
 }
 export function resourcePrompt(r, lang = "zh-CN", scope = r.type) {
-  if (r.prompt) return r.prompt[lang];
+  if (r.prompt) return scope === "style" ? r.stylePrompt[lang] : r.prompt[lang];
   const c = r.type === "case" ? getCase(r.id) : getCase(r.caseId);
   return promptFor(
     c,

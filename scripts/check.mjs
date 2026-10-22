@@ -140,3 +140,21 @@ for (const r of resources) {
 console.log(
   `Verified ${resources.length} unified resources and library provenance.`,
 );
+for (const r of resources.filter((r) => !r.caseId && r.type !== "case")) {
+  assert.ok(
+    r.preview.url && r.files?.length,
+    `${r.id}: independent preview and code`,
+  );
+  assert.ok(
+    r.originalUrl?.startsWith("https://") && r.sourceUrl?.includes("/blob/"),
+    `${r.id}: original sources`,
+  );
+  for (const lang of ["zh-CN", "en"])
+    for (const field of ["principle", "useCases", "prompt", "stylePrompt"])
+      assert.ok(r[field]?.[lang]?.length, `${r.id}: ${field}/${lang}`);
+  for (const file of [...r.files, ...r.supportFiles])
+    await access(new URL("examples/ui-market/" + file, base));
+}
+for (const r of resources) await access(new URL(r.cover, base));
+for (const s of Object.values(sourceProjects).filter((s) => !s.original))
+  assert.ok(s.commit?.length === 40 && s.repo && s.licenseFile);

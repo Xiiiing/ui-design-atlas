@@ -1,0 +1,12 @@
+{
+  "magicui": {
+    "id": "magicui",
+    "name": "Magic UI",
+    "author": "Magic UI contributors",
+    "repo": "https://github.com/magicuidesign/magicui",
+    "docs": "https://magicui.design/",
+    "commit": "efe76fc5755eca1142dd4f74c1d6f0ace2887e3c",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/magicui-LICENSE.md"
+  }
+}

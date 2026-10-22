@@ -1,0 +1,1028 @@
+[
+  {
+    "id": "magicui-border-beam",
+    "key": "border-beam",
+    "type": "component",
+    "sourceId": "magicui",
+    "libraryIds": [
+      "magicui"
+    ],
+    "category": "cards",
+    "interactions": [
+      "auto"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2c",
+    "name": {
+      "zh-CN": "流光边框",
+      "en": "Border Beam"
+    },
+    "description": {
+      "zh-CN": "沿容器边缘循环移动的渐变光束，让登录卡片或重点区域更醒目。",
+      "en": "A gradient beam travels around a card border to highlight its content."
+    },
+    "tags": {
+      "zh-CN": [
+        "流光边框",
+        "动效",
+        "交互"
+      ],
+      "en": [
+        "Border Beam",
+        "motion",
+        "interactive"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "适合品牌网站、产品介绍、个人作品集与需要明确交互反馈的界面。",
+      "en": "Brand sites, product pages, portfolios and interfaces requiring clear feedback."
+    },
+    "principle": {
+      "zh-CN": "让运动表达焦点、状态和内容层级。沿容器边缘循环移动的渐变光束，让登录卡片或重点区域更醒目。",
+      "en": "Use motion to communicate focus, state and hierarchy. A gradient beam travels around a card border to highlight its content."
+    },
+    "rules": {
+      "zh-CN": [
+        "约 350px 宽的登录卡片、细边框与 100px 光束；以 8 秒循环沿边缘运动。",
+        "沿用上游组件、布局和主题变量；窄屏保持内容可读。",
+        "尊重减少动态效果偏好，保留键盘操作和可见焦点。"
+      ],
+      "en": [
+        "A roughly 350px login card, thin border and 100px beam, travelling around the border in an 8-second loop.",
+        "Preserve upstream components, layout and theme variables, maintaining readability on narrow screens.",
+        "Respect reduced motion and retain keyboard access and visible focus."
+      ]
+    },
+    "files": [
+      "src/demos/magicui/border-beam.tsx",
+      "src/vendor/magicui/border-beam.tsx"
+    ],
+    "supportFiles": [
+      "src/styles/magic-animations.css",
+      "src/archive/settings.tsx",
+      "src/lib/utils.ts"
+    ],
+    "originalUrl": "https://magicui.design/docs/components/border-beam",
+    "sourceUrl": "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/border-beam.tsx",
+    "cover": "./assets/previews/component-magicui-border-beam.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=magicui-border-beam"
+    },
+    "prompt": {
+      "zh-CN": "请在我的项目中复用「流光边框」，以本站提供的 Magic UI 实际源码为基础。\n\n约 350px 宽的登录卡片、细边框与 100px 光束；以 8 秒循环沿边缘运动。\n\n用途：沿容器边缘循环移动的渐变光束，让登录卡片或重点区域更醒目。\n实现使用 React、TypeScript、Tailwind CSS 和 Motion。保留上游组件实现及必要样式、依赖和上下文，仅替换业务文案。提供响应式布局、键盘焦点及减少动态效果支持。不要把该效果扩写为一个完整后台系统。",
+      "en": "Reuse Border Beam in my project using the supplied actual Magic UI source.\n\nA roughly 350px login card, thin border and 100px beam, travelling around the border in an 8-second loop.\n\nPurpose: A gradient beam travels around a card border to highlight its content.\nUse React, TypeScript and Tailwind CSS with Motion. Keep the upstream implementation, necessary styles, dependencies and context; replace business copy. Include responsive layout, keyboard focus and reduced-motion support. Keep the requested resource scope."
+    },
+    "stylePrompt": {
+      "zh-CN": "将以下视觉与运动规则用于我的业务，保留现有信息架构：约 350px 宽的登录卡片、细边框与 100px 光束；以 8 秒循环沿边缘运动。 使用中性明暗表面、细边框、清晰文字和原版交互反馈。",
+      "en": "Apply these visual and motion rules to my content, preserving its structure: A roughly 350px login card, thin border and 100px beam, travelling around the border in an 8-second loop. Use neutral surfaces, fine borders, readable text and the original feedback."
+    }
+  },
+  {
+    "id": "magicui-shimmer-button",
+    "key": "shimmer-button",
+    "type": "component",
+    "sourceId": "magicui",
+    "libraryIds": [
+      "magicui"
+    ],
+    "category": "buttons",
+    "interactions": [
+      "auto",
+      "hover",
+      "click"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2c",
+    "name": {
+      "zh-CN": "微光按钮",
+      "en": "Shimmer Button"
+    },
+    "description": {
+      "zh-CN": "圆角深色按钮，边缘微光循环流动，悬停和按下有轻微反馈。",
+      "en": "A rounded dark button with a travelling shimmer and subtle hover and press feedback."
+    },
+    "tags": {
+      "zh-CN": [
+        "微光按钮",
+        "动效",
+        "交互"
+      ],
+      "en": [
+        "Shimmer Button",
+        "motion",
+        "interactive"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "适合品牌网站、产品介绍、个人作品集与需要明确交互反馈的界面。",
+      "en": "Brand sites, product pages, portfolios and interfaces requiring clear feedback."
+    },
+    "principle": {
+      "zh-CN": "让运动表达焦点、状态和内容层级。圆角深色按钮，边缘微光循环流动，悬停和按下有轻微反馈。",
+      "en": "Use motion to communicate focus, state and hierarchy. A rounded dark button with a travelling shimmer and subtle hover and press feedback."
+    },
+    "rules": {
+      "zh-CN": [
+        "黑色胶囊按钮、白色文字，使用白色微光与 3 秒循环，按下时轻微下移。",
+        "沿用上游组件、布局和主题变量；窄屏保持内容可读。",
+        "尊重减少动态效果偏好，保留键盘操作和可见焦点。"
+      ],
+      "en": [
+        "A black pill button with white text, white shimmer on a 3-second loop and a small downward press.",
+        "Preserve upstream components, layout and theme variables, maintaining readability on narrow screens.",
+        "Respect reduced motion and retain keyboard access and visible focus."
+      ]
+    },
+    "files": [
+      "src/demos/magicui/shimmer-button.tsx",
+      "src/vendor/magicui/shimmer-button.tsx"
+    ],
+    "supportFiles": [
+      "src/styles/magic-animations.css",
+      "src/archive/settings.tsx",
+      "src/lib/utils.ts"
+    ],
+    "originalUrl": "https://magicui.design/docs/components/shimmer-button",
+    "sourceUrl": "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/shimmer-button.tsx",
+    "cover": "./assets/previews/component-magicui-shimmer-button.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=magicui-shimmer-button"
+    },
+    "prompt": {
+      "zh-CN": "请在我的项目中复用「微光按钮」，以本站提供的 Magic UI 实际源码为基础。\n\n黑色胶囊按钮、白色文字，使用白色微光与 3 秒循环，按下时轻微下移。\n\n用途：圆角深色按钮，边缘微光循环流动，悬停和按下有轻微反馈。\n实现使用 React、TypeScript、Tailwind CSS。保留上游组件实现及必要样式、依赖和上下文，仅替换业务文案。提供响应式布局、键盘焦点及减少动态效果支持。不要把该效果扩写为一个完整后台系统。",
+      "en": "Reuse Shimmer Button in my project using the supplied actual Magic UI source.\n\nA black pill button with white text, white shimmer on a 3-second loop and a small downward press.\n\nPurpose: A rounded dark button with a travelling shimmer and subtle hover and press feedback.\nUse React, TypeScript and Tailwind CSS. Keep the upstream implementation, necessary styles, dependencies and context; replace business copy. Include responsive layout, keyboard focus and reduced-motion support. Keep the requested resource scope."
+    },
+    "stylePrompt": {
+      "zh-CN": "将以下视觉与运动规则用于我的业务，保留现有信息架构：黑色胶囊按钮、白色文字，使用白色微光与 3 秒循环，按下时轻微下移。 使用中性明暗表面、细边框、清晰文字和原版交互反馈。",
+      "en": "Apply these visual and motion rules to my content, preserving its structure: A black pill button with white text, white shimmer on a 3-second loop and a small downward press. Use neutral surfaces, fine borders, readable text and the original feedback."
+    }
+  },
+  {
+    "id": "magicui-ripple-button",
+    "key": "ripple-button",
+    "type": "component",
+    "sourceId": "magicui",
+    "libraryIds": [
+      "magicui"
+    ],
+    "category": "buttons",
+    "interactions": [
+      "click"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2c",
+    "name": {
+      "zh-CN": "点击涟漪按钮",
+      "en": "Ripple Button"
+    },
+    "description": {
+      "zh-CN": "点击位置生成向外扩散的圆形涟漪，反馈清晰且不打断操作。",
+      "en": "A circular ripple expands from the click position without interrupting the action."
+    },
+    "tags": {
+      "zh-CN": [
+        "点击涟漪按钮",
+        "动效",
+        "交互"
+      ],
+      "en": [
+        "Ripple Button",
+        "motion",
+        "interactive"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "适合品牌网站、产品介绍、个人作品集与需要明确交互反馈的界面。",
+      "en": "Brand sites, product pages, portfolios and interfaces requiring clear feedback."
+    },
+    "principle": {
+      "zh-CN": "让运动表达焦点、状态和内容层级。点击位置生成向外扩散的圆形涟漪，反馈清晰且不打断操作。",
+      "en": "Use motion to communicate focus, state and hierarchy. A circular ripple expands from the click position without interrupting the action."
+    },
+    "rules": {
+      "zh-CN": [
+        "深色按钮、白色半透明涟漪；从指针落点扩散，600ms 后移除。",
+        "沿用上游组件、布局和主题变量；窄屏保持内容可读。",
+        "尊重减少动态效果偏好，保留键盘操作和可见焦点。"
+      ],
+      "en": [
+        "A dark button with a translucent white ripple expanding from the pointer position and removed after 600ms.",
+        "Preserve upstream components, layout and theme variables, maintaining readability on narrow screens.",
+        "Respect reduced motion and retain keyboard access and visible focus."
+      ]
+    },
+    "files": [
+      "src/demos/magicui/ripple-button.tsx",
+      "src/vendor/magicui/ripple-button.tsx"
+    ],
+    "supportFiles": [
+      "src/styles/magic-animations.css",
+      "src/archive/settings.tsx",
+      "src/lib/utils.ts"
+    ],
+    "originalUrl": "https://magicui.design/docs/components/ripple-button",
+    "sourceUrl": "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/ripple-button.tsx",
+    "cover": "./assets/previews/component-magicui-ripple-button.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=magicui-ripple-button"
+    },
+    "prompt": {
+      "zh-CN": "请在我的项目中复用「点击涟漪按钮」，以本站提供的 Magic UI 实际源码为基础。\n\n深色按钮、白色半透明涟漪；从指针落点扩散，600ms 后移除。\n\n用途：点击位置生成向外扩散的圆形涟漪，反馈清晰且不打断操作。\n实现使用 React、TypeScript、Tailwind CSS。保留上游组件实现及必要样式、依赖和上下文，仅替换业务文案。提供响应式布局、键盘焦点及减少动态效果支持。不要把该效果扩写为一个完整后台系统。",
+      "en": "Reuse Ripple Button in my project using the supplied actual Magic UI source.\n\nA dark button with a translucent white ripple expanding from the pointer position and removed after 600ms.\n\nPurpose: A circular ripple expands from the click position without interrupting the action.\nUse React, TypeScript and Tailwind CSS. Keep the upstream implementation, necessary styles, dependencies and context; replace business copy. Include responsive layout, keyboard focus and reduced-motion support. Keep the requested resource scope."
+    },
+    "stylePrompt": {
+      "zh-CN": "将以下视觉与运动规则用于我的业务，保留现有信息架构：深色按钮、白色半透明涟漪；从指针落点扩散，600ms 后移除。 使用中性明暗表面、细边框、清晰文字和原版交互反馈。",
+      "en": "Apply these visual and motion rules to my content, preserving its structure: A dark button with a translucent white ripple expanding from the pointer position and removed after 600ms. Use neutral surfaces, fine borders, readable text and the original feedback."
+    }
+  },
+  {
+    "id": "magicui-marquee",
+    "key": "marquee",
+    "type": "component",
+    "sourceId": "magicui",
+    "libraryIds": [
+      "magicui"
+    ],
+    "category": "cards",
+    "interactions": [
+      "auto",
+      "hover"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2c",
+    "name": {
+      "zh-CN": "无限滚动评价",
+      "en": "Marquee"
+    },
+    "description": {
+      "zh-CN": "两排评价卡片反向无缝滚动，悬停暂停，左右渐隐。",
+      "en": "Two rows of review cards scroll seamlessly in opposite directions and pause on hover."
+    },
+    "tags": {
+      "zh-CN": [
+        "无限滚动评价",
+        "动效",
+        "交互"
+      ],
+      "en": [
+        "Marquee",
+        "motion",
+        "interactive"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "适合品牌网站、产品介绍、个人作品集与需要明确交互反馈的界面。",
+      "en": "Brand sites, product pages, portfolios and interfaces requiring clear feedback."
+    },
+    "principle": {
+      "zh-CN": "让运动表达焦点、状态和内容层级。两排评价卡片反向无缝滚动，悬停暂停，左右渐隐。",
+      "en": "Use motion to communicate focus, state and hierarchy. Two rows of review cards scroll seamlessly in opposite directions and pause on hover."
+    },
+    "rules": {
+      "zh-CN": [
+        "两排 256px 宽的细边框评价卡片，以约 20 秒循环反向滚动；两端遮罩渐隐，悬停暂停。",
+        "沿用上游组件、布局和主题变量；窄屏保持内容可读。",
+        "尊重减少动态效果偏好，保留键盘操作和可见焦点。"
+      ],
+      "en": [
+        "Two rows of 256px review cards scroll in opposite directions on approximately 20-second loops, with fading edge masks and pause on hover.",
+        "Preserve upstream components, layout and theme variables, maintaining readability on narrow screens.",
+        "Respect reduced motion and retain keyboard access and visible focus."
+      ]
+    },
+    "files": [
+      "src/demos/magicui/marquee.tsx",
+      "src/vendor/magicui/marquee.tsx"
+    ],
+    "supportFiles": [
+      "src/styles/magic-animations.css",
+      "src/archive/settings.tsx",
+      "src/lib/utils.ts"
+    ],
+    "originalUrl": "https://magicui.design/docs/components/marquee",
+    "sourceUrl": "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/marquee.tsx",
+    "cover": "./assets/previews/component-magicui-marquee.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=magicui-marquee"
+    },
+    "prompt": {
+      "zh-CN": "请在我的项目中复用「无限滚动评价」，以本站提供的 Magic UI 实际源码为基础。\n\n两排 256px 宽的细边框评价卡片，以约 20 秒循环反向滚动；两端遮罩渐隐，悬停暂停。\n\n用途：两排评价卡片反向无缝滚动，悬停暂停，左右渐隐。\n实现使用 React、TypeScript、Tailwind CSS。保留上游组件实现及必要样式、依赖和上下文，仅替换业务文案。提供响应式布局、键盘焦点及减少动态效果支持。不要把该效果扩写为一个完整后台系统。",
+      "en": "Reuse Marquee in my project using the supplied actual Magic UI source.\n\nTwo rows of 256px review cards scroll in opposite directions on approximately 20-second loops, with fading edge masks and pause on hover.\n\nPurpose: Two rows of review cards scroll seamlessly in opposite directions and pause on hover.\nUse React, TypeScript and Tailwind CSS. Keep the upstream implementation, necessary styles, dependencies and context; replace business copy. Include responsive layout, keyboard focus and reduced-motion support. Keep the requested resource scope."
+    },
+    "stylePrompt": {
+      "zh-CN": "将以下视觉与运动规则用于我的业务，保留现有信息架构：两排 256px 宽的细边框评价卡片，以约 20 秒循环反向滚动；两端遮罩渐隐，悬停暂停。 使用中性明暗表面、细边框、清晰文字和原版交互反馈。",
+      "en": "Apply these visual and motion rules to my content, preserving its structure: Two rows of 256px review cards scroll in opposite directions on approximately 20-second loops, with fading edge masks and pause on hover. Use neutral surfaces, fine borders, readable text and the original feedback."
+    }
+  },
+  {
+    "id": "magicui-number-ticker",
+    "key": "number-ticker",
+    "type": "component",
+    "sourceId": "magicui",
+    "libraryIds": [
+      "magicui"
+    ],
+    "category": "data",
+    "interactions": [
+      "scroll"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2c",
+    "name": {
+      "zh-CN": "数字滚动",
+      "en": "Number Ticker"
+    },
+    "description": {
+      "zh-CN": "指标进入视口后由零平滑增长到目标值，保留数字对齐。",
+      "en": "A metric counts smoothly from zero when it enters the viewport, using tabular numerals."
+    },
+    "tags": {
+      "zh-CN": [
+        "数字滚动",
+        "动效",
+        "交互"
+      ],
+      "en": [
+        "Number Ticker",
+        "motion",
+        "interactive"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "适合品牌网站、产品介绍、个人作品集与需要明确交互反馈的界面。",
+      "en": "Brand sites, product pages, portfolios and interfaces requiring clear feedback."
+    },
+    "principle": {
+      "zh-CN": "让运动表达焦点、状态和内容层级。指标进入视口后由零平滑增长到目标值，保留数字对齐。",
+      "en": "Use motion to communicate focus, state and hierarchy. A metric counts smoothly from zero when it enters the viewport, using tabular numerals."
+    },
+    "rules": {
+      "zh-CN": [
+        "96px 紧凑大数字、等宽数字字形，从 0 增长到 100；使用阻尼 60、刚度 100 的弹簧动画。",
+        "沿用上游组件、布局和主题变量；窄屏保持内容可读。",
+        "尊重减少动态效果偏好，保留键盘操作和可见焦点。"
+      ],
+      "en": [
+        "A 96px compact metric with tabular numerals, counting from 0 to 100 with spring damping 60 and stiffness 100.",
+        "Preserve upstream components, layout and theme variables, maintaining readability on narrow screens.",
+        "Respect reduced motion and retain keyboard access and visible focus."
+      ]
+    },
+    "files": [
+      "src/demos/magicui/number-ticker.tsx",
+      "src/vendor/magicui/number-ticker.tsx"
+    ],
+    "supportFiles": [
+      "src/styles/magic-animations.css",
+      "src/archive/settings.tsx",
+      "src/lib/utils.ts"
+    ],
+    "originalUrl": "https://magicui.design/docs/components/number-ticker",
+    "sourceUrl": "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/number-ticker.tsx",
+    "cover": "./assets/previews/component-magicui-number-ticker.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=magicui-number-ticker"
+    },
+    "prompt": {
+      "zh-CN": "请在我的项目中复用「数字滚动」，以本站提供的 Magic UI 实际源码为基础。\n\n96px 紧凑大数字、等宽数字字形，从 0 增长到 100；使用阻尼 60、刚度 100 的弹簧动画。\n\n用途：指标进入视口后由零平滑增长到目标值，保留数字对齐。\n实现使用 React、TypeScript、Tailwind CSS 和 Motion。保留上游组件实现及必要样式、依赖和上下文，仅替换业务文案。提供响应式布局、键盘焦点及减少动态效果支持。不要把该效果扩写为一个完整后台系统。",
+      "en": "Reuse Number Ticker in my project using the supplied actual Magic UI source.\n\nA 96px compact metric with tabular numerals, counting from 0 to 100 with spring damping 60 and stiffness 100.\n\nPurpose: A metric counts smoothly from zero when it enters the viewport, using tabular numerals.\nUse React, TypeScript and Tailwind CSS with Motion. Keep the upstream implementation, necessary styles, dependencies and context; replace business copy. Include responsive layout, keyboard focus and reduced-motion support. Keep the requested resource scope."
+    },
+    "stylePrompt": {
+      "zh-CN": "将以下视觉与运动规则用于我的业务，保留现有信息架构：96px 紧凑大数字、等宽数字字形，从 0 增长到 100；使用阻尼 60、刚度 100 的弹簧动画。 使用中性明暗表面、细边框、清晰文字和原版交互反馈。",
+      "en": "Apply these visual and motion rules to my content, preserving its structure: A 96px compact metric with tabular numerals, counting from 0 to 100 with spring damping 60 and stiffness 100. Use neutral surfaces, fine borders, readable text and the original feedback."
+    }
+  },
+  {
+    "id": "magicui-magic-card",
+    "key": "magic-card",
+    "type": "component",
+    "sourceId": "magicui",
+    "libraryIds": [
+      "magicui"
+    ],
+    "category": "cards",
+    "interactions": [
+      "hover"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2c",
+    "name": {
+      "zh-CN": "聚光悬停卡片",
+      "en": "Magic Card"
+    },
+    "description": {
+      "zh-CN": "柔和光晕跟随鼠标，卡片内容保持清晰，支持明暗主题。",
+      "en": "A soft spotlight follows the pointer while the card content remains readable in both themes."
+    },
+    "tags": {
+      "zh-CN": [
+        "聚光悬停卡片",
+        "动效",
+        "交互"
+      ],
+      "en": [
+        "Magic Card",
+        "motion",
+        "interactive"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "适合品牌网站、产品介绍、个人作品集与需要明确交互反馈的界面。",
+      "en": "Brand sites, product pages, portfolios and interfaces requiring clear feedback."
+    },
+    "principle": {
+      "zh-CN": "让运动表达焦点、状态和内容层级。柔和光晕跟随鼠标，卡片内容保持清晰，支持明暗主题。",
+      "en": "Use motion to communicate focus, state and hierarchy. A soft spotlight follows the pointer while the card content remains readable in both themes."
+    },
+    "rules": {
+      "zh-CN": [
+        "约 350px 登录卡片、细边框与中性色；通过指针位置驱动径向渐变光晕，保留表单、按钮及可见焦点。",
+        "沿用上游组件、布局和主题变量；窄屏保持内容可读。",
+        "尊重减少动态效果偏好，保留键盘操作和可见焦点。"
+      ],
+      "en": [
+        "A roughly 350px login card with fine borders and neutral surfaces; pointer position drives a radial glow around its form and actions.",
+        "Preserve upstream components, layout and theme variables, maintaining readability on narrow screens.",
+        "Respect reduced motion and retain keyboard access and visible focus."
+      ]
+    },
+    "files": [
+      "src/demos/magicui/magic-card.tsx",
+      "src/vendor/magicui/magic-card.tsx"
+    ],
+    "supportFiles": [
+      "src/styles/magic-animations.css",
+      "src/archive/settings.tsx",
+      "src/lib/utils.ts"
+    ],
+    "originalUrl": "https://magicui.design/docs/components/magic-card",
+    "sourceUrl": "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/magic-card.tsx",
+    "cover": "./assets/previews/component-magicui-magic-card.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=magicui-magic-card"
+    },
+    "prompt": {
+      "zh-CN": "请在我的项目中复用「聚光悬停卡片」，以本站提供的 Magic UI 实际源码为基础。\n\n约 350px 登录卡片、细边框与中性色；通过指针位置驱动径向渐变光晕，保留表单、按钮及可见焦点。\n\n用途：柔和光晕跟随鼠标，卡片内容保持清晰，支持明暗主题。\n实现使用 React、TypeScript、Tailwind CSS 和 Motion。保留上游组件实现及必要样式、依赖和上下文，仅替换业务文案。提供响应式布局、键盘焦点及减少动态效果支持。不要把该效果扩写为一个完整后台系统。",
+      "en": "Reuse Magic Card in my project using the supplied actual Magic UI source.\n\nA roughly 350px login card with fine borders and neutral surfaces; pointer position drives a radial glow around its form and actions.\n\nPurpose: A soft spotlight follows the pointer while the card content remains readable in both themes.\nUse React, TypeScript and Tailwind CSS with Motion. Keep the upstream implementation, necessary styles, dependencies and context; replace business copy. Include responsive layout, keyboard focus and reduced-motion support. Keep the requested resource scope."
+    },
+    "stylePrompt": {
+      "zh-CN": "将以下视觉与运动规则用于我的业务，保留现有信息架构：约 350px 登录卡片、细边框与中性色；通过指针位置驱动径向渐变光晕，保留表单、按钮及可见焦点。 使用中性明暗表面、细边框、清晰文字和原版交互反馈。",
+      "en": "Apply these visual and motion rules to my content, preserving its structure: A roughly 350px login card with fine borders and neutral surfaces; pointer position drives a radial glow around its form and actions. Use neutral surfaces, fine borders, readable text and the original feedback."
+    }
+  },
+  {
+    "id": "magicui-dock",
+    "key": "dock",
+    "type": "component",
+    "sourceId": "magicui",
+    "libraryIds": [
+      "magicui"
+    ],
+    "category": "navigation",
+    "interactions": [
+      "hover"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2c",
+    "name": {
+      "zh-CN": "放大导航栏",
+      "en": "Dock"
+    },
+    "description": {
+      "zh-CN": "图标随鼠标靠近而放大，相邻图标平滑过渡，并显示工具提示。",
+      "en": "Navigation icons magnify near the pointer with smooth neighbouring transitions and tooltips."
+    },
+    "tags": {
+      "zh-CN": [
+        "放大导航栏",
+        "动效",
+        "交互"
+      ],
+      "en": [
+        "Dock",
+        "motion",
+        "interactive"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "适合品牌网站、产品介绍、个人作品集与需要明确交互反馈的界面。",
+      "en": "Brand sites, product pages, portfolios and interfaces requiring clear feedback."
+    },
+    "principle": {
+      "zh-CN": "让运动表达焦点、状态和内容层级。图标随鼠标靠近而放大，相邻图标平滑过渡，并显示工具提示。",
+      "en": "Use motion to communicate focus, state and hierarchy. Navigation icons magnify near the pointer with smooth neighbouring transitions and tooltips."
+    },
+    "rules": {
+      "zh-CN": [
+        "水平圆角图标栏、细边框与半透明背景；根据距离通过弹簧动画放大图标，配合工具提示和键盘焦点。",
+        "沿用上游组件、布局和主题变量；窄屏保持内容可读。",
+        "尊重减少动态效果偏好，保留键盘操作和可见焦点。"
+      ],
+      "en": [
+        "A horizontal rounded icon dock with a fine border and translucent surface; distance-based spring magnification, tooltips and keyboard focus.",
+        "Preserve upstream components, layout and theme variables, maintaining readability on narrow screens.",
+        "Respect reduced motion and retain keyboard access and visible focus."
+      ]
+    },
+    "files": [
+      "src/demos/magicui/dock.tsx",
+      "src/vendor/magicui/dock.tsx"
+    ],
+    "supportFiles": [
+      "src/styles/magic-animations.css",
+      "src/archive/settings.tsx",
+      "src/lib/utils.ts"
+    ],
+    "originalUrl": "https://magicui.design/docs/components/dock",
+    "sourceUrl": "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/dock.tsx",
+    "cover": "./assets/previews/component-magicui-dock.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=magicui-dock"
+    },
+    "prompt": {
+      "zh-CN": "请在我的项目中复用「放大导航栏」，以本站提供的 Magic UI 实际源码为基础。\n\n水平圆角图标栏、细边框与半透明背景；根据距离通过弹簧动画放大图标，配合工具提示和键盘焦点。\n\n用途：图标随鼠标靠近而放大，相邻图标平滑过渡，并显示工具提示。\n实现使用 React、TypeScript、Tailwind CSS 和 Motion。保留上游组件实现及必要样式、依赖和上下文，仅替换业务文案。提供响应式布局、键盘焦点及减少动态效果支持。不要把该效果扩写为一个完整后台系统。",
+      "en": "Reuse Dock in my project using the supplied actual Magic UI source.\n\nA horizontal rounded icon dock with a fine border and translucent surface; distance-based spring magnification, tooltips and keyboard focus.\n\nPurpose: Navigation icons magnify near the pointer with smooth neighbouring transitions and tooltips.\nUse React, TypeScript and Tailwind CSS with Motion. Keep the upstream implementation, necessary styles, dependencies and context; replace business copy. Include responsive layout, keyboard focus and reduced-motion support. Keep the requested resource scope."
+    },
+    "stylePrompt": {
+      "zh-CN": "将以下视觉与运动规则用于我的业务，保留现有信息架构：水平圆角图标栏、细边框与半透明背景；根据距离通过弹簧动画放大图标，配合工具提示和键盘焦点。 使用中性明暗表面、细边框、清晰文字和原版交互反馈。",
+      "en": "Apply these visual and motion rules to my content, preserving its structure: A horizontal rounded icon dock with a fine border and translucent surface; distance-based spring magnification, tooltips and keyboard focus. Use neutral surfaces, fine borders, readable text and the original feedback."
+    }
+  },
+  {
+    "id": "magicui-blur-fade",
+    "key": "blur-fade",
+    "type": "component",
+    "sourceId": "magicui",
+    "libraryIds": [
+      "magicui"
+    ],
+    "category": "text",
+    "interactions": [
+      "scroll"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2c",
+    "name": {
+      "zh-CN": "模糊渐入",
+      "en": "Blur Fade"
+    },
+    "description": {
+      "zh-CN": "标题与副标题依次从模糊、偏移和透明状态进入。",
+      "en": "A heading and subheading enter sequentially from blur, offset and transparency."
+    },
+    "tags": {
+      "zh-CN": [
+        "模糊渐入",
+        "动效",
+        "交互"
+      ],
+      "en": [
+        "Blur Fade",
+        "motion",
+        "interactive"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "适合品牌网站、产品介绍、个人作品集与需要明确交互反馈的界面。",
+      "en": "Brand sites, product pages, portfolios and interfaces requiring clear feedback."
+    },
+    "principle": {
+      "zh-CN": "让运动表达焦点、状态和内容层级。标题与副标题依次从模糊、偏移和透明状态进入。",
+      "en": "Use motion to communicate focus, state and hierarchy. A heading and subheading enter sequentially from blur, offset and transparency."
+    },
+    "rules": {
+      "zh-CN": [
+        "标题与副标题上下排列，从 6px 模糊及 6px 偏移渐入；时长 0.4 秒、easeOut，分别延迟约 0.25 和 0.5 秒。",
+        "沿用上游组件、布局和主题变量；窄屏保持内容可读。",
+        "尊重减少动态效果偏好，保留键盘操作和可见焦点。"
+      ],
+      "en": [
+        "Stacked heading and subheading enter from 6px blur and offset over 0.4 seconds with easeOut, delayed approximately 0.25 and 0.5 seconds.",
+        "Preserve upstream components, layout and theme variables, maintaining readability on narrow screens.",
+        "Respect reduced motion and retain keyboard access and visible focus."
+      ]
+    },
+    "files": [
+      "src/demos/magicui/blur-fade.tsx",
+      "src/vendor/magicui/blur-fade.tsx"
+    ],
+    "supportFiles": [
+      "src/styles/magic-animations.css",
+      "src/archive/settings.tsx",
+      "src/lib/utils.ts"
+    ],
+    "originalUrl": "https://magicui.design/docs/components/blur-fade",
+    "sourceUrl": "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/blur-fade.tsx",
+    "cover": "./assets/previews/component-magicui-blur-fade.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=magicui-blur-fade"
+    },
+    "prompt": {
+      "zh-CN": "请在我的项目中复用「模糊渐入」，以本站提供的 Magic UI 实际源码为基础。\n\n标题与副标题上下排列，从 6px 模糊及 6px 偏移渐入；时长 0.4 秒、easeOut，分别延迟约 0.25 和 0.5 秒。\n\n用途：标题与副标题依次从模糊、偏移和透明状态进入。\n实现使用 React、TypeScript、Tailwind CSS 和 Motion。保留上游组件实现及必要样式、依赖和上下文，仅替换业务文案。提供响应式布局、键盘焦点及减少动态效果支持。不要把该效果扩写为一个完整后台系统。",
+      "en": "Reuse Blur Fade in my project using the supplied actual Magic UI source.\n\nStacked heading and subheading enter from 6px blur and offset over 0.4 seconds with easeOut, delayed approximately 0.25 and 0.5 seconds.\n\nPurpose: A heading and subheading enter sequentially from blur, offset and transparency.\nUse React, TypeScript and Tailwind CSS with Motion. Keep the upstream implementation, necessary styles, dependencies and context; replace business copy. Include responsive layout, keyboard focus and reduced-motion support. Keep the requested resource scope."
+    },
+    "stylePrompt": {
+      "zh-CN": "将以下视觉与运动规则用于我的业务，保留现有信息架构：标题与副标题上下排列，从 6px 模糊及 6px 偏移渐入；时长 0.4 秒、easeOut，分别延迟约 0.25 和 0.5 秒。 使用中性明暗表面、细边框、清晰文字和原版交互反馈。",
+      "en": "Apply these visual and motion rules to my content, preserving its structure: Stacked heading and subheading enter from 6px blur and offset over 0.4 seconds with easeOut, delayed approximately 0.25 and 0.5 seconds. Use neutral surfaces, fine borders, readable text and the original feedback."
+    }
+  },
+  {
+    "id": "magicui-animated-list",
+    "key": "animated-list",
+    "type": "component",
+    "sourceId": "magicui",
+    "libraryIds": [
+      "magicui"
+    ],
+    "category": "feedback",
+    "interactions": [
+      "auto",
+      "hover"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2c",
+    "name": {
+      "zh-CN": "动态通知列表",
+      "en": "Animated List"
+    },
+    "description": {
+      "zh-CN": "消息逐条进入列表，结合布局动画与轻微的悬停缩放。",
+      "en": "Notifications enter one at a time with layout animation and a subtle hover scale."
+    },
+    "tags": {
+      "zh-CN": [
+        "动态通知列表",
+        "动效",
+        "交互"
+      ],
+      "en": [
+        "Animated List",
+        "motion",
+        "interactive"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "适合品牌网站、产品介绍、个人作品集与需要明确交互反馈的界面。",
+      "en": "Brand sites, product pages, portfolios and interfaces requiring clear feedback."
+    },
+    "principle": {
+      "zh-CN": "让运动表达焦点、状态和内容层级。消息逐条进入列表，结合布局动画与轻微的悬停缩放。",
+      "en": "Use motion to communicate focus, state and hierarchy. Notifications enter one at a time with layout animation and a subtle hover scale."
+    },
+    "rules": {
+      "zh-CN": [
+        "通知卡片约 400px 宽，16px 圆角、彩色图标与名称、时间、描述分层；新消息依次加入并平滑重新布局。",
+        "沿用上游组件、布局和主题变量；窄屏保持内容可读。",
+        "尊重减少动态效果偏好，保留键盘操作和可见焦点。"
+      ],
+      "en": [
+        "Approximately 400px notification cards with 16px corners, coloured icons, names, times and descriptions; new messages enter sequentially with layout transitions.",
+        "Preserve upstream components, layout and theme variables, maintaining readability on narrow screens.",
+        "Respect reduced motion and retain keyboard access and visible focus."
+      ]
+    },
+    "files": [
+      "src/demos/magicui/animated-list.tsx",
+      "src/vendor/magicui/animated-list.tsx"
+    ],
+    "supportFiles": [
+      "src/styles/magic-animations.css",
+      "src/archive/settings.tsx",
+      "src/lib/utils.ts"
+    ],
+    "originalUrl": "https://magicui.design/docs/components/animated-list",
+    "sourceUrl": "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/animated-list.tsx",
+    "cover": "./assets/previews/component-magicui-animated-list.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=magicui-animated-list"
+    },
+    "prompt": {
+      "zh-CN": "请在我的项目中复用「动态通知列表」，以本站提供的 Magic UI 实际源码为基础。\n\n通知卡片约 400px 宽，16px 圆角、彩色图标与名称、时间、描述分层；新消息依次加入并平滑重新布局。\n\n用途：消息逐条进入列表，结合布局动画与轻微的悬停缩放。\n实现使用 React、TypeScript、Tailwind CSS 和 Motion。保留上游组件实现及必要样式、依赖和上下文，仅替换业务文案。提供响应式布局、键盘焦点及减少动态效果支持。不要把该效果扩写为一个完整后台系统。",
+      "en": "Reuse Animated List in my project using the supplied actual Magic UI source.\n\nApproximately 400px notification cards with 16px corners, coloured icons, names, times and descriptions; new messages enter sequentially with layout transitions.\n\nPurpose: Notifications enter one at a time with layout animation and a subtle hover scale.\nUse React, TypeScript and Tailwind CSS with Motion. Keep the upstream implementation, necessary styles, dependencies and context; replace business copy. Include responsive layout, keyboard focus and reduced-motion support. Keep the requested resource scope."
+    },
+    "stylePrompt": {
+      "zh-CN": "将以下视觉与运动规则用于我的业务，保留现有信息架构：通知卡片约 400px 宽，16px 圆角、彩色图标与名称、时间、描述分层；新消息依次加入并平滑重新布局。 使用中性明暗表面、细边框、清晰文字和原版交互反馈。",
+      "en": "Apply these visual and motion rules to my content, preserving its structure: Approximately 400px notification cards with 16px corners, coloured icons, names, times and descriptions; new messages enter sequentially with layout transitions. Use neutral surfaces, fine borders, readable text and the original feedback."
+    }
+  },
+  {
+    "id": "magicui-text-animate",
+    "key": "text-animate",
+    "type": "component",
+    "sourceId": "magicui",
+    "libraryIds": [
+      "magicui"
+    ],
+    "category": "text",
+    "interactions": [
+      "scroll"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2c",
+    "name": {
+      "zh-CN": "逐字模糊上移",
+      "en": "Text Animate"
+    },
+    "description": {
+      "zh-CN": "文字逐字从模糊和下方偏移进入，适合短标题。",
+      "en": "Characters enter from blur and a lower offset, suitable for concise headings."
+    },
+    "tags": {
+      "zh-CN": [
+        "逐字模糊上移",
+        "动效",
+        "交互"
+      ],
+      "en": [
+        "Text Animate",
+        "motion",
+        "interactive"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "适合品牌网站、产品介绍、个人作品集与需要明确交互反馈的界面。",
+      "en": "Brand sites, product pages, portfolios and interfaces requiring clear feedback."
+    },
+    "principle": {
+      "zh-CN": "让运动表达焦点、状态和内容层级。文字逐字从模糊和下方偏移进入，适合短标题。",
+      "en": "Use motion to communicate focus, state and hierarchy. Characters enter from blur and a lower offset, suitable for concise headings."
+    },
+    "rules": {
+      "zh-CN": [
+        "使用上游 blurInUp 动画，按字符逐个出现，只在进入视口时播放一次；保持文字布局与可读性。",
+        "沿用上游组件、布局和主题变量；窄屏保持内容可读。",
+        "尊重减少动态效果偏好，保留键盘操作和可见焦点。"
+      ],
+      "en": [
+        "Use the upstream blurInUp animation by character, playing once when in view while preserving text layout and readability.",
+        "Preserve upstream components, layout and theme variables, maintaining readability on narrow screens.",
+        "Respect reduced motion and retain keyboard access and visible focus."
+      ]
+    },
+    "files": [
+      "src/demos/magicui/text-animate.tsx",
+      "src/vendor/magicui/text-animate.tsx"
+    ],
+    "supportFiles": [
+      "src/styles/magic-animations.css",
+      "src/archive/settings.tsx",
+      "src/lib/utils.ts"
+    ],
+    "originalUrl": "https://magicui.design/docs/components/text-animate",
+    "sourceUrl": "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/text-animate.tsx",
+    "cover": "./assets/previews/component-magicui-text-animate.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=magicui-text-animate"
+    },
+    "prompt": {
+      "zh-CN": "请在我的项目中复用「逐字模糊上移」，以本站提供的 Magic UI 实际源码为基础。\n\n使用上游 blurInUp 动画，按字符逐个出现，只在进入视口时播放一次；保持文字布局与可读性。\n\n用途：文字逐字从模糊和下方偏移进入，适合短标题。\n实现使用 React、TypeScript、Tailwind CSS 和 Motion。保留上游组件实现及必要样式、依赖和上下文，仅替换业务文案。提供响应式布局、键盘焦点及减少动态效果支持。不要把该效果扩写为一个完整后台系统。",
+      "en": "Reuse Text Animate in my project using the supplied actual Magic UI source.\n\nUse the upstream blurInUp animation by character, playing once when in view while preserving text layout and readability.\n\nPurpose: Characters enter from blur and a lower offset, suitable for concise headings.\nUse React, TypeScript and Tailwind CSS with Motion. Keep the upstream implementation, necessary styles, dependencies and context; replace business copy. Include responsive layout, keyboard focus and reduced-motion support. Keep the requested resource scope."
+    },
+    "stylePrompt": {
+      "zh-CN": "将以下视觉与运动规则用于我的业务，保留现有信息架构：使用上游 blurInUp 动画，按字符逐个出现，只在进入视口时播放一次；保持文字布局与可读性。 使用中性明暗表面、细边框、清晰文字和原版交互反馈。",
+      "en": "Apply these visual and motion rules to my content, preserving its structure: Use the upstream blurInUp animation by character, playing once when in view while preserving text layout and readability. Use neutral surfaces, fine borders, readable text and the original feedback."
+    }
+  },
+  {
+    "id": "magicui-particles",
+    "key": "particles",
+    "type": "component",
+    "sourceId": "magicui",
+    "libraryIds": [
+      "magicui"
+    ],
+    "category": "backgrounds",
+    "interactions": [
+      "auto",
+      "hover"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2c",
+    "name": {
+      "zh-CN": "交互粒子背景",
+      "en": "Particles"
+    },
+    "description": {
+      "zh-CN": "细小粒子缓慢移动，受鼠标位置影响，文字位于前景。",
+      "en": "Small particles drift in the background and respond to the pointer behind foreground text."
+    },
+    "tags": {
+      "zh-CN": [
+        "交互粒子背景",
+        "动效",
+        "交互"
+      ],
+      "en": [
+        "Particles",
+        "motion",
+        "interactive"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "适合品牌网站、产品介绍、个人作品集与需要明确交互反馈的界面。",
+      "en": "Brand sites, product pages, portfolios and interfaces requiring clear feedback."
+    },
+    "principle": {
+      "zh-CN": "让运动表达焦点、状态和内容层级。细小粒子缓慢移动，受鼠标位置影响，文字位于前景。",
+      "en": "Use motion to communicate focus, state and hierarchy. Small particles drift in the background and respond to the pointer behind foreground text."
+    },
+    "rules": {
+      "zh-CN": [
+        "500px 高的有边框背景区域，100 个粒子、ease=80；明暗主题切换粒子颜色，前景大标题保持清晰。",
+        "沿用上游组件、布局和主题变量；窄屏保持内容可读。",
+        "尊重减少动态效果偏好，保留键盘操作和可见焦点。"
+      ],
+      "en": [
+        "A 500px high bordered surface with 100 particles and ease=80; theme-aware particle colours behind a clear large heading.",
+        "Preserve upstream components, layout and theme variables, maintaining readability on narrow screens.",
+        "Respect reduced motion and retain keyboard access and visible focus."
+      ]
+    },
+    "files": [
+      "src/demos/magicui/particles.tsx",
+      "src/vendor/magicui/particles.tsx"
+    ],
+    "supportFiles": [
+      "src/styles/magic-animations.css",
+      "src/archive/settings.tsx",
+      "src/lib/utils.ts"
+    ],
+    "originalUrl": "https://magicui.design/docs/components/particles",
+    "sourceUrl": "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/particles.tsx",
+    "cover": "./assets/previews/component-magicui-particles.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=magicui-particles"
+    },
+    "prompt": {
+      "zh-CN": "请在我的项目中复用「交互粒子背景」，以本站提供的 Magic UI 实际源码为基础。\n\n500px 高的有边框背景区域，100 个粒子、ease=80；明暗主题切换粒子颜色，前景大标题保持清晰。\n\n用途：细小粒子缓慢移动，受鼠标位置影响，文字位于前景。\n实现使用 React、TypeScript、Tailwind CSS。保留上游组件实现及必要样式、依赖和上下文，仅替换业务文案。提供响应式布局、键盘焦点及减少动态效果支持。不要把该效果扩写为一个完整后台系统。",
+      "en": "Reuse Particles in my project using the supplied actual Magic UI source.\n\nA 500px high bordered surface with 100 particles and ease=80; theme-aware particle colours behind a clear large heading.\n\nPurpose: Small particles drift in the background and respond to the pointer behind foreground text.\nUse React, TypeScript and Tailwind CSS. Keep the upstream implementation, necessary styles, dependencies and context; replace business copy. Include responsive layout, keyboard focus and reduced-motion support. Keep the requested resource scope."
+    },
+    "stylePrompt": {
+      "zh-CN": "将以下视觉与运动规则用于我的业务，保留现有信息架构：500px 高的有边框背景区域，100 个粒子、ease=80；明暗主题切换粒子颜色，前景大标题保持清晰。 使用中性明暗表面、细边框、清晰文字和原版交互反馈。",
+      "en": "Apply these visual and motion rules to my content, preserving its structure: A 500px high bordered surface with 100 particles and ease=80; theme-aware particle colours behind a clear large heading. Use neutral surfaces, fine borders, readable text and the original feedback."
+    }
+  },
+  {
+    "id": "magicui-bento-grid",
+    "key": "bento-grid",
+    "type": "block",
+    "sourceId": "magicui",
+    "libraryIds": [
+      "magicui"
+    ],
+    "category": "layout",
+    "interactions": [
+      "auto",
+      "hover"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2c",
+    "name": {
+      "zh-CN": "功能便当网格",
+      "en": "Bento Grid"
+    },
+    "description": {
+      "zh-CN": "大小错落的功能卡片，组合文件滚动、通知、连接动画与日历。",
+      "en": "An asymmetric feature grid combines file marquees, notifications, animated connections and a calendar."
+    },
+    "tags": {
+      "zh-CN": [
+        "功能便当网格",
+        "动效",
+        "交互"
+      ],
+      "en": [
+        "Bento Grid",
+        "motion",
+        "interactive"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "适合品牌网站、产品介绍、个人作品集与需要明确交互反馈的界面。",
+      "en": "Brand sites, product pages, portfolios and interfaces requiring clear feedback."
+    },
+    "principle": {
+      "zh-CN": "让运动表达焦点、状态和内容层级。大小错落的功能卡片，组合文件滚动、通知、连接动画与日历。",
+      "en": "Use motion to communicate focus, state and hierarchy. An asymmetric feature grid combines file marquees, notifications, animated connections and a calendar."
+    },
+    "rules": {
+      "zh-CN": [
+        "桌面三列不等宽功能卡片，移动端单列；卡片底部显示标题、说明和操作，背景使用原版通知、连接光束、文件列表及日历。",
+        "沿用上游组件、布局和主题变量；窄屏保持内容可读。",
+        "尊重减少动态效果偏好，保留键盘操作和可见焦点。"
+      ],
+      "en": [
+        "A three-column asymmetric desktop grid collapsing to one column; titles, descriptions and actions sit above the original notifications, beams, file lists and calendar.",
+        "Preserve upstream components, layout and theme variables, maintaining readability on narrow screens.",
+        "Respect reduced motion and retain keyboard access and visible focus."
+      ]
+    },
+    "files": [
+      "src/demos/magicui/bento-grid.tsx",
+      "src/vendor/magicui/bento-grid.tsx"
+    ],
+    "supportFiles": [
+      "src/styles/magic-animations.css",
+      "src/archive/settings.tsx",
+      "src/lib/utils.ts"
+    ],
+    "originalUrl": "https://magicui.design/docs/components/bento-grid",
+    "sourceUrl": "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/bento-grid.tsx",
+    "cover": "./assets/previews/block-magicui-bento-grid.png",
+    "preview": {
+      "width": 1280,
+      "height": 900,
+      "url": "./examples/ui-market/index.html?item=magicui-bento-grid"
+    },
+    "prompt": {
+      "zh-CN": "请在我的项目中复用「功能便当网格」，以本站提供的 Magic UI 实际源码为基础。\n\n桌面三列不等宽功能卡片，移动端单列；卡片底部显示标题、说明和操作，背景使用原版通知、连接光束、文件列表及日历。\n\n用途：大小错落的功能卡片，组合文件滚动、通知、连接动画与日历。\n实现使用 React、TypeScript、Tailwind CSS 和 Motion。保留上游组件实现及必要样式、依赖和上下文，仅替换业务文案。提供响应式布局、键盘焦点及减少动态效果支持。不要把该效果扩写为一个完整后台系统。",
+      "en": "Reuse Bento Grid in my project using the supplied actual Magic UI source.\n\nA three-column asymmetric desktop grid collapsing to one column; titles, descriptions and actions sit above the original notifications, beams, file lists and calendar.\n\nPurpose: An asymmetric feature grid combines file marquees, notifications, animated connections and a calendar.\nUse React, TypeScript and Tailwind CSS with Motion. Keep the upstream implementation, necessary styles, dependencies and context; replace business copy. Include responsive layout, keyboard focus and reduced-motion support. Keep the requested resource scope."
+    },
+    "stylePrompt": {
+      "zh-CN": "将以下视觉与运动规则用于我的业务，保留现有信息架构：桌面三列不等宽功能卡片，移动端单列；卡片底部显示标题、说明和操作，背景使用原版通知、连接光束、文件列表及日历。 使用中性明暗表面、细边框、清晰文字和原版交互反馈。",
+      "en": "Apply these visual and motion rules to my content, preserving its structure: A three-column asymmetric desktop grid collapsing to one column; titles, descriptions and actions sit above the original notifications, beams, file lists and calendar. Use neutral surfaces, fine borders, readable text and the original feedback."
+    }
+  }
+]
