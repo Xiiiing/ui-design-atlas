@@ -66,6 +66,7 @@ function App() {
   const Demo = demos[id as keyof typeof demos];
   useEffect(() => {
     document.body.inert = thumb;
+    document.documentElement.dataset.thumbnail = String(thumb);
   }, [thumb]);
   useEffect(() => {
     if (parent !== window && resolvedTheme)

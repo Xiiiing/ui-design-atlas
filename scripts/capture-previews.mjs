@@ -2,6 +2,7 @@ import { chromium } from "@playwright/test";
 import { spawn } from "node:child_process";
 import { mkdir } from "node:fs/promises";
 import { resources, resourcePreview } from "../catalog.js";
+import { resourcePresentation } from "../presentation.js";
 const port = 4188;
 const server = spawn(process.execPath, ["scripts/serve.mjs", "--dist"], {
   env: { ...process.env, PORT: String(port) },
@@ -34,9 +35,10 @@ try {
       while (index < jobs.length) {
         const r = jobs[index++];
         try {
+          const framing = resourcePresentation(r);
           await page.setViewportSize({
-            width: r.preview.width,
-            height: r.preview.height,
+            width: framing.width,
+            height: framing.height,
           });
           const url = new URL(
             resourcePreview(

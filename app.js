@@ -1,3 +1,4 @@
+import { resourcePresentation, thumbnailURL } from "./presentation.js";
 import {
   replaceShellHTML,
   fieldValue,
@@ -129,7 +130,8 @@ function header() {
 }
 function card(r) {
   const source = resourceSource(r);
-  return `<article class="asset-card card" data-resource="${key(r)}"><div class="asset-preview" style="--canvas-width:${r.preview.width}px;--canvas-height:${r.preview.height}px"><img src="${esc(r.cover)}" alt="${esc(l(r.name))}" loading="lazy" width="640" height="420"><div class="asset-live" data-live="${key(r)}"></div><a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}"></a>${saveButton(r)}<a class="asset-open" href="${href(r.type, r.id)}" data-open="${key(r)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}">${icon("arrow-up-right")}</a>${r.motion ? `<span class="motion-badge">${icon("play")}${t("动效", "Motion")}</span>` : ""}</div><div class="asset-caption"><a data-open="${key(r)}" href="${href(r.type, r.id)}">${esc(l(r.name))}</a><span class="asset-type">${labelType(r)}</span><p>${esc(l(r.description))}</p><div class="asset-meta"><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" data-library="${esc(id)}">${esc(libraries[id].name)}</span>`).join("") || `<span class="library-badge">${t("原生 UI", "Native UI")}</span>`}</span><span class="asset-origin" title="${esc(source.name)}">${r.sourceId === "original" ? t("本站原创", "Original") : esc(source.license)}</span></div></div></article>`;
+  const framing = resourcePresentation(r);
+  return `<article class="asset-card card" data-resource="${key(r)}"><div class="asset-preview" style="--canvas-width:${framing.width}px;--canvas-height:${framing.height}px"><img src="${esc(r.cover)}" alt="${esc(l(r.name))}" loading="lazy" width="640" height="420"><div class="asset-live" data-live="${key(r)}"></div><a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}"></a>${saveButton(r)}<a class="asset-open" href="${href(r.type, r.id)}" data-open="${key(r)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}">${icon("arrow-up-right")}</a>${r.motion ? `<span class="motion-badge">${icon("play")}${t("动效", "Motion")}</span>` : ""}</div><div class="asset-caption"><a data-open="${key(r)}" href="${href(r.type, r.id)}">${esc(l(r.name))}</a><span class="asset-type">${labelType(r)}</span><p>${esc(l(r.description))}</p><div class="asset-meta"><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" data-library="${esc(id)}">${esc(libraries[id].name)}</span>`).join("") || `<span class="library-badge">${t("原生 UI", "Native UI")}</span>`}</span><span class="asset-origin" title="${esc(source.name)}">${r.sourceId === "original" ? t("本站原创", "Original") : esc(source.license)}</span></div></div></article>`;
 }
 function selectFilter(name, label, entries) {
   return `<label class="filter-select"><span class="sr-only">${label}</span><select data-shell-control name="${name}" aria-label="${label}"><option value="all">${label}</option>${entries.map(([v, label]) => `<option value="${v}">${esc(label)}</option>`).join("")}</select>${icon("chevron-right")}</label>`;
@@ -617,8 +619,7 @@ function startLive(card) {
     locale,
     r.sourceId === "shadcn-admin" ? "dark" : "light",
   );
-  const [base, hash] = url.split("#");
-  f.src = base + "&thumb=1" + (hash ? "#" + hash : "");
+  f.src = thumbnailURL(url);
   f.title = l(r.name);
   f.tabIndex = -1;
   f.inert = true;
@@ -633,12 +634,13 @@ function sizeLive(card) {
   const el = card.querySelector(".asset-preview"),
     f = card.querySelector(".asset-live iframe");
   if (!r || !f) return;
+  const framing = resourcePresentation(r);
   const scale = Math.min(
-    el.clientWidth / r.preview.width,
-    el.clientHeight / r.preview.height,
+    el.clientWidth / framing.width,
+    el.clientHeight / framing.height,
   );
-  f.style.width = r.preview.width + "px";
-  f.style.height = r.preview.height + "px";
+  f.style.width = framing.width + "px";
+  f.style.height = framing.height + "px";
   f.style.transform = `translate(-50%,-50%) scale(${scale})`;
 }
 const cardObserver = new IntersectionObserver((entries) => {
@@ -1106,8 +1108,8 @@ document.addEventListener("pointermove", (e) => {
   f.contentWindow.postMessage(
     {
       type: "atlas:preview-pointer",
-      x: ((e.clientX - box.left) * r.preview.width) / box.width,
-      y: ((e.clientY - box.top) * r.preview.height) / box.height,
+      x: ((e.clientX - box.left) * resourcePresentation(r).width) / box.width,
+      y: ((e.clientY - box.top) * resourcePresentation(r).height) / box.height,
     },
     location.origin,
   );

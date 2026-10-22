@@ -30,6 +30,10 @@
   max-width: 100%;
   width: 100%;
 }
+/* Archive framing only: preserve the actual component's typography and styles. */
+html[data-thumbnail="true"] .demo-surface:not([data-source="blocks"]) {
+  padding: 16px;
+}
 .demo-surface[data-source="magicui"] > div {
   display: flex;
   justify-content: center;

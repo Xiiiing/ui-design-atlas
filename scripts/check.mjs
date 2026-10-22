@@ -199,3 +199,32 @@ for (const [file, hash] of Object.entries(shellSources.files)) {
   );
 }
 console.log("Verified pinned Yingxu UI components and design tokens.");
+
+const marketDesign = JSON.parse(
+  await readFile(new URL("vendor/21st-market/sources.lock.json", base), "utf8"),
+);
+assert.equal(marketDesign.commit, "b96d84dcf748d5e56f2f72f2bab9a4f7f33574cf");
+for (const [file, hash] of Object.entries(marketDesign.files)) {
+  const content = await readFile(new URL("vendor/21st-market/" + file, base));
+  assert.equal(
+    createHash("sha256").update(content).digest("hex"),
+    hash,
+    "21st reference changed: " + file,
+  );
+}
+const { resourcePresentation, thumbnailURL } =
+  await import("../presentation.js");
+for (const r of resources) {
+  const p = resourcePresentation(r);
+  assert.ok(p.width > 0 && p.height > 0);
+  if (r.type !== "component" || r.preview.width >= 900)
+    assert.equal(p.width, r.preview.width);
+  else assert.equal(p.width, 400);
+}
+assert.equal(
+  thumbnailURL("./demo.html?a=b#/tasks"),
+  "./demo.html?a=b&thumb=1#/tasks",
+);
+console.log(
+  "Verified pinned 21st design reference and shared preview framing.",
+);

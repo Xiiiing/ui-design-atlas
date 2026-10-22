@@ -1,0 +1,12 @@
+{
+  "repo": "https://github.com/serafimcloud/21st",
+  "commit": "b96d84dcf748d5e56f2f72f2bab9a4f7f33574cf",
+  "license": "MIT",
+  "files": {
+    "reference/LICENSE": "1c4cd4798da70ed66cfc2f9c8fd0846063a340bbad8d0ab32fe3ef340daee1cf",
+    "reference/component-card.tsx": "bfc80960c40535051039f96f00ad38c3db583393265f94958ad92f048e351720",
+    "reference/filter-chips.tsx": "1c5a2c8703556792d0d89c8cbb851b083e105eed4a496065afd65bbdb0bf74a2",
+    "reference/globals.css": "286799c2c13538e6daa14fabfd062eafe115ace3780354fb44ba7e8da7d86513",
+    "reference/tailwind.config.js": "a67de6418dbb3796dd7b6829908237cd8f38d4f253b7f19944ca06a1574858ae"
+  }
+}
