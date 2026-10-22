@@ -129,9 +129,8 @@ function header() {
   );
 }
 function card(r) {
-  const source = resourceSource(r);
   const framing = resourcePresentation(r);
-  return `<article class="asset-card card" data-resource="${key(r)}"><div class="asset-preview" style="--canvas-width:${framing.width}px;--canvas-height:${framing.height}px"><img src="${esc(r.cover)}" alt="${esc(l(r.name))}" loading="lazy" width="640" height="420"><div class="asset-live" data-live="${key(r)}"></div><a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}"></a>${saveButton(r)}<a class="asset-open" href="${href(r.type, r.id)}" data-open="${key(r)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}">${icon("arrow-up-right")}</a>${r.motion ? `<span class="motion-badge">${icon("play")}${t("动效", "Motion")}</span>` : ""}</div><div class="asset-caption"><a data-open="${key(r)}" href="${href(r.type, r.id)}">${esc(l(r.name))}</a><span class="asset-type">${labelType(r)}</span><p>${esc(l(r.description))}</p><div class="asset-meta"><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" data-library="${esc(id)}">${esc(libraries[id].name)}</span>`).join("") || `<span class="library-badge">${t("原生 UI", "Native UI")}</span>`}</span><span class="asset-origin" title="${esc(source.name)}">${r.sourceId === "original" ? t("本站原创", "Original") : esc(source.license)}</span></div></div></article>`;
+  return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${framing.layout}"><div class="asset-preview" style="--canvas-width:${framing.width}px;--canvas-height:${framing.height}px"><img src="${esc(r.cover)}" alt="${esc(l(r.name))}" loading="lazy" width="${framing.width}" height="${framing.height}"><div class="asset-live" data-live="${key(r)}"></div><a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}" aria-describedby="description-${r.id}"></a>${saveButton(r)}<a class="asset-open" href="${href(r.type, r.id)}" data-open="${key(r)}" aria-label="${t("查看", "View")} ${esc(l(r.name))}">${icon("arrow-up-right")}</a>${r.motion ? `<span class="motion-badge">${icon("play")}${t("动效", "Motion")}</span>` : ""}<p class="asset-description" id="description-${r.id}">${esc(l(r.description))}</p></div><div class="asset-caption"><a data-open="${key(r)}" href="${href(r.type, r.id)}">${esc(l(r.name))}</a><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" data-library="${esc(id)}">${esc(libraries[id].name)}</span>`).join("") || `<span class="library-badge">${t("原生 UI", "Native UI")}</span>`}</span></div></article>`;
 }
 function selectFilter(name, label, entries) {
   return `<label class="filter-select"><span class="sr-only">${label}</span><select data-shell-control name="${name}" aria-label="${label}"><option value="all">${label}</option>${entries.map(([v, label]) => `<option value="${v}">${esc(label)}</option>`).join("")}</select>${icon("chevron-right")}</label>`;
@@ -154,24 +153,29 @@ const viewModes = {
 };
 function listing() {
   const favorite = route.view === "favorites";
-  return `<section class="market-intro"><div><p class="eyebrow"><span class="status-dot"></span>${t("UI 设计图鉴", "UI DESIGN ATLAS")}</p><h1>${favorite ? t("留住灵感，随时复用。", "Good finds. Kept close.") : t("发现并复用好界面", "Explore UI resources")}</h1><p>${t("从一个细节到一整套系统。发现、体验，带走设计思路与代码。", "From a thoughtful detail to a complete system. Explore, try, and make it yours.")}</p></div>${favorite ? `<div class="button-row"><button class="button" data-export-favorites>${t("导出收藏", "Export saved")}</button><label class="button">${t("导入收藏", "Import saved")}<input type="file" hidden id="import-favorites" accept=".json"></label></div>` : `<div class="reuse-trail" aria-label="${t("资源复用流程", "Resource reuse workflow")}"><span>${icon("play")}${t("交互预览", "Try it live")}</span>${icon("chevron-right")}<span>${icon("copy")}${t("设计提示词", "Get the prompt")}</span>${icon("chevron-right")}<span>${icon("code-xml")}${t("带走源码", "Take the code")}</span></div>`}</section><section class="market-collection" id="collection"><nav class="market-tabs" data-shell-group data-shell-key="market-types" aria-label="${t("资源类型", "Resource types")}">${Object.entries(
+  const expanded = ["interaction", "style", "source", "audience"].some((k) =>
+    route.params.has(k),
+  );
+  return `<section class="market-intro"><div><h1>${favorite ? t("我的收藏", "Saved resources") : route.view === "cases" ? t("完整案例", "Complete systems") : t("发现并复用好界面", "Find your next interface")}</h1><p>${t("真实体验，从一个组件到完整系统。带走提示词与代码。", "Real interfaces, from a component to a complete system. Take the prompt and code.")}</p></div>${favorite ? `<div class="button-row"><button class="button" data-export-favorites>${t("导出收藏", "Export saved")}</button><label class="button">${t("导入收藏", "Import saved")}<input type="file" hidden id="import-favorites" accept=".json"></label></div>` : ""}</section>
+  <section class="market-collection" id="collection"><form id="filters" class="market-filters" data-expanded="${expanded}">
+  <div class="discovery-toolbar"><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(route.params.get("q") || "")}"><kbd>/</kbd></label>
+  ${selectFilter(
+    "library",
+    t("全部组件库", "All libraries"),
+    Object.values(libraries).map((x) => [x.id, x.name]),
+  )}
+  <button type="button" class="button advanced-filters-toggle" data-advanced-filters aria-controls="advanced-filters" aria-expanded="${expanded}">${icon("sliders-horizontal")}${t("更多筛选", "Filters")}</button></div>
+  <nav class="market-tabs" data-shell-group data-shell-key="market-types" aria-label="${t("资源类型", "Resource types")}">${Object.entries(
     viewModes,
   )
     .map(
       ([v, labels]) =>
         `<a href="${href(v)}" data-market-mode="${v}" class="${route.view === v ? "active" : ""}" ${route.view === v ? 'aria-current="page"' : ""}>${icon(viewIcons[v])}${t(...labels)}${v === "explore" || v === "motion" ? `<span>${v === "explore" ? resources.length : resources.filter((r) => r.motion).length}</span>` : ""}</a>`,
     )
-    .join(
-      "",
-    )}</nav><form id="filters" class="market-filters" data-expanded="${["interaction", "style", "source", "audience"].some((k) => route.params.get(k) && route.params.get(k) !== "all")}"><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(route.params.get("q") || "")}"><kbd>/</kbd></label><div class="filter-strip"><span class="filter-label">${icon("sliders-horizontal")}${t("筛选", "Filter")}</span>${selectFilter(
-    "category",
-    t("全部分类", "All categories"),
-    Object.entries(categories).map(([id, labels]) => [id, t(...labels)]),
-  )}${selectFilter(
-    "library",
-    t("全部组件库", "All libraries"),
-    Object.values(libraries).map((x) => [x.id, x.name]),
-  )}<div class="advanced-filters" id="advanced-filters">${selectFilter(
+    .join("")}</nav>
+  <input type="hidden" name="category" value="${esc(route.params.get("category") || "all")}">
+  <nav class="category-strip" aria-label="${t("资源分类", "Resource categories")}">${[["all", ["全部分类", "All categories"]], ...Object.entries(categories)].map(([id, labels]) => `<button type="button" data-category="${id}" aria-pressed="${(route.params.get("category") || "all") === id}">${t(...labels)}</button>`).join("")}</nav>
+  <div class="advanced-filters" id="advanced-filters">${selectFilter(
     "interaction",
     t("交互方式", "Interaction"),
     Object.entries(interactions).map(([id, labels]) => [id, t(...labels)]),
@@ -185,7 +189,47 @@ function listing() {
   )}${selectFilter("audience", t("全部场景", "All audiences"), [
     ["b2b", t("B 端 / 工作工具", "B2B / Work tools")],
     ["b2c", t("C 端 / 网站", "B2C / Websites")],
-  ])}</div><button type="button" class="button advanced-filters-toggle" data-advanced-filters aria-controls="advanced-filters" aria-expanded="${["interaction", "style", "source", "audience"].some((k) => route.params.get(k) && route.params.get(k) !== "all")}">${icon("sliders-horizontal")}${t("更多筛选", "More filters")}</button><button type="button" class="icon-button" data-reset-filters aria-label="${t("重置筛选", "Reset filters")}">${icon("rotate-ccw")}</button></div></form><div id="results" aria-live="polite"></div></section>`;
+  ])}</div>
+  <div class="active-filters" id="active-filters" aria-label="${t("已选条件", "Selected filters")}"></div></form><div id="results" aria-live="polite"></div></section>`;
+}
+function updateFilterChips() {
+  const form = document.querySelector("#filters");
+  if (!form) return;
+  const values = Object.fromEntries(new FormData(form));
+  const labels = {
+    q: t("搜索", "Search"),
+    category: t("分类", "Category"),
+    library: t("组件库", "Library"),
+    interaction: t("交互", "Interaction"),
+    style: t("风格", "Style"),
+    source: t("来源", "Source"),
+    audience: t("场景", "Audience"),
+  };
+  const chips = Object.entries(values).filter(([, v]) => v && v !== "all");
+  document.querySelector("#active-filters").innerHTML =
+    chips
+      .map(([name, value]) => {
+        const label =
+          name === "category"
+            ? t(...(categories[value] || [value, value]))
+            : name === "q"
+              ? value
+              : form.querySelector(`select[name="${name}"] option:checked`)
+                  ?.textContent || value;
+        return `<button type="button" class="filter-chip" data-remove-filter="${name}" aria-label="${t("清除", "Remove")} ${esc(labels[name])}: ${esc(label)}"><span>${esc(label)}</span>${icon("x")}</button>`;
+      })
+      .join("") +
+    (chips.length
+      ? `<button type="button" class="clear-filters" data-reset-filters>${t("清空条件", "Clear all")}</button>`
+      : "");
+  document
+    .querySelectorAll("[data-category]")
+    .forEach((el) =>
+      el.setAttribute(
+        "aria-pressed",
+        String(el.dataset.category === values.category),
+      ),
+    );
 }
 function filtered() {
   const values = document.querySelector("#filters")
@@ -261,6 +305,7 @@ function updateResults(updateURL = false) {
     );
     route = parse();
   }
+  updateFilterChips();
   observeCards();
 }
 function resourceDetails(r) {
@@ -575,7 +620,9 @@ function parseHash(hash) {
   return { view: p || "explore", params: new URLSearchParams(q) };
 }
 function restoreFilters() {
-  for (const el of document.querySelectorAll("#filters select"))
+  for (const el of document.querySelectorAll(
+    "#filters select, #filters input[name=category]",
+  ))
     el.value = route.params.get(el.name) || "all";
   updateResults();
 }
@@ -841,6 +888,23 @@ document.addEventListener("click", async (e) => {
     updateResults(true);
     return;
   }
+  if (b.dataset.category) {
+    document.querySelector("#filters [name=category]").value =
+      b.dataset.category;
+    limit = 24;
+    updateResults(true);
+    return;
+  }
+  if (b.dataset.removeFilter) {
+    const name = b.dataset.removeFilter;
+    const field = document.querySelector(`#filters [name="${name}"]`);
+    if (name === "q") field.value = "";
+    else if (name === "category") field.value = "all";
+    else setFieldValue("filter-" + name, "all");
+    limit = 24;
+    updateResults(true);
+    return;
+  }
   if (b.hasAttribute("data-advanced-filters")) {
     const expanded = b.getAttribute("aria-expanded") !== "true";
     b.setAttribute("aria-expanded", expanded);
@@ -851,8 +915,10 @@ document.addEventListener("click", async (e) => {
     const form = document.querySelector("#filters");
     form.reset();
     queueMicrotask(() => {
-      for (const el of form.querySelectorAll("select.studio-select-native"))
+      for (const el of form.querySelectorAll("select.atlas-select-native"))
         setFieldValue(el.dataset.shellField, "all");
+      form.querySelector("[name=q]").value = "";
+      form.querySelector("[name=category]").value = "all";
       limit = 24;
       updateResults(true);
     });
@@ -1038,7 +1104,7 @@ document.addEventListener("keydown", (e) => {
   if (
     e.key === "Escape" &&
     !e.defaultPrevented &&
-    !e.target.closest(".studio-select-content, .studio-menu-content") &&
+    !e.target.closest(".atlas-select-content, .atlas-menu-content") &&
     selected &&
     !document.querySelector("#asset-dialog[open]") &&
     !document.querySelector("dialog[open]")

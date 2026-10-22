@@ -94,6 +94,7 @@ test("Bilingual market searches, library and source filters retain existing cont
   await page.locator("[name=q]").fill("任务");
   await expect(page.locator("#results .card")).toHaveCount(1);
   await page.locator("[data-reset-filters]").click();
+  await page.locator("[data-advanced-filters]").click();
   await page.locator("#filter-source").click();
   await page.getByRole("option", { name: "Open source", exact: true }).click();
   await expect(page.locator("#results .card")).toHaveCount(6);
@@ -101,6 +102,7 @@ test("Bilingual market searches, library and source filters retain existing cont
   await expect(page.locator("#results .card")).toHaveCount(6);
   await page.goto("#cases?lang=zh-CN");
   await expect(page.locator("#results .card")).toHaveCount(cases.length);
+  await page.locator("[data-advanced-filters]").click();
   await page.locator("#filter-audience").click();
   await page
     .getByRole("option", { name: "B 端 / 工作工具", exact: true })
@@ -529,11 +531,7 @@ test("Native page canvases, browser history, keyboard search and preview limits"
   await page.locator("[data-more]").click();
   await expect(page.locator("#results .card")).toHaveCount(48);
   await page.locator(".asset-card").nth(30).scrollIntoViewIfNeeded();
-  const scroll = await page.evaluate(() =>
-    innerWidth > 1023
-      ? document.querySelector(".main-shell").scrollTop
-      : scrollY,
-  );
+  const scroll = await page.evaluate(() => scrollY);
   await page
     .locator(".asset-card")
     .nth(30)
@@ -544,15 +542,7 @@ test("Native page canvases, browser history, keyboard search and preview limits"
   await page.goBack();
   await expect(page.locator("#asset-dialog")).not.toBeVisible();
   await expect(page.locator("#results .card")).toHaveCount(48);
-  await expect
-    .poll(() =>
-      page.evaluate(() =>
-        innerWidth > 1023
-          ? document.querySelector(".main-shell").scrollTop
-          : scrollY,
-      ),
-    )
-    .toBe(scroll);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(scroll);
   await page.keyboard.press("Control+k");
   await page.locator("#quick-search").fill("用户编辑");
   await page.locator("#quick-search").press("Enter");
