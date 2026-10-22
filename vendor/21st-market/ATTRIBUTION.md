@@ -2,7 +2,7 @@
 
 Source: [serafimcloud/21st](https://github.com/serafimcloud/21st), commit
 `b96d84dcf748d5e56f2f72f2bab9a4f7f33574cf` (MIT; copyright 2024 21st.dev).
-The unchanged reference files and their SHA-256 hashes are retained here.
+Reference snapshots (terminal newlines normalized) and their SHA-256 hashes are retained here.
 
 Atlas maps the reference's light/dark background, foreground, muted, border,
 input, ring and primary tokens to its own semantic variables. Type sizes

@@ -34,7 +34,8 @@ class Boundary extends React.Component<
 function App() {
   const params = new URLSearchParams(location.search),
     id = params.get("item") || "magicui-border-beam",
-    thumb = params.has("thumb");
+    thumb = params.has("thumb"),
+    embedded = params.has("embed");
   const [language, languageChanged] = useState(locale),
     [revision, replay] = useState(0),
     [duration, setDuration] = useState(id === "magicui-shimmer-button" ? 3 : 8),
@@ -110,6 +111,17 @@ function App() {
         );
       }
       if (e.data?.type === "atlas:replay") replay((x) => x + 1);
+      if (e.data?.type === "atlas:preview-settings") {
+        const values = e.data.settings;
+        const clamp = (value: number, min: number, max: number) =>
+          Math.max(min, Math.min(max, value));
+        if (Number.isFinite(values?.duration))
+          setDuration(clamp(values.duration, 1, 20));
+        if (Number.isFinite(values?.quantity))
+          setQuantity(clamp(values.quantity, 10, 250));
+        if (Number.isFinite(values?.value))
+          setValue(clamp(values.value, 0, 99999));
+      }
     };
     window.addEventListener("message", handler);
     const key = (e: KeyboardEvent) => {
@@ -130,7 +142,7 @@ function App() {
   }, [setTheme]);
   return (
     <>
-      {!thumb && (
+      {!thumb && !embedded && (
         <div className="demo-controls">
           <span>
             {entries[id as keyof typeof entries]?.name[
@@ -211,7 +223,9 @@ function App() {
                   ? "blocks"
                   : "library"
             }
-            style={{ minHeight: thumb ? "100svh" : "calc(100svh - 49px)" }}
+            style={{
+              minHeight: thumb || embedded ? "100svh" : "calc(100svh - 49px)",
+            }}
           >
             <div key={`${revision}-${language}`}>
               <Boundary>

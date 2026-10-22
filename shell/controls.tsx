@@ -34,7 +34,6 @@ function applyTheme(value: Preference) {
   document.documentElement.dataset.themePreference = value;
   document.documentElement.dataset.theme =
     value === "system" ? (systemTheme.matches ? "dark" : "light") : value;
-  document.documentElement.dataset.accent = "slate";
 }
 applyTheme(preference());
 systemTheme.addEventListener("change", () => applyTheme(preference()));

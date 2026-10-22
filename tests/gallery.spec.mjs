@@ -107,3 +107,78 @@ test("Live cards use the same frame as their screenshot and unload outside the v
     2,
   );
 });
+
+test("Original motion parameters affect the real preview, prompt and replay", async ({
+  page,
+  context,
+}) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.goto("#component/magicui-shimmer-button?lang=en");
+  const demo = page.frameLocator("#case-preview");
+  const button = demo.getByRole("button", {
+    name: "Shimmer Button",
+    exact: true,
+  });
+  await expect(button).toBeVisible();
+  await expect(demo.locator(".demo-controls")).toHaveCount(0);
+  const field = page.getByRole("spinbutton", {
+    name: "Duration (seconds)",
+    exact: true,
+  });
+  await field.fill("6");
+  await expect
+    .poll(() => button.evaluate((el) => el.style.getPropertyValue("--speed")))
+    .toBe("6s");
+  await expect(page.locator(".inline-prompt")).toContainText("duration = 6");
+  await page.locator("[data-replay]").click();
+  await expect
+    .poll(() => button.evaluate((el) => el.style.getPropertyValue("--speed")))
+    .toBe("6s");
+  await page.getByRole("tab", { name: "Prompt", exact: true }).click();
+  await expect(page.locator(".full-prompt")).toContainText("duration = 6");
+  await page.locator("#inspector [data-copy-prompt]").click();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(
+    "duration = 6",
+  );
+  await field.fill("");
+  await page.locator("#inspector [data-copy-prompt]").click();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(
+    "duration = 6",
+  );
+});
+
+test("Page details preserve desktop width, support fullscreen and keep the inspector at 360px", async ({
+  page,
+}) => {
+  await page.goto("#page/shadcn-admin-dashboard?lang=en");
+  const demo = page.frameLocator("#case-preview");
+  await expect(
+    demo.getByRole("heading", { name: "Dashboard", exact: true }),
+  ).toBeVisible();
+  expect((await page.locator("#inspector").boundingBox()).width).toBe(360);
+  expect(
+    await page
+      .locator("#case-preview")
+      .evaluate((f) => f.contentWindow.innerWidth),
+  ).toBe(1280);
+  await page.locator("[data-fullscreen]").click();
+  await expect(page.locator("#preview-panel:fullscreen")).toBeVisible();
+  expect(
+    await page
+      .locator("#case-preview")
+      .evaluate((f) => f.contentWindow.innerWidth),
+  ).toBe(1280);
+  await page.evaluate(() => document.exitFullscreen());
+  await page.locator('[data-device="768"]').click();
+  await expect
+    .poll(() =>
+      page.locator("#case-preview").evaluate((f) => f.contentWindow.innerWidth),
+    )
+    .toBe(768);
+  await page.locator('[data-device="0"]').click();
+  await expect
+    .poll(() =>
+      page.locator("#case-preview").evaluate((f) => f.contentWindow.innerWidth),
+    )
+    .toBe(1280);
+});

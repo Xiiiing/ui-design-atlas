@@ -518,9 +518,7 @@ test("Native page canvases, browser history, keyboard search and preview limits"
     await page
       .locator("#case-preview")
       .evaluate((f) => f.contentWindow.innerWidth),
-  ).toBe(
-    await page.locator("#preview-viewport").evaluate((el) => el.clientWidth),
-  );
+  ).toBe(1280);
   await page.locator('[data-device="375"]').click();
   await expect
     .poll(() =>
@@ -587,11 +585,11 @@ test("Independent upstream resources load locally with source, prompts and reduc
   await page.getByRole("tab", { name: "Code", exact: true }).click();
   await expect(page.locator("#code-text")).toContainText("BorderBeam");
   const demo = page.frameLocator("#case-preview");
-  await demo
-    .getByRole("spinbutton", { name: "Duration", exact: true })
+  await page
+    .getByRole("spinbutton", { name: "Duration (seconds)", exact: true })
     .fill("4");
   await expect(
-    demo.getByRole("spinbutton", { name: "Duration", exact: true }),
+    page.getByRole("spinbutton", { name: "Duration (seconds)", exact: true }),
   ).toHaveValue("4");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(

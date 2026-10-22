@@ -18,3 +18,13 @@ export function thumbnailURL(url) {
     (hash ? "#" + hash : "")
   );
 }
+
+export function embeddedPreviewURL(url) {
+  const [path, hash] = url.split("#");
+  return (
+    path +
+    (path.includes("?") ? "&" : "?") +
+    "embed=1" +
+    (hash ? "#" + hash : "")
+  );
+}

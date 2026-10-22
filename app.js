@@ -1,4 +1,8 @@
-import { resourcePresentation, thumbnailURL } from "./presentation.js";
+import {
+  resourcePresentation,
+  thumbnailURL,
+  embeddedPreviewURL,
+} from "./presentation.js";
 import {
   replaceShellHTML,
   fieldValue,
@@ -322,7 +326,7 @@ function resourceDetails(r) {
           .map((x) => `<li>${esc(x)}</li>`)
           .join("")}</ul>`
       : ""
-  }</section><section class="detail-section"><div class="section-heading"><h3>${t("当前提示词", "Current prompt")}</h3><button class="button small" data-copy-prompt>${icon("copy")}${t("复制", "Copy")}</button></div><p class="curator-label">${t("本站整理 · 与左侧演示对应", "Curated by Atlas · Matches this preview")}</p><pre class="inline-prompt prompt-text">${esc(resourcePrompt(r, locale))}</pre></section>${provenance(r)}`;
+  }</section><section class="detail-section"><div class="section-heading"><h3>${t("当前提示词", "Current prompt")}</h3><button class="button small" data-copy-prompt>${icon("copy")}${t("复制", "Copy")}</button></div><p class="curator-label">${t("本站整理 · 与左侧演示对应", "Curated by Atlas · Matches this preview")}</p><pre class="inline-prompt prompt-text">${esc(promptText(r))}</pre></section>${provenance(r)}`;
 }
 function provenance(r) {
   const s = resourceSource(r);
@@ -382,7 +386,7 @@ function inspector() {
       )
       .join(
         "",
-      )}</div><div id="inspector-content" class="inspector-content" role="tabpanel" aria-labelledby="tab-${tab}">${tab === "notes" ? resourceDetails(r) : tab === "parts" ? related(r) : tab === "prompt" ? `<section class="detail-section"><p>${t("本站整理 · 对应当前资源", "Curated by Atlas · Current resource")}</p><select data-shell-control id="prompt-scope" aria-label="${t("提示词层级", "Prompt scope")}"><option value="current">${t("当前资源", "Current resource")}</option><option value="style">${t("只复用视觉风格", "Visual style only")}</option></select><pre class="prompt-text full-prompt">${esc(resourcePrompt(r, locale))}</pre><button class="button primary" data-copy-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></section>` : `<p>${t("正在读取源码…", "Loading source…")}</p>`}</div>`,
+      )}</div><div id="inspector-content" class="inspector-content" role="tabpanel" aria-labelledby="tab-${tab}">${tab === "notes" ? resourceDetails(r) : tab === "parts" ? related(r) : tab === "prompt" ? `<section class="detail-section"><p>${t("本站整理 · 对应当前资源", "Curated by Atlas · Current resource")}</p><select data-shell-control id="prompt-scope" aria-label="${t("提示词层级", "Prompt scope")}"><option value="current">${t("当前资源", "Current resource")}</option><option value="style">${t("只复用视觉风格", "Visual style only")}</option></select><pre class="prompt-text full-prompt">${esc(promptText(r))}</pre><button class="button primary" data-copy-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></section>` : `<p>${t("正在读取源码…", "Loading source…")}</p>`}</div>`,
   );
   if (tab === "code") void loadCode(r);
 }
@@ -455,6 +459,39 @@ async function loadCode(r) {
       target.innerHTML = `<p>${t("源码读取失败，请重试。", "Source could not be loaded.")}</p><button class="button" data-tab="code">${t("重试", "Retry")}</button>`;
   }
 }
+function previewParameters(r) {
+  const config =
+    r.id === "magicui-border-beam"
+      ? ["duration", t("时长（秒）", "Duration (seconds)"), 1, 20, 8]
+      : r.id === "magicui-shimmer-button"
+        ? ["duration", t("时长（秒）", "Duration (seconds)"), 1, 20, 3]
+        : r.id === "magicui-particles"
+          ? ["quantity", t("粒子数量", "Particle count"), 10, 250, 100]
+          : r.id === "magicui-number-ticker"
+            ? ["value", t("目标数值", "Target value"), 0, 99999, 100]
+            : null;
+  return config;
+}
+function promptText(r, scope = r.type) {
+  const text = resourcePrompt(r, locale, scope),
+    config = previewParameters(r);
+  const input = document.querySelector("[data-preview-setting]");
+  return config &&
+    selected?.id === r.id &&
+    input &&
+    Number(input.dataset.appliedValue) !== config[4]
+    ? text +
+        "\n\n" +
+        t(
+          "当前预览参数覆盖（以此为准）：",
+          "Current preview parameter override (takes precedence): ",
+        ) +
+        config[0] +
+        " = " +
+        input.dataset.appliedValue +
+        "."
+    : text;
+}
 function viewer(r) {
   detailResource = r;
   selected =
@@ -465,24 +502,30 @@ function viewer(r) {
           "page",
         )
       : r;
-  const c = r.type === "case" ? getCase(r.id) : getCase(r.caseId);
-  const chosen = selected;
-  return `<div class="market-viewer"><header class="market-viewer-toolbar"><div class="viewer-leading"><button class="icon-button" data-close-viewer aria-label="${t("返回资源市场", "Back to market")}">${icon("arrow-left")}</button><div class="viewer-title"><strong>${esc(l(r.type === "case" ? r.name : chosen.name))}</strong><small>${esc(resourceSource(chosen).name)}</small></div>${c && r.type !== "component" ? `<select data-shell-control id="preview-page" aria-label="${t("预览页面", "Preview page")}">${c.pages.map((p) => `<option value="${p.id}" ${p.id === chosen.id ? "selected" : ""}>${esc(l(p.name))}</option>`).join("")}</select>` : ""}</div><div class="viewer-tools">${
-    ["page", "case", "block"].includes(r.type)
+  const c = r.type === "case" ? getCase(r.id) : getCase(r.caseId),
+    chosen = selected;
+  const framing = resourcePresentation(chosen),
+    parameter = previewParameters(chosen);
+  return `<div class="market-viewer"><header class="market-viewer-toolbar"><div class="viewer-leading"><button class="icon-button" data-close-viewer aria-label="${t("返回资源市场", "Back to market")}">${icon("arrow-left")}</button><div class="viewer-title"><strong>${esc(l(r.type === "case" ? r.name : chosen.name))}</strong><small>${esc(resourceSource(chosen).name)}</small></div>${c && r.type !== "component" ? `<select data-shell-control id="preview-page" aria-label="${t("预览页面", "Preview page")}">${c.pages.map((p) => `<option value="${p.id}" ${p.id === chosen.id ? "selected" : ""}>${esc(l(p.name))}</option>`).join("")}</select>` : ""}</div><div class="viewer-tools"><button class="icon-button" data-share aria-label="${t("复制分享链接", "Copy share link")}">${icon("link")}</button><span data-shell-appearance></span>${language(true)}<button class="icon-button" data-close-viewer aria-label="${t("关闭预览", "Close preview")}">${icon("x")}</button></div></header>
+  <div class="market-detail-layout"><section class="market-preview-panel" id="preview-panel" data-layout="${framing.layout}"><div class="preview-toolbar"><span class="preview-label">${t("交互预览", "Live preview")}</span>${
+    framing.layout === "wide"
       ? `<div class="viewer-devices">${[
-          ["0", "monitor"],
-          ["768", "tablet"],
-          ["375", "smartphone"],
+          ["0", "monitor", t("桌面画布", "Desktop canvas")],
+          ["768", "tablet", "768px"],
+          ["375", "smartphone", "375px"],
         ]
           .map(
-            ([w, i]) =>
-              `<button class="icon-button ${width === Number(w) ? "selected" : ""}" data-device="${w}" aria-label="${w === "0" ? t("自动宽度", "Auto width") : w + "px"}" aria-pressed="${width === Number(w)}">${icon(i)}</button>`,
+            ([w, i, label]) =>
+              `<button class="icon-button ${width === Number(w) ? "selected" : ""}" data-device="${w}" aria-label="${label}" aria-pressed="${width === Number(w)}">${icon(i)}</button>`,
           )
           .join(
             "",
           )}<button class="icon-button" data-fit aria-label="${t("适应宽度", "Fit width")}" aria-pressed="${fit}">${icon("expand")}</button></div>`
       : ""
-  }${chosen.motion ? `<button class="icon-button" data-replay aria-label="${t("重播动效", "Replay animation")}">${icon("rotate-ccw")}</button>` : ""}<span data-shell-appearance></span><button class="icon-button" data-preview-theme aria-label="${t("切换演示主题", "Toggle preview theme")}">${icon(theme === "dark" ? "sun" : "moon")}</button><button class="icon-button" data-fullscreen aria-label="${t("全屏预览", "Fullscreen preview")}">${icon("maximize")}</button><a id="standalone" class="icon-button" href="${esc(resourcePreview(chosen, locale, theme))}" target="_blank" rel="noopener noreferrer" aria-label="${t("独立打开演示", "Open standalone demo")}">${icon("arrow-up-right")}</a><button class="icon-button" data-share aria-label="${t("复制分享链接", "Copy share link")}">${icon("link")}</button>${language(true)}<button class="button primary toolbar-copy" data-copy-prompt>${icon("copy")}<span>${t("复制提示词", "Copy prompt")}</span></button><button class="icon-button" data-close-viewer aria-label="${t("关闭预览", "Close preview")}">${icon("x")}</button></div></header><div class="market-detail-layout"><section class="market-preview-panel" id="preview-panel"><div class="market-preview-viewport" id="preview-viewport"><div id="preview-canvas"><iframe id="case-preview" src="${esc(resourcePreview(chosen, locale, theme))}" title="${esc(l(chosen.name))}" allow="clipboard-write"></iframe></div></div><div class="market-preview-bottom"><div><button class="icon-button" data-neighbor="-1" aria-label="${t("上一个资源", "Previous resource")}">${icon("chevron-left")}</button><button class="icon-button" data-neighbor="1" aria-label="${t("下一个资源", "Next resource")}">${icon("chevron-right")}</button><span>${labelType(chosen)} · ${esc(resourceSource(chosen).license)}</span></div><button class="text-link" data-tab="prompt">${t("查看提示词", "View prompt")}${icon("arrow-up-right")}</button></div></section><aside id="inspector" class="market-inspector" aria-label="${t("设计说明", "Design details")}"></aside></div></div>`;
+  }<div class="preview-actions">${chosen.motion ? `<button class="icon-button" data-replay aria-label="${t("重播动效", "Replay animation")}">${icon("rotate-ccw")}</button>` : ""}<button class="icon-button" data-preview-theme aria-label="${t("切换演示主题", "Toggle preview theme")}">${icon(theme === "dark" ? "sun" : "moon")}</button><button class="icon-button" data-fullscreen aria-label="${t("全屏预览", "Fullscreen preview")}">${icon("maximize")}</button><a id="standalone" class="icon-button" href="${esc(resourcePreview(chosen, locale, theme))}" target="_blank" rel="noopener noreferrer" aria-label="${t("独立打开演示", "Open standalone demo")}">${icon("arrow-up-right")}</a></div></div>
+  <div class="market-preview-viewport" id="preview-viewport"><div id="preview-canvas"><iframe id="case-preview" src="${esc(embeddedPreviewURL(resourcePreview(chosen, locale, theme)))}" title="${esc(l(chosen.name))}" allow="clipboard-write"></iframe></div></div>
+  ${parameter ? `<div class="preview-parameters"><label>${parameter[1]}<input type="number" data-preview-setting="${parameter[0]}" data-applied-value="${parameter[4]}" min="${parameter[2]}" max="${parameter[3]}" value="${parameter[4]}" aria-label="${parameter[1]}"></label><span>${t("上游原有参数", "Original component parameter")}</span></div>` : ""}
+  <div class="market-preview-bottom"><div><button class="icon-button" data-neighbor="-1" aria-label="${t("上一个资源", "Previous resource")}">${icon("chevron-left")}</button><button class="icon-button" data-neighbor="1" aria-label="${t("下一个资源", "Next resource")}">${icon("chevron-right")}</button><span>${labelType(chosen)} · ${esc(resourceSource(chosen).license)}</span></div><button class="text-link" data-tab="prompt">${t("查看提示词", "View prompt")}${icon("arrow-up-right")}</button></div></section><aside id="inspector" class="market-inspector" aria-label="${t("设计说明", "Design details")}"></aside></div></div>`;
 }
 function showViewer(r) {
   stopAllLive();
@@ -539,20 +582,14 @@ function scalePreview() {
     frame = document.querySelector("#case-preview"),
     canvas = document.querySelector("#preview-canvas");
   if (!viewport || !selected) return;
-  const isSmall =
-    selected.type === "component" &&
-    !["table", "data", "navigation"].includes(
-      selected.kind || selected.category,
-    );
+  const framing = resourcePresentation(selected),
+    isSmall = framing.layout === "compact";
   const desired =
-    width ||
-    (isSmall
-      ? Math.min(selected.preview.width, viewport.clientWidth)
-      : viewport.clientWidth);
+    width || (isSmall ? viewport.clientWidth : selected.preview.width);
   const scale = fit ? Math.min(1, viewport.clientWidth / desired) : 1;
   const h = isSmall
-    ? Math.max(selected.preview.height, viewport.clientHeight / scale)
-    : viewport.clientHeight / scale;
+    ? Math.max(framing.height, viewport.clientHeight / scale)
+    : Math.max(selected.preview.height, viewport.clientHeight / scale);
   canvas.style.width = desired * scale + "px";
   canvas.style.height = h * scale + "px";
   frame.style.width = desired + "px";
@@ -636,7 +673,7 @@ function sourcePage() {
     )
     .join(
       "",
-    )}</div><section class="source-card"><h2>${t("图鉴界面设计基线", "Atlas shell design baseline")}</h2><p>${t("映序 UI：中性阅读面、黑白操作层级、统一选择器与连续选中标记。复用实际组件及固定版本参数。", "Yingxu UI: neutral reading surfaces, monochrome action hierarchy, shared selects and continuous selection markers. Actual components and pinned tokens are reused.")}</p>${external("./vendor/yingxu-ui/ATTRIBUTION.md", t("来源与适配说明", "Source & adaptations"))}</section><section class="source-card"><h2>${t("展示逻辑参考", "Browsing references")}</h2><p>${external("https://21st.dev/community/components", "21st.dev")} · ${external("https://uiverse.io/elements", "Uiverse")} · ${external("https://reactbits.dev/", "React Bits")}</p><p>${t("借鉴资源分类与预览交互。本站未再分发 React Bits 组件。", "References for discovery and preview interactions. React Bits components are not redistributed.")}</p>${external("./vendor/shadcn-ui/ATTRIBUTION.md", "shadcn/ui · MIT")} · ${external("./vendor/lucide/LICENSE", "Lucide · ISC")} · ${external("./vendor/inter/LICENSE", "Inter · OFL")}</section>`;
+    )}</div><section class="source-card"><h2>${t("图鉴界面设计基线", "Atlas shell design baseline")}</h2><p>${t("21st：资源优先的浏览层级、中性明暗表面、轻量边界与统一字级。固定源码提交 b96d84d，图鉴按静态资源市场需求适配。", "21st: preview-first discovery, neutral light/dark surfaces, quiet borders and a shared type scale. Adapted from pinned source b96d84d for this static resource marketplace.")}</p>${external("./vendor/21st-market/ATTRIBUTION.md", t("来源与适配说明", "Source & adaptations"))}</section><section class="source-card"><h2>${t("展示逻辑参考", "Browsing references")}</h2><p>${external("https://21st.dev/community/components", "21st.dev")} · ${external("https://coss.com/origin/button", "Origin UI")} · ${external("https://blocks.so/tables", "Blocks.so")} · ${external("https://reactbits.dev/", "React Bits")}</p><p>${t("借鉴资源分类与预览交互。本站未再分发 React Bits 组件。", "References for discovery and preview interactions. React Bits components are not redistributed.")}</p>${external("./vendor/shadcn-ui/ATTRIBUTION.md", "shadcn/ui · MIT")} · ${external("./vendor/lucide/LICENSE", "Lucide · ISC")} · ${external("./vendor/inter/LICENSE", "Inter · OFL")} · ${external("./vendor/geist/LICENSE", "Geist · OFL")}</section>`;
 }
 function guidePage() {
   return `<section class="market-intro"><div><h1>${t("从一个 UI，开始你的项目。", "From a UI to your project.")}</h1></div></section><div class="source-card guide-copy"><h2>1. ${t("搜索并体验", "Find and try")}</h2><p>${t("按名称、用途或组件库搜索，选择动效、组件、区块或完整案例。点击卡片打开真实交互预览，关闭后继续原来的浏览位置。", "Search by name, purpose or library. Open an effect, component, block or system. Close the preview to resume browsing.")}</p><h2>2. ${t("读说明，复制提示词", "Read and copy a prompt")}</h2><p>${t("右侧说明与当前预览同步。复制当前资源提示词，或选择只复用视觉风格，替换成自己的业务需求。", "The notes follow the current preview. Copy its prompt, or the visual style only, and substitute your business requirements.")}</p><h2>3. ${t("带走实际代码", "Take the actual code")}</h2><p>${t("代码标签提供入口、实现和依赖说明。下载 ZIP 后运行以下命令，官方文档和原始源码地址也保留在详情中。", "The Code tab includes the demo, implementation and dependencies. Extract the ZIP and run the commands below. Official documentation and original source links remain in the details.")}</p><pre>npm ci\nnpm run dev\n\n# Build\nnpm run build</pre><h2>4. ${t("收藏并备份", "Save and back up")}</h2><p>${t("收藏保存在当前浏览器，可导出或导入 JSON。原有案例与组件收藏继续有效。", "Favorites stay in this browser and can be exported or imported as JSON. Existing favorites still work.")}</p></div>`;
@@ -731,9 +768,8 @@ function download(text, name) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 function currentPrompt() {
-  return resourcePrompt(
+  return promptText(
     selected,
-    locale,
     fieldValue("prompt-scope") === "style" ? "style" : selected.type,
   );
 }
@@ -741,10 +777,8 @@ function syncPage(id) {
   const p = findResource(id, "page");
   if (!p) return;
   selected = p;
-  document.querySelector("#case-preview").src = resourcePreview(
-    p,
-    locale,
-    theme,
+  document.querySelector("#case-preview").src = embeddedPreviewURL(
+    resourcePreview(p, locale, theme),
   );
   updateContext();
 }
@@ -836,7 +870,6 @@ document.addEventListener("click", async (e) => {
   if (b.hasAttribute("data-replay")) {
     const f = document.querySelector("#case-preview");
     f.contentWindow.postMessage({ type: "atlas:replay" }, location.origin);
-    f.src = f.src;
     return;
   }
   if (b.hasAttribute("data-preview-theme")) {
@@ -947,6 +980,24 @@ document.addEventListener("focusin", (e) =>
   startLive(e.target.closest(".asset-card")),
 );
 document.addEventListener("input", (e) => {
+  if (e.target.matches("[data-preview-setting]")) {
+    const field = e.target,
+      value = Number(field.value);
+    if (field.value === "" || !Number.isFinite(value) || !field.checkValidity())
+      return;
+    document.querySelector("#case-preview")?.contentWindow.postMessage(
+      {
+        type: "atlas:preview-settings",
+        settings: { [field.dataset.previewSetting]: value },
+      },
+      location.origin,
+    );
+    field.dataset.appliedValue = String(value);
+    const text = document.querySelector(".inline-prompt, .full-prompt");
+    if (text) text.textContent = currentPrompt();
+    return;
+  }
+
   if (e.target.closest("#filters")) {
     limit = 24;
     updateResults(true);

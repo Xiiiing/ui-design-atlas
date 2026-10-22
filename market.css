@@ -814,14 +814,14 @@ kbd {
 /* The archive's immersive preview is a workspace, not a second application shell. */
 #asset-dialog {
   width: calc(100vw - 40px);
-  max-width: 1680px;
+  max-width: 1600px;
   height: calc(100dvh - 40px);
   max-height: 1200px;
   margin: auto;
   padding: 0;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 26px;
+  border-radius: 12px;
   color: var(--ink);
   background: var(--panel);
   box-shadow: var(--shadow-lg);
@@ -916,7 +916,7 @@ dialog::backdrop {
 }
 .market-detail-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 400px;
+  grid-template-columns: minmax(0, 1fr) 360px;
   flex: 1;
   min-height: 0;
   overflow: hidden;
@@ -936,8 +936,7 @@ dialog::backdrop {
   flex: 1;
   min-height: 0;
   overflow: auto;
-  background: radial-gradient(var(--grid-dot) 0.6px, transparent 0.6px) 0 0/14px
-    14px;
+  background: var(--surface);
 }
 #preview-canvas {
   position: relative;
@@ -1032,8 +1031,8 @@ dialog::backdrop {
   margin-bottom: 12px;
 }
 .inspector-head p {
-  font-size: 16px;
-  line-height: 28px;
+  font-size: 14px;
+  line-height: 24px;
   color: var(--muted-text);
 }
 .market-inspector > [data-shell-mounted="selection"] {
@@ -1081,8 +1080,8 @@ dialog::backdrop {
 }
 .detail-section p,
 .detail-section ul {
-  font-size: 16px;
-  line-height: 28px;
+  font-size: 14px;
+  line-height: 24px;
   color: var(--muted-text);
 }
 .detail-section p {
@@ -1416,8 +1415,8 @@ dialog {
   margin-bottom: 12px;
 }
 .source-card p {
-  font-size: 16px;
-  line-height: 28px;
+  font-size: 14px;
+  line-height: 24px;
   color: var(--muted-text);
 }
 .source-card a {
@@ -1820,5 +1819,374 @@ dialog {
   }
   .market-search input {
     height: 44px;
+  }
+}
+/* Detail composition shares the gallery's type, spacing and quiet borders. */
+#asset-dialog {
+  width: calc(100vw - 48px);
+  height: calc(100dvh - 48px);
+  max-height: none;
+  border-radius: 12px;
+}
+.market-viewer-toolbar {
+  min-height: 64px;
+  padding: 10px 16px;
+}
+.viewer-title {
+  display: flex;
+}
+.viewer-title strong {
+  font-size: 14px;
+  max-width: 240px;
+}
+.viewer-title small {
+  font-size: 11px;
+}
+.viewer-leading {
+  gap: 12px;
+}
+.viewer-tools {
+  gap: 8px;
+}
+.viewer-tools .atlas-select-trigger {
+  min-height: 36px;
+}
+.viewer-tools > .icon-button[data-share],
+.viewer-tools > [data-shell-mounted="appearance"] {
+  display: inline-flex;
+}
+.market-detail-layout {
+  grid-template-columns: minmax(0, 1fr) 360px;
+}
+.preview-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 8px 12px;
+  min-height: 54px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+.preview-label {
+  font-size: 12px;
+  color: var(--muted-text);
+  white-space: nowrap;
+}
+.preview-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+.viewer-devices {
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: var(--surface);
+}
+.viewer-devices .icon-button {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  min-height: 32px;
+}
+.viewer-devices .icon-button.selected {
+  background: var(--panel);
+  box-shadow: var(--shadow-sm);
+}
+.preview-actions .icon-button {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  min-height: 32px;
+}
+.preview-parameters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--line);
+  background: var(--panel);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.preview-parameters label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.preview-parameters input {
+  width: 76px;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel);
+}
+.preview-parameters > span {
+  color: var(--muted-text);
+  font-size: 11px;
+}
+.market-preview-bottom {
+  min-height: 50px;
+  padding: 6px 12px;
+}
+.market-preview-bottom .text-link {
+  font-size: 12px;
+  min-height: 36px;
+}
+.market-preview-bottom .icon-button {
+  min-width: 32px;
+  height: 32px;
+}
+.market-preview-panel:fullscreen {
+  height: 100dvh;
+  width: 100%;
+  background: var(--panel);
+}
+.is-viewer {
+  overflow: hidden;
+}
+.is-viewer .main-shell {
+  height: 100%;
+}
+.inspector-head {
+  padding: 20px 20px 16px;
+}
+.inspector-head h2 {
+  margin-bottom: 8px;
+}
+.inspector-head p {
+  font-size: 14px;
+  line-height: 24px;
+}
+.inspector-content {
+  padding: 0 20px 24px;
+}
+.detail-tabs {
+  padding: 0 16px;
+  gap: 12px;
+}
+.detail-tabs button {
+  min-height: 44px;
+  padding: 10px 0;
+  font-size: 13px;
+}
+.detail-section {
+  padding-top: 20px;
+}
+.detail-section h3 {
+  font-size: 14px;
+  line-height: 22px;
+  margin-bottom: 8px;
+}
+.detail-section p,
+.detail-section ul {
+  font-size: 14px;
+  line-height: 24px;
+}
+.inline-prompt,
+.full-prompt,
+.library-credit,
+.related-list a,
+.code-text {
+  border-radius: 6px;
+}
+.inline-prompt,
+.full-prompt {
+  font:
+    13px/22px Geist,
+    "Microsoft YaHei",
+    system-ui,
+    sans-serif;
+}
+.library-credit {
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.source-grid {
+  gap: 20px;
+}
+.source-card {
+  border-radius: 8px;
+  margin-bottom: 0;
+}
+.source-grid + .source-card,
+.source-card + .source-card {
+  margin-top: 20px;
+}
+.source-card h2 {
+  font-size: 18px;
+  line-height: 26px;
+}
+.source-card p {
+  font-size: 14px;
+  line-height: 24px;
+}
+.guide-copy {
+  max-width: 880px;
+  padding: 28px;
+}
+.guide-copy pre {
+  border-radius: 6px;
+}
+dialog {
+  border-radius: 8px;
+}
+.search-dialog-input > button,
+#search-results > a,
+.search-result-icon,
+.dialog-head button,
+#fallback-text,
+#toast {
+  border-radius: 6px;
+}
+@media (max-width: 1199px) {
+  .preview-label {
+    display: none;
+  }
+  .viewer-title strong {
+    max-width: 180px;
+  }
+  .viewer-leading {
+    gap: 8px;
+  }
+  .viewer-tools {
+    gap: 4px;
+  }
+}
+@media (max-width: 1023px) {
+  #asset-dialog {
+    width: calc(100vw - 24px);
+    height: calc(100dvh - 24px);
+  }
+  .market-detail-layout {
+    display: block;
+    overflow: auto;
+  }
+  .market-viewer-toolbar {
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .viewer-leading {
+    margin: 0;
+    min-width: 0;
+  }
+  .viewer-title strong {
+    max-width: 180px;
+  }
+  .viewer-title small {
+    display: none;
+  }
+  .viewer-tools {
+    flex-wrap: nowrap;
+  }
+  .viewer-tools > .icon-button[data-share],
+  .viewer-tools > [data-shell-mounted="appearance"] {
+    display: none;
+  }
+  .preview-label {
+    display: inline;
+  }
+  .market-preview-panel {
+    height: 520px;
+    min-height: 0;
+  }
+  .market-inspector {
+    overflow: visible;
+  }
+  .preview-toolbar {
+    gap: 8px;
+  }
+  .viewer-leading > [data-shell-mounted="select"] {
+    margin-left: 0;
+  }
+  .is-viewer .market-detail-layout {
+    overscroll-behavior: contain;
+  }
+}
+@media (max-width: 599px) {
+  .market-viewer-toolbar {
+    min-height: 56px;
+  }
+  .viewer-leading {
+    gap: 4px;
+    flex: 1;
+  }
+  .viewer-title strong {
+    max-width: 155px;
+    font-size: 13px;
+  }
+  .viewer-leading:has(#preview-page) .viewer-title {
+    display: none;
+  }
+  .viewer-leading > [data-shell-mounted="select"] {
+    max-width: 150px;
+  }
+  .viewer-tools {
+    gap: 2px;
+  }
+  .viewer-tools > [data-shell-mounted="select"] {
+    width: 66px;
+  }
+  .viewer-tools .atlas-select-trigger {
+    padding: 6px;
+    min-height: 36px;
+  }
+  .viewer-tools .icon-button {
+    width: 32px;
+    min-width: 32px;
+  }
+  .viewer-leading > .icon-button {
+    width: 32px;
+    min-width: 32px;
+  }
+  .preview-label {
+    display: none;
+  }
+  .preview-toolbar {
+    padding: 6px 8px;
+    gap: 4px;
+    min-height: 48px;
+  }
+  .preview-actions {
+    gap: 0;
+  }
+  .preview-actions .icon-button,
+  .viewer-devices .icon-button {
+    min-height: 36px;
+    width: 30px;
+    min-width: 30px;
+  }
+  .market-preview-panel {
+    height: 470px;
+  }
+  .preview-parameters {
+    padding: 8px 12px;
+  }
+  .preview-parameters > span {
+    display: none;
+  }
+  .market-preview-bottom .text-link {
+    font-size: 11px;
+  }
+  .market-preview-bottom > div {
+    gap: 0;
+  }
+  .inspector-head h2 {
+    font-size: 22px;
+    line-height: 30px;
+  }
+  .source-card,
+  .guide-copy {
+    padding: 20px;
+  }
+}
+@media (max-width: 599px) {
+  .market-preview-panel[data-layout="compact"] {
+    height: 560px;
   }
 }

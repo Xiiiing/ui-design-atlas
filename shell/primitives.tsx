@@ -123,7 +123,9 @@ export function MarketSelect({
   );
 }
 
-function useReleaseOnUnmount(release: MutableRefObject<(() => void) | undefined>) {
+function useReleaseOnUnmount(
+  release: MutableRefObject<(() => void) | undefined>,
+) {
   useEffect(() => () => release.current?.(), [release]);
 }
 
