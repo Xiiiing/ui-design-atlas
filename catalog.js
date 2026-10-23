@@ -1,3 +1,4 @@
+import { createSearchIndex, rankSearch } from "./search.js";
 import discoveryContent from "./content/discovery.json" with { type: "json" };
 import {
   marketResources,
@@ -574,19 +575,19 @@ export function resourcePrompt(r, lang = "zh-CN", scope = r.type) {
     lang,
   );
 }
-export function resourceSearch(r) {
-  return JSON.stringify([
-    r.name,
-    r.description,
-    r.tags,
-    r.category,
-    r.interactions,
-    r.style,
+const searchIndex = createSearchIndex(resources, (r) => ({
+  names: r.name,
+  aliases: [
     r.aliases,
+    r.tags,
     r.libraryIds.flatMap((id) => [libraries[id]?.name, libraries[id]?.aliases]),
-    resourceSource(r)?.name,
-  ]).toLowerCase();
-}
+  ],
+  description: r.description,
+  context: [r.category, r.interactions, r.style, resourceSource(r)?.name],
+}));
+export const resourceSearch = (r) => searchIndex.get(r).text;
+export const searchResources = (query, items = resources) =>
+  rankSearch(items, query, searchIndex);
 
 // Editorial discovery modules reference existing resources; no duplicate records.
 export const discovery = discoveryContent;

@@ -18,7 +18,7 @@ import {
   resourcePreview,
   resourcePrompt,
   resourceSource,
-  resourceSearch,
+  searchResources,
   sourceProjects,
   libraries,
   getCase,
@@ -188,7 +188,10 @@ function discoveryPage() {
   <section class="discovery-section systems-section" ${recommendedCases.length ? "" : "hidden"}><div class="discovery-section-heading"><h2>${t("完整网站与系统", "Websites & systems")}</h2><a class="text-link" href="${href("cases")}">${t("查看全部", "View all")}${icon("arrow-right")}</a></div><div class="market-grid discovery-grid">${recommendedCases.map(card).join("")}</div></section>`;
 }
 function resultGroups(items) {
-  return ["component", "block", "page", "case"]
+  const order = document.querySelector("#filters [name=q]")?.value.trim()
+    ? [...new Set(items.map((r) => r.type))]
+    : ["component", "block", "page", "case"];
+  return order
     .map((type) => {
       const group = items.filter((r) => r.type === type);
       return group.length
@@ -307,61 +310,59 @@ function filtered() {
   const values = document.querySelector("#filters")
     ? Object.fromEntries(new FormData(document.querySelector("#filters")))
     : Object.fromEntries(route.params);
-  const words = (values.q || "")
-    .trim()
-    .toLowerCase()
-    .split(/\s+/)
-    .filter(Boolean);
   const mode = route.view === "favorites" ? "explore" : route.view;
-  return resources.filter((r) => {
-    if (
-      values.collection &&
-      !collectionResources(values.collection).some((x) => x.id === r.id)
-    )
-      return false;
-    if (route.view === "favorites" && !favorites.has(key(r))) return false;
-    if (mode === "motion" && !r.motion) return false;
-    const type = {
-      components: "component",
-      blocks: "block",
-      pages: "page",
-      cases: "case",
-    }[mode];
-    if (type && r.type !== type) return false;
-    if (
-      values.category &&
-      values.category !== "all" &&
-      r.category !== values.category
-    )
-      return false;
-    if (
-      values.library &&
-      values.library !== "all" &&
-      !r.libraryIds.includes(values.library)
-    )
-      return false;
-    if (
-      values.interaction &&
-      values.interaction !== "all" &&
-      !r.interactions.includes(values.interaction)
-    )
-      return false;
-    if (values.style && values.style !== "all" && r.styleId !== values.style)
-      return false;
-    if (
-      values.audience &&
-      values.audience !== "all" &&
-      r.audience !== values.audience
-    )
-      return false;
-    if (
-      values.source &&
-      values.source !== "all" &&
-      (values.source === "original") !== (r.sourceId === "original")
-    )
-      return false;
-    return words.every((word) => resourceSearch(r).includes(word));
-  });
+  return searchResources(
+    values.q,
+    resources.filter((r) => {
+      if (
+        values.collection &&
+        !collectionResources(values.collection).some((x) => x.id === r.id)
+      )
+        return false;
+      if (route.view === "favorites" && !favorites.has(key(r))) return false;
+      if (mode === "motion" && !r.motion) return false;
+      const type = {
+        components: "component",
+        blocks: "block",
+        pages: "page",
+        cases: "case",
+      }[mode];
+      if (type && r.type !== type) return false;
+      if (
+        values.category &&
+        values.category !== "all" &&
+        r.category !== values.category
+      )
+        return false;
+      if (
+        values.library &&
+        values.library !== "all" &&
+        !r.libraryIds.includes(values.library)
+      )
+        return false;
+      if (
+        values.interaction &&
+        values.interaction !== "all" &&
+        !r.interactions.includes(values.interaction)
+      )
+        return false;
+      if (values.style && values.style !== "all" && r.styleId !== values.style)
+        return false;
+      if (
+        values.audience &&
+        values.audience !== "all" &&
+        r.audience !== values.audience
+      )
+        return false;
+      if (
+        values.source &&
+        values.source !== "all" &&
+        (values.source === "original") !== (r.sourceId === "original")
+      )
+        return false;
+      return true;
+    }),
+  );
 }
 function updateResults(updateURL = false) {
   if (!document.querySelector("#results")) return;
@@ -1341,9 +1342,7 @@ function openSearch() {
 }
 function searchResults() {
   const q = document.querySelector("#quick-search").value.toLowerCase().trim();
-  const items = resources
-    .filter((r) => q.split(/\s+/).every((w) => resourceSearch(r).includes(w)))
-    .slice(0, 10);
+  const items = searchResources(q).slice(0, 10);
   document.querySelector("#search-results").innerHTML = items.length
     ? items
         .map(

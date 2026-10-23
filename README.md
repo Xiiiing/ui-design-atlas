@@ -9,12 +9,12 @@ Find a UI effect, component, block or system; try it and take its notes, prompts
 
 - 首页按资源展示；支持动效、组件、区块、页面和完整案例，以及用途、组件库、风格和交互筛选。
 - 点击卡片打开大弹层：左侧真实交互，右侧名称、介绍、设计解读、提示词、源码与依赖；关闭后恢复筛选和位置。
-- 搜索支持中英文和组件库别名，例如“流光边框”“微软”“Fluent”“antd”。
+- 搜索支持中英文和组件库别名，例如“流光边框”“微软”“Fluent”“antd”；列表与快速搜索按名称精确匹配、名称包含、别名/标签及描述排序，同等相关度保持原顺序。
 - 独立资源无需所属系统。原有案例、页面、组件 ID 和收藏备份保持兼容。
 - 首页只按需加载最多两个实时预览。封面由实际本地演示生成。
 - 默认中文，支持整体英文、分享、收藏导入导出、尺寸和主题切换。
 
-The marketplace provides bilingual search, library/category/style/interaction filters, quick-view dialogs, preserved browsing context, source code and prompts. Existing links and favorites remain compatible. Covers are captured from real demos; at most two live thumbnail previews run at once.
+The marketplace ranks bilingual search by exact name, name match, aliases/tags and description, with stable ties. It provides library/category/style/interaction filters, quick-view dialogs, preserved browsing context, source code and prompts. Existing links and favorites remain compatible. Covers are captured from real demos; at most two live thumbnail previews run at once.
 
 ## 图鉴界面 / Atlas interface
 
