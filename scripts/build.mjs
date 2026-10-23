@@ -48,6 +48,9 @@ const assets = [
 ];
 for (const file of assets)
   await cp(path.join(root, file), path.join(out, file));
+await cp(path.join(root, "content"), path.join(out, "content"), {
+  recursive: true,
+});
 await cp(path.join(root, "assets"), path.join(out, "assets"), {
   recursive: true,
 });

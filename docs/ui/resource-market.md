@@ -69,3 +69,9 @@ node scripts/capture-market.mjs
 [手机首页](./resource-market/home-375-light-zh-CN.png) · [手机组件详情](./resource-market/component-375-light-zh-CN.png) · [平板英文深色首页](./resource-market/home-768-dark-en.png)
 
 此前效果可见[历史截图](./yingxu-shell/market-1440-light.png)。本轮仅提交 PR，不自动合并或发布。
+
+## Discovery and reuse upgrade
+
+The next iteration separates discovery, comparison, quick experience and full reuse. `content/discovery.json` curates eight existing resources, three thematic collections and three complete systems; categories display live registry counts. No resource records or upstream visuals are added. Search results group components, blocks, pages and systems so comparable samples share a presentation grid. The design continues to use the pinned 21st neutral tokens and local Geist fonts.
+
+The public 21st snapshot predates the current site. Product structure is informed by the current [21st library](https://21st.dev/community/components) and its separate preview/full resource journey, [Origin UI buttons](https://coss.com/origin/button) for direct comparison, [Blocks.so tables](https://blocks.so/tables) for wide examples, and [React Bits](https://reactbits.dev/text-animations/split-text) for a stage with nearby replay controls. Their branding is not combined into a new palette. Uiverse was accessible as public text during research, but its interactions were blocked by Cloudflare and are not claimed as browser verified.

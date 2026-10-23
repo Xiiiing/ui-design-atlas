@@ -1,3 +1,4 @@
+import discoveryContent from "./content/discovery.json" with { type: "json" };
 import {
   marketResources,
   marketSources,
@@ -586,3 +587,19 @@ export function resourceSearch(r) {
     resourceSource(r)?.name,
   ]).toLowerCase();
 }
+
+// Editorial discovery modules reference existing resources; no duplicate records.
+export const discovery = discoveryContent;
+export function collectionResources(id) {
+  const collection = discovery.collections.find((item) => item.id === id);
+  if (!collection) return [];
+  if (collection.resources)
+    return collection.resources.map((id) => findResource(id));
+  return resources.filter(
+    (r) =>
+      (!collection.motion || r.motion) &&
+      collection.categories.includes(r.category),
+  );
+}
+export const discoveryResources = (section) =>
+  discovery[section].map((id) => findResource(id));

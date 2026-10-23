@@ -1,0 +1,76 @@
+{
+  "title": {
+    "zh-CN": "为下一个界面，找到灵感与起点。",
+    "en": "Find a starting point for your next interface."
+  },
+  "description": {
+    "zh-CN": "从一个按钮到完整网站，体验真实 UI，带走提示词与代码。",
+    "en": "From a button to a complete website. Try real UI and take the prompt and code."
+  },
+  "featured": [
+    "magicui-shimmer-button",
+    "magicui-magic-card",
+    "magicui-text-animate",
+    "magicui-dock",
+    "fluent-toast",
+    "antd-form",
+    "fluent-toolbar",
+    "shadcn-login-01"
+  ],
+  "categories": [
+    "buttons",
+    "text",
+    "backgrounds",
+    "cards",
+    "navigation",
+    "forms",
+    "data",
+    "feedback"
+  ],
+  "collections": [
+    {
+      "id": "micro-interactions",
+      "name": {
+        "zh-CN": "让界面回应每一次操作",
+        "en": "Make every interaction count"
+      },
+      "description": {
+        "zh-CN": "按钮、卡片与导航里的微交互动效。",
+        "en": "Small moments of motion in buttons, cards and navigation."
+      },
+      "motion": true,
+      "categories": ["buttons", "cards", "navigation"]
+    },
+    {
+      "id": "text-and-backgrounds",
+      "name": {
+        "zh-CN": "文字与背景",
+        "en": "Text & backgrounds"
+      },
+      "description": {
+        "zh-CN": "用文字节奏与背景运动建立第一印象。",
+        "en": "Set the scene with animated typography and backgrounds."
+      },
+      "motion": true,
+      "categories": ["text", "backgrounds"]
+    },
+    {
+      "id": "login-and-signup",
+      "name": {
+        "zh-CN": "登录与注册",
+        "en": "Login & sign up"
+      },
+      "description": {
+        "zh-CN": "从表单校验到完整登录区块。",
+        "en": "From form validation to complete authentication blocks."
+      },
+      "resources": [
+        "magicui-border-beam",
+        "antd-form",
+        "shadcn-login-01",
+        "shadcn-signup-01"
+      ]
+    }
+  ],
+  "cases": ["shadcn-admin", "folio", "bloom"]
+}

@@ -228,3 +228,30 @@ assert.equal(
 console.log(
   "Verified pinned 21st design reference and shared preview framing.",
 );
+
+const { discovery, discoveryResources, collectionResources } =
+  await import("../catalog.js");
+for (const field of ["title", "description"])
+  for (const lang of ["zh-CN", "en"]) assert.ok(discovery[field][lang]);
+for (const section of ["featured", "cases"]) {
+  assert.equal(new Set(discovery[section]).size, discovery[section].length);
+  assert.ok(discoveryResources(section).length);
+  assert.ok(
+    discoveryResources(section).every(Boolean),
+    `Invalid discovery ${section}`,
+  );
+}
+assert.equal(
+  new Set(discovery.collections.map((c) => c.id)).size,
+  discovery.collections.length,
+);
+for (const collection of discovery.collections) {
+  for (const lang of ["zh-CN", "en"])
+    for (const field of ["name", "description"])
+      assert.ok(collection[field][lang]);
+  const items = collectionResources(collection.id);
+  assert.ok(items.length && items.every(Boolean), collection.id);
+  assert.equal(new Set(items.map((r) => r.id)).size, items.length);
+}
+for (const category of discovery.categories)
+  assert.ok(resources.some((r) => r.category === category));
