@@ -1,0 +1,313 @@
+{
+  "baseline": "eb7678eefa20b11a11cb6bb7aabf1d3ae10a05cc",
+  "capturedAt": "2026-10-23T09:18:00.902Z",
+  "source": "84a286246c575a6cdbf9af3e4cd9a6b2b165f714",
+  "workingTreeChanges": false,
+  "bundleSha256": "e66d3909ba188e2502d6913966c39a7695c0d6f9473caaa47e45bb946f0cfc7b",
+  "matrix": [
+    {
+      "width": 2560,
+      "theme": "light",
+      "lang": "en",
+      "gallery": {
+        "columns": 3,
+        "firstTop": 438.296875,
+        "overflow": false,
+        "live": 2
+      },
+      "viewer": {
+        "height": 667,
+        "scrollHeight": 667,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 2560,
+      "theme": "light",
+      "lang": "zh-CN",
+      "gallery": {
+        "columns": 3,
+        "firstTop": 438.296875,
+        "overflow": false,
+        "live": 2
+      },
+      "viewer": {
+        "height": 667,
+        "scrollHeight": 667,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 2560,
+      "theme": "dark",
+      "lang": "en",
+      "gallery": {
+        "columns": 3,
+        "firstTop": 438.296875,
+        "overflow": false,
+        "live": 2
+      },
+      "viewer": {
+        "height": 667,
+        "scrollHeight": 667,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 2560,
+      "theme": "dark",
+      "lang": "zh-CN",
+      "gallery": {
+        "columns": 3,
+        "firstTop": 438.296875,
+        "overflow": false,
+        "live": 2
+      },
+      "viewer": {
+        "height": 667,
+        "scrollHeight": 667,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "lang": "en",
+      "gallery": {
+        "columns": 3,
+        "firstTop": 438.296875,
+        "overflow": false,
+        "live": 2
+      },
+      "viewer": {
+        "height": 667,
+        "scrollHeight": 667,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "lang": "zh-CN",
+      "gallery": {
+        "columns": 3,
+        "firstTop": 438.296875,
+        "overflow": false,
+        "live": 2
+      },
+      "viewer": {
+        "height": 667,
+        "scrollHeight": 667,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "lang": "en",
+      "gallery": {
+        "columns": 3,
+        "firstTop": 438.296875,
+        "overflow": false,
+        "live": 2
+      },
+      "viewer": {
+        "height": 667,
+        "scrollHeight": 667,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "lang": "zh-CN",
+      "gallery": {
+        "columns": 3,
+        "firstTop": 438.296875,
+        "overflow": false,
+        "live": 2
+      },
+      "viewer": {
+        "height": 667,
+        "scrollHeight": 667,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "lang": "en",
+      "gallery": {
+        "columns": 2,
+        "firstTop": 512.296875,
+        "overflow": false,
+        "live": 0
+      },
+      "viewer": {
+        "height": 676,
+        "scrollHeight": 676,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "lang": "zh-CN",
+      "gallery": {
+        "columns": 2,
+        "firstTop": 490.296875,
+        "overflow": false,
+        "live": 0
+      },
+      "viewer": {
+        "height": 676,
+        "scrollHeight": 676,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "lang": "en",
+      "gallery": {
+        "columns": 2,
+        "firstTop": 512.296875,
+        "overflow": false,
+        "live": 0
+      },
+      "viewer": {
+        "height": 676,
+        "scrollHeight": 676,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "lang": "zh-CN",
+      "gallery": {
+        "columns": 2,
+        "firstTop": 490.296875,
+        "overflow": false,
+        "live": 0
+      },
+      "viewer": {
+        "height": 676,
+        "scrollHeight": 676,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "lang": "en",
+      "gallery": {
+        "columns": 1,
+        "firstTop": 550.796875,
+        "overflow": false,
+        "live": 0
+      },
+      "viewer": {
+        "height": 688,
+        "scrollHeight": 688,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "lang": "zh-CN",
+      "gallery": {
+        "columns": 1,
+        "firstTop": 528.796875,
+        "overflow": false,
+        "live": 0
+      },
+      "viewer": {
+        "height": 688,
+        "scrollHeight": 688,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "lang": "en",
+      "gallery": {
+        "columns": 1,
+        "firstTop": 550.796875,
+        "overflow": false,
+        "live": 0
+      },
+      "viewer": {
+        "height": 688,
+        "scrollHeight": 688,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "lang": "zh-CN",
+      "gallery": {
+        "columns": 1,
+        "firstTop": 528.796875,
+        "overflow": false,
+        "live": 0
+      },
+      "viewer": {
+        "height": 688,
+        "scrollHeight": 688,
+        "documentHeight": 1000,
+        "innerHeight": 1000,
+        "overflow": false
+      },
+      "errors": []
+    }
+  ]
+}
