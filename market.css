@@ -702,28 +702,30 @@ kbd {
   text-overflow: ellipsis;
 }
 .asset-description {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 4;
-  background: var(--panel);
-  border-top: 1px solid var(--line);
-  padding: 10px 12px;
+  /* Metadata belongs below the canvas. Reserve two lines so hover/focus and
+     iframe loading never move a neighboring card or cover the demo. */
+  position: static;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 36px;
+  margin-top: 6px;
   font-size: 12px;
   line-height: 18px;
   color: var(--muted-text);
   opacity: 0;
-  transform: translateY(4px);
-  pointer-events: none;
-  transition:
-    opacity 120ms,
-    transform 120ms;
+  transition: opacity 120ms;
 }
 .asset-card:hover .asset-description,
-.asset-card:focus-within .asset-description {
+.asset-card:focus-within .asset-description,
+.asset-card[data-resource^="case:"] .asset-description {
   opacity: 1;
-  transform: none;
+}
+@media (hover: none) {
+  .asset-description {
+    opacity: 1;
+  }
 }
 .load-more {
   display: flex;
@@ -1574,45 +1576,7 @@ dialog {
     right: 50px;
   }
   .asset-description {
-    position: static;
     opacity: 1;
-    transform: none;
-    border: 0;
-    background: none;
-    padding: 6px 0 0;
-    min-height: 42px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .asset-preview {
-    overflow: visible;
-    border: 0;
-    background: transparent;
-    height: auto;
-    padding-bottom: 0;
-  }
-  .asset-preview > img,
-  .asset-live,
-  .asset-cover-link {
-    height: 260px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: var(--panel);
-  }
-  .asset-preview > img {
-    object-fit: contain;
-  }
-  .asset-live {
-    bottom: auto;
-  }
-  .asset-cover-link {
-    bottom: auto;
-  }
-  .motion-badge {
-    bottom: auto;
-    top: 228px;
   }
   .asset-caption {
     padding-top: 6px;
@@ -1671,17 +1635,6 @@ dialog {
   }
   .market-intro p {
     max-width: 32em;
-  }
-  .asset-preview > img,
-  .asset-live,
-  .asset-cover-link {
-    height: 280px;
-  }
-  .motion-badge {
-    top: 248px;
-  }
-  .asset-description {
-    min-height: 0;
   }
   .asset-caption > a {
     font-size: 14px;
@@ -2817,32 +2770,6 @@ dialog {
 .full-viewer .inline-prompt {
   max-height: none;
   overflow: visible;
-}
-@media (max-width: 767px) {
-  .library-page .asset-preview {
-    height: auto;
-    aspect-ratio: auto;
-    overflow: visible;
-    border: 0;
-    border-radius: 0;
-  }
-  .library-page .asset-preview > img,
-  .library-page .asset-live,
-  .library-page .asset-cover-link {
-    height: auto;
-    aspect-ratio: 4/3;
-    border-radius: 12px;
-  }
-  .library-page .asset-preview > img {
-    border: 1px solid var(--line);
-  }
-  .library-page .asset-live {
-    bottom: auto;
-  }
-  .library-page .motion-badge {
-    top: calc(100% - 72px);
-    bottom: auto;
-  }
 }
 /* Search uses the same library hierarchy as discovery. */
 .catalog-toolbar {

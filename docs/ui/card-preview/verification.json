@@ -1,0 +1,377 @@
+{
+  "bundleSHA256": "7915d09af8638de3e45a5e6f8fd7f856e7b84e34f61beee8e3567a60772e3b81",
+  "results": [
+    {
+      "width": 1440,
+      "colorScheme": "dark",
+      "lang": "zh-CN",
+      "view": "motion",
+      "before": {
+        ".asset-preview": {
+          "x": 439.5,
+          "y": 527.296875,
+          "width": 267,
+          "height": 200.25,
+          "top": 527.296875,
+          "right": 706.5,
+          "bottom": 727.546875,
+          "left": 439.5
+        },
+        ".asset-caption": {
+          "x": 439.5,
+          "y": 727.546875,
+          "width": 267,
+          "height": 29,
+          "top": 727.546875,
+          "right": 706.5,
+          "bottom": 756.546875,
+          "left": 439.5
+        },
+        ".asset-description": {
+          "x": 439.5,
+          "y": 762.546875,
+          "width": 267,
+          "height": 36,
+          "top": 762.546875,
+          "right": 706.5,
+          "bottom": 798.546875,
+          "left": 439.5
+        },
+        ".motion-badge": {
+          "x": 450.5,
+          "y": 695.546875,
+          "width": 46,
+          "height": 21,
+          "top": 695.546875,
+          "right": 496.5,
+          "bottom": 716.546875,
+          "left": 450.5
+        }
+      },
+      "after": {
+        ".asset-preview": {
+          "x": 439.5,
+          "y": 527.296875,
+          "width": 267,
+          "height": 200.25,
+          "top": 527.296875,
+          "right": 706.5,
+          "bottom": 727.546875,
+          "left": 439.5
+        },
+        ".asset-caption": {
+          "x": 439.5,
+          "y": 727.546875,
+          "width": 267,
+          "height": 29,
+          "top": 727.546875,
+          "right": 706.5,
+          "bottom": 756.546875,
+          "left": 439.5
+        },
+        ".asset-description": {
+          "x": 439.5,
+          "y": 762.546875,
+          "width": 267,
+          "height": 36,
+          "top": 762.546875,
+          "right": 706.5,
+          "bottom": 798.546875,
+          "left": 439.5
+        },
+        ".motion-badge": {
+          "x": 450.5,
+          "y": 695.546875,
+          "width": 46,
+          "height": 21,
+          "top": 695.546875,
+          "right": 496.5,
+          "bottom": 716.546875,
+          "left": 450.5
+        }
+      },
+      "screenshot": "motion-1440-dark-zh-CN.png",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "colorScheme": "light",
+      "lang": "en",
+      "view": "motion",
+      "before": {
+        ".asset-preview": {
+          "x": 382.5,
+          "y": 579.296875,
+          "width": 338.5,
+          "height": 253.875,
+          "top": 579.296875,
+          "right": 721,
+          "bottom": 833.171875,
+          "left": 382.5
+        },
+        ".asset-caption": {
+          "x": 382.5,
+          "y": 833.171875,
+          "width": 338.5,
+          "height": 29,
+          "top": 833.171875,
+          "right": 721,
+          "bottom": 862.171875,
+          "left": 382.5
+        },
+        ".asset-description": {
+          "x": 382.5,
+          "y": 868.171875,
+          "width": 338.5,
+          "height": 36,
+          "top": 868.171875,
+          "right": 721,
+          "bottom": 904.171875,
+          "left": 382.5
+        },
+        ".motion-badge": {
+          "x": 393.5,
+          "y": 801.171875,
+          "width": 58,
+          "height": 21,
+          "top": 801.171875,
+          "right": 451.5,
+          "bottom": 822.171875,
+          "left": 393.5
+        }
+      },
+      "after": {
+        ".asset-preview": {
+          "x": 382.5,
+          "y": 579.296875,
+          "width": 338.5,
+          "height": 253.875,
+          "top": 579.296875,
+          "right": 721,
+          "bottom": 833.171875,
+          "left": 382.5
+        },
+        ".asset-caption": {
+          "x": 382.5,
+          "y": 833.171875,
+          "width": 338.5,
+          "height": 29,
+          "top": 833.171875,
+          "right": 721,
+          "bottom": 862.171875,
+          "left": 382.5
+        },
+        ".asset-description": {
+          "x": 382.5,
+          "y": 868.171875,
+          "width": 338.5,
+          "height": 36,
+          "top": 868.171875,
+          "right": 721,
+          "bottom": 904.171875,
+          "left": 382.5
+        },
+        ".motion-badge": {
+          "x": 393.5,
+          "y": 801.171875,
+          "width": 58,
+          "height": 21,
+          "top": 801.171875,
+          "right": 451.5,
+          "bottom": 822.171875,
+          "left": 393.5
+        }
+      },
+      "screenshot": "motion-768-light-en.png",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "colorScheme": "dark",
+      "lang": "zh-CN",
+      "view": "motion",
+      "before": {
+        ".asset-preview": {
+          "x": 20,
+          "y": 678.046875,
+          "width": 335,
+          "height": 251.25,
+          "top": 678.046875,
+          "right": 355,
+          "bottom": 929.296875,
+          "left": 20
+        },
+        ".asset-caption": {
+          "x": 20,
+          "y": 929.296875,
+          "width": 335,
+          "height": 29,
+          "top": 929.296875,
+          "right": 355,
+          "bottom": 958.296875,
+          "left": 20
+        },
+        ".asset-description": {
+          "x": 20,
+          "y": 964.296875,
+          "width": 335,
+          "height": 36,
+          "top": 964.296875,
+          "right": 355,
+          "bottom": 1000.296875,
+          "left": 20
+        },
+        ".motion-badge": {
+          "x": 31,
+          "y": 897.296875,
+          "width": 46,
+          "height": 21,
+          "top": 897.296875,
+          "right": 77,
+          "bottom": 918.296875,
+          "left": 31
+        }
+      },
+      "after": {
+        ".asset-preview": {
+          "x": 20,
+          "y": 678.046875,
+          "width": 335,
+          "height": 251.25,
+          "top": 678.046875,
+          "right": 355,
+          "bottom": 929.296875,
+          "left": 20
+        },
+        ".asset-caption": {
+          "x": 20,
+          "y": 929.296875,
+          "width": 335,
+          "height": 29,
+          "top": 929.296875,
+          "right": 355,
+          "bottom": 958.296875,
+          "left": 20
+        },
+        ".asset-description": {
+          "x": 20,
+          "y": 964.296875,
+          "width": 335,
+          "height": 36,
+          "top": 964.296875,
+          "right": 355,
+          "bottom": 1000.296875,
+          "left": 20
+        },
+        ".motion-badge": {
+          "x": 31,
+          "y": 897.296875,
+          "width": 46,
+          "height": 21,
+          "top": 897.296875,
+          "right": 77,
+          "bottom": 918.296875,
+          "left": 31
+        }
+      },
+      "screenshot": "motion-375-dark-zh-CN.png",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "colorScheme": "light",
+      "lang": "en",
+      "view": "blocks",
+      "before": {
+        ".asset-preview": {
+          "x": 160.5,
+          "y": 527.296875,
+          "width": 546,
+          "height": 341.25,
+          "top": 527.296875,
+          "right": 706.5,
+          "bottom": 868.546875,
+          "left": 160.5
+        },
+        ".asset-caption": {
+          "x": 160.5,
+          "y": 868.546875,
+          "width": 546,
+          "height": 29,
+          "top": 868.546875,
+          "right": 706.5,
+          "bottom": 897.546875,
+          "left": 160.5
+        },
+        ".asset-description": {
+          "x": 160.5,
+          "y": 903.546875,
+          "width": 546,
+          "height": 36,
+          "top": 903.546875,
+          "right": 706.5,
+          "bottom": 939.546875,
+          "left": 160.5
+        },
+        ".motion-badge": {
+          "x": 171.5,
+          "y": 836.546875,
+          "width": 58,
+          "height": 21,
+          "top": 836.546875,
+          "right": 229.5,
+          "bottom": 857.546875,
+          "left": 171.5
+        }
+      },
+      "after": {
+        ".asset-preview": {
+          "x": 160.5,
+          "y": 527.296875,
+          "width": 546,
+          "height": 341.25,
+          "top": 527.296875,
+          "right": 706.5,
+          "bottom": 868.546875,
+          "left": 160.5
+        },
+        ".asset-caption": {
+          "x": 160.5,
+          "y": 868.546875,
+          "width": 546,
+          "height": 29,
+          "top": 868.546875,
+          "right": 706.5,
+          "bottom": 897.546875,
+          "left": 160.5
+        },
+        ".asset-description": {
+          "x": 160.5,
+          "y": 903.546875,
+          "width": 546,
+          "height": 36,
+          "top": 903.546875,
+          "right": 706.5,
+          "bottom": 939.546875,
+          "left": 160.5
+        },
+        ".motion-badge": {
+          "x": 171.5,
+          "y": 836.546875,
+          "width": 58,
+          "height": 21,
+          "top": 836.546875,
+          "right": 229.5,
+          "bottom": 857.546875,
+          "left": 171.5
+        }
+      },
+      "screenshot": "blocks-1440-light-en.png",
+      "overflow": false,
+      "errors": []
+    }
+  ]
+}

@@ -186,10 +186,12 @@ test("Touch discovery cards show their actual UI and retain readable captions", 
       descriptionTop: d.top,
       descriptionBottom: d.bottom,
       captionTop: c.top,
+      captionBottom: c.bottom,
     };
   });
   expect(bounds.descriptionTop).toBeGreaterThanOrEqual(bounds.imageBottom);
-  expect(bounds.captionTop).toBeGreaterThanOrEqual(bounds.descriptionBottom);
+  expect(bounds.captionTop).toBeGreaterThanOrEqual(bounds.imageBottom);
+  expect(bounds.descriptionTop).toBeGreaterThanOrEqual(bounds.captionBottom);
 });
 
 test("The library puts a continuous, framed resource wall directly below its browsing controls", async ({
