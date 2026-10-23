@@ -8,7 +8,7 @@ import {
 } from "react";
 import * as Select from "@radix-ui/react-select";
 import * as Menu from "@radix-ui/react-dropdown-menu";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Languages } from "lucide-react";
 import { lockPageScroll } from "./scroll-lock";
 
 const portalHost = (el: HTMLElement | null) =>
@@ -25,8 +25,9 @@ export function MarketSelect({
   form,
   disabled,
   required,
+  iconOnly = false,
   ...rest
-}: SelectHTMLAttributes<HTMLSelectElement>) {
+}: SelectHTMLAttributes<HTMLSelectElement> & { iconOnly?: boolean }) {
   const options = children as React.ReactElement<{
     value: string;
     children: ReactNode;
@@ -86,35 +87,62 @@ export function MarketSelect({
           ref={trigger}
           id={id}
           aria-label={rest["aria-label"]}
-          className="atlas-select-trigger"
+          className={
+            iconOnly
+              ? "atlas-select-trigger language-trigger"
+              : "atlas-select-trigger"
+          }
+          title={
+            iconOnly
+              ? `${rest["aria-label"]}: ${options.find((o) => o.props.value === selected)?.props.children}`
+              : undefined
+          }
           aria-required={required}
         >
-          <Select.Value />{" "}
-          <Select.Icon>
-            <ChevronDown size={14} />
-          </Select.Icon>
+          {iconOnly ? (
+            <Languages size={18} aria-hidden="true" />
+          ) : (
+            <>
+              <Select.Value />
+              <Select.Icon>
+                <ChevronDown size={14} />
+              </Select.Icon>
+            </>
+          )}
         </Select.Trigger>
         <Select.Portal container={container}>
           <Select.Content
             position="popper"
+            align={iconOnly ? "end" : "start"}
             sideOffset={6}
             collisionPadding={12}
-            className="atlas-select-content"
+            className={
+              iconOnly
+                ? "atlas-select-content language-content"
+                : "atlas-select-content"
+            }
           >
             <Select.Viewport>
-              {options.map((o) => (
-                <Select.Item
-                  className="atlas-select-item"
-                  value={"option:" + o.props.value}
-                  key={o.props.value}
-                  disabled={o.props.disabled}
-                >
-                  <Select.ItemText>{o.props.children}</Select.ItemText>
-                  <Select.ItemIndicator>
-                    <Check size={14} />
-                  </Select.ItemIndicator>
-                </Select.Item>
-              ))}
+              <Select.Group>
+                {iconOnly && (
+                  <Select.Label className="language-heading">
+                    语言 / Language
+                  </Select.Label>
+                )}
+                {options.map((o) => (
+                  <Select.Item
+                    className="atlas-select-item"
+                    value={"option:" + o.props.value}
+                    key={o.props.value}
+                    disabled={o.props.disabled}
+                  >
+                    <Select.ItemText>{o.props.children}</Select.ItemText>
+                    <Select.ItemIndicator>
+                      <Check size={14} />
+                    </Select.ItemIndicator>
+                  </Select.Item>
+                ))}
+              </Select.Group>
             </Select.Viewport>
           </Select.Content>
         </Select.Portal>
