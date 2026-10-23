@@ -9,6 +9,7 @@ import { flushSync } from "react-dom";
 import { Monitor, Moon, Sun, Menu } from "lucide-react";
 import { MarketSelect, MarketMenu } from "./primitives";
 import { lockPageScroll } from "./scroll-lock";
+import { SelectionGroup } from "../vendor/yingxu-ui/reference/react/SelectionGroup";
 import "./theme.css";
 
 // React islands reuse the production controls without replacing the catalog,
@@ -176,14 +177,27 @@ function selection(source: HTMLElement): ReactNode {
       key:
         node.getAttribute("data-tab") ||
         node.getAttribute("data-market-mode") ||
+        node.getAttribute("data-category") ||
         i,
       dangerouslySetInnerHTML: { __html: node.innerHTML },
     });
   });
-  return createElement(
-    source.tagName === "NAV" ? "nav" : "div",
-    { ...attributes, className: source.className },
-    children,
+  return (
+    <SelectionGroup
+      {...attributes}
+      as={source.tagName === "NAV" ? "nav" : "div"}
+      className={source.className}
+      variant={
+        source.dataset.shellVariant === "underline" ? "underline" : "outline"
+      }
+      value={
+        source.querySelector(
+          '.active, [aria-pressed="true"], [aria-selected="true"]',
+        )?.textContent
+      }
+    >
+      {children}
+    </SelectionGroup>
   );
 }
 
@@ -199,6 +213,9 @@ function island(source: HTMLElement, kind: string) {
 }
 // Retain navigation roots across catalog updates so keyboard focus stays stable.
 export function replaceShellHTML(target: Element, html: string) {
+  const focused = target.contains(document.activeElement)
+    ? (document.activeElement as HTMLElement)
+    : null;
   // A select can portal into a dialog or body, outside its own mount. Unmount
   // those controls while their portal parent still exists. Clearing the dialog
   // first would make React remove an already removed portal node.
@@ -232,6 +249,9 @@ export function replaceShellHTML(target: Element, html: string) {
   }
   target.replaceChildren(template.content);
   updates.forEach((update) => update());
+  // Moving a retained root through the template temporarily detaches it. Keep
+  // native link focus without moving the document or the horizontal scroller.
+  if (focused?.isConnected) focused.focus({ preventScroll: true });
 }
 let scheduled = false;
 export function refreshShellControls() {
