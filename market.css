@@ -3131,9 +3131,13 @@ dialog {
 }
 .experience-viewer .market-preview-viewport {
   overflow: auto;
+  justify-content: flex-start;
 }
 .experience-viewer .market-preview-viewport #preview-canvas {
   min-height: 0;
+  /* Auto margins center fitted canvases and fall back to zero in actual-size
+     mode, keeping the top and left reachable when the canvas overflows. */
+  margin: auto;
 }
 .experience-viewer .market-inspector {
   min-height: 0;
