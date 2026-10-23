@@ -1563,11 +1563,14 @@ function sendPreviewTheme() {
     );
 }
 function acceptPreviewTheme(value) {
-  if (
-    !["light", "dark"].includes(value) ||
-    (viewerThemeTarget && value !== viewerThemeTarget)
-  )
+  if (!["light", "dark"].includes(value)) return;
+  if (viewerThemeTarget && value !== viewerThemeTarget) {
+    // A lazy case bridge can become ready after iframe load and miss earlier
+    // commands. Its validated state message is our opportunity to send the
+    // latest pending choice again, without reloading or accepting stale state.
+    sendPreviewTheme();
     return;
+  }
   viewerThemeTarget = null;
   // An initial acknowledgement must not turn a following theme into a URL override.
   if (theme === value) return;
