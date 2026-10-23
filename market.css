@@ -502,9 +502,9 @@ kbd {
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
-}
-.active-filters:empty {
-  display: none;
+  /* Reserve the first chip row so choosing/clearing a category cannot push
+     the results away from the control that was just clicked. */
+  min-height: 44px;
 }
 .filter-chip {
   display: inline-flex;
@@ -2273,6 +2273,7 @@ dialog {
   white-space: nowrap;
   font-size: 13px;
   font-weight: 500;
+  min-height: 36px;
 }
 .library-types a.active {
   background: var(--ink);
@@ -2982,5 +2983,49 @@ dialog {
   .catalog-facets .button,
   .catalog-facets .filter-select {
     min-height: 44px;
+  }
+}
+
+/* The archived SelectionGroup supplies motion only; the library keeps its
+   neutral palette and dimensions. Text and hit targets never animate. */
+.library-types.selection-group,
+.catalog-toolbar .market-tabs.selection-group,
+.library-category-row.selection-group,
+.library-page .category-strip.selection-group {
+  --selection-fill: var(--ink);
+  --selection-stroke: transparent;
+  --selection-radius: 9px;
+}
+.library-category-row.selection-group,
+.library-page .category-strip.selection-group {
+  --selection-radius: 999px;
+}
+.library-types.selection-group a.active,
+.catalog-toolbar .market-tabs.selection-group a.active,
+.library-category-row.selection-group a,
+.library-page .category-strip.selection-group button {
+  background: transparent;
+}
+.library-toolbar > [data-shell-mounted="selection"],
+.catalog-toolbar > [data-shell-mounted="selection"] {
+  max-width: 100%;
+}
+/* Shared link metrics keep type labels fixed when moving to/from discovery. */
+.library-types a,
+.catalog-toolbar .market-tabs a {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  line-height: 20px;
+}
+.library-types a span,
+.catalog-toolbar .market-tabs a span {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 767px) {
+  .library-types a,
+  .catalog-toolbar .market-tabs a {
+    min-height: 38px;
+    padding: 8px 12px;
   }
 }

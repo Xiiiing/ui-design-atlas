@@ -1,0 +1,137 @@
+{
+  "bundleSHA256": "b1f4542916a23ce9badc57ec0d213421af5b55ca90ed6a8d81a1d7719ab13956",
+  "results": [
+    {
+      "width": 1440,
+      "colorScheme": "light",
+      "lang": "zh-CN",
+      "before": 428.296875,
+      "after": 428.296875,
+      "cleared": 428.296875,
+      "overflow": false,
+      "errors": [],
+      "screenshot": "buttons-1440-light-zh-CN.png"
+    },
+    {
+      "width": 1440,
+      "colorScheme": "light",
+      "lang": "en",
+      "before": 428.296875,
+      "after": 428.296875,
+      "cleared": 428.296875,
+      "overflow": false,
+      "errors": [],
+      "screenshot": "buttons-1440-light-en.png"
+    },
+    {
+      "width": 1440,
+      "colorScheme": "dark",
+      "lang": "zh-CN",
+      "before": 428.296875,
+      "after": 428.296875,
+      "cleared": 428.296875,
+      "overflow": false,
+      "errors": [],
+      "screenshot": "buttons-1440-dark-zh-CN.png"
+    },
+    {
+      "width": 1440,
+      "colorScheme": "dark",
+      "lang": "en",
+      "before": 428.296875,
+      "after": 428.296875,
+      "cleared": 428.296875,
+      "overflow": false,
+      "errors": [],
+      "screenshot": "buttons-1440-dark-en.png"
+    },
+    {
+      "width": 768,
+      "colorScheme": "light",
+      "lang": "zh-CN",
+      "before": 480.296875,
+      "after": 480.296875,
+      "cleared": 480.296875,
+      "overflow": false,
+      "errors": [],
+      "screenshot": "buttons-768-light-zh-CN.png"
+    },
+    {
+      "width": 768,
+      "colorScheme": "light",
+      "lang": "en",
+      "before": 480.296875,
+      "after": 480.296875,
+      "cleared": 480.296875,
+      "overflow": false,
+      "errors": [],
+      "screenshot": "buttons-768-light-en.png"
+    },
+    {
+      "width": 768,
+      "colorScheme": "dark",
+      "lang": "zh-CN",
+      "before": 480.296875,
+      "after": 480.296875,
+      "cleared": 480.296875,
+      "overflow": false,
+      "errors": [],
+      "screenshot": "buttons-768-dark-zh-CN.png"
+    },
+    {
+      "width": 768,
+      "colorScheme": "dark",
+      "lang": "en",
+      "before": 480.296875,
+      "after": 480.296875,
+      "cleared": 480.296875,
+      "overflow": false,
+      "errors": [],
+      "screenshot": "buttons-768-dark-en.png"
+    },
+    {
+      "width": 375,
+      "colorScheme": "light",
+      "lang": "zh-CN",
+      "before": 482.796875,
+      "after": 482.796875,
+      "cleared": 482.796875,
+      "overflow": false,
+      "errors": [],
+      "screenshot": "buttons-375-light-zh-CN.png"
+    },
+    {
+      "width": 375,
+      "colorScheme": "light",
+      "lang": "en",
+      "before": 482.796875,
+      "after": 482.796875,
+      "cleared": 482.796875,
+      "overflow": false,
+      "errors": [],
+      "screenshot": "buttons-375-light-en.png"
+    },
+    {
+      "width": 375,
+      "colorScheme": "dark",
+      "lang": "zh-CN",
+      "before": 482.796875,
+      "after": 482.796875,
+      "cleared": 482.796875,
+      "overflow": false,
+      "errors": [],
+      "screenshot": "buttons-375-dark-zh-CN.png"
+    },
+    {
+      "width": 375,
+      "colorScheme": "dark",
+      "lang": "en",
+      "before": 482.796875,
+      "after": 482.796875,
+      "cleared": 482.796875,
+      "overflow": false,
+      "errors": [],
+      "screenshot": "buttons-375-dark-en.png"
+    }
+  ]
+}
