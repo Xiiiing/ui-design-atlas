@@ -11,6 +11,13 @@ test("Wide experience fits the available viewport and long content scrolls insid
       frame.getByRole("heading", { name: "Dashboard", exact: true }),
     ).toBeVisible();
     await expect(page.locator("#inspector")).toBeHidden();
+    const responsive = await page.locator("#case-preview").evaluate((f) => ({
+      width: f.contentWindow.innerWidth,
+      available: document.querySelector("#preview-viewport").clientWidth,
+      scale: getComputedStyle(f).transform,
+    }));
+    expect(responsive.width).toBe(responsive.available);
+    expect(responsive.scale).toBe("matrix(1, 0, 0, 1, 0, 0)");
     const sizes = await page.evaluate(() => {
       const v = document.querySelector("#preview-viewport"),
         f = document.querySelector("#case-preview");
@@ -64,6 +71,18 @@ test("Wide experience fits the available viewport and long content scrolls insid
     await expect(
       page.locator(".experience-actions [data-toggle-details]"),
     ).toBeFocused();
+    await page.locator('[data-device="0"]').click();
+    await expect
+      .poll(() =>
+        page
+          .locator("#case-preview")
+          .evaluate(
+            (f) =>
+              f.contentWindow.innerWidth -
+              document.querySelector("#preview-viewport").clientWidth,
+          ),
+      )
+      .toBe(0);
   }
 });
 

@@ -9,6 +9,8 @@ Find a UI effect, component, block or system; try it and take its notes, prompts
 
 - 首页按资源展示；支持动效、组件、区块、页面和完整案例，以及用途、组件库、风格和交互筛选。
 - 紧凑组件在卡片中直接体验；卡片外提供提示词复制、用途/交互/风格标签、详情和收藏。大资源打开独立宽屏体验页，默认收起说明；返回恢复筛选、加载数量、滚动位置和入口焦点。
+- 预览以列宽为正方形单元：紧凑资源 `1×1`，宽资源 `2×1`（含列间距），手机统一一列。卡片保留一行介绍，标签与带无障碍名称的操作图标共用底栏；完整说明与标签可在详情查看。无法完整放入手机单元的定价卡、趋势图和较高卡片使用静态概览入口。
+- 宽屏体验默认按实际可用宽度原生排版，切换平板或手机后才使用固定设备宽度。适应宽度、全屏、源码及演示内部滚动继续保留。
 - 搜索支持中英文和组件库别名，例如“流光边框”“微软”“Fluent”“antd”；列表与快速搜索按名称精确匹配、名称包含、别名/标签及描述排序，同等相关度保持原顺序。
 - 独立资源无需所属系统。原有案例、页面、组件 ID 和收藏备份保持兼容。
 - 可见小组件按需加载，同时最多保留八个实时 iframe；焦点所在演示不会因离屏被回收。大资源使用实际本地演示生成的静态封面。
@@ -20,6 +22,8 @@ The marketplace ranks bilingual search by exact name, name match, aliases/tags a
 
 图鉴外层以固定版本 21st 源码为设计基线，使用开放式资源画廊：轻量吸顶导航、可清除筛选标签、紧凑组件与宽页面分尺寸陈列。详情提供真实预览、360px 说明栏、提示词、源码和原有动效参数。
 The shell adapts a pinned 21st design reference into an open resource gallery, with document scrolling, removable filters, compact/wide previews and a 360px detail inspector. Archived interfaces retain their own styles and themes.
+
+Gallery previews use a square column-sized unit, with wide resources spanning two columns at the same height. Captions, a one-line description, filter tags and accessible icon actions sit outside the preview. Tall demos open from static overviews. The experience viewer uses its available width at native scale by default; explicit tablet/phone selections retain fixed device widths.
 
 查看 [设计映射与浏览器验收 / Design mapping and verification](docs/ui/resource-market.md) 和 [固定源码与许可 / Pinned source and attribution](vendor/21st-market/ATTRIBUTION.md)。此前映序设计资料保留为历史记录，不参与外层运行样式。
 

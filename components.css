@@ -4,6 +4,7 @@
 .theme-forma{--s-bg:#f3f3ef;--s-surface:#fff;--s-text:#191b18;--s-accent:#d2ed4e;--s-line:#c4c6be;--s-radius:0px;--s-on:#191b18;--s-font:Arial,Helvetica,sans-serif}
 .theme-bloom{--s-bg:#f7f5ed;--s-surface:#fffef9;--s-text:#244536;--s-accent:#305744;--s-line:#dce1d5;--s-radius:18px;--s-on:#fff;--s-font:Georgia,serif}
 .sample{background:var(--s-bg);color:var(--s-text);padding:32px;min-height:230px;display:flex;align-items:center;justify-content:center;font:14px/1.5 'Segoe UI','Microsoft YaHei',sans-serif;width:100%;box-sizing:border-box}
+.inline-preview .sample{padding:12px}
 .sample *{box-sizing:border-box}.sample button,.sample input{font:inherit}.sample button,.sample a{touch-action:manipulation}.sample button{cursor:pointer}.sample a{color:inherit}.sample :focus-visible{outline:2px solid var(--s-accent);outline-offset:4px}
 .s-button{display:inline-flex;align-items:center;justify-content:center;gap:16px;border:1px solid transparent;background:var(--s-accent);color:var(--s-on);border-radius:var(--s-radius);padding:11px 18px;min-height:42px;white-space:nowrap;text-decoration:none;font:inherit;transition:filter .16s,transform .16s}
 .theme-folio .s-button{background:var(--s-text);color:var(--s-bg)}.theme-bloom .s-button{border-radius:999px}.s-button:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px)}.s-button:active:not(:disabled){transform:translateY(1px)}.s-button:disabled{opacity:.4;cursor:not-allowed}

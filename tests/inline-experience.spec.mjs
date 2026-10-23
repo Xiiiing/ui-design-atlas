@@ -186,7 +186,7 @@ test("Adjusted compact previews fit phone cards without truncation", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 375, height: 1000 });
-  for (const id of ["magicui-dock", "shadcn-admin-trend-chart"]) {
+  for (const id of ["magicui-dock", "orbit-card"]) {
     await page.goto(
       `#components?lang=en&q=${encodeURIComponent(findResource(id).name.en)}`,
     );
