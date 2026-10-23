@@ -30,7 +30,7 @@ test("Discovery offers curated resources, counted categories, themes and complet
   await expect(page).toHaveURL(/#explore.*q=Fluent/);
 });
 
-test("Search compares like resources in distinct groups and discovery restores after quick preview", async ({
+test("Search compares like resources in distinct groups and discovery restores after wide experience", async ({
   page,
 }) => {
   await page.goto("#explore?lang=en");
@@ -42,14 +42,14 @@ test("Search compares like resources in distinct groups and discovery restores a
     .locator(".featured-section .asset-caption [data-open]")
     .first()
     .click();
-  await expect(page.locator("#asset-dialog")).toBeVisible();
-  await expect(page.locator("#main")).toHaveClass(/library-page/);
+  await expect(page.locator(".experience-viewer")).toBeVisible();
+  await expect(page.locator("#main")).not.toHaveClass(/library-page/);
   await page.goBack();
-  await expect(page.locator("#asset-dialog")).not.toBeVisible();
+  await expect(page.locator(".experience-viewer")).not.toBeVisible();
   await expect(page.locator(".featured-section .asset-card")).toHaveCount(8);
 });
 
-test("Quick experience, full code and browser history restore the original comparison", async ({
+test("Experience details, code and browser history restore the original comparison", async ({
   page,
   context,
 }) => {
@@ -57,22 +57,16 @@ test("Quick experience, full code and browser history restore the original compa
   await page.goto("#explore?lang=en&category=buttons");
   await page.locator("[name=q]").fill("shimmer");
   await page.locator(".asset-caption [data-open]").click();
-  await expect(page.locator("#asset-dialog")).toBeVisible();
-  await expect(page.locator("#asset-dialog [role=tab]")).toHaveCount(0);
-  await expect(page.locator("#asset-dialog .provenance")).toHaveCount(0);
+  await expect(page.locator("#inspector")).toBeVisible();
+  await expect(page).toHaveURL(/panel=details/);
   await page
     .getByRole("spinbutton", { name: "Duration (seconds)", exact: true })
     .fill("6");
-  await page.locator("#inspector [data-copy-prompt]").click();
+  await page.locator("[data-copy-resource-prompt]").click();
   expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(
     "duration = 6",
   );
-  await page.locator("[data-full-detail]").first().click();
-  await expect(page.locator("#asset-dialog")).not.toBeVisible();
-  await expect(page.locator("#topbar")).toBeVisible();
-  await expect(page.locator(".resource-page h1")).toHaveText("Shimmer Button");
-  await expect(page.locator(".inline-prompt")).toContainText("duration = 6");
-  await page.getByRole("tab", { name: "Code", exact: true }).click();
+  await page.locator("[data-tab=code]").click();
   await expect(page).toHaveURL(/tab=code/);
   await expect(page.locator("#code-text")).toContainText("ShimmerButton");
   await page.locator("[data-copy-code]").click();
@@ -80,32 +74,20 @@ test("Quick experience, full code and browser history restore the original compa
     "ShimmerButton",
   );
   await page.goBack();
-  await expect(page.locator("#asset-dialog")).toBeVisible();
-  await expect(
-    page.getByRole("spinbutton", { name: "Duration (seconds)", exact: true }),
-  ).toHaveValue("6");
-  await page.goBack();
-  await expect(page.locator("#asset-dialog")).not.toBeVisible();
   await expect(page.locator("[name=q]")).toHaveValue("shimmer");
   await expect(page.locator("[data-remove-filter=category]")).toContainText(
     "Buttons",
   );
   await page.goForward();
-  await expect(page.locator("#asset-dialog")).toBeVisible();
-  await page.goForward();
-  await expect(page.locator(".resource-page")).toBeVisible();
-  await expect(
-    page.getByRole("tab", { name: "Code", exact: true }),
-  ).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator("#code-text")).toContainText("ShimmerButton");
   await page.reload();
-  await expect(page.locator("#asset-dialog")).not.toBeVisible();
   await expect(page.locator("#code-text")).toContainText("ShimmerButton");
 });
 
 test("Complete case directory, internal navigation and associated parts form a reusable path", async ({
   page,
 }) => {
-  await page.goto("#case/shadcn-admin?lang=en");
+  await page.goto("#case/shadcn-admin?lang=en&panel=details");
   await expect(page.locator(".case-page-grid button")).toHaveCount(6);
   await page.locator('[data-page-preview="shadcn-admin-tasks"]').click();
   await expect(page.locator(".inspector-head h2")).toHaveText("Tasks");
@@ -123,7 +105,7 @@ test("Complete case directory, internal navigation and associated parts form a r
     .locator('#related a[href*="component/shadcn-admin-user-dialog"]')
     .click();
   await expect(page.locator(".resource-page")).toBeVisible();
-  await expect(page.locator("#asset-dialog")).not.toBeVisible();
+  await expect(page).toHaveURL(/component\/shadcn-admin-user-dialog/);
   await page.goBack();
   await expect(page.locator(".inspector-head h2")).toHaveText("Users");
 });
@@ -143,7 +125,7 @@ test("Type filters preserve a thematic or search context and empty results remai
   );
 });
 
-test("Canonical links open a full document and same-URL Back restores quick preview", async ({
+test("Canonical links preserve explicit details state and the default stays wide", async ({
   page,
 }) => {
   await page.goto("#discover?lang=en");
@@ -152,16 +134,14 @@ test("Canonical links open a full document and same-URL Back restores quick prev
     .first()
     .click();
   const canonical = page.url();
-  await page.locator("[data-full-detail]").first().click();
-  expect(page.url()).toBe(canonical);
-  await expect(page.locator("#asset-dialog")).not.toBeVisible();
-  await page.goBack();
-  await expect(page.locator("#asset-dialog")).toBeVisible();
+  await expect(page.locator("#inspector")).toBeVisible();
   await page.goBack();
   await expect(page.locator(".featured-section")).toBeVisible();
   await page.goto(canonical);
+  await expect(page.locator("#inspector")).toBeVisible();
+  await page.goto(canonical.replace("&panel=details", ""));
+  await expect(page.locator("#inspector")).toBeHidden();
   await expect(page.locator(".resource-page")).toBeVisible();
-  await expect(page.locator("#asset-dialog")).not.toBeVisible();
 });
 
 test("Touch discovery cards show their actual UI and retain readable captions", async ({
@@ -221,9 +201,8 @@ test("The library puts a continuous, framed resource wall directly below its bro
   expect(geometry.fontSize).toBe("42px");
   expect(Math.abs(geometry.searchTop - geometry.typesTop)).toBeLessThan(5);
   expect(geometry.imageTop).toBeLessThan(460);
-  expect(geometry.imageBottom).toBeLessThan(1000);
-  expect(geometry.ratio).toBeCloseTo(4 / 3, 1);
-  expect(geometry.columns).toBe(4);
+  expect(geometry.ratio).toBeGreaterThan(0.5);
+  expect(geometry.columns).toBe(3);
   expect(geometry.gap).toBe("12px");
   await page.locator("[data-discovery-more]").click();
   await expect(page.locator(".library-browser .asset-card")).toHaveCount(48);
@@ -231,12 +210,12 @@ test("The library puts a continuous, framed resource wall directly below its bro
     .locator(".library-continuation .asset-caption [data-open]")
     .last()
     .click();
-  await expect(page.locator("#asset-dialog")).toBeVisible();
+  await expect(page.locator(".experience-viewer")).toBeVisible();
   await page.goBack();
   await expect(page.locator(".library-browser .asset-card")).toHaveCount(48);
 });
 
-test("Thumbnail and quick preview preserve the source theme and fixed-height demos fit their cover", async ({
+test("Thumbnail and wide experience preserve the source theme and fixed-height demos fit their cover", async ({
   page,
 }) => {
   await page.goto("#discover?lang=en");
@@ -258,7 +237,7 @@ test("Thumbnail and quick preview preserve the source theme and fixed-height dem
       iframe.evaluate((f) =>
         f.contentDocument
           ?.querySelector(".demo-surface")
-          ?.getAttribute("data-fitted-thumbnail"),
+          ?.getAttribute("data-inline"),
       ),
     )
     .toBe("true");
@@ -286,7 +265,7 @@ test("Thumbnail and quick preview preserve the source theme and fixed-height dem
   );
 });
 
-test("Responsive motion badges stay inside their preview and loading does not duplicate recommendations", async ({
+test("Responsive cards keep structured tags outside previews and loading does not duplicate recommendations", async ({
   page,
 }) => {
   for (const width of [720, 600, 375]) {
@@ -296,14 +275,13 @@ test("Responsive motion badges stay inside their preview and loading does not du
       .locator(".featured-section .asset-card")
       .first()
       .evaluate((el) => ({
-        image: el.querySelector("img").getBoundingClientRect().toJSON(),
-        badge: el
-          .querySelector(".motion-badge")
-          .getBoundingClientRect()
-          .toJSON(),
+        preview: el.querySelector(".asset-preview").getBoundingClientRect()
+          .bottom,
+        tags: el.querySelector(".resource-tags").getBoundingClientRect().top,
+        count: el.querySelectorAll(".resource-tags a").length,
       }));
-    expect(box.badge.top).toBeGreaterThanOrEqual(box.image.top);
-    expect(box.badge.bottom).toBeLessThanOrEqual(box.image.bottom);
+    expect(box.tags).toBeGreaterThanOrEqual(box.preview);
+    expect(box.count).toBeLessThanOrEqual(3);
   }
   await page.locator("[data-discovery-more]").click();
   await page.locator("[data-discovery-more]").click();

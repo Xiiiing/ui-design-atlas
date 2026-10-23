@@ -45,7 +45,7 @@ function InlineReady({
   children,
 }: React.PropsWithChildren<{ id: string }>) {
   useEffect(() => {
-    if (new URLSearchParams(location.search).has("inline"))
+    if (parent !== window)
       parent.postMessage(
         { type: "atlas:inline-ready", resourceId: id },
         location.origin,
@@ -182,7 +182,10 @@ function App() {
           '[role="dialog"],[role="alertdialog"],dialog[open]',
         )
       )
-        parent.postMessage({ type: "atlas:escape" }, location.origin);
+        parent.postMessage(
+          { type: "atlas:escape", resourceId: id },
+          location.origin,
+        );
     };
     window.addEventListener("keydown", key);
     return () => {
@@ -308,7 +311,7 @@ createRoot(document.querySelector("#root")!).render(
     }
     enableSystem={false}
     forcedTheme={undefined}
-    storageKey="atlas:ui-market:theme"
+    storageKey={`atlas:ui-market:${new URLSearchParams(location.search).get("item")}:${new URLSearchParams(location.search).has("inline") ? "card" : "viewer"}:theme`}
   >
     <App />
   </ThemeProvider>,

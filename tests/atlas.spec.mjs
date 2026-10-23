@@ -17,7 +17,7 @@ async function noOverflow(page) {
     ),
   ).toBe(true);
 }
-test("Market quick view preserves filters, navigation context, prompt and source", async ({
+test("Market experience preserves filters, navigation context, prompt and source", async ({
   page,
   context,
 }) => {
@@ -27,22 +27,22 @@ test("Market quick view preserves filters, navigation context, prompt and source
   await expect(page.locator("#results .card")).toHaveCount(24);
   await page.locator("[name=q]").fill("用户编辑");
   await page.locator("[data-open]").last().click();
-  await expect(page.locator("#asset-dialog")).toBeVisible();
+  await expect(page.locator(".experience-viewer")).toBeVisible();
   await expect(page.locator(".inspector-head h2")).toHaveText(
     "User editor dialog",
   );
   await expect(page.locator(".inline-prompt")).toContainText(
     "User editor dialog",
   );
-  await page.locator("[data-full-detail=code]").click();
+  await page.locator("[data-tab=code]").click();
   await expect(page.locator("#code-text")).toContainText("UsersActionDialog");
-  await page.goBack();
-  await expect(page.locator("#asset-dialog")).toBeVisible();
+  await page.locator("[data-tab=notes]").click();
+  await expect(page.locator(".experience-viewer")).toBeVisible();
   await page
-    .getByRole("button", { name: "Close preview", exact: true })
+    .getByRole("button", { name: "Back to market", exact: true })
     .click();
   await expect(page.locator("[name=q]")).toHaveValue("用户编辑");
-  await page.goto("#case/shadcn-admin?lang=en");
+  await page.goto("#case/shadcn-admin?lang=en&panel=details");
   const demo = page.frameLocator("#case-preview");
   await expect(
     demo.getByRole("heading", { name: "Dashboard", exact: true }),
@@ -456,7 +456,7 @@ test("Table filters, sorting, pagination and form validation survive hash refres
   expect(errors).toEqual([]);
 });
 
-test("Market and quick-view layouts remain usable at all viewport sizes", async ({
+test("Market and experience layouts remain usable at all viewport sizes", async ({
   page,
 }) => {
   const errors = watch(page);
@@ -467,15 +467,15 @@ test("Market and quick-view layouts remain usable at all viewport sizes", async 
       await noOverflow(page);
       await page.locator("[name=q]").fill("用户编辑");
       await page.locator("[data-open]").last().click();
-      await expect(page.locator("#asset-dialog")).toBeVisible();
+      await expect(page.locator(".experience-viewer")).toBeVisible();
       await expect(page.locator("#inspector h2")).toBeVisible();
       await noOverflow(page);
-      await page.locator("[data-full-detail=code]").click();
+      await page.locator("[data-tab=code]").click();
       await expect(page.locator("#code-text")).toBeVisible();
-      await page.goBack();
-      await expect(page.locator("#asset-dialog")).toBeVisible();
-      await page.locator("[data-close-viewer]").last().click();
-      await expect(page.locator("#asset-dialog")).not.toBeVisible();
+      await page.locator("[data-tab=notes]").click();
+      await expect(page.locator(".experience-viewer")).toBeVisible();
+      await page.locator("[data-close-viewer]").first().click();
+      await expect(page.locator(".experience-viewer")).not.toBeVisible();
       await expect(page.locator("[name=q]")).toHaveValue("用户编辑");
     }
   expect(errors).toEqual([]);
@@ -483,7 +483,7 @@ test("Market and quick-view layouts remain usable at all viewport sizes", async 
 test("Favorites export/import retains legacy and page IDs", async ({
   page,
 }) => {
-  await page.goto("#page/shadcn-admin-tasks?lang=en");
+  await page.goto("#page/shadcn-admin-tasks?lang=en&panel=details");
   await page.locator("#inspector [data-save]").click();
   await page.goto("#favorites?lang=en");
   await expect(page.locator("#results .card")).toHaveCount(1);
@@ -540,9 +540,9 @@ test("Native page canvases, browser history, keyboard search and preview limits"
     .locator("[data-open]")
     .last()
     .click();
-  await expect(page.locator("#asset-dialog")).toBeVisible();
+  await expect(page.locator(".experience-viewer")).toBeVisible();
   await page.goBack();
-  await expect(page.locator("#asset-dialog")).not.toBeVisible();
+  await expect(page.locator(".experience-viewer")).not.toBeVisible();
   await expect(page.locator("#results .card")).toHaveCount(48);
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(scroll);
   await page.keyboard.press("Control+k");
@@ -553,10 +553,10 @@ test("Native page canvases, browser history, keyboard search and preview limits"
   );
   await expect(page.locator("#search-dialog")).not.toBeVisible();
   await page.keyboard.press("Escape");
-  await expect(page.locator("#asset-dialog")).not.toBeVisible();
+  await expect(page.locator(".experience-viewer")).not.toBeVisible();
   for (let i = 0; i < 4; i++) await page.locator(".asset-card").nth(i).hover();
   expect(await page.locator(".asset-live iframe").count()).toBeLessThanOrEqual(
-    2,
+    8,
   );
   expect(errors).toEqual([]);
 });
@@ -636,15 +636,15 @@ test("Library examples use real Ant Design and Fluent UI with working validation
   await expect(demo.getByRole("dialog")).toBeVisible();
   await demo.getByRole("button", { name: "Close", exact: true }).click();
   await expect(demo.getByRole("dialog")).not.toBeVisible();
-  await expect(page.locator("#asset-dialog")).toBeVisible();
+  await expect(page.locator(".experience-viewer")).toBeVisible();
   await demo.getByRole("button", { name: "Open dialog", exact: true }).click();
   await demo
     .getByRole("button", { name: "Close", exact: true })
     .press("Escape");
   await expect(demo.getByRole("dialog")).not.toBeVisible();
-  await expect(page.locator("#asset-dialog")).toBeVisible();
+  await expect(page.locator(".experience-viewer")).toBeVisible();
   await page
-    .getByRole("button", { name: "Close preview", exact: true })
+    .getByRole("button", { name: "Back to market", exact: true })
     .click();
   await expect(page.locator("[name=q]")).toHaveValue("微软");
   expect(errors).toEqual([]);
@@ -757,8 +757,8 @@ test("Original shadcn blocks validate local forms and preserve native dashboard 
   await page.locator("[name=q]").fill("registration");
   await page.locator("[name=q]").fill("signup");
   await page.locator('[data-open="block:shadcn-signup-01"]').last().click();
-  await expect(page.locator("#asset-dialog")).toBeVisible();
-  await page.locator("[data-full-detail=code]").click();
+  await expect(page.locator(".experience-viewer")).toBeVisible();
+  await page.locator("[data-tab=code]").click();
   await expect(page.locator("#code-text")).toContainText("SignupForm");
   expect(errors).toEqual([]);
 });

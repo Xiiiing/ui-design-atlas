@@ -24,9 +24,11 @@ export function experienceMode(resource) {
 // component and its theme stay intact; only the surrounding demo viewport changes.
 export function resourcePresentation(resource, context = "card") {
   const wide = resource.type !== "component" || resource.preview.width >= 900;
+  const mode = experienceMode(resource);
+  const canvasCard = context === "card" && mode === "canvas";
   const control = !wide && resource.category === "buttons";
   return {
-    mode: experienceMode(resource),
+    mode,
     inlineHeight:
       resource.category === "cards" ||
       resource.id === "shadcn-admin-trend-chart"
@@ -35,18 +37,22 @@ export function resourcePresentation(resource, context = "card") {
     layout: wide ? "wide" : "compact",
     width: wide
       ? resource.preview.width
-      : control && context === "card"
-        ? 320
-        : context === "card"
-          ? 480
-          : 400,
+      : canvasCard
+        ? 960
+        : control && context === "card"
+          ? 320
+          : context === "card"
+            ? 480
+            : 400,
     height: wide
       ? resource.preview.height
-      : control && context === "card"
-        ? 240
-        : context === "card"
-          ? 360
-          : 400,
+      : canvasCard
+        ? 640
+        : control && context === "card"
+          ? 240
+          : context === "card"
+            ? 360
+            : 400,
     theme:
       discovery.previewThemes[resource.id] ||
       (resource.sourceId === "shadcn-admin" ? "dark" : "light"),

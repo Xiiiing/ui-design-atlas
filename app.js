@@ -55,7 +55,8 @@ let route,
   width = 0,
   fit = true,
   limit = 24,
-  toastTimer;
+  toastTimer,
+  previewLoadTimer;
 let browseFiltersExpanded;
 let originBrowse = null,
   currentFiles = {},
@@ -121,9 +122,33 @@ function header() {
     "Search a UI, effect or library…",
   );
 }
+function tagURL(name, value) {
+  const context = originBrowse ? parseHash(originBrowse.hash) : route;
+  const params = Object.fromEntries(context.params);
+  for (const field of ["panel", "tab", "theme", "page"]) delete params[field];
+  params[name] = value;
+  return href(
+    types[context.view] || context.view === "discover"
+      ? "explore"
+      : context.view,
+    "",
+    params,
+  );
+}
 function tagLinks(r, full = false) {
   const tags = resourceTags(r, locale);
-  return `<div class="resource-tags" aria-label="${t("标签", "Tags")}">${tags.map((tag) => `<a href="${href("explore", "", { ...Object.fromEntries(route.params), [tag.name]: tag.value })}" data-resource-tag="${tag.name}" data-tag-value="${esc(tag.value)}">${esc(tag.label)}</a>`).join("")}${
+  if (full)
+    for (const value of r.interactions) {
+      if (
+        !tags.some((tag) => tag.name === "interaction" && tag.value === value)
+      )
+        tags.push({
+          name: "interaction",
+          value,
+          label: t(...interactions[value]),
+        });
+    }
+  return `<div class="resource-tags" aria-label="${t("标签", "Tags")}">${tags.map((tag) => `<a href="${tagURL(tag.name, tag.value)}" data-resource-tag="${tag.name}" data-tag-value="${esc(tag.value)}">${esc(tag.label)}</a>`).join("")}${
     full
       ? [...new Set(l(r.tags) || [])]
           .filter((label) => !tags.some((tag) => tag.label === label))
@@ -139,7 +164,7 @@ function card(r) {
     r.type === "page"
       ? `${l(getCase(r.caseId).name).split(" · ")[0]} · ${l(r.name)}`
       : l(r.name);
-  return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${inline ? "compact" : "wide"}" data-experience="${framing.mode}" style="--inline-height:${framing.inlineHeight}px">
+  return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${inline ? "compact" : "wide"}" data-experience="${framing.mode}" data-cover-layout="${framing.layout}" style="--inline-height:${framing.inlineHeight}px">
   <div class="asset-preview"><img src="${esc(r.cover)}" alt="${esc(name)}" loading="lazy" width="${framing.width}" height="${framing.height}">${inline ? `<div class="asset-live" data-live="${key(r)}"></div><div class="preview-state" role="status"><span>${t("正在加载体验…", "Loading experience…")}</span><button type="button" class="button" data-retry-preview hidden>${t("重试", "Retry")}</button></div>` : `<a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("打开体验", "Open experience")} ${esc(name)}"><span>${icon("arrow-up-right")}${t("打开体验", "Open experience")}</span></a>`}</div>
   <div class="asset-caption"><a data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}">${esc(name)}</a><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" title="${esc(libraries[id].name)}">${esc(libraries[id].name)}</span>`).join("")}</span></div>
   <p class="asset-description" id="description-${r.id}">${esc(l(r.description))}</p>${tagLinks(r)}
@@ -460,17 +485,25 @@ function related(r) {
       "",
     )}</div>${pages.length ? `<h3>${t("所属系统与页面", "System & pages")}</h3><div class="related-list"><a href="${href("case", c.id)}" data-related="case:${c.id}">${esc(l(c.name))} ${icon("layout-template")}</a>${pages.map((x) => `<a href="${href(x.type, x.id)}" data-related="${key(x)}">${esc(l(x.name))}${icon("arrow-up-right")}</a>`).join("")}</div>` : ""}</section>`;
 }
+function caseDirectory() {
+  if (detailResource.type !== "case") return "";
+  return `<section class="detail-section case-directory"><h3>${t("案例页面", "System pages")}</h3><div class="case-page-grid">${detailResource.pages
+    .map((p) => {
+      const item = findResource(p.id, "page");
+      return `<button data-page-preview="${p.id}" aria-pressed="${p.id === selected.id}"><img loading="lazy" src="${item.cover}" alt=""><span>${esc(l(p.name))}</span></button>`;
+    })
+    .join("")}</div></section>`;
+}
 function inspector() {
   if (!selected) return;
   const r = selected;
-  const quick = !!history.state?.atlasModal;
   const head = `<div class="inspector-head"><div class="detail-eyebrow"><span>${labelType(r)}${r.motion ? " · " + t("动效", "Motion") : ""}</span>${saveButton(r)}</div><h2>${esc(l(r.name))}</h2><p>${esc(l(r.description))}</p></div>`;
-  const prompt = `<section class="detail-section"><div class="section-heading"><h3>${t("当前提示词", "Current prompt")}</h3></div><p class="curator-label">${t("本站整理 · 对应当前演示", "Curated by Atlas · Matches this preview")}</p><select data-shell-control id="prompt-scope" aria-label="${t("提示词层级", "Prompt scope")}"><option value="current">${t("当前资源", "Current resource")}</option><option value="style">${t("只复用视觉风格", "Visual style only")}</option></select><pre class="inline-prompt full-prompt prompt-text ${quick ? "prompt-summary" : ""}">${esc(promptText(r))}</pre><button class="button primary" data-copy-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></section>`;
+  const prompt = `<section class="detail-section"><div class="section-heading"><h3>${t("当前提示词", "Current prompt")}</h3></div><p class="curator-label">${t("本站整理 · 对应当前演示", "Curated by Atlas · Matches this preview")}</p><select data-shell-control id="prompt-scope" aria-label="${t("提示词层级", "Prompt scope")}"><option value="current">${t("当前资源", "Current resource")}</option><option value="style">${t("只复用视觉风格", "Visual style only")}</option></select><pre class="inline-prompt full-prompt prompt-text">${esc(promptText(r))}</pre><button class="button primary" data-copy-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></section>`;
   replaceShellHTML(
     document.querySelector("#inspector"),
-    `${head}${tagLinks(r, true)}<div class="inspector-content">${quick ? `<section class="detail-section"><h3>${t("适用场景", "Use cases")}</h3><p>${esc(l(r.useCases || getCase(r.caseId)?.scene || r.description))}</p></section>${prompt}<div class="quick-detail-actions"><a class="button primary" href="${href(detailResource.type, detailResource.id)}" data-full-detail>${t("完整详情", "Full details")}${icon("arrow-right")}</a><a class="button" href="${href(detailResource.type, detailResource.id, { tab: "code" })}" data-full-detail="code">${icon("code-xml")}${t("查看代码", "View code")}</a></div>` : resourceDetails(r, prompt)}</div>`,
+    `${head}<button class="button inspector-close" data-toggle-details>${t("收起说明", "Close details")}</button>${tagLinks(r, true)}<div class="inspector-content">${resourceDetails(r, prompt)}${caseDirectory()}${related(r)}</div>`,
   );
-  if (!quick) {
+  {
     const code = document.querySelector("#full-code");
     code.hidden = tab !== "code";
     document.querySelector("#preview-panel").hidden = tab === "code";
@@ -479,6 +512,7 @@ function inspector() {
       el.tabIndex = el.dataset.tab === tab ? 0 : -1;
     });
     if (tab === "code") void loadCode(r);
+    syncDetailsPanel();
   }
 }
 let codeLoadSerial = 0;
@@ -625,62 +659,45 @@ function viewer(r) {
       : r;
   const c = r.type === "case" ? getCase(r.id) : getCase(r.caseId),
     chosen = selected;
-  const framing = resourcePresentation(
-      chosen,
-      history.state?.atlasModal ? "quick" : "detail",
-    ),
+  const framing = resourcePresentation(chosen, "detail"),
     parameter = previewParameters(chosen);
   if (parameter && previewValues.has(chosen.id))
     parameter[4] = previewValues.get(chosen.id);
-  const quick = !!history.state?.atlasModal;
-  const pageDirectory =
-    r.type === "case"
-      ? `<section class="case-directory"><div class="discovery-section-heading"><div><h2>${t("这个案例有哪些页面？", "Inside this system")}</h2><p>${r.pages.length} ${t("个页面 · 选择页面开始体验", "pages · Choose a page to try")}</p></div></div><div class="case-page-grid">${r.pages
-          .map((p) => {
-            const item = findResource(p.id, "page");
-            return `<button data-page-preview="${p.id}" aria-pressed="${p.id === chosen.id}"><img loading="lazy" src="${item.cover}" alt=""><span>${esc(l(p.name))}</span></button>`;
-          })
-          .join("")}</div></section>`
-      : "";
-  const pageHead = `<div class="resource-page-heading"><a class="text-link" href="${href("explore")}">${icon("arrow-left")}${t("探索资源", "Explore resources")}</a><div class="resource-title-line"><h1>${esc(l(r.name))}</h1>${saveButton(r)}</div><p>${esc(l(r.description))}</p><div class="resource-meta"><span>${labelType(r)}</span>${r.libraryIds.map((id) => `<span>${esc(libraries[id].name)}</span>`).join("")}${external(resourceSource(r).repo, resourceSource(r).name)}<span>${esc(resourceSource(r).license)}</span></div></div>${pageDirectory}`;
-  return `${quick ? "" : `<article class="resource-page">${pageHead}`}<div class="market-viewer ${quick ? "quick-viewer" : "full-viewer"}"><header class="market-viewer-toolbar"><div class="viewer-leading"><button class="icon-button" data-close-viewer aria-label="${t("返回资源市场", "Back to market")}">${icon("arrow-left")}</button><div class="viewer-title"><strong>${esc(l(r.type === "case" ? r.name : chosen.name))}</strong><small>${esc(resourceSource(chosen).name)}</small></div>${c && r.type !== "component" ? `<select data-shell-control id="preview-page" aria-label="${t("预览页面", "Preview page")}">${c.pages.map((p) => `<option value="${p.id}" ${p.id === chosen.id ? "selected" : ""}>${esc(l(p.name))}</option>`).join("")}</select>` : ""}</div><div class="viewer-tools"><button class="icon-button" data-share aria-label="${t("复制分享链接", "Copy share link")}">${icon("link")}</button><span data-shell-appearance></span>${language(true)}<button class="icon-button" data-close-viewer aria-label="${t("关闭预览", "Close preview")}">${icon("x")}</button></div></header>
-  ${quick ? "" : `<div class="full-resource-tabs" role="tablist" aria-label="${t("资源内容", "Resource content")}"><button data-full-tab data-tab="notes" role="tab" aria-selected="${tab !== "code"}" aria-controls="preview-panel">${t("预览", "Preview")}</button><button data-full-tab data-tab="code" role="tab" aria-selected="${tab === "code"}" aria-controls="full-code">${t("代码", "Code")}</button></div>`}<div class="market-detail-layout">${quick ? "" : `<div class="full-preview-column">`}<section class="market-preview-panel" id="preview-panel" data-layout="${framing.layout}" style="--stage-height:${framing.stageHeight}px"><div class="preview-toolbar"><span class="preview-label">${t("交互预览", "Live preview")}</span>${
-    framing.layout === "wide"
-      ? `<div class="viewer-devices">${[
-          ["0", "monitor", t("桌面画布", "Desktop canvas")],
-          ["768", "tablet", "768px"],
-          ["375", "smartphone", "375px"],
-        ]
-          .map(
-            ([w, i, label]) =>
-              `<button class="icon-button ${width === Number(w) ? "selected" : ""}" data-device="${w}" aria-label="${label}" aria-pressed="${width === Number(w)}">${icon(i)}</button>`,
-          )
-          .join(
-            "",
-          )}<button class="icon-button" data-fit aria-label="${t("适应宽度", "Fit width")}" aria-pressed="${fit}">${icon("expand")}</button></div>`
-      : ""
-  }<div class="preview-actions">${chosen.motion ? `<button class="icon-button" data-replay aria-label="${t("重播动效", "Replay animation")}">${icon("rotate-ccw")}</button>` : ""}<button class="icon-button" data-preview-theme aria-label="${t("切换演示主题", "Toggle preview theme")}">${icon(theme === "dark" ? "sun" : "moon")}</button><button class="icon-button" data-fullscreen aria-label="${t("全屏预览", "Fullscreen preview")}">${icon("maximize")}</button><a id="standalone" class="icon-button" href="${esc(resourcePreview(chosen, locale, theme))}" target="_blank" rel="noopener noreferrer" aria-label="${t("独立打开演示", "Open standalone demo")}">${icon("arrow-up-right")}</a></div></div>
-  <div class="market-preview-viewport" id="preview-viewport"><div id="preview-canvas"><iframe id="case-preview" src="${esc(embeddedPreviewURL(resourcePreview(chosen, locale, theme)))}" title="${esc(l(chosen.name))}" allow="clipboard-write"></iframe></div></div>
+  return `<article class="resource-page"><div class="market-viewer full-viewer experience-viewer"><header class="market-viewer-toolbar"><div class="viewer-leading"><button class="icon-button" data-close-viewer aria-label="${t("返回资源市场", "Back to market")}">${icon("arrow-left")}</button><div class="viewer-title"><h1 tabindex="-1">${esc(l(r.type === "case" ? r.name : chosen.name))}</h1><small>${esc(resourceSource(chosen).name)}</small></div>${c && r.type !== "component" ? `<select data-shell-control id="preview-page" aria-label="${t("预览页面", "Preview page")}">${c.pages.map((p) => `<option value="${p.id}" ${p.id === chosen.id ? "selected" : ""}>${esc(l(p.name))}</option>`).join("")}</select>` : ""}</div><div class="viewer-tools"><button class="icon-button" data-share aria-label="${t("复制分享链接", "Copy share link")}">${icon("link")}</button><span data-shell-appearance></span>${language(true)}<button class="icon-button" data-close-viewer aria-label="${t("关闭预览", "Close preview")}">${icon("x")}</button></div></header>
+  <div class="experience-actions"><div class="full-resource-tabs" role="tablist" aria-label="${t("资源内容", "Resource content")}"><button data-full-tab data-tab="notes" role="tab" aria-selected="${tab !== "code"}" aria-controls="preview-panel">${t("预览", "Preview")}</button><button data-full-tab data-tab="code" role="tab" aria-selected="${tab === "code"}" aria-controls="full-code">${t("代码", "Code")}</button></div><button class="button" data-toggle-details aria-controls="inspector" aria-expanded="false">${t("详情", "Details")}</button><button class="button" data-copy-resource-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></div><div class="market-detail-layout"><div class="full-preview-column"><section class="market-preview-panel" id="preview-panel" data-layout="${framing.layout}" style="--stage-height:${framing.stageHeight}px"><div class="preview-toolbar"><span class="preview-label">${t("交互预览", "Live preview")}</span><div class="viewer-devices">${[
+    ["0", "monitor", t("桌面画布", "Desktop canvas")],
+    ["768", "tablet", "768px"],
+    ["375", "smartphone", "375px"],
+  ]
+    .map(
+      ([w, i, label]) =>
+        `<button class="icon-button ${width === Number(w) ? "selected" : ""}" data-device="${w}" aria-label="${label}" aria-pressed="${width === Number(w)}">${icon(i)}</button>`,
+    )
+    .join(
+      "",
+    )}<button class="icon-button" data-fit aria-label="${t("适应宽度", "Fit width")}" aria-pressed="${fit}">${icon("expand")}</button></div><div class="preview-actions">${chosen.motion ? `<button class="icon-button" data-replay aria-label="${t("重播动效", "Replay animation")}">${icon("rotate-ccw")}</button>` : ""}<button class="icon-button" data-preview-theme aria-label="${t("切换演示主题", "Toggle preview theme")}">${icon(theme === "dark" ? "sun" : "moon")}</button><button class="icon-button" data-fullscreen aria-label="${t("全屏预览", "Fullscreen preview")}">${icon("maximize")}</button><a id="standalone" class="icon-button" href="${esc(resourcePreview(chosen, locale, theme))}" target="_blank" rel="noopener noreferrer" aria-label="${t("独立打开演示", "Open standalone demo")}">${icon("arrow-up-right")}</a></div></div>
+  <div class="market-preview-viewport" id="preview-viewport"><div class="viewer-load-state" role="status"><span>${t("正在加载体验…", "Loading experience…")}</span><button class="button" data-retry-viewer hidden>${t("重试", "Retry")}</button></div><div id="preview-canvas"><iframe id="case-preview" src="${esc(embeddedPreviewURL(resourcePreview(chosen, locale, theme)))}" title="${esc(l(chosen.name))}" allow="clipboard-write"></iframe></div></div>
   ${parameter ? `<div class="preview-parameters"><label>${parameter[1]}<input type="number" data-preview-setting="${parameter[0]}" data-applied-value="${parameter[4]}" min="${parameter[2]}" max="${parameter[3]}" value="${parameter[4]}" aria-label="${parameter[1]}"></label><span>${t("上游原有参数", "Original component parameter")}</span></div>` : ""}
-  <div class="market-preview-bottom"><div><button class="icon-button" data-neighbor="-1" aria-label="${t("上一个资源", "Previous resource")}">${icon("chevron-left")}</button><button class="icon-button" data-neighbor="1" aria-label="${t("下一个资源", "Next resource")}">${icon("chevron-right")}</button><span>${labelType(chosen)} · ${esc(resourceSource(chosen).license)}</span></div><button class="text-link" data-focus-prompt>${t("查看提示词", "View prompt")}${icon("arrow-up-right")}</button></div></section>${quick ? "" : `<div id="full-code" role="tabpanel" hidden></div></div>`}<aside id="inspector" class="market-inspector" aria-label="${t("设计说明", "Design details")}"></aside></div></div>${quick ? "" : `<div class="full-related">${related(r)}</div></article>`}`;
+  <div class="market-preview-bottom"><div><button class="icon-button" data-neighbor="-1" aria-label="${t("上一个资源", "Previous resource")}">${icon("chevron-left")}</button><button class="icon-button" data-neighbor="1" aria-label="${t("下一个资源", "Next resource")}">${icon("chevron-right")}</button><span>${labelType(chosen)} · ${esc(resourceSource(chosen).license)}</span></div><button class="text-link" data-focus-prompt>${t("查看提示词", "View prompt")}${icon("arrow-up-right")}</button></div></section><div id="full-code" role="tabpanel" hidden></div></div><aside id="inspector" class="market-inspector" aria-label="${t("设计说明", "Design details")}"></aside></div></div></article>`;
 }
 function showViewer(r) {
   stopAllLive();
   tab = route.params.get("tab") === "code" ? "code" : "notes";
-  width = 0;
+  width = innerWidth < 600 ? 375 : innerWidth < 1024 ? 768 : 0;
   fit = true;
-  const isModal = !!history.state?.atlasModal;
-  document.body.classList.remove("is-viewer");
-  if (isModal) {
-    const d = document.querySelector("#asset-dialog");
-    replaceShellHTML(d, viewer(r));
-    showShellDialog(d);
-  } else {
-    replaceShellHTML(main, viewer(r));
-  }
+  document.body.classList.add("is-experience");
+  document.querySelector("#footer").hidden = true;
+  replaceShellHTML(main, viewer(r));
   inspector();
   scalePreview();
+  previewResizeObserver.observe(document.querySelector("#preview-viewport"));
   const frame = document.querySelector("#case-preview");
+  beginPreviewLoad();
+  frame.addEventListener("load", () => {
+    if (!frame.contentDocument?.querySelector("#root, #preview-root"))
+      previewLoadState("error");
+  });
+  frame.addEventListener("error", () => previewLoadState("error"));
   frame.addEventListener("load", () => {
     const input = document.querySelector("[data-preview-setting]");
     if (input && previewValues.has(selected?.id))
@@ -694,16 +711,25 @@ function showViewer(r) {
         location.origin,
       );
   });
-  if (isModal && history.state?.quickScroll)
-    document.querySelector(".market-detail-layout").scrollTop =
-      history.state.quickScroll;
-  if (isModal)
-    document
-      .querySelector("[data-close-viewer]")
-      ?.focus({ preventScroll: true });
+  document.querySelector(".viewer-title h1")?.focus({ preventScroll: true });
   document.title = l(r.name) + " · UI Design Atlas";
 }
-function openResource(id, type, replace = false) {
+function previewLoadState(state) {
+  const status = document.querySelector(".viewer-load-state");
+  if (!status) return;
+  clearTimeout(previewLoadTimer);
+  status.hidden = state === "ready";
+  status.querySelector("span").textContent =
+    state === "error"
+      ? t("体验加载失败", "Experience could not be loaded")
+      : t("正在加载体验…", "Loading experience…");
+  status.querySelector("button").hidden = state !== "error";
+}
+function beginPreviewLoad() {
+  previewLoadState("loading");
+  previewLoadTimer = setTimeout(() => previewLoadState("error"), 15000);
+}
+function openResource(id, type, replace = false, details = false) {
   const r = findResource(id, type);
   if (!r) return;
   if (!selected) {
@@ -713,6 +739,11 @@ function openResource(id, type, replace = false) {
       scroll: browseScroll(),
       limit,
       focus: key(r),
+      focusSelector: document.activeElement?.closest(".asset-actions")
+        ? ".asset-actions [data-open]"
+        : document.activeElement?.closest(".asset-caption")
+          ? ".asset-caption [data-open]"
+          : "[data-open]",
       items: [...document.querySelectorAll(".asset-card")].map(
         (el) => el.dataset.resource,
       ),
@@ -723,44 +754,66 @@ function openResource(id, type, replace = false) {
       location.href,
     );
   }
+  const depth = history.state?.resourceDepth || 0;
   const state = {
-    atlasModal: !selected ? true : !!history.state?.atlasModal,
     background: originBrowse,
-    resourceFrom: !!selected && !history.state?.atlasModal,
+    resourceDepth: replace ? Math.max(1, depth) : depth + 1,
   };
-  const url = href(r.type, r.id, { theme });
+  const url = href(r.type, r.id, {
+    theme,
+    ...(details ? { panel: "details" } : {}),
+  });
   history[replace ? "replaceState" : "pushState"](state, "", url);
   route = parse();
   render();
-  if (!state.atlasModal) scrollBrowseTo(0);
+  scrollBrowseTo(0);
 }
 function closeViewer() {
-  if (history.state?.atlasModal && history.state?.background) {
-    history.back();
-    return;
-  }
-  if (history.state?.fromQuick || history.state?.resourceFrom) {
-    history.back();
+  if (originBrowse && history.state?.resourceDepth) {
+    history.go(-history.state.resourceDepth);
     return;
   }
   location.hash = href("explore").slice(1);
+}
+function syncDetailsPanel(focus = false) {
+  const viewer = document.querySelector(".experience-viewer");
+  if (!viewer) return;
+  const open = route.params.get("panel") === "details" && tab !== "code";
+  viewer.dataset.detailsOpen = String(open);
+  document.querySelector("#inspector").hidden = !open;
+  document.querySelector(".full-preview-column").inert =
+    open && innerWidth < 1024;
+  const toggle = viewer.querySelector(
+    ".experience-actions [data-toggle-details]",
+  );
+  toggle.setAttribute("aria-expanded", String(open));
+  if (focus) (open ? viewer.querySelector(".inspector-close") : toggle).focus();
+  requestAnimationFrame(scalePreview);
+}
+function toggleDetails(open = route.params.get("panel") !== "details") {
+  const params = new URLSearchParams(route.params);
+  if (open) params.set("panel", "details");
+  else params.delete("panel");
+  history.replaceState(
+    history.state,
+    "",
+    href(route.view, route.id, Object.fromEntries(params)),
+  );
+  route = parse();
+  syncDetailsPanel(true);
 }
 function scalePreview() {
   const viewport = document.querySelector("#preview-viewport"),
     frame = document.querySelector("#case-preview"),
     canvas = document.querySelector("#preview-canvas");
   if (!viewport || !selected || !viewport.clientWidth) return;
-  const framing = resourcePresentation(
-      selected,
-      history.state?.atlasModal ? "quick" : "detail",
-    ),
+  const framing = resourcePresentation(selected, "detail"),
     isSmall = framing.layout === "compact";
   const desired =
     width || (isSmall ? viewport.clientWidth : selected.preview.width);
   const scale = fit ? Math.min(1, viewport.clientWidth / desired) : 1;
-  const h = isSmall
-    ? Math.max(framing.height, viewport.clientHeight / scale)
-    : Math.max(selected.preview.height, viewport.clientHeight / scale);
+  // The iframe owns content scrolling. Its scaled height fits the available stage.
+  const h = viewport.clientHeight / scale;
   canvas.style.width = desired * scale + "px";
   canvas.style.height = h * scale + "px";
   frame.style.width = desired + "px";
@@ -770,6 +823,8 @@ function scalePreview() {
 let renderedNavigation;
 function render() {
   stopAllLive();
+  clearTimeout(previewLoadTimer);
+  previewResizeObserver.disconnect();
   renderedNavigation = location.href + JSON.stringify(history.state);
   const d = document.querySelector("#asset-dialog");
   if (d.open) d.close();
@@ -781,30 +836,15 @@ function render() {
   if (["dark", "light"].includes(route.params.get("theme")))
     theme = route.params.get("theme");
   header();
-  main.classList.toggle(
-    "library-page",
-    !types[route.view] || !!history.state?.atlasModal,
-  );
+  main.classList.toggle("library-page", !types[route.view]);
   document.querySelector("#topbar").hidden = false;
   document.querySelector("#footer").hidden = false;
-  document.body.classList.remove("is-viewer");
+  document.body.classList.remove("is-viewer", "is-experience");
   if (types[route.view]) {
     const r = findResource(route.id, route.view);
     if (r) {
-      if (history.state?.atlasModal) {
-        originBrowse = history.state.background;
-        limit = originBrowse.limit || 24;
-        const detailRoute = route;
-        route = parseHash(originBrowse.hash);
-        replaceShellHTML(
-          main,
-          route.view === "discover" ? discoveryPage() : listing(),
-        );
-        restoreFilters();
-        route = detailRoute;
-      }
-      if (!history.state?.atlasModal)
-        originBrowse = history.state?.background || null;
+      originBrowse = history.state?.background || null;
+      if (!route.params.has("theme")) theme = resourcePresentation(r).theme;
       showViewer(r);
       return;
     }
@@ -834,7 +874,9 @@ function render() {
     requestAnimationFrame(() => {
       scrollBrowseTo(b.scroll);
       document
-        .querySelector(`[data-open="${b.focus}"]`)
+        .querySelector(
+          `[data-resource="${b.focus}"] ${b.focusSelector || "[data-open]"}`,
+        )
         ?.focus({ preventScroll: true });
     });
   document.title = t("UI 资源市场", "UI marketplace") + " · UI Design Atlas";
@@ -864,7 +906,7 @@ function sourcePage() {
     )}</div><section class="source-card"><h2>${t("图鉴界面设计基线", "Atlas shell design baseline")}</h2><p>${t("21st：资源优先的浏览层级、中性明暗表面、轻量边界与统一字级。固定源码提交 b96d84d，图鉴按静态资源市场需求适配。", "21st: preview-first discovery, neutral light/dark surfaces, quiet borders and a shared type scale. Adapted from pinned source b96d84d for this static resource marketplace.")}</p>${external("./vendor/21st-market/ATTRIBUTION.md", t("来源与适配说明", "Source & adaptations"))}</section><section class="source-card"><h2>${t("展示逻辑参考", "Browsing references")}</h2><p>${external("https://21st.dev/community/components", "21st.dev")} · ${external("https://coss.com/origin/button", "Origin UI")} · ${external("https://blocks.so/tables", "Blocks.so")} · ${external("https://reactbits.dev/", "React Bits")}</p><p>${t("借鉴资源分类与预览交互。本站未再分发 React Bits 组件。", "References for discovery and preview interactions. React Bits components are not redistributed.")}</p>${external("./vendor/shadcn-ui/ATTRIBUTION.md", "shadcn/ui · MIT")} · ${external("./vendor/lucide/LICENSE", "Lucide · ISC")} · ${external("./vendor/inter/LICENSE", "Inter · OFL")} · ${external("./vendor/geist/LICENSE", "Geist · OFL")}</section>`;
 }
 function guidePage() {
-  return `<section class="market-intro"><div><h1>${t("从一个 UI，开始你的项目。", "From a UI to your project.")}</h1></div></section><div class="source-card guide-copy"><h2>1. ${t("搜索并体验", "Find and try")}</h2><p>${t("按名称、用途或组件库搜索，选择动效、组件、区块或完整案例。点击卡片打开真实交互预览，关闭后继续原来的浏览位置。", "Search by name, purpose or library. Open an effect, component, block or system. Close the preview to resume browsing.")}</p><h2>2. ${t("读说明，复制提示词", "Read and copy a prompt")}</h2><p>${t("右侧说明与当前预览同步。复制当前资源提示词，或选择只复用视觉风格，替换成自己的业务需求。", "The notes follow the current preview. Copy its prompt, or the visual style only, and substitute your business requirements.")}</p><h2>3. ${t("带走实际代码", "Take the actual code")}</h2><p>${t("从快速预览进入「完整详情」或「查看代码」。完整资源页提供实际入口、实现、依赖与来源说明；完整案例先浏览页面目录，再体验系统。下载 ZIP 后运行以下命令。", "Choose Full details or View code in quick preview. The full resource page includes implementation, dependencies and provenance. Systems start with a page directory. Extract the ZIP and run the commands below.")}</p><pre>npm ci\nnpm run dev\n\n# Build\nnpm run build</pre><h2>4. ${t("收藏并备份", "Save and back up")}</h2><p>${t("收藏保存在当前浏览器，可导出或导入 JSON。原有案例与组件收藏继续有效。", "Favorites stay in this browser and can be exported or imported as JSON. Existing favorites still work.")}</p></div>`;
+  return `<section class="market-intro"><div><h1>${t("从一个 UI，开始你的项目。", "From a UI to your project.")}</h1></div></section><div class="source-card guide-copy"><h2>1. ${t("搜索并体验", "Find and try")}</h2><p>${t("按名称、用途或组件库搜索，选择动效、组件、区块或完整案例。小组件可直接操作；大资源打开宽屏体验，返回后继续原来的浏览位置。", "Search by name, purpose or library. Try compact components in their cards; open larger resources in the wide experience. Return to resume browsing.")}</p><h2>2. ${t("读说明，复制提示词", "Read and copy a prompt")}</h2><p>${t("右侧说明与当前预览同步。复制当前资源提示词，或选择只复用视觉风格，替换成自己的业务需求。", "The notes follow the current preview. Copy its prompt, or the visual style only, and substitute your business requirements.")}</p><h2>3. ${t("带走实际代码", "Take the actual code")}</h2><p>${t("在体验页选择「详情」或「代码」。资源页提供实际入口、实现、依赖与来源说明；完整案例可切换页面继续体验。下载 ZIP 后运行以下命令。", "Choose Details or Code in the experience page for implementation, dependencies and provenance. Switch pages within a complete system. Extract the ZIP and run the commands below.")}</p><pre>npm ci\nnpm run dev\n\n# Build\nnpm run build</pre><h2>4. ${t("收藏并备份", "Save and back up")}</h2><p>${t("收藏保存在当前浏览器，可导出或导入 JSON。原有案例与组件收藏继续有效。", "Favorites stay in this browser and can be exported or imported as JSON. Existing favorites still work.")}</p></div>`;
 }
 const liveCards = createLiveCards({
   resource: (card) => {
@@ -918,12 +960,19 @@ function syncPage(id) {
   const p = findResource(id, "page");
   if (!p) return;
   selected = p;
+  beginPreviewLoad();
   document.querySelector("#case-preview").src = embeddedPreviewURL(
     resourcePreview(p, locale, theme),
   );
   updateContext();
 }
 function updateContext() {
+  if (detailResource.type !== "case") detailResource = selected;
+  document.querySelector(".viewer-title h1").textContent = l(
+    detailResource.name,
+  );
+  document.querySelector("#case-preview").title = l(selected.name);
+  document.title = l(detailResource.name) + " · UI Design Atlas";
   const select = document.querySelector("#preview-page");
   if (select) setFieldValue("preview-page", selected.id);
   document.querySelector("#standalone").href = resourcePreview(
@@ -937,10 +986,16 @@ function updateContext() {
           page: selected.key,
           theme,
           ...(tab === "code" ? { tab: "code" } : {}),
+          ...(route.params.get("panel") === "details"
+            ? { panel: "details" }
+            : {}),
         })
       : href(selected.type, selected.id, {
           theme,
           ...(tab === "code" ? { tab: "code" } : {}),
+          ...(route.params.get("panel") === "details"
+            ? { panel: "details" }
+            : {}),
         });
   history.replaceState(history.state, "", url);
   route = parse();
@@ -964,49 +1019,10 @@ document.addEventListener("click", async (e) => {
   const tagLink = e.target.closest("[data-resource-tag]");
   if (tagLink && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
     e.preventDefault();
-    const params = Object.fromEntries(
-      new URLSearchParams(
-        originBrowse ? parseHash(originBrowse.hash).params : route.params,
-      ),
+    location.hash = tagURL(
+      tagLink.dataset.resourceTag,
+      tagLink.dataset.tagValue,
     );
-    for (const name of ["panel", "tab", "theme", "page"]) delete params[name];
-    params[tagLink.dataset.resourceTag] = tagLink.dataset.tagValue;
-    location.hash = href(
-      originBrowse
-        ? parseHash(originBrowse.hash).view === "discover"
-          ? "explore"
-          : parseHash(originBrowse.hash).view
-        : route.view === "discover" || selected
-          ? "explore"
-          : route.view,
-      "",
-      params,
-    );
-    return;
-  }
-  const fullLink = e.target.closest("[data-full-detail]");
-  if (fullLink && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
-    e.preventDefault();
-    history.replaceState(
-      {
-        ...history.state,
-        quickScroll:
-          document.querySelector(".market-detail-layout")?.scrollTop || 0,
-      },
-      "",
-      location.href,
-    );
-    history.pushState(
-      { atlasModal: false, fromQuick: true, background: originBrowse },
-      "",
-      href(detailResource.type, detailResource.id, {
-        theme,
-        ...(detailResource.type === "case" ? { page: selected.key } : {}),
-        ...(fullLink.dataset.fullDetail === "code" ? { tab: "code" } : {}),
-      }),
-    );
-    render();
-    scrollBrowseTo(0);
     return;
   }
   const link = e.target.closest("[data-open],[data-related]");
@@ -1014,7 +1030,12 @@ document.addEventListener("click", async (e) => {
     e.preventDefault();
     document.querySelector("#search-dialog").close();
     const [type, id] = (link.dataset.open || link.dataset.related).split(":");
-    openResource(id, type, !!selected && !!history.state?.atlasModal);
+    openResource(
+      id,
+      type,
+      false,
+      link.hasAttribute("data-details") || link.hasAttribute("data-related"),
+    );
     return;
   }
   if (e.target.closest("#search-results a"))
@@ -1027,6 +1048,16 @@ document.addEventListener("click", async (e) => {
     const [type, id] = b.dataset.cardPrompt.split(":");
     return copy(resourcePrompt(findResource(id, type), locale));
   }
+  if (b.hasAttribute("data-retry-viewer")) {
+    beginPreviewLoad();
+    document.querySelector("#case-preview").src = embeddedPreviewURL(
+      resourcePreview(selected, locale, theme),
+    );
+    return;
+  }
+  if (b.hasAttribute("data-toggle-details")) return toggleDetails();
+  if (b.hasAttribute("data-copy-resource-prompt"))
+    return copy(promptText(selected));
   if (b.hasAttribute("data-close-viewer")) return closeViewer();
   if (b.dataset.save) {
     const k = b.dataset.save;
@@ -1060,16 +1091,19 @@ document.addEventListener("click", async (e) => {
       "",
       href(route.view, route.id, Object.fromEntries(params)),
     );
+    route = parse();
     inspector();
+    scalePreview();
     document.querySelector(`[data-full-tab][data-tab="${tab}"]`)?.focus();
     return;
   }
   if (b.dataset.pagePreview) {
     syncPage(b.dataset.pagePreview);
-    document.querySelector(".full-viewer")?.scrollIntoView({ block: "start" });
+    if (innerWidth < 1024) toggleDetails(false);
     return;
   }
   if (b.hasAttribute("data-focus-prompt")) {
+    toggleDetails(true);
     document.querySelector("#prompt-scope")?.focus();
     document
       .querySelector("#prompt-scope")
@@ -1335,7 +1369,15 @@ window.addEventListener("message", (e) => {
     e.source !== f?.contentWindow
   )
     return;
-  if (e.data?.type === "atlas:escape") return closeViewer();
+  if (
+    ["atlas:inline-ready", "atlas:inline-error"].includes(e.data?.type) &&
+    e.data.resourceId === selected.id
+  ) {
+    previewLoadState(e.data.type === "atlas:inline-ready" ? "ready" : "error");
+    return;
+  }
+  if (e.data?.type === "atlas:escape" && e.data.resourceId === selected.id)
+    return closeViewer();
   if (
     e.data?.type === "atlas:resource-state" &&
     e.data.resourceId === selected.id
@@ -1357,6 +1399,7 @@ window.addEventListener("message", (e) => {
   if (["light", "dark"].includes(e.data.theme)) theme = e.data.theme;
   if (selected.type === "component") return;
   const c = getCase(selected.caseId);
+  previewLoadState("ready");
   const p = c?.pages.find((p) =>
     c.source === "open-source" ? p.path === e.data.path : p.key === e.data.page,
   );
@@ -1426,7 +1469,9 @@ document.addEventListener("keydown", (e) => {
     !document.querySelector("#asset-dialog[open]") &&
     !document.querySelector("dialog[open]")
   )
-    closeViewer();
+    route.params.get("panel") === "details"
+      ? toggleDetails(false)
+      : closeViewer();
   if (
     e.target.matches("[role=tab]") &&
     ["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)
@@ -1466,6 +1511,7 @@ function navigationChanged() {
 window.addEventListener("hashchange", navigationChanged);
 window.addEventListener("popstate", navigationChanged);
 window.addEventListener("resize", () => {
+  syncDetailsPanel();
   scalePreview();
 });
 window.addEventListener("fullscreenchange", scalePreview);
@@ -1477,7 +1523,7 @@ window.addEventListener("storage", (e) => {
     } catch {}
   }
 });
-new ResizeObserver(scalePreview).observe(document.body);
+const previewResizeObserver = new ResizeObserver(scalePreview);
 render();
 
 function updateThemeURL() {

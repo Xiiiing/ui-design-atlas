@@ -36,7 +36,7 @@ document.addEventListener("submit", (e) => {
   }
 });
 
-if (item && params.has("inline"))
+if (item && parent !== window)
   parent.postMessage(
     { type: "atlas:inline-ready", resourceId: item.id },
     location.origin,

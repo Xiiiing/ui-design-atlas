@@ -12,7 +12,7 @@ import { t } from "./i18n";
 import { useRows } from "./store";
 export function ComponentPreview({ id }: { id: string }) {
   useEffect(() => {
-    if (new URLSearchParams(location.search).has("inline"))
+    if (parent !== window)
       parent.postMessage(
         { type: "atlas:inline-ready", resourceId: `shadcn-admin-${id}` },
         location.origin,

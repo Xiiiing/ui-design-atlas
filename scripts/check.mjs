@@ -219,7 +219,9 @@ for (const r of resources) {
   assert.ok(p.width > 0 && p.height > 0);
   if (r.type !== "component" || r.preview.width >= 900)
     assert.equal(p.width, r.preview.width);
+  else if (p.mode === "canvas") assert.equal(p.width, 960);
   else assert.equal(p.width, r.category === "buttons" ? 320 : 480);
+  assert.ok(["inline", "canvas"].includes(p.mode));
 }
 assert.equal(
   thumbnailURL("./demo.html?a=b#/tasks"),
