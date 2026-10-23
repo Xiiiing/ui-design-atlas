@@ -12,6 +12,10 @@
 <p align="center">找到喜欢的界面，体验交互，再读懂它的设计与代码。</p>
 
 <p align="center">
+  <strong>在线图鉴：</strong><a href="https://xiiiing.github.io/ui-design-atlas/">xiiiing.github.io/ui-design-atlas/</a>
+</p>
+
+<p align="center">
   <a href="https://xiiiing.github.io/ui-design-atlas/">打开图鉴</a> · <a href="https://xiiiing.github.io/ui-design-atlas/#explore?lang=zh-CN">探索资源</a> · <a href="https://xiiiing.github.io/ui-design-atlas/#cases?lang=zh-CN">完整案例</a>
 </p>
 
