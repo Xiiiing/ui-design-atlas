@@ -1,0 +1,74 @@
+{
+  "issue": "https://github.com/Xiiiing/ui-design-atlas/issues/15",
+  "baseline": "7c21533d0fc0bd8778c0ad03180389b44fd12523",
+  "implementation": "f57a19907e435c10780a166d2a8ecbae4fe7595d",
+  "checkedAt": "2026-10-23T10:16:13.267173+00:00",
+  "bundleSha256": "a09a4a5bc12981a5dbb263a524055cf4a35e2edfa34ac5e93de71e1f5b56d3aa",
+  "checks": {
+    "check": "passed, including 5 unit tests",
+    "build": "passed; existing chunk size warnings",
+    "playwright": "66 passed (1.7m)"
+  },
+  "coverage": {
+    "geometryWidths": [
+      2560,
+      1440,
+      768,
+      375
+    ],
+    "languages": [
+      "zh-CN",
+      "en"
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "inlinePhoneResources": 27,
+    "inlinePhoneLanguages": [
+      "zh-CN",
+      "en"
+    ],
+    "notes": "Includes existing browse geometry, copy/fallback, tags/history, focus, iframe budget, source delivery and native interaction tests; new checks assert square units, equal metadata heights, no clipped inline controls, native responsive viewer width and fixed device selection."
+  },
+  "screenshots": {
+    "before": {
+      "widths": [
+        2560,
+        1440
+      ],
+      "language": "zh-CN",
+      "theme": "dark",
+      "source": "Exact main before implementation, captured from local production build"
+    },
+    "after": {
+      "widths": [
+        2560,
+        1440,
+        768,
+        375
+      ],
+      "language": "zh-CN",
+      "theme": "dark",
+      "measurements": "after.json"
+    }
+  },
+  "layout": {
+    "desktop": "3 columns; wide previews span 2 columns including their gap",
+    "tablet": "2 columns; wide previews span both columns",
+    "phone": "1 column",
+    "metadataHeight": {
+      "desktop": 95,
+      "phone": 103
+    },
+    "tallOverviews": [
+      "folio-card",
+      "folio-pricing",
+      "orbit-pricing",
+      "forma-pricing",
+      "bloom-pricing",
+      "shadcn-admin-trend-chart"
+    ]
+  },
+  "viewer": "Default uses available CSS width at scale 1. Explicit tablet/phone sizes may scale down to fit; iframe owns vertical content scrolling."
+}

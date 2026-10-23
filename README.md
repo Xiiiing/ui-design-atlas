@@ -25,6 +25,8 @@ The shell adapts a pinned 21st design reference into an open resource gallery, w
 
 Gallery previews use a square column-sized unit, with wide resources spanning two columns at the same height. Captions, a one-line description, filter tags and accessible icon actions sit outside the preview. Tall demos open from static overviews. The experience viewer uses its available width at native scale by default; explicit tablet/phone selections retain fixed device widths.
 
+模块化布局验收：[记录](docs/ui/modular-layout/verification.json)、[卡片调整前](docs/ui/modular-layout/before-cards-1440.png)/[调整后](docs/ui/modular-layout/after-cards-1440.png)、[宽屏调整前](docs/ui/modular-layout/before-viewer-2560.png)/[调整后](docs/ui/modular-layout/after-viewer-2560.png)。构建后在 4173 端口提供 `/ui-design-atlas/`，运行 `node scripts/capture-modular-layout.mjs` 可重新生成四种宽度的当前截图和尺寸记录。
+
 查看 [设计映射与浏览器验收 / Design mapping and verification](docs/ui/resource-market.md) 和 [固定源码与许可 / Pinned source and attribution](vendor/21st-market/ATTRIBUTION.md)。此前映序设计资料保留为历史记录，不参与外层运行样式。
 
 ## 收录内容 / Included sources
