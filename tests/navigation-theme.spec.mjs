@@ -9,6 +9,9 @@ test("Navigation contracts without moving content, stays pinned and restores at 
   for (const width of [2560, 1440, 768, 375]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("#explore?lang=en");
+    // Each viewport starts a fresh session; returning to a visited section
+    // deliberately restores its saved scroll (covered separately).
+    await page.reload();
     const topbar = page.locator("#topbar");
     const header = page.locator(".market-header");
     const card = page.locator(".asset-card").first();
@@ -42,7 +45,10 @@ test("Navigation contracts without moving content, stays pinned and restores at 
     await page.locator(".market-navigation a").first().focus();
     await page.keyboard.press("Enter");
     await expect(page).toHaveURL(/#discover/);
-    await expect(topbar).not.toHaveClass("is-compact");
+    await expect(topbar).toHaveClass("is-compact");
+    await expect
+      .poll(() => page.evaluate(() => scrollY))
+      .toBe(beforeMenuScroll);
     await page.evaluate(() => scrollTo(0, 600));
     await expect(topbar).toHaveClass("is-compact");
     await page.evaluate(() => scrollTo(0, 0));

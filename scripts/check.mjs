@@ -83,6 +83,7 @@ const files = [
   "preview.js",
   "component-preview.js",
   "legacy-i18n.js",
+  "legacy-theme.js",
   "legacy-translations.js",
   "favicon.svg",
   "logo.svg",
@@ -159,7 +160,10 @@ for (const r of resources.filter((r) => !r.caseId && r.type !== "case")) {
     await access(new URL("examples/ui-market/" + file, base));
 }
 if (!process.argv.includes("--capture-previews"))
-  for (const r of resources) await access(new URL(r.cover, base));
+  for (const r of resources) {
+    await access(new URL(r.cover, base));
+    await access(new URL(r.cover.replace(/\.png$/, "-dark.png"), base));
+  }
 for (const s of Object.values(sourceProjects).filter((s) => !s.original))
   assert.ok(s.commit?.length === 40 && s.repo && s.licenseFile);
 

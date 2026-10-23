@@ -285,7 +285,7 @@ export const cases = [
         caseId: s.id,
         name: bi(p.name, e.pages[i][0]),
         description: bi(p.detail, e.pages[i][1]),
-        files: ["preview.js", "preview.css"],
+        files: ["preview.js", "preview.css", "legacy-theme.js"],
       })),
     };
   }),
@@ -461,7 +461,7 @@ export function previewURL(c, item, locale = "zh-CN", theme = "light") {
         : c.pages[0];
     return `./examples/shadcn-admin/index.html?lang=${locale}&theme=${theme}${item?.pageIds ? "&component=" + item.key : ""}#${page.path}`;
   }
-  return `./preview.html?style=${c.id}&page=${item?.key && !item?.pageIds ? item.key : "home"}&lang=${locale}`;
+  return `./preview.html?style=${c.id}&page=${item?.key && !item?.pageIds ? item.key : "home"}&lang=${locale}&theme=${theme}`;
 }
 
 // A resource's provenance and its implementation libraries are separate concepts.
@@ -571,7 +571,7 @@ export function resourcePreview(r, lang = "zh-CN", theme = "light") {
     return `${r.preview.url}${r.preview.url.includes("?") ? "&" : "?"}lang=${lang}&theme=${theme}`;
   const c = r.type === "case" ? getCase(r.id) : getCase(r.caseId);
   if (r.type === "component" && c.source === "original")
-    return `./component-preview.html?id=${r.id}&lang=${lang}`;
+    return `./component-preview.html?id=${r.id}&lang=${lang}&theme=${theme}`;
   return previewURL(c, r.type === "case" ? c.pages[0] : r, lang, theme);
 }
 export function resourcePrompt(r, lang = "zh-CN", scope = r.type) {
