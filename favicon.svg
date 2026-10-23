@@ -1,1 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="#202024"/><g fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 25 20-11 20 11-20 11-20-11Z"/><path d="m12 34 20 11 20-11M12 43l20 11 20-11"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+<title>FOLD UI</title>
+<style>#dark{display:none}@media(prefers-color-scheme:dark){#light{display:none}#dark{display:inline}}</style>
+<g id="light">
+<defs>
+<clipPath id="light-contour">
+<path d="M36 62 Q36 40 58 40 H173 Q183 40 191 47 L225 78 Q240 91 229 111 L201 165 L216 198 Q229 228 204 228 H58 Q36 228 36 206 Z" fill="white"/>
+</clipPath>
+</defs>
+<g transform="translate(128 128) scale(1.08) translate(-128 -128)">
+<g clip-path="url(#light-contour)">
+<path d="M36 62 Q36 40 58 40 H173 Q183 40 191 47 L225 78 Q240 91 229 111 L201 165 L216 198 Q229 228 204 228 H58 Q36 228 36 206 Z" fill="#091936"/>
+<path d="M83 105 Q98 118 118 112 L184 93 Q195 91 195 105 L177 172 L111 145 Z" fill="#FFFDF7"/>
+<path d="M36 62 Q36 40 58 40 H173 Q183 40 191 47 L225 78 Q214 73 201 80 L117 112 Q94 121 79 106 Z" fill="#0750F5"/>
+<path d="M36 205 L111 145 L202 177 Q210 180 213 186 L159 225 Q155 228 148 228 H58 Q36 228 36 206 Z" fill="#0750F5"/>
+<g fill="#091936">
+<ellipse cx="150" cy="128" rx="7" ry="10"/>
+<ellipse cx="169" cy="128" rx="7" ry="10"/>
+</g>
+</g>
+</g>
+</g>
+<g id="dark">
+<defs>
+<mask id="dark-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="256" height="256">
+<rect width="256" height="256" fill="white"/>
+<path d="M83 105 Q98 118 118 112 L184 93 Q195 91 195 105 L177 172 L111 145 Z" fill="black"/>
+<g fill="none" stroke="black" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M36 62 L79 106 Q89 138 73 157 L36 187"/>
+</g>
+</mask>
+</defs>
+<g transform="translate(128 128) scale(1.08) translate(-128 -128)">
+<g mask="url(#dark-cut)">
+<path d="M36 62 Q36 40 58 40 H173 Q183 40 191 47 L225 78 Q240 91 229 111 L201 165 L216 198 Q229 228 204 228 H58 Q36 228 36 206 Z" fill="#FFFFFF"/>
+</g>
+<g fill="#FFFFFF">
+<ellipse cx="150" cy="128" rx="7" ry="10"/>
+<ellipse cx="169" cy="128" rx="7" ry="10"/>
+</g>
+</g>
+</g>
+</svg>

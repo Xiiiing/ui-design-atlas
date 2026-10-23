@@ -210,18 +210,14 @@ textarea:focus-visible {
   white-space: nowrap;
 }
 .brand-mark {
-  display: grid;
-  place-items: center;
-  width: 27px;
-  height: 27px;
-  border-radius: 6px;
-  background: var(--ink);
-  color: var(--canvas);
+  display: block;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
 }
-.brand-mark svg {
-  width: 19px;
-  height: 19px;
-}
+.brand-mark.brand-dark { display: none; }
+html[data-theme="dark"] .brand-mark.brand-light { display: none; }
+html[data-theme="dark"] .brand-mark.brand-dark { display: block; }
 .market-navigation {
   display: flex;
   gap: 24px;
