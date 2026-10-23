@@ -154,7 +154,7 @@ test("Original motion parameters affect the real preview, prompt and replay", as
   );
 });
 
-test("Page details use available width, support fullscreen and keep the inspector at 360px", async ({
+test("Page details preserve the authored canvas, support fullscreen and keep the inspector at 360px", async ({
   page,
 }) => {
   await page.goto("#page/shadcn-admin-dashboard?lang=en&panel=details");
@@ -167,18 +167,14 @@ test("Page details use available width, support fullscreen and keep the inspecto
     await page
       .locator("#case-preview")
       .evaluate((f) => f.contentWindow.innerWidth),
-  ).toBe(
-    await page.locator("#preview-viewport").evaluate((el) => el.clientWidth),
-  );
+  ).toBe(1280);
   await page.locator("[data-fullscreen]").click();
   await expect(page.locator("#preview-panel:fullscreen")).toBeVisible();
   expect(
     await page
       .locator("#case-preview")
       .evaluate((f) => f.contentWindow.innerWidth),
-  ).toBe(
-    await page.locator("#preview-viewport").evaluate((el) => el.clientWidth),
-  );
+  ).toBe(1280);
   await page.evaluate(() => document.exitFullscreen());
   await page.locator('[data-device="768"]').click();
   await expect
@@ -191,7 +187,5 @@ test("Page details use available width, support fullscreen and keep the inspecto
     .poll(() =>
       page.locator("#case-preview").evaluate((f) => f.contentWindow.innerWidth),
     )
-    .toBe(
-      await page.locator("#preview-viewport").evaluate((el) => el.clientWidth),
-    );
+    .toBe(1280);
 });

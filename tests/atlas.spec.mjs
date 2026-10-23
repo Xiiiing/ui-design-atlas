@@ -522,9 +522,7 @@ test("Native page canvases, browser history, keyboard search and preview limits"
     await page
       .locator("#case-preview")
       .evaluate((f) => f.contentWindow.innerWidth),
-  ).toBe(
-    await page.locator("#preview-viewport").evaluate((el) => el.clientWidth),
-  );
+  ).toBe(1280);
   await page.locator('[data-device="375"]').click();
   await expect
     .poll(() =>

@@ -1,54 +1,64 @@
 import { test, expect } from "@playwright/test";
 
-test("Wide experience fits the available viewport and long content scrolls inside the demo", async ({
+async function expectFittedCanvas(page, width, height) {
+  await expect
+    .poll(async () => {
+      return page.locator("#case-preview").evaluate(
+        (frame, [width, height]) => {
+          const viewport = document.querySelector("#preview-viewport");
+          const box = frame.getBoundingClientRect();
+          const stage = viewport.getBoundingClientRect();
+          const scale = Math.min(stage.width / width, stage.height / height);
+          return Math.max(
+            Math.abs(box.width - width * scale),
+            Math.abs(box.height - height * scale),
+            Math.abs(box.x - stage.x - (stage.width - box.width) / 2),
+            Math.abs(box.y - stage.y - (stage.height - box.height) / 2),
+            Math.abs(frame.contentWindow.innerWidth - width),
+            Math.abs(frame.contentWindow.innerHeight - height),
+            viewport.scrollWidth - viewport.clientWidth,
+            viewport.scrollHeight - viewport.clientHeight,
+            document.documentElement.scrollHeight - innerHeight,
+          );
+        },
+        [width, height],
+      );
+    })
+    .toBeLessThanOrEqual(1);
+}
+
+test("Wide experience maximizes the original aspect ratio and keeps portrait devices usable", async ({
   page,
 }) => {
-  for (const width of [2560, 1440, 768, 375]) {
-    await page.setViewportSize({ width, height: 1000 });
+  for (const [width, height, canvasWidth, canvasHeight] of [
+    [2560, 1080, 1280, 800],
+    [1440, 900, 1280, 800],
+    [1440, 600, 1280, 800],
+    [768, 1024, 768, 1024],
+    [375, 812, 375, 812],
+  ]) {
+    await page.setViewportSize({ width, height });
     await page.goto("#page/shadcn-admin-dashboard?lang=en");
     const frame = page.frameLocator("#case-preview");
     await expect(
       frame.getByRole("heading", { name: "Dashboard", exact: true }),
     ).toBeVisible();
     await expect(page.locator("#inspector")).toBeHidden();
-    const responsive = await page.locator("#case-preview").evaluate((f) => ({
-      width: f.contentWindow.innerWidth,
-      available: document.querySelector("#preview-viewport").clientWidth,
-      scale: getComputedStyle(f).transform,
-    }));
-    expect(responsive.width).toBe(responsive.available);
-    expect(responsive.scale).toBe("matrix(1, 0, 0, 1, 0, 0)");
-    const sizes = await page.evaluate(() => {
-      const v = document.querySelector("#preview-viewport"),
-        f = document.querySelector("#case-preview");
-      return {
-        viewport: v.clientHeight,
-        scroll: v.scrollHeight,
-        frame: f.getBoundingClientRect().height,
-        document: document.documentElement.scrollHeight,
-        window: innerHeight,
-      };
-    });
-    expect(sizes.scroll).toBeLessThanOrEqual(sizes.viewport + 1);
-    expect(Math.abs(sizes.frame - sizes.viewport)).toBeLessThan(1);
-    expect(sizes.document).toBeLessThanOrEqual(sizes.window + 1);
-    await page.locator("[data-fit]").click();
-    await expect
-      .poll(() =>
-        page
-          .locator("#preview-viewport")
-          .evaluate((el) => el.scrollHeight - el.clientHeight),
-      )
-      .toBeLessThanOrEqual(1);
-    await page.locator("[data-fit]").click();
+    await expectFittedCanvas(page, canvasWidth, canvasHeight);
+    await page.locator(".experience-actions [data-toggle-details]").click();
+    await expect(page).toHaveURL(/panel=details/);
+    await expect(page.locator("#inspector")).toBeVisible();
+    await expectFittedCanvas(page, canvasWidth, canvasHeight);
+    await page.locator(".inspector-close").click();
+    await expect(page.locator("#inspector")).toBeHidden();
+    await expect(
+      page.locator(".experience-actions [data-toggle-details]"),
+    ).toBeFocused();
+    await expectFittedCanvas(page, canvasWidth, canvasHeight);
+    await page.locator('[data-device="768"]').click();
+    await expectFittedCanvas(page, 768, 1024);
     await page.locator('[data-device="375"]').click();
-    await expect
-      .poll(() =>
-        page
-          .locator("#case-preview")
-          .evaluate((f) => f.contentWindow.innerWidth),
-      )
-      .toBe(375);
+    await expectFittedCanvas(page, 375, 812);
     const bottom = await page.locator("#case-preview").evaluate((f) => {
       const d = f.contentDocument;
       const owners = [d.scrollingElement, ...d.querySelectorAll("*")].filter(
@@ -63,27 +73,55 @@ test("Wide experience fits the available viewport and long content scrolls insid
       }));
     });
     expect(bottom.some((e) => e.top > 0 && e.remaining < 2)).toBe(true);
-    await page.locator(".experience-actions [data-toggle-details]").click();
-    await expect(page).toHaveURL(/panel=details/);
-    await expect(page.locator("#inspector")).toBeVisible();
-    await page.locator(".inspector-close").click();
-    await expect(page.locator("#inspector")).toBeHidden();
-    await expect(
-      page.locator(".experience-actions [data-toggle-details]"),
-    ).toBeFocused();
     await page.locator('[data-device="0"]').click();
-    await expect
-      .poll(() =>
-        page
-          .locator("#case-preview")
-          .evaluate(
-            (f) =>
-              f.contentWindow.innerWidth -
-              document.querySelector("#preview-viewport").clientWidth,
-          ),
-      )
-      .toBe(0);
+    await expectFittedCanvas(page, canvasWidth, canvasHeight);
+    // Actual size is explicit. Oversized canvases must start at a reachable
+    // top/left, while returning to fit removes all stage scrolling again.
+    await page.locator("[data-fit]").click();
+    const native = await page.locator("#case-preview").evaluate((f) => {
+      const box = f.getBoundingClientRect();
+      const v = document
+        .querySelector("#preview-viewport")
+        .getBoundingClientRect();
+      return {
+        width: box.width,
+        height: box.height,
+        x: box.x - v.x,
+        y: box.y - v.y,
+      };
+    });
+    expect(native.width).toBe(canvasWidth);
+    expect(native.height).toBe(canvasHeight);
+    expect(native.x).toBeGreaterThanOrEqual(0);
+    expect(native.y).toBeGreaterThanOrEqual(0);
+    await page.locator("[data-fit]").click();
+    await expectFittedCanvas(page, canvasWidth, canvasHeight);
   }
+});
+
+test("Original component ratios survive resize, fullscreen and a real dialog interaction", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("#block/magicui-bento-grid?lang=en");
+  await expect(page.locator(".viewer-load-state")).toBeHidden();
+  await expectFittedCanvas(page, 1280, 900);
+  await page.locator("[data-fullscreen]").click();
+  await expect
+    .poll(() => page.evaluate(() => document.fullscreenElement?.id))
+    .toBe("preview-panel");
+  await expectFittedCanvas(page, 1280, 900);
+  await page.evaluate(() => document.exitFullscreen());
+  await expectFittedCanvas(page, 1280, 900);
+  await page.setViewportSize({ width: 2560, height: 1000 });
+  await expectFittedCanvas(page, 1280, 900);
+  await page.goto("#component/fluent-dialog?lang=en");
+  const demo = page.frameLocator("#case-preview");
+  await expectFittedCanvas(page, 640, 480);
+  await demo.getByRole("button", { name: "Open dialog", exact: true }).click();
+  await expect(demo.getByRole("dialog")).toBeVisible();
+  await demo.getByRole("button", { name: "Close", exact: true }).click();
+  await expect(demo.getByRole("dialog")).toBeHidden();
 });
 
 test("Details entry, code deep link and back restore filters, load count and exact entry focus", async ({

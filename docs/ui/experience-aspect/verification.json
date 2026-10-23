@@ -1,0 +1,350 @@
+{
+  "base": "http://127.0.0.1:4173/ui-design-atlas/",
+  "hashes": {
+    "app.js": "cefe8339db9c02fb5c08f5a92382649ea75b659c1fa5c68e32f0142a12ace1f1",
+    "market.css": "ac2bc8c9d1294e9e350d0d560c7ebfa35ef9f797b2926e57be7f1027461c5ab4"
+  },
+  "results": [
+    {
+      "name": "after-2560",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#page/shadcn-admin-dashboard?lang=zh-CN",
+      "geometry": {
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "displayed": {
+          "x": 738.90625,
+          "y": 265,
+          "width": 1067.199951171875,
+          "height": 667,
+          "top": 265,
+          "right": 1806.106201171875,
+          "bottom": 932,
+          "left": 738.90625
+        },
+        "stage": {
+          "x": 13,
+          "y": 265,
+          "width": 2519,
+          "height": 667,
+          "top": 265,
+          "right": 2532,
+          "bottom": 932,
+          "left": 13
+        },
+        "overflow": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "after-1440",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#page/shadcn-admin-dashboard?lang=en",
+      "geometry": {
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "displayed": {
+          "x": 258.90625,
+          "y": 265,
+          "width": 907.199951171875,
+          "height": 567,
+          "top": 265,
+          "right": 1166.106201171875,
+          "bottom": 832,
+          "left": 258.90625
+        },
+        "stage": {
+          "x": 13,
+          "y": 265,
+          "width": 1399,
+          "height": 567,
+          "top": 265,
+          "right": 1412,
+          "bottom": 832,
+          "left": 13
+        },
+        "overflow": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "after-1440-short",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#page/shadcn-admin-dashboard?lang=zh-CN",
+      "geometry": {
+        "native": {
+          "width": 1280,
+          "height": 800
+        },
+        "displayed": {
+          "x": 498.90625,
+          "y": 265,
+          "width": 427.20001220703125,
+          "height": 267,
+          "top": 265,
+          "right": 926.1062622070312,
+          "bottom": 532,
+          "left": 498.90625
+        },
+        "stage": {
+          "x": 13,
+          "y": 265,
+          "width": 1399,
+          "height": 267,
+          "top": 265,
+          "right": 1412,
+          "bottom": 532,
+          "left": 13
+        },
+        "overflow": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "after-768",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#page/shadcn-admin-dashboard?lang=en",
+      "geometry": {
+        "native": {
+          "width": 768,
+          "height": 1024
+        },
+        "displayed": {
+          "x": 114,
+          "y": 256,
+          "width": 525,
+          "height": 700,
+          "top": 256,
+          "right": 639,
+          "bottom": 956,
+          "left": 114
+        },
+        "stage": {
+          "x": 13,
+          "y": 256,
+          "width": 727,
+          "height": 700,
+          "top": 256,
+          "right": 740,
+          "bottom": 956,
+          "left": 13
+        },
+        "overflow": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "after-375",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#page/shadcn-admin-dashboard?lang=zh-CN",
+      "geometry": {
+        "native": {
+          "width": 375,
+          "height": 812
+        },
+        "displayed": {
+          "x": 64.546875,
+          "y": 250,
+          "width": 230.91131591796875,
+          "height": 500,
+          "top": 250,
+          "right": 295.45819091796875,
+          "bottom": 750,
+          "left": 64.546875
+        },
+        "stage": {
+          "x": 5,
+          "y": 250,
+          "width": 350,
+          "height": 500,
+          "top": 250,
+          "right": 355,
+          "bottom": 750,
+          "left": 5
+        },
+        "overflow": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "block-original-ratio",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#block/magicui-bento-grid?lang=en",
+      "geometry": {
+        "native": {
+          "width": 1280,
+          "height": 900
+        },
+        "displayed": {
+          "x": 309.3125,
+          "y": 265,
+          "width": 806.4000244140625,
+          "height": 567,
+          "top": 265,
+          "right": 1115.7125244140625,
+          "bottom": 832,
+          "left": 309.3125
+        },
+        "stage": {
+          "x": 13,
+          "y": 265,
+          "width": 1399,
+          "height": 567,
+          "top": 265,
+          "right": 1412,
+          "bottom": 832,
+          "left": 13
+        },
+        "overflow": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "fullscreen",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#block/magicui-bento-grid?lang=en",
+      "geometry": {
+        "native": {
+          "width": 1280,
+          "height": 900
+        },
+        "displayed": {
+          "x": 150.015625,
+          "y": 54,
+          "width": 1124.977783203125,
+          "height": 791,
+          "top": 54,
+          "right": 1274.993408203125,
+          "bottom": 845,
+          "left": 150.015625
+        },
+        "stage": {
+          "x": 0,
+          "y": 54,
+          "width": 1425,
+          "height": 791,
+          "top": 54,
+          "right": 1425,
+          "bottom": 845,
+          "left": 0
+        },
+        "overflow": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "phone-device",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#block/magicui-bento-grid?lang=en",
+      "geometry": {
+        "native": {
+          "width": 375,
+          "height": 812
+        },
+        "displayed": {
+          "x": 581.578125,
+          "y": 265,
+          "width": 261.85345458984375,
+          "height": 567,
+          "top": 265,
+          "right": 843.4315795898438,
+          "bottom": 832,
+          "left": 581.578125
+        },
+        "stage": {
+          "x": 13,
+          "y": 265,
+          "width": 1399,
+          "height": 567,
+          "top": 265,
+          "right": 1412,
+          "bottom": 832,
+          "left": 13
+        },
+        "overflow": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "details",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#block/magicui-bento-grid?lang=en&panel=details",
+      "geometry": {
+        "native": {
+          "width": 1280,
+          "height": 900
+        },
+        "displayed": {
+          "x": 129.3125,
+          "y": 265,
+          "width": 806.4000244140625,
+          "height": 567,
+          "top": 265,
+          "right": 935.7125244140625,
+          "bottom": 832,
+          "left": 129.3125
+        },
+        "stage": {
+          "x": 13,
+          "y": 265,
+          "width": 1039,
+          "height": 567,
+          "top": 265,
+          "right": 1052,
+          "bottom": 832,
+          "left": 13
+        },
+        "overflow": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "dialog",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#component/fluent-dialog?lang=en",
+      "geometry": {
+        "native": {
+          "width": 640,
+          "height": 480
+        },
+        "displayed": {
+          "x": 334.5,
+          "y": 265,
+          "width": 756,
+          "height": 567,
+          "top": 265,
+          "right": 1090.5,
+          "bottom": 832,
+          "left": 334.5
+        },
+        "stage": {
+          "x": 13,
+          "y": 265,
+          "width": 1399,
+          "height": 567,
+          "top": 265,
+          "right": 1412,
+          "bottom": 832,
+          "left": 13
+        },
+        "overflow": [
+          0,
+          0
+        ]
+      }
+    }
+  ],
+  "errors": []
+}
