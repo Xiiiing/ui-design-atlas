@@ -6,7 +6,8 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import archiver from "archiver";
-import { upstream } from "../catalog.js";
+import { upstream, resources } from "../catalog.js";
+import { resourceCode } from "./resource-code.mjs";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const example = path.join(root, "examples/shadcn-admin");
 const shellCheck = spawnSync("npm", ["run", "check:shell"], {
@@ -36,6 +37,7 @@ const assets = [
   "icons.js",
   "data.js",
   "catalog.js",
+  "search.js",
   "presentation.js",
   "market-catalog.js",
   "components.js",
@@ -211,7 +213,11 @@ for (const file of await walk(
   new Set(["node_modules", "dist", ".git"]),
 )) {
   const rel = path.relative(market, file).split(path.sep).join("/");
-  if (/\.(tsx?|css|json|md|html)$/.test(rel) || rel === "LICENSE")
+  if (
+    /\.(tsx?|css|json|md|html|svg)$/.test(rel) ||
+    rel === "LICENSE" ||
+    rel.startsWith("licenses/")
+  )
     marketFiles[rel] = await readFile(file, "utf8");
 }
 await writeFile(
@@ -268,4 +274,42 @@ await writeFile(
 );
 console.log(
   "Built independent UI Market previews, actual source manifest and runnable ZIP.",
+);
+
+// Per-resource source files are loaded independently; full manifests remain opt-in.
+await mkdir(path.join(out, "code/resources"), { recursive: true });
+await mkdir(path.join(out, "downloads/resources"), { recursive: true });
+for (const resource of resources.filter((r) => r.sourceId !== "original")) {
+  const project =
+    resource.sourceId === "shadcn-admin" ? "shadcn-admin" : "ui-market";
+  const manifest = resourceCode(
+    resource,
+    project === "shadcn-admin" ? files : marketFiles,
+    project,
+  );
+  const slug = `${resource.type}-${resource.id}`;
+  await writeFile(
+    path.join(out, `code/resources/${slug}.json`),
+    JSON.stringify(manifest),
+  );
+  const zip = archiver("zip", { zlib: { level: 6 } });
+  const destination = createWriteStream(
+    path.join(out, `downloads/resources/${slug}.zip`),
+  );
+  const finished = new Promise((resolve, reject) => {
+    destination.on("close", resolve);
+    destination.on("error", reject);
+    zip.on("error", reject);
+  });
+  zip.pipe(destination);
+  for (const [name, content] of Object.entries(manifest.files))
+    zip.append(content, { name: `${slug}/${name}` });
+  zip.append(project === "shadcn-admin" ? noticeText : marketNotices.join(""), {
+    name: `${slug}/THIRD_PARTY_NOTICES.md`,
+  });
+  await zip.finalize();
+  await finished;
+}
+console.log(
+  "Built resource source manifests and file-set ZIPs with dependency closure and reuse notes.",
 );

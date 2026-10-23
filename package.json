@@ -3,19 +3,20 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "UI 设计图鉴：完整设计案例、通用组件、设计规则与分层提示词。",
+  "description": "UI \u8bbe\u8ba1\u56fe\u9274\uff1a\u5b8c\u6574\u8bbe\u8ba1\u6848\u4f8b\u3001\u901a\u7528\u7ec4\u4ef6\u3001\u8bbe\u8ba1\u89c4\u5219\u4e0e\u5206\u5c42\u63d0\u793a\u8bcd\u3002",
   "engines": {
     "node": ">=24.12.0"
   },
   "scripts": {
     "dev": "node scripts/build.mjs && node scripts/serve.mjs --dist",
     "setup:examples": "npm ci --prefix examples/shadcn-admin && npm ci --prefix examples/ui-market",
-    "check": "node scripts/check.mjs && npm run check:shell && npm run typecheck --prefix examples/shadcn-admin && npm run typecheck --prefix examples/ui-market",
+    "check": "node scripts/check.mjs && npm run check:shell && npm run typecheck --prefix examples/shadcn-admin && npm run typecheck --prefix examples/ui-market && npm run test:unit",
     "build": "node scripts/build.mjs",
     "preview": "node scripts/serve.mjs --dist",
     "test": "playwright test",
     "capture:previews": "node scripts/build.mjs --capture-previews && node scripts/capture-previews.mjs",
-    "check:shell": "tsc -p tsconfig.shell.json"
+    "check:shell": "tsc -p tsconfig.shell.json",
+    "test:unit": "node --test tests/unit/*.test.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
