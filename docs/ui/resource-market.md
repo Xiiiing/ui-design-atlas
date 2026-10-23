@@ -72,7 +72,7 @@ node scripts/capture-market.mjs
 
 ## Discovery and reuse upgrade
 
-The next iteration separates discovery, comparison, quick experience and full reuse. `content/discovery.json` curates eight existing resources, three thematic collections and three complete systems; categories display live registry counts. No resource records or upstream visuals are added. Search results group components, blocks, pages and systems so comparable samples share a presentation grid. The design continues to use the pinned 21st neutral tokens and local Geist fonts.
+The next iteration separates discovery, comparison, quick experience and full reuse. `content/discovery.json` curates eight existing resources, three thematic collections and three complete systems; categories display live registry counts. No resource records or upstream visuals are added. Search results group components, blocks, pages and systems so comparable samples share a presentation grid. The initial iteration used the pinned 21st neutral tokens and local Geist fonts; the visual correction below records the current library measurements and font adaptation.
 
 The public 21st snapshot predates the current site. Product structure is informed by the current [21st library](https://21st.dev/community/components) and its separate preview/full resource journey, [Origin UI buttons](https://coss.com/origin/button) for direct comparison, [Blocks.so tables](https://blocks.so/tables) for wide examples, and [React Bits](https://reactbits.dev/text-animations/split-text) for a stage with nearby replay controls. Their branding is not combined into a new palette. Uiverse was accessible as public text during research, but its interactions were blocked by Cloudflare and are not claimed as browser verified.
 
@@ -87,7 +87,7 @@ The public 21st snapshot predates the current site. Product structure is informe
 
 ### Acceptance evidence for the discovery upgrade
 
-`npm run check`, `npm run build` and all **34 Playwright tests** passed. The suite retains local CRUD/settings, source downloads, library validation, nested dialog/Escape behavior, bilingual/theme checks and responsive source previews; new coverage adds discovery counts/collections, mixed type groups, context-preserving filters, empty results, canonical sharing, same-URL history, full-code reuse and touch cover visibility.
+`npm run check`, `npm run build` and all **37 Playwright tests** passed in the final visual correction. The suite retains local CRUD/settings, source downloads, library validation, nested dialog/Escape behavior, bilingual/theme checks and responsive source previews; new coverage adds discovery counts/collections, mixed type groups, context-preserving filters, empty results, canonical sharing, same-URL history, full-code reuse and touch cover visibility.
 
 The browser capture script `node scripts/capture-discovery.mjs` checks **12 viewport/theme/language configurations**, records **60 real screenshots**, visits favorites/systems/sources/guide, and saves a discovery-to-code/system recording. External runtime requests are blocked in this capture pass, with no page or HTTP errors and no document overflow. Runtime source hashes in the [verification report](discovery/verification.json) match the final files. Existing runnable ZIP implementation and lockfiles remain unchanged; the build regenerates both downloads.
 
@@ -100,3 +100,22 @@ The browser capture script `node scripts/capture-discovery.mjs` checks **12 view
 | System directory | [Chinese / light](discovery/case-1440-light-zh-CN.png)   | [English / dark](discovery/case-375-dark-en.png)      |
 
 [Discovery, prompt/source copying, browser return and system navigation recording](discovery/discover-and-reuse.webm). Earlier gallery screenshots remain above for comparison. This iteration updates PR #4; it does not merge or deploy it.
+
+## Visual correction: study the actual 21st library composition
+
+The preceding version reorganized information but still presented a promotional heading followed by separated content modules. This correction compares the actual [21st library](https://21st.dev/community/components) in a 1440×1000 browser on 2026-10-23 and adopts its composition directly. The pinned 2025 source remains the palette/provenance reference; the following measurements describe the newer live page, not that older commit.
+
+| Observed on 21st                                                      | Applied in Atlas                                                                                                                                                |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1104px library content; a short 58px/59px heading                     | Centered 1104px browsing area, short bilingual library title, 58px desktop heading                                                                              |
+| Current live computed font: Inter                                     | Existing local Inter 400/500/600/700 assets; OFL attribution retained. Archived Geist files remain available                                                    |
+| Type switcher and a 280×36px search on one line                       | One browsing toolbar, followed immediately by counted category chips                                                                                            |
+| Four columns, 12px horizontal gaps, approximately 4:3 preview windows | Four equal preview columns, 12px gaps and matching 4:3 screenshot/live framing; two complete rows fit the desktop first screen                                  |
+| A continuous wall where example content establishes the visual rhythm | First 24 existing resources, another 24 per load; collections and complete-system recommendations follow the wall                                               |
+| Preview surfaces differ because the resources themselves differ       | Editorial selection mixes existing blocks/backgrounds/components/pages. Individual demos use their own supported light/dark themes; shell colors remain neutral |
+
+`content/discovery.json` now records the recommended gallery sequence and supported thumbnail themes. The first eight recommendations were re-curated from the same archive to provide a broader visual sample; no resource was added. All related covers were captured from local demos. The live iframe and image share the same canvas, crop and source theme. A thumbnail-only fit in the demo host scales fixed-height upstream examples into their viewport; source component styles remain intact. Page-card labels include the parent case name instead of repeating generic “Home” labels.
+
+Full check/build and **37 Playwright tests** pass, including three new checks for the measured first-screen composition, continuous loading/history, source-theme continuity and fixed-height thumbnail bounds. The refreshed 60 screenshots and recording above show this revision. The UI Market ZIP was extracted independently, installed, built and served; the fixed-height thumbnail and real Ant Design validation were exercised with external requests blocked. Its verified ZIP hash is in the [report](discovery/verification.json).
+
+![Revised library, dark](discovery/home-1440-dark-zh-CN.png)

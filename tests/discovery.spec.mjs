@@ -43,6 +43,7 @@ test("Search compares like resources in distinct groups and discovery restores a
     .first()
     .click();
   await expect(page.locator("#asset-dialog")).toBeVisible();
+  await expect(page.locator("#main")).toHaveClass(/library-page/);
   await page.goBack();
   await expect(page.locator("#asset-dialog")).not.toBeVisible();
   await expect(page.locator(".featured-section .asset-card")).toHaveCount(8);
@@ -189,4 +190,123 @@ test("Touch discovery cards show their actual UI and retain readable captions", 
   });
   expect(bounds.descriptionTop).toBeGreaterThanOrEqual(bounds.imageBottom);
   expect(bounds.captionTop).toBeGreaterThanOrEqual(bounds.descriptionBottom);
+});
+
+test("The library puts a continuous, framed resource wall directly below its browsing controls", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("#discover?lang=en");
+  await expect(page.locator(".library-browser .asset-card")).toHaveCount(24);
+  const geometry = await page.evaluate(() => {
+    const hero = document.querySelector(".discovery-hero h1"),
+      search = document.querySelector("#discovery-search"),
+      types = document.querySelector(".library-types"),
+      grid = document.querySelector(".featured-section .market-grid"),
+      first = grid.querySelector(".asset-preview"),
+      secondRow = grid.querySelectorAll(".asset-preview")[4];
+    return {
+      fontSize: getComputedStyle(hero).fontSize,
+      searchTop: search.getBoundingClientRect().top,
+      typesTop: types.getBoundingClientRect().top,
+      imageTop: first.getBoundingClientRect().top,
+      imageBottom: secondRow.getBoundingClientRect().bottom,
+      ratio: first.clientWidth / first.clientHeight,
+      columns: getComputedStyle(grid).gridTemplateColumns.split(" ").length,
+      gap: getComputedStyle(grid).columnGap,
+    };
+  });
+  expect(geometry.fontSize).toBe("58px");
+  expect(Math.abs(geometry.searchTop - geometry.typesTop)).toBeLessThan(5);
+  expect(geometry.imageTop).toBeLessThan(460);
+  expect(geometry.imageBottom).toBeLessThan(1000);
+  expect(geometry.ratio).toBeCloseTo(4 / 3, 1);
+  expect(geometry.columns).toBe(4);
+  expect(geometry.gap).toBe("12px");
+  await page.locator("[data-discovery-more]").click();
+  await expect(page.locator(".library-browser .asset-card")).toHaveCount(48);
+  await page
+    .locator(".library-continuation .asset-caption [data-open]")
+    .last()
+    .click();
+  await expect(page.locator("#asset-dialog")).toBeVisible();
+  await page.goBack();
+  await expect(page.locator(".library-browser .asset-card")).toHaveCount(48);
+});
+
+test("Thumbnail and quick preview preserve the source theme and fixed-height demos fit their cover", async ({
+  page,
+}) => {
+  await page.goto("#discover?lang=en");
+  const particles = page.locator(
+    '[data-resource="component:magicui-particles"]',
+  );
+  await particles.hover();
+  const iframe = particles.locator("iframe");
+  await expect(iframe).toBeAttached();
+  await expect
+    .poll(() =>
+      iframe.evaluate((f) =>
+        f.contentDocument?.documentElement.classList.contains("dark"),
+      ),
+    )
+    .toBe(true);
+  await expect
+    .poll(() =>
+      iframe.evaluate((f) =>
+        f.contentDocument
+          ?.querySelector(".demo-surface")
+          ?.getAttribute("data-fitted-thumbnail"),
+      ),
+    )
+    .toBe("true");
+  await expect(
+    particles
+      .frameLocator("iframe")
+      .locator(".demo-surface > div > div > span"),
+  ).toBeVisible();
+  const bounds = await iframe.evaluate((f) => {
+    const el = f.contentDocument.querySelector(
+      ".demo-surface > div > div > span",
+    );
+    const rect = el.getBoundingClientRect();
+    return {
+      top: rect.top,
+      bottom: rect.bottom,
+      height: f.contentWindow.innerHeight,
+    };
+  });
+  expect(bounds.top).toBeGreaterThanOrEqual(0);
+  expect(bounds.bottom).toBeLessThanOrEqual(bounds.height);
+  await particles.locator(".asset-caption [data-open]").click();
+  await expect(page.frameLocator("#case-preview").locator("html")).toHaveClass(
+    /dark/,
+  );
+});
+
+test("Responsive motion badges stay inside their preview and loading does not duplicate recommendations", async ({
+  page,
+}) => {
+  for (const width of [720, 600, 375]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto("#discover?lang=en");
+    const box = await page
+      .locator(".featured-section .asset-card")
+      .first()
+      .evaluate((el) => ({
+        image: el.querySelector("img").getBoundingClientRect().toJSON(),
+        badge: el
+          .querySelector(".motion-badge")
+          .getBoundingClientRect()
+          .toJSON(),
+      }));
+    expect(box.badge.top).toBeGreaterThanOrEqual(box.image.top);
+    expect(box.badge.bottom).toBeLessThanOrEqual(box.image.bottom);
+  }
+  await page.locator("[data-discovery-more]").click();
+  await page.locator("[data-discovery-more]").click();
+  const keys = await page
+    .locator(".asset-card")
+    .evaluateAll((els) => els.map((el) => el.dataset.resource));
+  expect(new Set(keys).size).toBe(keys.length);
 });

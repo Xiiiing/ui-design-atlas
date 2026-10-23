@@ -45,11 +45,7 @@ try {
             height: framing.height,
           });
           const url = new URL(
-            resourcePreview(
-              r,
-              "zh-CN",
-              r.sourceId === "shadcn-admin" ? "dark" : "light",
-            ),
+            resourcePreview(r, "zh-CN", framing.theme),
             `http://127.0.0.1:${port}/`,
           );
           url.searchParams.set("thumb", "1");

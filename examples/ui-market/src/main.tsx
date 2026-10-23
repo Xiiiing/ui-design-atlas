@@ -64,6 +64,33 @@ function App() {
     () => (id.startsWith("shadcn-") ? installBlockAdapter() : undefined),
     [id],
   );
+  useEffect(() => {
+    // Thumbnail framing only. Fit fixed-height upstream demos (e.g. Particles)
+    // inside the archive viewport without editing their styles or truncating UI.
+    if (!thumb || window.innerWidth >= 900) return;
+    const surface = document.querySelector<HTMLElement>(".demo-surface");
+    const content = surface?.firstElementChild as HTMLElement | null;
+    if (!surface || !content) return;
+    surface.dataset.fittedThumbnail = "true";
+    const fitThumbnail = () => {
+      const scale = Math.min(
+        1,
+        (innerHeight - 32) / Math.max(1, content.scrollHeight),
+        (innerWidth - 32) / Math.max(1, content.scrollWidth),
+      );
+      content.style.transform = `scale(${scale})`;
+    };
+    const observer = new ResizeObserver(fitThumbnail);
+    observer.observe(content);
+    window.addEventListener("resize", fitThumbnail);
+    fitThumbnail();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", fitThumbnail);
+      content.style.transform = "";
+      delete surface.dataset.fittedThumbnail;
+    };
+  }, [thumb, id]);
   const Demo = demos[id as keyof typeof demos];
   useEffect(() => {
     document.body.inert = thumb;

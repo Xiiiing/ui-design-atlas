@@ -135,11 +135,14 @@ test("Shell appearance persists across tabs and stays independent of archived pr
   await page.getByRole("menuitem", { name: "Dark", exact: true }).click();
   await expect(other.locator("html")).toHaveAttribute("data-theme", "dark");
   await other.close();
-  await page.locator(".asset-caption [data-open]").first().click();
+  await page
+    .locator('[data-open="component:magicui-shimmer-button"]')
+    .last()
+    .click();
   await expect(
     page
       .frameLocator("#case-preview")
-      .getByRole("button", { name: "Login", exact: true }),
+      .getByRole("button", { name: "Shimmer Button", exact: true }),
   ).toBeVisible();
   await expect(
     page.frameLocator("#case-preview").locator("html"),

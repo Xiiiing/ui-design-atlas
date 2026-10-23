@@ -1,3 +1,4 @@
+import discovery from "./content/discovery.json" with { type: "json" };
 // One framing rule for screenshots, live cards and detail previews. The source
 // component and its theme stay intact; only the surrounding demo viewport changes.
 export function resourcePresentation(resource, context = "card") {
@@ -9,12 +10,19 @@ export function resourcePresentation(resource, context = "card") {
       ? resource.preview.width
       : control && context === "card"
         ? 320
-        : 400,
+        : context === "card"
+          ? 480
+          : 400,
     height: wide
       ? resource.preview.height
       : control && context === "card"
         ? 240
-        : 400,
+        : context === "card"
+          ? 360
+          : 400,
+    theme:
+      discovery.previewThemes[resource.id] ||
+      (resource.sourceId === "shadcn-admin" ? "dark" : "light"),
     context,
     stageHeight:
       context === "detail"

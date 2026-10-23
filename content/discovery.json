@@ -1,21 +1,21 @@
 {
   "title": {
-    "zh-CN": "为下一个界面，找到灵感与起点。",
-    "en": "Find a starting point for your next interface."
+    "zh-CN": "界面资源库",
+    "en": "The UI library"
   },
   "description": {
-    "zh-CN": "从一个按钮到完整网站，体验真实 UI，带走提示词与代码。",
-    "en": "From a button to a complete website. Try real UI and take the prompt and code."
+    "zh-CN": "发现值得复用的组件、动效与完整界面。直接体验，带走提示词和源码。",
+    "en": "Components, motion and complete interfaces worth reusing. Try the real thing. Take the prompt and code."
   },
   "featured": [
+    "magicui-bento-grid",
+    "magicui-particles",
     "magicui-shimmer-button",
-    "magicui-magic-card",
-    "magicui-text-animate",
+    "shadcn-login-01",
+    "magicui-marquee",
     "magicui-dock",
-    "fluent-toast",
-    "antd-form",
-    "fluent-toolbar",
-    "shadcn-login-01"
+    "magicui-magic-card",
+    "folio-home"
   ],
   "categories": [
     "buttons",
@@ -72,5 +72,32 @@
       ]
     }
   ],
-  "cases": ["shadcn-admin", "folio", "bloom"]
+  "cases": ["shadcn-admin", "folio", "bloom"],
+  "gallery": [
+    "magicui-number-ticker",
+    "shadcn-sidebar-07",
+    "shadcn-dashboard-01",
+    "magicui-blur-fade",
+    "magicui-border-beam",
+    "forma-home",
+    "bloom-home",
+    "shadcn-admin-dashboard",
+    "antd-table",
+    "fluent-data-grid",
+    "antd-search",
+    "magicui-animated-list",
+    "magicui-text-animate",
+    "fluent-toast",
+    "antd-form",
+    "fluent-toolbar"
+  ],
+  "previewThemes": {
+    "magicui-magic-card": "dark",
+    "magicui-dock": "dark",
+    "magicui-text-animate": "dark",
+    "magicui-particles": "dark",
+    "magicui-number-ticker": "dark",
+    "magicui-blur-fade": "dark",
+    "magicui-border-beam": "dark"
+  }
 }

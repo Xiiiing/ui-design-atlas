@@ -178,6 +178,8 @@ try {
     "presentation.js",
     "market.css",
     "shell/controls.tsx",
+    "examples/ui-market/src/main.tsx",
+    "examples/ui-market/src/styles/index.css",
   ])
     sourceHashes[file] = createHash("sha256")
       .update(await readFile(new URL("../" + file, import.meta.url)))

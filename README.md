@@ -41,7 +41,7 @@ The complete administration example supports local CRUD and settings persistence
 
 ## 发现与复用 / Discover and reuse
 
-默认首页 `#discover` 展示精选、用途分类、主题合集和完整案例；`#explore` 用于同类比较和搜索。点击卡片快速体验、复制提示词；选择“完整详情”或“查看代码”进入可分享的完整资源页。案例页先展示页面目录，再进入系统演示。
+默认首页 `#discover` 以连续资源墙优先展示 24 项精选与推荐，可继续加载；用途分类紧邻预览，主题合集和完整案例随后展示。`#explore` 用于同类比较和搜索。点击卡片快速体验、复制提示词；选择“完整详情”或“查看代码”进入可分享的完整资源页。案例页先展示页面目录，再进入系统演示。
 The discovery homepage curates existing resources. Explore compares like resources. Cards open quick previews; Full details and View code lead to canonical resource pages, including page directories for complete systems.
 
 首页内容在 `content/discovery.json` 维护，引用现有资源 ID，不重复注册。`catalog.js` 提供主题查询；检查脚本验证双语、引用及去重。

@@ -219,7 +219,7 @@ for (const r of resources) {
   assert.ok(p.width > 0 && p.height > 0);
   if (r.type !== "component" || r.preview.width >= 900)
     assert.equal(p.width, r.preview.width);
-  else assert.equal(p.width, r.category === "buttons" ? 320 : 400);
+  else assert.equal(p.width, r.category === "buttons" ? 320 : 480);
 }
 assert.equal(
   thumbnailURL("./demo.html?a=b#/tasks"),
@@ -233,7 +233,7 @@ const { discovery, discoveryResources, collectionResources } =
   await import("../catalog.js");
 for (const field of ["title", "description"])
   for (const lang of ["zh-CN", "en"]) assert.ok(discovery[field][lang]);
-for (const section of ["featured", "cases"]) {
+for (const section of ["featured", "gallery", "cases"]) {
   assert.equal(new Set(discovery[section]).size, discovery[section].length);
   assert.ok(discoveryResources(section).length);
   assert.ok(
@@ -257,3 +257,16 @@ assert.equal(new Set(discovery.categories).size, discovery.categories.length);
 assert.ok(discoveryResources("cases").every((r) => r.type === "case"));
 for (const category of discovery.categories)
   assert.ok(resources.some((r) => r.category === category));
+
+for (const [id, theme] of Object.entries(discovery.previewThemes)) {
+  assert.ok(resources.some((r) => r.id === id));
+  assert.ok(["light", "dark"].includes(theme));
+}
+const { discoveryGallery } = await import("../catalog.js");
+assert.equal(discoveryGallery().length, resources.length);
+
+assert.equal(
+  new Set([...discovery.featured, ...discovery.gallery]).size,
+  discovery.featured.length + discovery.gallery.length,
+  "The first gallery must not repeat resources",
+);

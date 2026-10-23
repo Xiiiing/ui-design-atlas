@@ -603,3 +603,12 @@ export function collectionResources(id) {
 }
 export const discoveryResources = (section) =>
   discovery[section].map((id) => findResource(id));
+
+export function discoveryGallery() {
+  const ordered = [
+    ...discovery.featured,
+    ...discovery.gallery,
+    ...resources.map((r) => r.id),
+  ];
+  return [...new Set(ordered)].map((id) => findResource(id));
+}
