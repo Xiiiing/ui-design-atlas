@@ -125,3 +125,22 @@ html[data-thumbnail="true"] .demo-surface:not([data-source="blocks"]) {
   flex-shrink: 0;
   transform-origin: center;
 }
+
+/* Interactive card framing: preserve real control sizes, constrain only the
+   archive's surrounding viewport. Thumbnail fitting remains visual-only. */
+.demo-surface[data-inline="true"] {
+  padding: 16px;
+  height: 100svh;
+  min-height: 0 !important;
+}
+.demo-surface[data-inline="true"] > div,
+.demo-surface[data-inline="true"] > div > * {
+  max-width: 100%;
+}
+.demo-surface[data-inline="true"][data-source="magicui"] > div > .h-\[500px\] {
+  height: calc(100svh - 32px);
+}
+
+.demo-surface[data-inline="true"][data-resource="magicui-dock"] {
+  padding: 8px;
+}

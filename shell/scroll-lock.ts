@@ -13,10 +13,14 @@ export function lockPageScroll() {
     ];
     const gutter = Math.max(0, innerWidth - root.clientWidth);
     const padding = parseFloat(getComputedStyle(body).paddingInlineEnd) || 0;
-    root.style.scrollbarGutter = "auto";
+    // Stable gutters can reserve space even when clientWidth equals innerWidth.
+    // Keep that reservation while a dialog is open instead of shifting the grid.
+    const stableGutter =
+      getComputedStyle(root).scrollbarGutter.includes("stable");
+    if (!stableGutter) root.style.scrollbarGutter = "auto";
     root.style.overflow = "hidden";
     body.style.overflow = "hidden";
-    body.style.paddingInlineEnd = padding + gutter + "px";
+    body.style.paddingInlineEnd = padding + (stableGutter ? 0 : gutter) + "px";
     restore = () => {
       root.style.overflow = previous[0];
       root.style.scrollbarGutter = previous[1];

@@ -35,7 +35,7 @@ test("Marketplace selects preserve FormData, reset, dialog portals and focus", a
   await expect(popover).toBeVisible();
   expect(
     await popover.evaluate((el) => !!el.closest("#asset-dialog[open]")),
-  ).toBe(true);
+  ).toBe(false);
   await page
     .getByRole("option", { name: "Visual style only", exact: true })
     .click();
@@ -43,21 +43,21 @@ test("Marketplace selects preserve FormData, reset, dialog portals and focus", a
   await expect(page.locator(".full-prompt")).toContainText(
     "Apply these visual and motion rules",
   );
-  await page.locator("#locale").click();
+  await page.locator("#site-locale").click();
   await page.keyboard.press("Escape");
-  await expect(page.locator("#asset-dialog")).toBeVisible();
-  await expect(page.locator("#locale")).toBeFocused();
-  await choose(page, "#locale", "中文");
+  await expect(page.locator(".experience-viewer")).toBeVisible();
+  await expect(page.locator("#site-locale")).toBeFocused();
+  await choose(page, "#site-locale", "中文");
   await expect(page.locator(".inspector-head h2")).toHaveText("流光边框");
-  await page.locator("[data-full-detail=code]").click();
+  await page.locator("[data-tab=code]").click();
   await expect(page.locator("#code-text")).toContainText("BorderBeam");
   await choose(page, "#code-file", "src/vendor/magicui/border-beam.tsx");
   await expect(page.locator("#code-text")).toContainText("motion/react");
-  await page.goBack();
-  await expect(page.locator("#asset-dialog")).toBeVisible();
-  await page.getByRole("button", { name: "关闭预览", exact: true }).click();
-  await expect(page.locator("#asset-dialog")).not.toBeVisible();
-  await expect(page.locator(".asset-cover-link")).toBeFocused();
+  await page.locator("[data-tab=notes]").click();
+  await expect(page.locator(".experience-viewer")).toBeVisible();
+  await page.getByRole("button", { name: "返回资源市场", exact: true }).click();
+  await expect(page.locator(".experience-viewer")).not.toBeVisible();
+  await expect(page.locator(".asset-caption [data-open]")).toBeFocused();
   // A close/reopen caused by locale changes must not leave any stale scroll owner.
   await expect
     .poll(() => page.evaluate(() => document.documentElement.style.overflow))
@@ -96,7 +96,6 @@ test("Resource type navigation keeps stable geometry and detail tabs support key
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.locator("[name=q]").fill("流光边框");
   await page.locator(".asset-caption [data-open]").click();
-  await page.locator("[data-full-detail]").first().click();
   await page.getByRole("tab").first().focus();
   await page.keyboard.press("ArrowRight");
   await expect(
@@ -153,7 +152,7 @@ test("Shell appearance persists across tabs and stays independent of archived pr
   );
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await page
-    .getByRole("button", { name: "Close preview", exact: true })
+    .getByRole("button", { name: "Back to market", exact: true })
     .click();
   await page
     .getByRole("button", { name: "Atlas appearance", exact: true })
@@ -213,7 +212,7 @@ test("Document scrolling, touch controls and progressive filters work across siz
       .locator(".asset-caption [data-open]")
       .click();
     await page
-      .getByRole("button", { name: "Close preview", exact: true })
+      .getByRole("button", { name: "Back to market", exact: true })
       .click();
     await expect.poll(() => browseTop(page)).toBeCloseTo(scroll, 0);
     expect(

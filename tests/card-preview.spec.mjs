@@ -16,7 +16,7 @@ async function geometry(card) {
 function separate(g) {
   expect(g.caption.top).toBeGreaterThanOrEqual(g.preview.bottom);
   expect(g.description.top).toBeGreaterThanOrEqual(g.caption.bottom);
-  expect(g.description.height).toBeLessThanOrEqual(36.5);
+  expect(g.description.height).toBeLessThanOrEqual(40.5);
   if (g.badge) {
     expect(g.badge.top).toBeGreaterThanOrEqual(g.preview.top);
     expect(g.badge.bottom).toBeLessThan(g.preview.bottom);
@@ -30,7 +30,7 @@ test("Card metadata never covers or resizes the canvas on hover, focus or live l
 }) => {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  for (const width of [1440, 768, 375])
+  for (const width of [2560, 1440, 768, 375])
     for (const colorScheme of ["dark", "light"])
       for (const lang of ["zh-CN", "en"]) {
         await page.setViewportSize({ width, height: 1000 });
@@ -44,11 +44,10 @@ test("Card metadata never covers or resizes the canvas on hover, focus or live l
         await page.mouse.move(0, 0);
         const before = await geometry(card);
         separate(before);
-        if (width >= 768)
-          await expect(card.locator(".asset-description")).toHaveCSS(
-            "opacity",
-            "0",
-          );
+        await expect(card.locator(".asset-description")).toHaveCSS(
+          "opacity",
+          "1",
+        );
         await card.hover();
         await expect(card).toHaveClass(/is-live/);
         await expect(card.locator(".asset-description")).toHaveCSS(
@@ -58,20 +57,16 @@ test("Card metadata never covers or resizes the canvas on hover, focus or live l
         const after = await geometry(card);
         separate(after);
         expect(after).toEqual(before);
-        await card.locator(".asset-cover-link").focus();
-        expect(
-          await card
-            .locator(".asset-cover-link")
-            .getAttribute("aria-describedby"),
-        ).toBe("description-magicui-shimmer-button");
+        await card.locator(".asset-actions [data-details]").focus();
         expect(await geometry(card)).toEqual(before);
-        await card.locator(".asset-cover-link").evaluate((el) => el.blur());
+        await card
+          .locator(".asset-actions [data-details]")
+          .evaluate((el) => el.blur());
         await page.mouse.move(0, 0);
-        if (width >= 768)
-          await expect(card.locator(".asset-description")).toHaveCSS(
-            "opacity",
-            "0",
-          );
+        await expect(card.locator(".asset-description")).toHaveCSS(
+          "opacity",
+          "1",
+        );
         expect(await geometry(card)).toEqual(before);
         expect(
           await page.evaluate(
@@ -95,11 +90,16 @@ test("Revealing metadata keeps adjacent rows fixed and wide block covers intact"
     );
     const positions = () =>
       cards.evaluateAll((es) =>
-        es.map((el) => el.getBoundingClientRect().toJSON()),
+        es.map((el) => {
+          const b = el.getBoundingClientRect();
+          return { x: b.x, y: b.y + scrollY, width: b.width, height: b.height };
+        }),
       );
     const before = await positions();
-    await cards.first().locator(".asset-cover-link").focus();
-    await expect(cards.first()).toHaveClass(/is-live/);
+    await cards.first().locator(".asset-caption a").focus();
+    if ((await cards.first().getAttribute("data-experience")) === "inline")
+      await expect(cards.first()).toHaveClass(/is-live/);
+    else await expect(cards.first().locator("iframe")).toHaveCount(0);
     separate(await geometry(cards.first()));
     expect(await positions()).toEqual(before);
     await cards.nth(1).hover();
@@ -107,7 +107,7 @@ test("Revealing metadata keeps adjacent rows fixed and wide block covers intact"
     expect(await positions()).toEqual(before);
     expect(
       await page.locator(".asset-live iframe").count(),
-    ).toBeLessThanOrEqual(2);
+    ).toBeLessThanOrEqual(8);
   }
 });
 
@@ -133,78 +133,57 @@ test("Touch cards keep descriptions outside the preview and open the actual reso
     await expect(card.locator(".asset-preview .asset-description")).toHaveCount(
       0,
     );
-    await card.locator(".asset-cover-link").tap();
-    await expect(page.locator("#asset-dialog")).toBeVisible();
+    await card.locator(".asset-actions [data-details]").tap();
+    await expect(page.locator(".experience-viewer")).toBeVisible();
     await expect(page.locator(".inspector-head h2")).toHaveText("微光按钮");
-    await page.getByRole("button", { name: "关闭预览", exact: true }).click();
-    await expect(card.locator(".asset-cover-link")).toBeFocused();
-    await expect(card.locator("iframe")).toHaveCount(0);
+    await page
+      .getByRole("button", { name: "返回资源市场", exact: true })
+      .click();
+    await expect(card.locator(".asset-actions [data-details]")).toBeFocused();
+    await expect(card).toHaveClass(/is-live/);
     separate(await geometry(card));
   } finally {
     await ctx.close();
   }
 });
 
-test("Top-right card actions center both icons and keep separate click targets", async ({
+test("Card actions stay outside the preview, save independently and support keyboard navigation", async ({
   page,
 }) => {
-  for (const width of [1440, 768, 375])
-    for (const colorScheme of ["dark", "light"]) {
-      await page.setViewportSize({ width, height: 1000 });
-      await page.emulateMedia({ colorScheme });
-      await page.goto("#motion?lang=zh-CN&category=buttons");
-      const card = page.locator(
-        '[data-resource="component:magicui-shimmer-button"]',
-      );
-      await card.scrollIntoViewIfNeeded();
-      await card.locator(".asset-open").focus();
-      const metrics = await card.evaluate((el) => {
-        const open = el.querySelector(".asset-open"),
-          save = el.querySelector(".asset-save");
-        const rect = (e) => e.getBoundingClientRect();
-        const controls = [open, save].map((e) => {
-          const b = rect(e),
-            s = rect(e.querySelector("svg"));
-          return {
-            width: b.width,
-            height: b.height,
-            top: b.top,
-            dx: Math.abs(b.x + b.width / 2 - s.x - s.width / 2),
-            dy: Math.abs(b.y + b.height / 2 - s.y - s.height / 2),
-          };
-        });
-        const o = rect(open),
-          s = rect(save),
-          p = rect(el.querySelector(".asset-preview"));
-        return {
-          controls,
-          gap: s.left - o.right,
-          rightInset: p.right - s.right,
-          topInset: s.top - p.top,
-        };
-      });
-      for (const m of metrics.controls) {
-        expect(m.dx).toBeLessThan(0.75);
-        expect(m.dy).toBeLessThan(0.75);
-        expect(m.width).toBe(m.height);
-      }
-      expect(metrics.controls[0].width).toBe(metrics.controls[1].width);
-      expect(metrics.controls[0].top).toBe(metrics.controls[1].top);
-      expect(metrics.gap).toBeGreaterThanOrEqual(6);
-      expect(metrics.rightInset).toBeGreaterThanOrEqual(8);
-      expect(metrics.topInset).toBe(metrics.rightInset);
-      const save = card.locator(".asset-save");
-      const saved = await save.getAttribute("aria-pressed");
-      await save.click();
-      await expect(save).toHaveAttribute(
-        "aria-pressed",
-        saved === "true" ? "false" : "true",
-      );
-      await expect(page.locator("#asset-dialog")).not.toBeVisible();
-      await card.locator(".asset-open").press("Enter");
-      await expect(page.locator("#asset-dialog")).toBeVisible();
-      await expect(page.locator(".inspector-head h2")).toHaveText("微光按钮");
-      await page.getByRole("button", { name: "关闭预览", exact: true }).click();
-      await expect(card.locator(".asset-cover-link")).toBeFocused();
-    }
+  for (const width of [2560, 1440, 768, 375]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto("#motion?lang=en&category=buttons");
+    const card = page.locator(
+      '[data-resource="component:magicui-shimmer-button"]',
+    );
+    await card.scrollIntoViewIfNeeded();
+    const boxes = await card.evaluate((el) => ({
+      preview: el.querySelector(".asset-preview").getBoundingClientRect()
+        .bottom,
+      actions: [...el.querySelector(".asset-actions").children].map((e) =>
+        e.getBoundingClientRect().toJSON(),
+      ),
+    }));
+    for (const b of boxes.actions)
+      expect(b.top).toBeGreaterThanOrEqual(boxes.preview);
+    expect(boxes.actions[1].left).toBeGreaterThanOrEqual(
+      boxes.actions[0].right,
+    );
+    expect(boxes.actions[2].left).toBeGreaterThanOrEqual(
+      boxes.actions[1].right,
+    );
+    const save = card.locator("[data-save]"),
+      prior = await save.getAttribute("aria-pressed");
+    await save.click();
+    await expect(save).toHaveAttribute(
+      "aria-pressed",
+      prior === "true" ? "false" : "true",
+    );
+    await expect(page).toHaveURL(/#motion/);
+    const details = card.locator(".asset-actions [data-details]");
+    await details.press("Enter");
+    await expect(page.locator("#inspector")).toBeVisible();
+    await page.locator("[data-close-viewer]").first().click();
+    await expect(details).toBeFocused();
+  }
 });

@@ -7,10 +7,17 @@ import { TasksMutateDrawer } from "@/features/tasks/components/tasks-mutate-draw
 import { TasksProvider } from "@/features/tasks/components/tasks-provider";
 import { TasksTable } from "@/features/tasks/components/tasks-table";
 import { UsersActionDialog } from "@/features/users/components/users-action-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { t } from "./i18n";
 import { useRows } from "./store";
 export function ComponentPreview({ id }: { id: string }) {
+  useEffect(() => {
+    if (parent !== window)
+      parent.postMessage(
+        { type: "atlas:inline-ready", resourceId: `shadcn-admin-${id}` },
+        location.origin,
+      );
+  }, [id]);
   const [open, setOpen] = useState(
     new URLSearchParams(location.search).has("thumb"),
   );

@@ -11,7 +11,7 @@ test("Gallery uses native document scrolling, compact previews and wide spans", 
   page,
 }) => {
   for (const [width, columns] of [
-    [1440, 4],
+    [1440, 3],
     [768, 2],
     [375, 1],
   ]) {
@@ -31,7 +31,7 @@ test("Gallery uses native document scrolling, compact previews and wide spans", 
     expect(metrics.columns).toBe(columns);
     expect(metrics.wrapper).toBe("0px");
     expect(metrics.overflow).toBe(false);
-    if (width === 1440) expect(metrics.first).toBeLessThan(1000);
+    if (width === 1440) expect(metrics.first).toBeLessThan(1100);
     await expect(
       page.locator('[data-resource="component:antd-table"]'),
     ).toHaveAttribute("data-layout", "wide");
@@ -75,7 +75,7 @@ test("Filter chips remove individual conditions and collapsed filters retain the
   await expect(page.locator(".asset-card")).toHaveCount(24);
 });
 
-test("Live cards use the same frame as their screenshot and unload outside the viewport", async ({
+test("Live cards fit their available interactive viewport and unload outside the viewport", async ({
   page,
 }) => {
   await page.goto("#components?lang=en");
@@ -93,18 +93,26 @@ test("Live cards use the same frame as their screenshot and unload outside the v
           f.contentWindow.innerHeight,
         ]),
     )
-    .toEqual([p.width, p.height]);
+    .toEqual([
+      Math.round(
+        (await card.locator(".asset-preview").boundingBox()).width - 2,
+      ),
+      p.inlineHeight - 2,
+    ]);
   await expect
     .poll(() =>
       card
         .locator("iframe")
-        .evaluate((f) => f.contentDocument?.documentElement.dataset.thumbnail),
+        .evaluate(
+          (f) =>
+            f.contentDocument?.querySelector(".demo-surface")?.dataset.inline,
+        ),
     )
     .toBe("true");
   await page.locator("footer").scrollIntoViewIfNeeded();
   await expect(card.locator("iframe")).toHaveCount(0);
   expect(await page.locator(".asset-live iframe").count()).toBeLessThanOrEqual(
-    2,
+    8,
   );
 });
 
@@ -113,7 +121,7 @@ test("Original motion parameters affect the real preview, prompt and replay", as
   context,
 }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-  await page.goto("#component/magicui-shimmer-button?lang=en");
+  await page.goto("#component/magicui-shimmer-button?lang=en&panel=details");
   const demo = page.frameLocator("#case-preview");
   const button = demo.getByRole("button", {
     name: "Shimmer Button",
@@ -149,7 +157,7 @@ test("Original motion parameters affect the real preview, prompt and replay", as
 test("Page details preserve desktop width, support fullscreen and keep the inspector at 360px", async ({
   page,
 }) => {
-  await page.goto("#page/shadcn-admin-dashboard?lang=en");
+  await page.goto("#page/shadcn-admin-dashboard?lang=en&panel=details");
   const demo = page.frameLocator("#case-preview");
   await expect(
     demo.getByRole("heading", { name: "Dashboard", exact: true }),

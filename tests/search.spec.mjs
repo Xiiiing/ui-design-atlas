@@ -22,7 +22,7 @@ test("List and keyboard search rank exact names first and preserve filters and h
     await expect(page.locator("#search-dialog")).not.toBeVisible();
   }
   await page.locator("[name=q]").fill("Border Beam");
-  await page.locator("#results .asset-cover-link").first().click();
+  await page.locator("#results .asset-caption [data-open]").first().click();
   await page.goBack();
   await expect(page.locator("[name=q]")).toHaveValue("Border Beam");
   await page.reload();

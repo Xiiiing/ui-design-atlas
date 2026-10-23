@@ -20,6 +20,15 @@ class Boundary extends React.Component<
   static getDerivedStateFromError() {
     return { error: true };
   }
+  componentDidCatch() {
+    parent.postMessage(
+      {
+        type: "atlas:inline-error",
+        resourceId: new URLSearchParams(location.search).get("item"),
+      },
+      location.origin,
+    );
+  }
   render() {
     return this.state.error ? (
       <div className="demo-error" role="alert">
@@ -31,11 +40,25 @@ class Boundary extends React.Component<
     );
   }
 }
+function InlineReady({
+  id,
+  children,
+}: React.PropsWithChildren<{ id: string }>) {
+  useEffect(() => {
+    if (parent !== window)
+      parent.postMessage(
+        { type: "atlas:inline-ready", resourceId: id },
+        location.origin,
+      );
+  }, [id]);
+  return children;
+}
 function App() {
   const params = new URLSearchParams(location.search),
     id = params.get("item") || "magicui-border-beam",
     thumb = params.has("thumb"),
-    embedded = params.has("embed");
+    embedded = params.has("embed"),
+    inline = params.has("inline");
   const [language, languageChanged] = useState(locale),
     [revision, replay] = useState(0),
     [duration, setDuration] = useState(id === "magicui-shimmer-button" ? 3 : 8),
@@ -159,7 +182,10 @@ function App() {
           '[role="dialog"],[role="alertdialog"],dialog[open]',
         )
       )
-        parent.postMessage({ type: "atlas:escape" }, location.origin);
+        parent.postMessage(
+          { type: "atlas:escape", resourceId: id },
+          location.origin,
+        );
     };
     window.addEventListener("keydown", key);
     return () => {
@@ -242,6 +268,8 @@ function App() {
       <PreviewSettings value={{ duration, quantity, value }}>
         <MotionConfig reducedMotion="user">
           <div
+            data-inline={inline || undefined}
+            data-resource={id}
             className="demo-surface"
             data-source={
               id.startsWith("magicui")
@@ -258,7 +286,9 @@ function App() {
               <Boundary>
                 <Suspense fallback={<p>{t("Loading preview…")}</p>}>
                   {Demo ? (
-                    <Demo />
+                    <InlineReady id={id}>
+                      <Demo />
+                    </InlineReady>
                   ) : (
                     <p role="alert">{t("Resource not found.")}</p>
                   )}
@@ -281,7 +311,7 @@ createRoot(document.querySelector("#root")!).render(
     }
     enableSystem={false}
     forcedTheme={undefined}
-    storageKey="atlas:ui-market:theme"
+    storageKey={`atlas:ui-market:${new URLSearchParams(location.search).get("item")}:${new URLSearchParams(location.search).has("inline") ? "card" : "viewer"}:theme`}
   >
     <App />
   </ThemeProvider>,

@@ -1,4 +1,5 @@
-if (new URLSearchParams(location.search).has("thumb")) document.body.inert = true;
+if (new URLSearchParams(location.search).has("thumb"))
+  document.body.inert = true;
 import { getComponent } from "./data.js";
 import { componentMarkup } from "./components.js";
 import { observeLegacy, translateLegacyString as tr } from "./legacy-i18n.js";
@@ -34,3 +35,9 @@ document.addEventListener("submit", (e) => {
     );
   }
 });
+
+if (item && parent !== window)
+  parent.postMessage(
+    { type: "atlas:inline-ready", resourceId: item.id },
+    location.origin,
+  );

@@ -9,7 +9,9 @@
     ],
     "category": "cards",
     "interactions": [
-      "auto"
+      "auto",
+      "input",
+      "click"
     ],
     "motion": true,
     "styleId": "motion-neutral",
@@ -938,7 +940,9 @@
     ],
     "category": "cards",
     "interactions": [
-      "hover"
+      "hover",
+      "input",
+      "click"
     ],
     "motion": true,
     "styleId": "motion-neutral",

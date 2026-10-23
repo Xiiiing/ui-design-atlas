@@ -34,7 +34,8 @@ export function ArchiveBridge() {
     window.addEventListener("message", handler);
     return () => window.removeEventListener("message", handler);
   }, [setTheme]);
-  if (parent !== window) return null;
+  if (parent !== window || new URLSearchParams(location.search).has("thumb"))
+    return null;
   return (
     <div className="flex flex-wrap items-center justify-between gap-2 border-b bg-muted px-4 py-2 text-xs">
       <span>{t("Local demo · adapted from Shadcn Admin")}</span>

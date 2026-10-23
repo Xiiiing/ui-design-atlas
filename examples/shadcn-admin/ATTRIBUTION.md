@@ -14,3 +14,5 @@ No real accounts, authentication service, invitations, messages or transactions 
 没有真实账户、认证服务、邀请、邮件或交易。密码只用于表单演示校验，不存储。示例对象均为虚构。源码和许可链接只用于溯源，演示在本地运行。
 
 Dependency licenses, including the locally packaged fonts, are collected in THIRD_PARTY_NOTICES.md when the distribution is built.
+
+Atlas interactive card embeds report readiness with resource identity. Thumbnail capture omits the standalone archive toolbar; live previews keep native page, table and sidebar scrolling. Complex forms, dialogs and metric groups use the wide viewer instead of a squeezed card.

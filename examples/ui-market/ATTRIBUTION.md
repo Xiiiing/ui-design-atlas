@@ -25,4 +25,6 @@ Each imported project is pinned in `sources.lock.json`. Dependency notices are i
 
 Original Magic UI neutral colour tokens and animation definitions are preserved in `src/styles/source-themes.css` and `magic-animations.css`. The shadcn blocks use their own original scoped colour/chart tokens from `apps/v4/app/globals.css`. Geist is bundled locally (OFL). Thumbnail previews are inert so upstream dialogs never take keyboard focus away from the marketplace; full previews retain normal interaction.
 
-Embedded previews use `embed=1` to omit the standalone adapter toolbar. Atlas exposes only the existing duration, quantity and target-value props beside the preview, using same-origin `atlas:preview-settings` messages. Component source styles and providers are unchanged.
+Embedded previews use `embed=1` to omit the standalone adapter toolbar. Atlas exposes only the existing duration, quantity and target-value props beside the preview, using same-origin `atlas:preview-settings` messages. Component source styles are unchanged; the existing theme provider uses a resource-specific storage key to isolate simultaneous cards from one another and from the viewer.
+
+Interactive cards use `embed=1&inline=1` with real pointer, input and keyboard handling. The archive viewport adapts padding and decorative particle height to phone cards; source typography and interaction are retained. The bridge reports readiness/errors with resource identity; MotionConfig and existing reduced-motion styles respect user preferences. Static `thumb=1` capture remains inert.

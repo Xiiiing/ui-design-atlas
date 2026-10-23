@@ -8,13 +8,13 @@ Find a UI effect, component, block or system; try it and take its notes, prompts
 ## 浏览与复用 / Browse and reuse
 
 - 首页按资源展示；支持动效、组件、区块、页面和完整案例，以及用途、组件库、风格和交互筛选。
-- 点击卡片打开大弹层：左侧真实交互，右侧名称、介绍、设计解读、提示词、源码与依赖；关闭后恢复筛选和位置。
+- 紧凑组件在卡片中直接体验；卡片外提供提示词复制、用途/交互/风格标签、详情和收藏。大资源打开独立宽屏体验页，默认收起说明；返回恢复筛选、加载数量、滚动位置和入口焦点。
 - 搜索支持中英文和组件库别名，例如“流光边框”“微软”“Fluent”“antd”；列表与快速搜索按名称精确匹配、名称包含、别名/标签及描述排序，同等相关度保持原顺序。
 - 独立资源无需所属系统。原有案例、页面、组件 ID 和收藏备份保持兼容。
-- 首页只按需加载最多两个实时预览。封面由实际本地演示生成。
+- 可见小组件按需加载，同时最多保留八个实时 iframe；焦点所在演示不会因离屏被回收。大资源使用实际本地演示生成的静态封面。
 - 默认中文，支持整体英文、分享、收藏导入导出、尺寸和主题切换。
 
-The marketplace ranks bilingual search by exact name, name match, aliases/tags and description, with stable ties. It provides library/category/style/interaction filters, quick-view dialogs, preserved browsing context, source code and prompts. Existing links and favorites remain compatible. Covers are captured from real demos; at most two live thumbnail previews run at once.
+The marketplace ranks bilingual search by exact name, name match, aliases/tags and description, with stable ties. It provides library/category/style/interaction filters, interactive cards, wide experience pages and preserved browsing context, source code and prompts. Existing links and favorites remain compatible. Covers are captured from real demos; at most eight live component previews run at once, preserving focused demos.
 
 ## 图鉴界面 / Atlas interface
 
@@ -41,8 +41,8 @@ The complete administration example supports local CRUD and settings persistence
 
 ## 发现与复用 / Discover and reuse
 
-默认首页 `#discover` 以连续资源墙优先展示 24 项精选与推荐，可继续加载；用途分类紧邻预览，主题合集和完整案例随后展示。`#explore` 用于同类比较和搜索。点击卡片快速体验、复制提示词；选择“完整详情”或“查看代码”进入可分享的完整资源页。案例页先展示页面目录，再进入系统演示。
-The discovery homepage curates existing resources. Explore compares like resources. Cards open quick previews; Full details and View code lead to canonical resource pages, including page directories for complete systems.
+默认首页 `#discover` 以连续资源墙优先展示 24 项精选与推荐，可继续加载；用途分类紧邻预览，主题合集和完整案例随后展示。`#explore` 用于同类比较和搜索。小组件直接体验和复制提示词；宽资源打开体验页。名称和“查看详情”通过 `panel=details` 展开说明，`tab=code` 仍可直接打开源码。案例可在工具栏切换页面，也可在说明栏查看页面目录。
+The discovery homepage curates existing resources. Explore compares like resources. Compact cards are directly interactive; larger resources open a wide experience page. `panel=details` expands notes, and `tab=code` opens source. Systems retain page selection and directories.
 
 首页内容在 `content/discovery.json` 维护，引用现有资源 ID，不重复注册。`catalog.js` 提供主题查询；检查脚本验证双语、引用及去重。
 Editorial content references existing resource IDs in `content/discovery.json`. Registry queries and checks validate bilingual fields, references and uniqueness.
@@ -108,3 +108,5 @@ On push to `main`, Actions installs locked dependencies, validates and builds bo
 
 `21st-submissions/` 不参与本次构建、提交或发布。
 `21st-submissions/` is excluded from this work and the deployed output.
+
+本轮体验模式、加载预算、截图和录屏验收见 [资源体验优化](docs/ui/resource-experience.md)。
