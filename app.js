@@ -466,10 +466,27 @@ function inspector() {
     if (tab === "code") void loadCode(r);
   }
 }
-async function loadCode(r) {
+let codeLoadSerial = 0;
+async function loadCode(r, scope = "resource") {
   const target = document.querySelector("#full-code");
+  if (!target) return;
+  const request = ++codeLoadSerial;
+  const language = locale;
+  const active = () =>
+    request === codeLoadSerial &&
+    selected?.id === r.id &&
+    selected?.type === r.type &&
+    tab === "code" &&
+    target.isConnected &&
+    language === locale;
+  replaceShellHTML(
+    target,
+    `<p role="status">${t("正在读取源码…", "Loading source…")}</p>`,
+  );
   try {
-    let files;
+    let files, manifest;
+    const project =
+      r.sourceId === "shadcn-admin" ? "shadcn-admin" : "ui-market";
     if (r.sourceId === "original") {
       files =
         r.type === "component"
@@ -487,9 +504,9 @@ async function loadCode(r) {
       }
     } else {
       const url =
-        r.sourceId === "shadcn-admin"
-          ? "./code/shadcn-admin.json"
-          : "./code/ui-market.json";
+        scope === "project"
+          ? `./code/${project}.json`
+          : `./code/resources/${r.type}-${r.id}.json`;
       if (!previewCache.has(url))
         previewCache.set(
           url,
@@ -498,29 +515,37 @@ async function loadCode(r) {
               if (!res.ok) throw Error(res.status);
               return res.json();
             })
-            .catch((e) => {
+            .catch((error) => {
               previewCache.delete(url);
-              throw e;
+              throw error;
             }),
         );
-      files = (await previewCache.get(url)).files;
+      manifest = await previewCache.get(url);
+      files = manifest.files;
     }
-    if (selected?.id !== r.id || tab !== "code" || !target?.isConnected) return;
+    if (!active()) return;
     currentFiles = files;
     const first =
       r.sourceId === "original" && r.type === "component"
         ? r.id + ".html"
-        : r.files?.find((f) => files[f]) || Object.keys(files)[0];
+        : r.files?.find((f) => files[f]) ||
+          manifest?.entryFiles?.[0] ||
+          Object.keys(files)[0];
     const options = [
       ...new Set([
         first,
         ...(r.files || []),
         ...(r.supportFiles || []),
-        "package.json",
         ...Object.keys(files),
       ]),
     ].filter((f) => f in files);
-    target.innerHTML = `<section class="detail-section"><p>${t("实际演示入口、组件实现与依赖上下文。", "Actual demo entry, implementation and dependencies.")}</p><p>${t("下载项目后运行 npm ci，再运行 npm run dev。构建命令为 npm run build。", "After extracting: npm ci, then npm run dev. Build with npm run build.")}</p><select data-shell-control id="code-file" aria-label="${t("源文件", "Source file")}">${options.map((f) => `<option value="${esc(f)}">${esc(f)}</option>`).join("")}</select><div class="button-row code-actions"><button class="button primary" data-copy-code>${t("复制当前文件", "Copy file")}</button><button class="button" data-download-code>${t("下载当前文件", "Download file")}</button>${r.sourceId !== "original" ? `<a class="button" href="./downloads/${r.sourceId === "shadcn-admin" ? "shadcn-admin" : "ui-market"}.zip" download>${t("下载可运行项目", "Download project")} ZIP</a>` : ""}</div><pre id="code-text" class="code-text">${esc(files[first])}</pre></section>`;
+    const instructions = manifest?.instructions
+      ? `<details class="code-integration"><summary>${t("接入说明与安装命令", "Integration & installation")}</summary>${manifest.instructions[locale].map((line) => `<p>${esc(line)}</p>`).join("")}<pre class="code-text">${esc(manifest.install)}</pre><button class="button" data-copy-install>${icon("copy")}${t("复制安装命令", "Copy install commands")}</button></details>`
+      : `<p>${r.sourceId === "original" ? t("原创组件的 HTML 文件可直接打开；其他文件保留原站点的实现与样式上下文。", "Original component HTML files can be opened directly; other files retain the original site implementation and style context.") : t("完整项目包含所有资源。下载完整项目 ZIP 后运行 npm ci、npm run dev；构建使用 npm run build。", "The full project contains all resources. Extract the full project ZIP, then run npm ci and npm run dev; build with npm run build.")}</p>`;
+    replaceShellHTML(
+      target,
+      `<section class="detail-section"><div class="code-scope-heading"><h2>${t(scope === "project" ? "完整项目源码" : "当前资源源码", scope === "project" ? "Full project source" : "Resource source")}</h2><span>${options.length} ${t("个文件", "files")}</span></div>${instructions}<select data-shell-control id="code-file" aria-label="${t("源文件", "Source file")}">${options.map((f) => `<option value="${esc(f)}">${esc(f)}</option>`).join("")}</select><div class="button-row code-actions"><button class="button primary" data-copy-code>${t("复制当前文件", "Copy file")}</button><button class="button" data-download-code>${t("下载当前文件", "Download file")}</button>${r.sourceId !== "original" ? `<a class="button" href="./downloads/resources/${r.type}-${r.id}.zip" download>${t("下载资源文件包", "Download resource files")} ZIP</a><a class="button" href="./downloads/${project}.zip" download>${t("下载可运行项目", "Download project")} ZIP</a><button class="button" data-code-scope="${scope === "project" ? "resource" : "project"}">${t(scope === "project" ? "返回资源源码" : "查看完整项目源码", scope === "project" ? "Back to resource source" : "View full project source")}</button>` : ""}</div><pre id="code-text" class="code-text">${esc(files[first])}</pre></section>`,
+    );
     for (const id of r.libraryIds) {
       const lib = libraries[id];
       target
@@ -530,11 +555,16 @@ async function loadCode(r) {
           `<p class="dependency-note">${external(lib.docs, lib.name)} <code>${esc(r.libraryVersions?.[id] || lib.version)}</code></p>`,
         );
     }
+    return true;
   } catch {
-    if (selected?.id === r.id && tab === "code" && target?.isConnected)
-      target.innerHTML = `<p>${t("源码读取失败，请重试。", "Source could not be loaded.")}</p><button class="button" data-tab="code">${t("重试", "Retry")}</button>`;
+    if (active())
+      replaceShellHTML(
+        target,
+        `<p role="alert">${t("源码读取失败，请重试。", "Source could not be loaded.")}</p><button class="button" data-code-scope="${scope}">${t("重试", "Retry")}</button>`,
+      );
   }
 }
+
 function previewParameters(r) {
   const config =
     r.id === "magicui-border-beam"
@@ -1059,6 +1089,16 @@ document.addEventListener("click", async (e) => {
     scalePreview();
     return;
   }
+  if (b.hasAttribute("data-code-scope")) {
+    const updated = await loadCode(selected, b.dataset.codeScope);
+    if (updated)
+      document
+        .querySelector("#full-code [data-code-scope]")
+        ?.focus({ preventScroll: true });
+    return;
+  }
+  if (b.hasAttribute("data-copy-install"))
+    return copy(document.querySelector(".code-integration pre").textContent);
   if (b.hasAttribute("data-copy-prompt")) return copy(currentPrompt());
   if (b.hasAttribute("data-copy-code"))
     return copy(document.querySelector("#code-text").textContent);

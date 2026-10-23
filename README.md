@@ -69,8 +69,8 @@ node scripts/serve.mjs --dist --base=/ui-design-atlas/
 新增资源的名称、说明、来源和库信息维护在 `content/market-*.json`，运行 `node scripts/generate-market-catalog.mjs` 生成浏览器注册表和演示名称。
 Independent metadata is maintained in `content/market-*.json`. Generate the browser registry and preview names with the command above.
 
-源码位于两个独立项目：`examples/shadcn-admin/` 和 `examples/ui-market/`。每个项目都有锁文件，可单独安装与构建。构建产物生成对应源码清单和 ZIP 下载包。两套依赖彼此隔离。
-The two example projects have independent lockfiles and builds. The site build creates their source manifests and runnable ZIPs, with dependency licenses.
+源码位于两个独立项目：`examples/shadcn-admin/` 和 `examples/ui-market/`。每个项目都有锁文件，可单独安装与构建。构建产物生成按资源加载的源码清单和资源文件 ZIP（入口、递归本地依赖、支持文件、样式、静态头像、许可证与双语接入说明）。源码页默认仅展示当前资源，提供锁定版本的安装命令；“查看完整项目源码”按需加载整项目清单。资源文件包用于接入现有应用，涉及后台路由或 Provider 时需沿用或适配调用上下文；要直接运行演示，下载完整项目 ZIP。两套依赖彼此隔离。
+The two example projects have independent lockfiles and builds. The build creates resource-scoped manifests and source-file ZIPs with local dependency closures, styles, assets, licenses and bilingual integration notes. Full project source loads only on request. Resource files integrate into an existing app; preserve or adapt router/provider context where required. Full project ZIPs remain the runnable option.
 
 ## 验证 / Validation
 
@@ -89,6 +89,9 @@ npm run build
 
 仅捕获部分资源时，在完成 `node scripts/build.mjs --capture-previews` 后运行 `node scripts/capture-previews.mjs <ID substring>`。普通构建严格检查所有封面和源码入口存在。
 For a subset, build with `--capture-previews`, then pass an ID substring to the capture script. Regular builds verify all covers and code entries.
+
+资源级源码与搜索排序的实现边界、体积及浏览器证据见 [验收记录](docs/ui/resource-reuse.md)。
+Resource delivery, search ranking and verification evidence: [verification notes](docs/ui/resource-reuse.md).
 
 ## 来源与许可 / Attribution
 

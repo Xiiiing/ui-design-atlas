@@ -2956,3 +2956,29 @@ dialog {
     padding: 8px 12px;
   }
 }
+
+.code-scope-heading {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.code-scope-heading h2 {
+  font-size: 18px;
+}
+.code-scope-heading span {
+  color: var(--muted-text);
+  font-size: 13px;
+}
+.code-integration {
+  margin: 16px 0;
+}
+.code-integration summary {
+  cursor: pointer;
+  padding: 8px 0;
+  font-weight: 500;
+}
+.code-integration p {
+  line-height: 1.7;
+  margin: 12px 0;
+}

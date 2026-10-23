@@ -1,0 +1,100 @@
+{
+  "screens": [
+    {
+      "width": 1440,
+      "lang": "zh-CN",
+      "theme": "light",
+      "overflow": false,
+      "errors": [],
+      "screenshot": "source-1440-light-zh-CN.png"
+    },
+    {
+      "width": 1440,
+      "lang": "zh-CN",
+      "theme": "dark",
+      "overflow": false,
+      "errors": [],
+      "screenshot": "source-1440-dark-zh-CN.png"
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "light",
+      "overflow": false,
+      "errors": [],
+      "screenshot": "source-1440-light-en.png"
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "theme": "dark",
+      "overflow": false,
+      "errors": [],
+      "screenshot": "source-1440-dark-en.png"
+    },
+    {
+      "width": 768,
+      "lang": "zh-CN",
+      "theme": "light",
+      "overflow": false,
+      "errors": [],
+      "screenshot": "source-768-light-zh-CN.png"
+    },
+    {
+      "width": 768,
+      "lang": "zh-CN",
+      "theme": "dark",
+      "overflow": false,
+      "errors": [],
+      "screenshot": "source-768-dark-zh-CN.png"
+    },
+    {
+      "width": 768,
+      "lang": "en",
+      "theme": "light",
+      "overflow": false,
+      "errors": [],
+      "screenshot": "source-768-light-en.png"
+    },
+    {
+      "width": 768,
+      "lang": "en",
+      "theme": "dark",
+      "overflow": false,
+      "errors": [],
+      "screenshot": "source-768-dark-en.png"
+    },
+    {
+      "width": 375,
+      "lang": "zh-CN",
+      "theme": "light",
+      "overflow": false,
+      "errors": [],
+      "screenshot": "source-375-light-zh-CN.png"
+    },
+    {
+      "width": 375,
+      "lang": "zh-CN",
+      "theme": "dark",
+      "overflow": false,
+      "errors": [],
+      "screenshot": "source-375-dark-zh-CN.png"
+    },
+    {
+      "width": 375,
+      "lang": "en",
+      "theme": "light",
+      "overflow": false,
+      "errors": [],
+      "screenshot": "source-375-light-en.png"
+    },
+    {
+      "width": 375,
+      "lang": "en",
+      "theme": "dark",
+      "overflow": false,
+      "errors": [],
+      "screenshot": "source-375-dark-en.png"
+    }
+  ]
+}
