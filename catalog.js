@@ -535,7 +535,16 @@ export const resources = [
             ? ["shadcn", "recharts"]
             : ["shadcn"],
       category: type === "component" ? categoryFor(item.kind) : "layout",
-      interactions: type === "component" ? ["click"] : [],
+      interactions:
+        type !== "component"
+          ? []
+          : item.kind === "form" || item.kind === "filter"
+            ? ["input", "click"]
+            : item.kind === "stats"
+              ? []
+              : item.kind === "chart"
+                ? ["hover"]
+                : ["click"],
       motion: false,
       styleId: c.id,
       style: c.style,

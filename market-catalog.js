@@ -7,7 +7,7 @@ export const marketResources = [
     sourceId: "magicui",
     libraryIds: ["magicui"],
     category: "cards",
-    interactions: ["auto"],
+    interactions: ["auto", "input", "click"],
     motion: true,
     styleId: "motion-neutral",
     style: {
@@ -836,7 +836,7 @@ export const marketResources = [
     sourceId: "magicui",
     libraryIds: ["magicui"],
     category: "cards",
-    interactions: ["hover"],
+    interactions: ["hover", "input", "click"],
     motion: true,
     styleId: "motion-neutral",
     style: {

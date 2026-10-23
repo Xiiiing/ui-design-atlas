@@ -1,3 +1,5 @@
+import { categories, interactions, resourceTags } from "./resource-tags.js";
+import { createLiveCards } from "./live-cards.js";
 import {
   resourcePresentation,
   thumbnailURL,
@@ -68,25 +70,6 @@ const types = {
   page: ["页面", "Page"],
   case: ["完整案例", "System"],
 };
-const categories = {
-  buttons: ["按钮", "Buttons"],
-  text: ["文字", "Text"],
-  backgrounds: ["背景", "Backgrounds"],
-  cards: ["卡片", "Cards"],
-  navigation: ["导航", "Navigation"],
-  forms: ["表单", "Forms"],
-  data: ["数据展示", "Data"],
-  loading: ["加载", "Loading"],
-  feedback: ["反馈", "Feedback"],
-  layout: ["布局", "Layout"],
-};
-const interactions = {
-  hover: ["悬停", "Hover"],
-  click: ["点击", "Click"],
-  scroll: ["滚动", "Scroll"],
-  auto: ["自动播放", "Autoplay"],
-  input: ["输入", "Input"],
-};
 const href = (view = "discover", id = "", params = {}) =>
   "#" +
   view +
@@ -138,13 +121,29 @@ function header() {
     "Search a UI, effect or library…",
   );
 }
+function tagLinks(r, full = false) {
+  const tags = resourceTags(r, locale);
+  return `<div class="resource-tags" aria-label="${t("标签", "Tags")}">${tags.map((tag) => `<a href="${href("explore", "", { ...Object.fromEntries(route.params), [tag.name]: tag.value })}" data-resource-tag="${tag.name}" data-tag-value="${esc(tag.value)}">${esc(tag.label)}</a>`).join("")}${
+    full
+      ? [...new Set(l(r.tags) || [])]
+          .filter((label) => !tags.some((tag) => tag.label === label))
+          .map((label) => `<span>${esc(label)}</span>`)
+          .join("")
+      : ""
+  }</div>`;
+}
 function card(r) {
-  const framing = resourcePresentation(r);
+  const framing = resourcePresentation(r),
+    inline = framing.mode === "inline";
   const name =
     r.type === "page"
       ? `${l(getCase(r.caseId).name).split(" · ")[0]} · ${l(r.name)}`
       : l(r.name);
-  return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${framing.layout}"><div class="asset-preview" style="--canvas-width:${framing.width}px;--canvas-height:${framing.height}px"><img src="${esc(r.cover)}" alt="${esc(name)}" loading="lazy" width="${framing.width}" height="${framing.height}"><div class="asset-live" data-live="${key(r)}"></div><a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("查看", "View")} ${esc(name)}" aria-describedby="description-${r.id}"></a>${saveButton(r)}<a class="icon-button asset-open" href="${href(r.type, r.id)}" data-open="${key(r)}" aria-label="${t("查看", "View")} ${esc(name)}">${icon("arrow-up-right")}</a>${r.motion ? `<span class="motion-badge">${icon("play")}${t("动效", "Motion")}</span>` : ""}</div><div class="asset-caption"><a data-open="${key(r)}" href="${href(r.type, r.id)}">${esc(name)}</a><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" data-library="${esc(id)}" title="${esc(libraries[id].name)}">${id === "native" ? "HTML / CSS" : id === "fluent" ? "Fluent UI" : esc(libraries[id].name)}</span>`).join("") || `<span class="library-badge">${t("原生 UI", "Native UI")}</span>`}</span></div><p class="asset-description" id="description-${r.id}">${esc(l(r.description))}</p>${r.type === "case" ? `<span class="system-page-count">${r.pages.length} ${t("个页面", "pages")}</span>` : ""}</article>`;
+  return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${inline ? "compact" : "wide"}" data-experience="${framing.mode}" style="--inline-height:${framing.inlineHeight}px">
+  <div class="asset-preview"><img src="${esc(r.cover)}" alt="${esc(name)}" loading="lazy" width="${framing.width}" height="${framing.height}">${inline ? `<div class="asset-live" data-live="${key(r)}"></div><div class="preview-state" role="status"><span>${t("正在加载体验…", "Loading experience…")}</span><button type="button" class="button" data-retry-preview hidden>${t("重试", "Retry")}</button></div>` : `<a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("打开体验", "Open experience")} ${esc(name)}"><span>${icon("arrow-up-right")}${t("打开体验", "Open experience")}</span></a>`}</div>
+  <div class="asset-caption"><a data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}">${esc(name)}</a><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" title="${esc(libraries[id].name)}">${esc(libraries[id].name)}</span>`).join("")}</span></div>
+  <p class="asset-description" id="description-${r.id}">${esc(l(r.description))}</p>${tagLinks(r)}
+  <div class="asset-actions"><button class="button" data-card-prompt="${key(r)}">${icon("copy")}${t("复制提示词", "Copy prompt")}</button><a class="button" data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}">${t("查看详情", "Details")}</a>${saveButton(r)}</div></article>`;
 }
 function typeCount(v) {
   return v === "explore"
@@ -469,7 +468,7 @@ function inspector() {
   const prompt = `<section class="detail-section"><div class="section-heading"><h3>${t("当前提示词", "Current prompt")}</h3></div><p class="curator-label">${t("本站整理 · 对应当前演示", "Curated by Atlas · Matches this preview")}</p><select data-shell-control id="prompt-scope" aria-label="${t("提示词层级", "Prompt scope")}"><option value="current">${t("当前资源", "Current resource")}</option><option value="style">${t("只复用视觉风格", "Visual style only")}</option></select><pre class="inline-prompt full-prompt prompt-text ${quick ? "prompt-summary" : ""}">${esc(promptText(r))}</pre><button class="button primary" data-copy-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></section>`;
   replaceShellHTML(
     document.querySelector("#inspector"),
-    `${head}<div class="inspector-content">${quick ? `<section class="detail-section"><h3>${t("适用场景", "Use cases")}</h3><p>${esc(l(r.useCases || getCase(r.caseId)?.scene || r.description))}</p></section>${prompt}<div class="quick-detail-actions"><a class="button primary" href="${href(detailResource.type, detailResource.id)}" data-full-detail>${t("完整详情", "Full details")}${icon("arrow-right")}</a><a class="button" href="${href(detailResource.type, detailResource.id, { tab: "code" })}" data-full-detail="code">${icon("code-xml")}${t("查看代码", "View code")}</a></div>` : resourceDetails(r, prompt)}</div>`,
+    `${head}${tagLinks(r, true)}<div class="inspector-content">${quick ? `<section class="detail-section"><h3>${t("适用场景", "Use cases")}</h3><p>${esc(l(r.useCases || getCase(r.caseId)?.scene || r.description))}</p></section>${prompt}<div class="quick-detail-actions"><a class="button primary" href="${href(detailResource.type, detailResource.id)}" data-full-detail>${t("完整详情", "Full details")}${icon("arrow-right")}</a><a class="button" href="${href(detailResource.type, detailResource.id, { tab: "code" })}" data-full-detail="code">${icon("code-xml")}${t("查看代码", "View code")}</a></div>` : resourceDetails(r, prompt)}</div>`,
   );
   if (!quick) {
     const code = document.querySelector("#full-code");
@@ -867,63 +866,21 @@ function sourcePage() {
 function guidePage() {
   return `<section class="market-intro"><div><h1>${t("从一个 UI，开始你的项目。", "From a UI to your project.")}</h1></div></section><div class="source-card guide-copy"><h2>1. ${t("搜索并体验", "Find and try")}</h2><p>${t("按名称、用途或组件库搜索，选择动效、组件、区块或完整案例。点击卡片打开真实交互预览，关闭后继续原来的浏览位置。", "Search by name, purpose or library. Open an effect, component, block or system. Close the preview to resume browsing.")}</p><h2>2. ${t("读说明，复制提示词", "Read and copy a prompt")}</h2><p>${t("右侧说明与当前预览同步。复制当前资源提示词，或选择只复用视觉风格，替换成自己的业务需求。", "The notes follow the current preview. Copy its prompt, or the visual style only, and substitute your business requirements.")}</p><h2>3. ${t("带走实际代码", "Take the actual code")}</h2><p>${t("从快速预览进入「完整详情」或「查看代码」。完整资源页提供实际入口、实现、依赖与来源说明；完整案例先浏览页面目录，再体验系统。下载 ZIP 后运行以下命令。", "Choose Full details or View code in quick preview. The full resource page includes implementation, dependencies and provenance. Systems start with a page directory. Extract the ZIP and run the commands below.")}</p><pre>npm ci\nnpm run dev\n\n# Build\nnpm run build</pre><h2>4. ${t("收藏并备份", "Save and back up")}</h2><p>${t("收藏保存在当前浏览器，可导出或导入 JSON。原有案例与组件收藏继续有效。", "Favorites stay in this browser and can be exported or imported as JSON. Existing favorites still work.")}</p></div>`;
 }
-const liveFrames = new Map();
-function stopLive(el) {
-  const frame = liveFrames.get(el);
-  if (frame) {
-    frame.remove();
-    liveFrames.delete(el);
-  }
-  el.closest(".asset-card")?.classList.remove("is-live");
-}
-function stopAllLive() {
-  for (const el of liveFrames.keys()) stopLive(el);
-}
-function startLive(card) {
-  if (!card || matchMedia("(hover: none)").matches || selected) return;
-  const el = card.querySelector("[data-live]");
-  if (!el || liveFrames.has(el)) return;
-  const [type, id] = el.dataset.live.split(":");
-  const r = findResource(id, type);
-  while (liveFrames.size >= 2) stopLive(liveFrames.keys().next().value);
-  const f = document.createElement("iframe");
-  const url = resourcePreview(r, locale, resourcePresentation(r).theme);
-  f.src = thumbnailURL(url);
-  f.title = l(r.name);
-  f.tabIndex = -1;
-  f.inert = true;
-  f.setAttribute("aria-hidden", "true");
-  el.append(f);
-  liveFrames.set(el, f);
-  sizeLive(card);
-  f.onload = () => card.classList.add("is-live");
-}
-function sizeLive(card) {
-  const r = findResource(...card.dataset.resource.split(":").reverse());
-  const el = card.querySelector(".asset-preview > img"),
-    f = card.querySelector(".asset-live iframe");
-  if (!r || !f) return;
-  const framing = resourcePresentation(r);
-  const scale = (
-    getComputedStyle(el).objectFit === "cover" ? Math.max : Math.min
-  )(el.clientWidth / framing.width, el.clientHeight / framing.height);
-  f.style.width = framing.width + "px";
-  f.style.height = framing.height + "px";
-  f.style.transform = `translate(-50%,-50%) scale(${scale})`;
-}
-const cardObserver = new IntersectionObserver((entries) => {
-  for (const e of entries)
-    if (!e.isIntersecting) {
-      const el = e.target.querySelector("[data-live]");
-      if (el) stopLive(el);
-    }
+const liveCards = createLiveCards({
+  resource: (card) => {
+    const [type, id] = card.dataset.resource.split(":");
+    return findResource(id, type);
+  },
+  url: (r) => resourcePreview(r, locale, resourcePresentation(r).theme),
+  label: (r) => l(r.name),
+  failure: () => t("体验加载失败", "Experience could not be loaded"),
+  loading: () => t("正在加载体验…", "Loading experience…"),
 });
-function observeCards() {
-  cardObserver.disconnect();
-  document
-    .querySelectorAll(".asset-card")
-    .forEach((c) => cardObserver.observe(c));
-}
+const stopAllLive = () => liveCards.stop();
+const observeCards = () =>
+  liveCards.observe(
+    document.querySelectorAll('.asset-card[data-experience="inline"]'),
+  );
 function notify(text) {
   const el = document.querySelector("#toast");
   el.textContent = text;
@@ -1004,6 +961,29 @@ document.addEventListener("submit", (e) => {
   updateResults(true);
 });
 document.addEventListener("click", async (e) => {
+  const tagLink = e.target.closest("[data-resource-tag]");
+  if (tagLink && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
+    e.preventDefault();
+    const params = Object.fromEntries(
+      new URLSearchParams(
+        originBrowse ? parseHash(originBrowse.hash).params : route.params,
+      ),
+    );
+    for (const name of ["panel", "tab", "theme", "page"]) delete params[name];
+    params[tagLink.dataset.resourceTag] = tagLink.dataset.tagValue;
+    location.hash = href(
+      originBrowse
+        ? parseHash(originBrowse.hash).view === "discover"
+          ? "explore"
+          : parseHash(originBrowse.hash).view
+        : route.view === "discover" || selected
+          ? "explore"
+          : route.view,
+      "",
+      params,
+    );
+    return;
+  }
   const fullLink = e.target.closest("[data-full-detail]");
   if (fullLink && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
     e.preventDefault();
@@ -1041,6 +1021,12 @@ document.addEventListener("click", async (e) => {
     document.querySelector("#search-dialog").close();
   const b = e.target.closest("button");
   if (!b) return;
+  if (b.hasAttribute("data-retry-preview"))
+    return liveCards.retry(b.closest(".asset-card"));
+  if (b.dataset.cardPrompt) {
+    const [type, id] = b.dataset.cardPrompt.split(":");
+    return copy(resourcePrompt(findResource(id, type), locale));
+  }
   if (b.hasAttribute("data-close-viewer")) return closeViewer();
   if (b.dataset.save) {
     const k = b.dataset.save;
@@ -1263,13 +1249,6 @@ document.addEventListener("click", async (e) => {
   if (b.id === "fallback-close")
     document.querySelector("#copy-fallback").close();
 });
-document.addEventListener("pointerover", (e) => {
-  const c = e.target.closest(".asset-card");
-  if (c && !c.contains(e.relatedTarget)) startLive(c);
-});
-document.addEventListener("focusin", (e) =>
-  startLive(e.target.closest(".asset-card")),
-);
 document.addEventListener("input", (e) => {
   if (e.target.matches("[data-preview-setting]")) {
     const field = e.target,
@@ -1488,7 +1467,6 @@ window.addEventListener("hashchange", navigationChanged);
 window.addEventListener("popstate", navigationChanged);
 window.addEventListener("resize", () => {
   scalePreview();
-  document.querySelectorAll(".asset-card.is-live").forEach(sizeLive);
 });
 window.addEventListener("fullscreenchange", scalePreview);
 window.addEventListener("storage", (e) => {
@@ -1501,24 +1479,6 @@ window.addEventListener("storage", (e) => {
 });
 new ResizeObserver(scalePreview).observe(document.body);
 render();
-
-document.addEventListener("pointermove", (e) => {
-  const card = e.target.closest(".asset-card");
-  if (!card) return;
-  const el = card.querySelector("[data-live]"),
-    f = liveFrames.get(el);
-  if (!f) return;
-  const box = f.getBoundingClientRect(),
-    r = findResource(...card.dataset.resource.split(":").reverse());
-  f.contentWindow.postMessage(
-    {
-      type: "atlas:preview-pointer",
-      x: ((e.clientX - box.left) * resourcePresentation(r).width) / box.width,
-      y: ((e.clientY - box.top) * resourcePresentation(r).height) / box.height,
-    },
-    location.origin,
-  );
-});
 
 function updateThemeURL() {
   const p = parse();
