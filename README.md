@@ -1,122 +1,71 @@
-# UI Design Atlas · UI 资源市场
+<p align="center">
+  <a href="https://xiiiing.github.io/ui-design-atlas/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="logo-reverse.svg">
+      <img src="logo.svg" alt="UI Design Atlas 折角标识" width="176" height="176">
+    </picture>
+  </a>
+</p>
 
-[线上体验 / Live site](https://xiiiing.github.io/ui-design-atlas/)
+<h1 align="center">UI Design Atlas</h1>
 
-找到一个动效、组件、页面区块或完整系统，直接体验，再带走对应说明、设计解读、提示词和实际代码。
-Find a UI effect, component, block or system; try it and take its notes, prompts and actual code.
+<p align="center">找到喜欢的界面，体验交互，再读懂它的设计与代码。</p>
 
-## 浏览与复用 / Browse and reuse
+<p align="center">
+  <strong>在线图鉴：</strong><a href="https://xiiiing.github.io/ui-design-atlas/">xiiiing.github.io/ui-design-atlas/</a>
+</p>
 
-- 首页按资源展示；支持动效、组件、区块、页面和完整案例，以及用途、组件库、风格和交互筛选。
-- 紧凑组件在卡片中直接体验；卡片外提供提示词复制、用途/交互/风格标签、详情和收藏。大资源打开独立宽屏体验页，默认收起说明；返回恢复筛选、加载数量、滚动位置和入口焦点。
-- 预览以列宽为正方形单元：紧凑资源 `1×1`，宽资源 `2×1`（含列间距），手机统一一列。卡片保留一行介绍，标签与带无障碍名称的操作图标共用底栏；完整说明与标签可在详情查看。无法完整放入手机单元的定价卡、趋势图和较高卡片使用静态概览入口。
-- 宽屏体验默认按实际可用宽度原生排版，切换平板或手机后才使用固定设备宽度。适应宽度、全屏、源码及演示内部滚动继续保留。
-- 搜索支持中英文和组件库别名，例如“流光边框”“微软”“Fluent”“antd”；列表与快速搜索按名称精确匹配、名称包含、别名/标签及描述排序，同等相关度保持原顺序。
-- 独立资源无需所属系统。原有案例、页面、组件 ID 和收藏备份保持兼容。
-- 可见小组件按需加载，同时最多保留八个实时 iframe；焦点所在演示不会因离屏被回收。大资源使用实际本地演示生成的静态封面。
-- 默认中文，支持整体英文、分享、收藏导入导出、尺寸和主题切换。
+<p align="center">
+  <a href="https://xiiiing.github.io/ui-design-atlas/">打开图鉴</a> · <a href="https://xiiiing.github.io/ui-design-atlas/#explore?lang=zh-CN">探索资源</a> · <a href="https://xiiiing.github.io/ui-design-atlas/#cases?lang=zh-CN">完整案例</a>
+</p>
 
-The marketplace ranks bilingual search by exact name, name match, aliases/tags and description, with stable ties. It provides library/category/style/interaction filters, interactive cards, wide experience pages and preserved browsing context, source code and prompts. Existing links and favorites remain compatible. Covers are captured from real demos; at most eight live component previews run at once, preserving focused demos.
+---
 
-## 图鉴界面 / Atlas interface
+## 关于这本图鉴
 
-图鉴外层以固定版本 21st 源码为设计基线，使用开放式资源画廊：轻量吸顶导航、可清除筛选标签、紧凑组件与宽页面分尺寸陈列。详情提供真实预览、360px 说明栏、提示词、源码和原有动效参数。
-The shell adapts a pinned 21st design reference into an open resource gallery, with document scrolling, removable filters, compact/wide previews and a 360px detail inspector. Archived interfaces retain their own visual styles. Theme-aware live cards and viewers initially follow the shell, and synchronize without reloading when its appearance changes (including OS changes in system mode). A demo can still be switched independently until the next shell appearance change; explicit `theme=light|dark` links remain supported. Fixed-palette demos and static covers keep their original colors.
+这是我整理界面设计与前端实践的个人空间。从一个按钮的反馈、一段动效，到页面区块和完整后台，把值得观察的设计放在一起，方便体验、比较和回看。
 
-下滑后导航收缩为固定图标栏，回到顶部恢复文字，原有内容位置不变。显示模式按系统、浅色、深色循环；语言通过图标弹层切换。支持主题的实时演示默认跟随站点，可单独改色，下一次站点模式变化时重新同步；静态封面及固定配色示例保留原色。
+每份资源尽量同时呈现实际效果、设计解读、提示词和对应代码，让喜欢的界面有迹可循。
 
-The header contracts into a pinned icon bar after scrolling and restores its full labels near the top, without moving the gallery. Appearance cycles through system, light and dark in one button; the language icon opens a keyboard-accessible picker. Reduced-motion preferences disable the contraction animation.
+## 看什么
 
-Gallery previews use a square column-sized unit, with wide resources spanning two columns at the same height. Captions, a one-line description, filter tags and accessible icon actions sit outside the preview. Tall demos open from static overviews. The experience viewer uses its available width at native scale by default; explicit tablet/phone selections retain fixed device widths.
+| 内容 | 关注什么 |
+| --- | --- |
+| 动效 | 进入、悬停、滚动与反馈，观察节奏如何影响体验。 |
+| 组件 | 按钮、表单、导航、卡片与数据展示，比较不同状态和交互。 |
+| 页面与区块 | 登录、侧栏、仪表盘等界面，观察布局、层级和信息组织。 |
+| 完整案例 | 在多页系统中连续浏览，理解组件如何组成完整体验。 |
 
-模块化布局验收：[记录](docs/ui/modular-layout/verification.json)、[卡片调整前](docs/ui/modular-layout/before-cards-1440.png)/[调整后](docs/ui/modular-layout/after-cards-1440.png)、[宽屏调整前](docs/ui/modular-layout/before-viewer-2560.png)/[调整后](docs/ui/modular-layout/after-viewer-2560.png)。构建后在 4173 端口提供 `/ui-design-atlas/`，运行 `node scripts/capture-modular-layout.mjs` 可重新生成四种宽度的当前截图和尺寸记录。
+## 亲手体验，再看细节
 
-查看 [设计映射与浏览器验收 / Design mapping and verification](docs/ui/resource-market.md) 和 [固定源码与许可 / Pinned source and attribution](vendor/21st-market/ATTRIBUTION.md)。此前映序设计资料保留为历史记录，不参与外层运行样式。
+紧凑组件可以在卡片内直接操作；较大的页面与系统进入宽屏体验页查看。切换桌面、平板或手机尺寸，观察同一界面在不同空间下的表现。
 
-## 收录内容 / Included sources
+通过分类、组件库、风格和交互标签筛选，也可以用中文或英文搜索。打开详情后，继续查看说明、设计解读、提示词、源码与依赖信息。
 
-| 来源 / Source                                                        | 本站演示 / Included demos                                       | 固定提交 / Pinned commit                   |
-| -------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------ |
-| [Magic UI](https://github.com/magicuidesign/magicui)                 | 12 个动效与组件 / effects and components                        | `efe76fc5755eca1142dd4f74c1d6f0ace2887e3c` |
-| [Ant Design](https://github.com/ant-design/ant-design)               | 表格、校验表单、高级搜索、弹窗创建 / 4 official examples        | `f8f5595ab5e891fff6a2a06c5b3b98af643d008e` |
-| [Fluent UI](https://github.com/microsoft/fluentui)                   | DataGrid、Toolbar、Dialog、Toast / 4 official stories           | `036f9a210cd8d72924c33dd9ff0fbb16d6aae885` |
-| [shadcn/ui](https://github.com/shadcn-ui/ui)                         | login-01、signup-01、sidebar-07、dashboard-01                   | `25af02b1b467fcd53b63e0c6d6d324c57c16ef18` |
-| [Shadcn Admin · Sat Naing](https://github.com/satnaing/shadcn-admin) | 六页完整后台与八项组件 / 6 system pages and 8 shared components | `e16c87f213a5ba5e45964e9b67c792105ec74d26` |
+喜欢的资源可以收藏或分享，收藏支持导入与导出。图鉴提供中英文和明暗模式；支持主题切换的演示会跟随站点外观，固定配色的示例保留自己的风格。
 
-另保留本站原创 Morrow、Orbit、Forma、Bloom。数量从注册表动态计算。
-Original Atlas cases Morrow, Orbit, Forma and Bloom are preserved. Counts come from the registry.
+## 收录与整理
 
-完整后台支持本地任务/用户 CRUD、筛选、排序、分页和设置保存与重置。新增官方区块保留原版布局；认证表单仅在本地反馈，不创建账户或保存密码；骨架页面和占位导航在说明中标明。
-The complete administration example supports local CRUD and settings persistence/reset. New blocks preserve upstream layouts. Auth forms are local demos with no accounts or stored passwords. Skeleton content and placeholder navigation are identified as such.
+这里汇集开源界面资源与本站原创案例，保留资源的作者、原始链接和来源说明。
 
-## 发现与复用 / Discover and reuse
+| 来源 | 图鉴中的内容 |
+| --- | --- |
+| [Magic UI](https://github.com/magicuidesign/magicui) | 动效与交互组件。 |
+| [Ant Design](https://github.com/ant-design/ant-design) | 表格、表单、搜索与弹窗示例。 |
+| [Fluent UI](https://github.com/microsoft/fluentui) | 数据表格、工具栏、对话框与通知。 |
+| [shadcn/ui](https://github.com/shadcn-ui/ui) | 登录、注册、侧栏与仪表盘区块。 |
+| [Shadcn Admin](https://github.com/satnaing/shadcn-admin) | 多页后台与共享组件。 |
 
-默认首页 `#discover` 以连续资源墙优先展示 24 项精选与推荐，可继续加载；用途分类紧邻预览，主题合集和完整案例随后展示。`#explore` 用于同类比较和搜索。小组件直接体验和复制提示词；宽资源打开体验页。名称和“查看详情”通过 `panel=details` 展开说明，`tab=code` 仍可直接打开源码。案例可在工具栏切换页面，也可在说明栏查看页面目录。
-The discovery homepage curates existing resources. Explore compares like resources. Compact cards are directly interactive; larger resources open a wide experience page. `panel=details` expands notes, and `tab=code` opens source. Systems retain page selection and directories.
+设计解读是本站的观察，提示词是本站的整理；它们与原作者的说明分别标注。演示中的表单和数据操作用于体验交互，不代表真实业务服务。
 
-首页内容在 `content/discovery.json` 维护，引用现有资源 ID，不重复注册。`catalog.js` 提供主题查询；检查脚本验证双语、引用及去重。
-Editorial content references existing resource IDs in `content/discovery.json`. Registry queries and checks validate bilingual fields, references and uniqueness.
+## 来源与许可
 
-## 本地开发 / Local development
+开源资源保留各自的版权与许可，具体版本和原始出处可在资源详情中查看。更多说明见 [组件与区块来源](examples/ui-market/ATTRIBUTION.md)、[后台案例来源](examples/shadcn-admin/ATTRIBUTION.md)和 [图鉴界面参考](vendor/21st-market/ATTRIBUTION.md)。
 
-Node.js >= 24.12.0
+图标使用 Lucide，遵循 ISC 许可；本地字体的许可说明随对应资源保留。
 
-```sh
-npm ci
-npm run setup:examples
-npm run check
-npm run build
-npm run preview
-```
+---
 
-按输出地址打开。模拟 Pages 子路径：
-To serve the Pages project subpath:
-
-```sh
-node scripts/serve.mjs --dist --base=/ui-design-atlas/
-```
-
-新增资源的名称、说明、来源和库信息维护在 `content/market-*.json`，运行 `node scripts/generate-market-catalog.mjs` 生成浏览器注册表和演示名称。
-Independent metadata is maintained in `content/market-*.json`. Generate the browser registry and preview names with the command above.
-
-源码位于两个独立项目：`examples/shadcn-admin/` 和 `examples/ui-market/`。每个项目都有锁文件，可单独安装与构建。构建产物生成按资源加载的源码清单和资源文件 ZIP（入口、递归本地依赖、支持文件、样式、静态头像、许可证与双语接入说明）。源码页默认仅展示当前资源，提供锁定版本的安装命令；“查看完整项目源码”按需加载整项目清单。资源文件包用于接入现有应用，涉及后台路由或 Provider 时需沿用或适配调用上下文；要直接运行演示，下载完整项目 ZIP。两套依赖彼此隔离。
-The two example projects have independent lockfiles and builds. The build creates resource-scoped manifests and source-file ZIPs with local dependency closures, styles, assets, licenses and bilingual integration notes. Full project source loads only on request. Resource files integrate into an existing app; preserve or adapt router/provider context where required. Full project ZIPs remain the runnable option.
-
-## 验证 / Validation
-
-```sh
-npx playwright install chromium
-npm test
-```
-
-更新真实预览封面（需先安装浏览器）：
-Regenerate local covers from real previews:
-
-```sh
-npm run capture:previews
-npm run build
-```
-
-仅捕获部分资源时，在完成 `node scripts/build.mjs --capture-previews` 后运行 `node scripts/capture-previews.mjs <ID substring>`。普通构建严格检查所有封面和源码入口存在。
-For a subset, build with `--capture-previews`, then pass an ID substring to the capture script. Regular builds verify all covers and code entries.
-
-资源级源码与搜索排序的实现边界、体积及浏览器证据见 [验收记录](docs/ui/resource-reuse.md)。
-Resource delivery, search ranking and verification evidence: [verification notes](docs/ui/resource-reuse.md).
-
-## 来源与许可 / Attribution
-
-所有开源收录均保留作者、仓库、固定提交和 MIT 许可证。实际使用的组件库及锁定版本显示在详情中，原始示例和文档可从详情打开。`examples/ui-market/upstream/` 保留原文，`sources.lock.json` 记录来源和原文校验值。
-Source authors, repositories, pinned commits and MIT licenses are retained. Actual library versions and original documentation/example links are shown per resource. Original files and checksums are retained alongside adapted runtime sources.
-
-设计理念标为本站解读，提示词标为本站整理。浏览方式参考 21st.dev、Uiverse 和 React Bits；不再分发 React Bits 组件。图标使用 Lucide（ISC）。图鉴外层使用本地 Geist 与中文系统字体回退，演示使用 Inter 和 Geist（OFL）。
-Design interpretations and prompts are curated by Atlas. Discovery patterns reference 21st.dev, Uiverse and React Bits; React Bits components are not redistributed. Icons: Lucide (ISC). The shell bundles Geist locally with Chinese system font fallbacks; previews use Inter and Geist (OFL).
-
-## GitHub Pages
-
-推送 `main` 后，Actions 使用锁定依赖验证、构建两套演示、生成源码下载包、执行浏览器验收，并发布同一份 `dist/`。所有运行所需脚本、样式、字体和资源均同源发布。
-On push to `main`, Actions installs locked dependencies, validates and builds both demos and downloads, runs browser acceptance tests, and deploys `dist/` with all runtime assets on the same origin.
-
-`21st-submissions/` 不参与本次构建、提交或发布。
-`21st-submissions/` is excluded from this work and the deployed output.
-
-本轮体验模式、加载预算、截图和录屏验收见 [资源体验优化](docs/ui/resource-experience.md)。
+<p align="center">
+  <a href="https://xiiiing.github.io/">个人主页</a> · <a href="https://xiiiing.github.io/wiki/">学习笔记</a> · <a href="https://xiiiing.github.io/ui-design-atlas/">UI 图鉴</a>
+</p>
