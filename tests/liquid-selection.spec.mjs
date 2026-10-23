@@ -157,13 +157,11 @@ test("Type selection retains its moving marker, link dimensions and focus throug
   await aligned(page, ".category-strip", "[aria-pressed=true]");
   await page.goto("#discover?lang=en");
   await page
-    .locator(".library-category-row [data-selection-marker]")
+    .locator(".category-strip [data-selection-marker]")
     .evaluate((el) => {
       window.categoryMarker = el;
     });
-  await page
-    .locator('.discovery-categories a[href*="category=buttons"]')
-    .click();
+  await page.locator("[data-category=buttons]").click();
   await aligned(page, ".category-strip", "[data-category=buttons]");
   expect(
     await page
