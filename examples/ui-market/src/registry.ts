@@ -1,5 +1,15 @@
 import { lazy } from "react";
 export const demos = {
+  "atlas-upload": lazy(() => import("./demos/atlas/upload")),
+  "atlas-steps": lazy(() => import("./demos/atlas/steps")),
+  "atlas-search": lazy(() => import("./demos/atlas/search")),
+  "atlas-feedback": lazy(() => import("./demos/atlas/feedback")),
+  "atlas-file-workspace": lazy(() => import("./demos/atlas/file-workspace")),
+  "atlas-onboarding-page": lazy(() => import("./demos/atlas/onboarding-page")),
+  "atlas-product-page": lazy(() => import("./demos/atlas/product-page")),
+  "magicui-word-rotate": lazy(() => import("./demos/magicui/word-rotate")),
+  "magicui-shine-border": lazy(() => import("./demos/magicui/shine-border")),
+  "magicui-meteors": lazy(() => import("./demos/magicui/meteors")),
   "magicui-border-beam": lazy(() => import("./demos/magicui/border-beam")),
   "magicui-shimmer-button": lazy(
     () => import("./demos/magicui/shimmer-button"),

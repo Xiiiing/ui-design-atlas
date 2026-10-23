@@ -1,0 +1,85 @@
+.atlas-composition {
+  width: 100%;
+  padding: 16px;
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 1.618;
+}
+.atlas-composition h1 {
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.18;
+  letter-spacing: -0.035em;
+  margin: 16px 0 24px;
+}
+.atlas-composition h2 {
+  font-size: 22px;
+  line-height: 1.4;
+  margin: 12px 0 20px;
+}
+.atlas-composition p {
+  margin: 12px 0;
+  overflow-wrap: anywhere;
+}
+.atlas-composition header,
+.atlas-composition section {
+  margin-bottom: 32px;
+}
+.atlas-composition footer {
+  margin-top: 32px;
+  opacity: 0.72;
+}
+.atlas-golden {
+  display: grid;
+  grid-template-columns: minmax(0, 1.618fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.atlas-stack {
+  display: grid;
+  gap: 16px;
+}
+.atlas-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.atlas-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.atlas-row > div {
+  min-width: 0;
+}
+.atlas-row strong {
+  overflow-wrap: anywhere;
+}
+.atlas-summary {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.atlas-composition .ant-btn {
+  min-height: 44px;
+}
+.atlas-composition label {
+  display: grid;
+  gap: 8px;
+}
+@media (max-width: 760px) {
+  .atlas-golden {
+    grid-template-columns: 1fr;
+  }
+  .atlas-composition {
+    padding: 8px;
+  }
+  .atlas-composition h1 {
+    font-size: 30px;
+  }
+  .atlas-row {
+    flex-wrap: wrap;
+  }
+}

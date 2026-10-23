@@ -140,6 +140,21 @@
           "upstream": "apps/www/styles/globals.css",
           "original": "upstream/magicui/globals.css",
           "sha256": "f930175f91cea4af8547aa0b6f1b71599b75de6c456fd5476d3f459f06b1de3e"
+        },
+        {
+          "upstream": "apps/www/registry/magicui/word-rotate.tsx",
+          "original": "upstream/magicui/components/word-rotate.tsx",
+          "sha256": "201852c2ddd0c63f1cefa730c50f97d88c1d4ee4b7158ca35032b8efc91d2293"
+        },
+        {
+          "upstream": "apps/www/registry/magicui/shine-border.tsx",
+          "original": "upstream/magicui/components/shine-border.tsx",
+          "sha256": "c9344b563c2427f26393f6f5e2fe5c72d6a3fcb4b90b8f073ebad515e963c46c"
+        },
+        {
+          "upstream": "apps/www/registry/magicui/meteors.tsx",
+          "original": "upstream/magicui/components/meteors.tsx",
+          "sha256": "0730d0d6449fb3fb098a5e9edc80d066bdf06ebbb1d1e598b8fb6a10ff4a5ff9"
         }
       ]
     },

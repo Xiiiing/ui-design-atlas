@@ -166,5 +166,75 @@
       "en": "Dashboard 01"
     },
     "sourceId": "shadcn-ui"
+  },
+  "atlas-upload": {
+    "name": {
+      "zh-CN": "本地文件选择",
+      "en": "Local file picker"
+    },
+    "sourceId": "atlas-compositions"
+  },
+  "atlas-steps": {
+    "name": {
+      "zh-CN": "分步设置",
+      "en": "Step-by-step setup"
+    },
+    "sourceId": "atlas-compositions"
+  },
+  "atlas-search": {
+    "name": {
+      "zh-CN": "快捷文档搜索",
+      "en": "Quick document search"
+    },
+    "sourceId": "atlas-compositions"
+  },
+  "atlas-feedback": {
+    "name": {
+      "zh-CN": "可恢复状态反馈",
+      "en": "Recoverable status feedback"
+    },
+    "sourceId": "atlas-compositions"
+  },
+  "atlas-file-workspace": {
+    "name": {
+      "zh-CN": "团队文件空间",
+      "en": "Team file workspace"
+    },
+    "sourceId": "atlas-compositions"
+  },
+  "atlas-onboarding-page": {
+    "name": {
+      "zh-CN": "项目入门页面",
+      "en": "Project onboarding"
+    },
+    "sourceId": "atlas-compositions"
+  },
+  "atlas-product-page": {
+    "name": {
+      "zh-CN": "产品介绍与定价页",
+      "en": "Product and pricing page"
+    },
+    "sourceId": "atlas-compositions"
+  },
+  "magicui-word-rotate": {
+    "name": {
+      "zh-CN": "轮换关键词",
+      "en": "Rotating keywords"
+    },
+    "sourceId": "magicui"
+  },
+  "magicui-shine-border": {
+    "name": {
+      "zh-CN": "柔光边框卡片",
+      "en": "Shining border card"
+    },
+    "sourceId": "magicui"
+  },
+  "magicui-meteors": {
+    "name": {
+      "zh-CN": "流星背景",
+      "en": "Meteor background"
+    },
+    "sourceId": "magicui"
   }
 }

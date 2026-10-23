@@ -314,3 +314,8 @@
     }
   }
 }
+
+/* Archive animation adapters for the pinned Shine Border and Meteors sources. */
+@keyframes shine{0%{background-position:0% 0%}50%{background-position:100% 100%}100%{background-position:0% 0%}}
+@keyframes meteor{0%{transform:rotate(var(--angle)) translateX(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:rotate(var(--angle)) translateX(-500px);opacity:0}}
+@media(prefers-reduced-motion:no-preference){.motion-safe\:animate-shine{animation:shine var(--duration,14s) linear infinite}.animate-meteor{animation:meteor 5s linear infinite}}

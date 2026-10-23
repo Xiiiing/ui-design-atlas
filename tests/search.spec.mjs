@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { searchResources } from "../catalog.js";
+import { searchResources, resources } from "../catalog.js";
 
 test("List and keyboard search rank exact names first and preserve filters and history", async ({
   page,
@@ -35,5 +35,7 @@ test("List and keyboard search rank exact names first and preserve filters and h
   await page.locator("[name=q]").fill("no-such-resource");
   await expect(page.locator(".market-empty")).toBeVisible();
   await page.locator(".market-empty [data-reset-filters]").click();
-  await expect(page.locator("#results .asset-card")).toHaveCount(12);
+  await expect(page.locator("#results .asset-card")).toHaveCount(
+    resources.filter((r) => r.motion).length,
+  );
 });
