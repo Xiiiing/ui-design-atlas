@@ -1,6 +1,6 @@
 # 资源体验与展示优化
 
-关联 [Issue #13](https://github.com/Xiiiing/ui-design-atlas/issues/13)。前置为 [PR #11](https://github.com/Xiiiing/ui-design-atlas/pull/11) 的布局稳定性修复；本轮不合并、不部署。
+关联 [Issue #13](https://github.com/Xiiiing/ui-design-atlas/issues/13)。前置 [PR #11](https://github.com/Xiiiing/ui-design-atlas/pull/11) 的布局稳定性修复已合入 `main`；资源体验优化单独提交 PR，不自动合并或部署。
 
 ## 体验规则
 
@@ -27,6 +27,7 @@ canvas 封面按真实演示重拍。复杂小组件使用 960×640 概览画布
 - `npm test`：63 项全部通过的完整 Playwright 回归，包含原筛选栏与首卡位置稳定性检查、新的 inline/wide 体验检查、真实表单及复杂组件流程。
 - 新增检查：卡片真实点击/输入/键盘、触屏 iframe 内起滑、复制中英文内容及备用框几何稳定性、焦点保护与回收、消息身份校验、失败重试、组合标签、宽屏滚动到底、设备宽度、原链接/源码和返回焦点。
 - 四种宽度 × 两种语言 × 明暗主题：见 [测量记录](resource-experience/verification.json)。录屏和截图由本地真实浏览器操作产生，没有合成演示内容。
+- 已整合 `main` 的布局修复与标识更新（`9a3327b`），组合版本 `677d453` 重新通过上述检查、构建及全部 63 项测试，并重新捕获截图与录屏。
 
 ## 前后对照
 
