@@ -1,6 +1,7 @@
 import discovery from "./content/discovery.json" with { type: "json" };
 // Capability overrides describe demo space, not the upstream component's type.
 const canvasComponents = new Set([
+  "folio-card",
   "fluent-dialog",
   "fluent-toast",
   "antd-form",
@@ -9,12 +10,14 @@ const canvasComponents = new Set([
   "shadcn-admin-user-dialog",
   "shadcn-admin-settings-form",
   "shadcn-admin-filter-toolbar",
+  "shadcn-admin-trend-chart",
 ]);
 export function experienceMode(resource) {
   if (resource.preview.mode) return resource.preview.mode;
   return resource.type !== "component" ||
     resource.preview.width >= 900 ||
     canvasComponents.has(resource.id) ||
+    resource.kind === "pricing" ||
     resource.kind === "dialog" ||
     resource.id.endsWith("-dialog")
     ? "canvas"
@@ -27,18 +30,24 @@ export function resourcePresentation(resource, context = "card") {
   const mode = experienceMode(resource);
   const canvasCard = context === "card" && mode === "canvas";
   const control = !wide && resource.category === "buttons";
+  const tallCard = resource.kind === "pricing" || resource.id === "folio-card";
+  const canvasWidth = tallCard
+    ? 400
+    : resource.id === "shadcn-admin-trend-chart"
+      ? 640
+      : 960;
+  const canvasHeight = tallCard
+    ? 440
+    : resource.id === "shadcn-admin-trend-chart"
+      ? 480
+      : 640;
   return {
     mode,
-    inlineHeight:
-      resource.category === "cards" ||
-      resource.id === "shadcn-admin-trend-chart"
-        ? 440
-        : 360,
     layout: wide ? "wide" : "compact",
     width: wide
       ? resource.preview.width
       : canvasCard
-        ? 960
+        ? canvasWidth
         : control && context === "card"
           ? 320
           : context === "card"
@@ -47,7 +56,7 @@ export function resourcePresentation(resource, context = "card") {
     height: wide
       ? resource.preview.height
       : canvasCard
-        ? 640
+        ? canvasHeight
         : control && context === "card"
           ? 240
           : context === "card"

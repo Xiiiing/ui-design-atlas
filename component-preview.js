@@ -6,6 +6,7 @@ import { observeLegacy, translateLegacyString as tr } from "./legacy-i18n.js";
 const params = new URLSearchParams(location.search),
   lang = params.get("lang") === "en" ? "en" : "zh-CN",
   item = getComponent(params.get("id"));
+document.body.classList.toggle("inline-preview", params.has("inline"));
 document.documentElement.lang = lang;
 const root = document.getElementById("root");
 if (item) {

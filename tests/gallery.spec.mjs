@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test";
 import { resources } from "../catalog.js";
-import { resourcePresentation } from "../presentation.js";
 
 const choose = async (page, id, name) => {
   await page.locator(id).click();
@@ -79,8 +78,7 @@ test("Live cards fit their available interactive viewport and unload outside the
   page,
 }) => {
   await page.goto("#components?lang=en");
-  const r = resources.find((r) => r.id === "magicui-shimmer-button"),
-    p = resourcePresentation(r);
+  const r = resources.find((r) => r.id === "magicui-shimmer-button");
   const card = page.locator(`[data-resource="component:${r.id}"]`);
   await card.hover();
   await expect(card.locator("iframe")).toBeAttached();
@@ -97,7 +95,9 @@ test("Live cards fit their available interactive viewport and unload outside the
       Math.round(
         (await card.locator(".asset-preview").boundingBox()).width - 2,
       ),
-      p.inlineHeight - 2,
+      Math.round(
+        (await card.locator(".asset-preview").boundingBox()).height - 2,
+      ),
     ]);
   await expect
     .poll(() =>
@@ -154,7 +154,7 @@ test("Original motion parameters affect the real preview, prompt and replay", as
   );
 });
 
-test("Page details preserve desktop width, support fullscreen and keep the inspector at 360px", async ({
+test("Page details use available width, support fullscreen and keep the inspector at 360px", async ({
   page,
 }) => {
   await page.goto("#page/shadcn-admin-dashboard?lang=en&panel=details");
@@ -167,14 +167,18 @@ test("Page details preserve desktop width, support fullscreen and keep the inspe
     await page
       .locator("#case-preview")
       .evaluate((f) => f.contentWindow.innerWidth),
-  ).toBe(1280);
+  ).toBe(
+    await page.locator("#preview-viewport").evaluate((el) => el.clientWidth),
+  );
   await page.locator("[data-fullscreen]").click();
   await expect(page.locator("#preview-panel:fullscreen")).toBeVisible();
   expect(
     await page
       .locator("#case-preview")
       .evaluate((f) => f.contentWindow.innerWidth),
-  ).toBe(1280);
+  ).toBe(
+    await page.locator("#preview-viewport").evaluate((el) => el.clientWidth),
+  );
   await page.evaluate(() => document.exitFullscreen());
   await page.locator('[data-device="768"]').click();
   await expect
@@ -187,5 +191,7 @@ test("Page details preserve desktop width, support fullscreen and keep the inspe
     .poll(() =>
       page.locator("#case-preview").evaluate((f) => f.contentWindow.innerWidth),
     )
-    .toBe(1280);
+    .toBe(
+      await page.locator("#preview-viewport").evaluate((el) => el.clientWidth),
+    );
 });

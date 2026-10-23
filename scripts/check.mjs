@@ -221,7 +221,7 @@ for (const r of resources) {
   assert.ok(p.width > 0 && p.height > 0);
   if (r.type !== "component" || r.preview.width >= 900)
     assert.equal(p.width, r.preview.width);
-  else if (p.mode === "canvas") assert.equal(p.width, 960);
+  else if (p.mode === "canvas") assert.ok(p.width >= 400 && p.height >= 400);
   else assert.equal(p.width, r.category === "buttons" ? 320 : 480);
   assert.ok(["inline", "canvas"].includes(p.mode));
 }

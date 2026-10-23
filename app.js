@@ -164,11 +164,11 @@ function card(r) {
     r.type === "page"
       ? `${l(getCase(r.caseId).name).split(" · ")[0]} · ${l(r.name)}`
       : l(r.name);
-  return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${inline ? "compact" : "wide"}" data-experience="${framing.mode}" data-cover-layout="${framing.layout}" style="--inline-height:${framing.inlineHeight}px">
+  return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${framing.layout}" data-experience="${framing.mode}" data-cover-layout="${framing.layout}">
   <div class="asset-preview"><img src="${esc(r.cover)}" alt="${esc(name)}" loading="lazy" width="${framing.width}" height="${framing.height}">${inline ? `<div class="asset-live" data-live="${key(r)}"></div><div class="preview-state" role="status"><span>${t("正在加载体验…", "Loading experience…")}</span><button type="button" class="button" data-retry-preview hidden>${t("重试", "Retry")}</button></div>` : `<a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("打开体验", "Open experience")} ${esc(name)}"><span>${icon("arrow-up-right")}${t("打开体验", "Open experience")}</span></a>`}</div>
   <div class="asset-caption"><a data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}">${esc(name)}</a><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" title="${esc(libraries[id].name)}">${esc(libraries[id].name)}</span>`).join("")}</span></div>
-  <p class="asset-description" id="description-${r.id}">${esc(l(r.description))}</p>${tagLinks(r)}
-  <div class="asset-actions"><button class="button" data-card-prompt="${key(r)}">${icon("copy")}${t("复制提示词", "Copy prompt")}</button><a class="button" data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}">${t("查看详情", "Details")}</a>${saveButton(r)}</div></article>`;
+  <p class="asset-description" id="description-${r.id}" title="${esc(l(r.description))}">${esc(l(r.description))}</p><div class="asset-footer">${tagLinks(r)}
+  <div class="asset-actions"><button class="icon-button" data-card-prompt="${key(r)}" aria-label="${t("复制提示词", "Copy prompt")}" title="${t("复制提示词", "Copy prompt")}">${icon("copy")}</button><a class="icon-button" data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}" aria-label="${t("查看详情", "Details")}" title="${t("查看详情", "Details")}">${icon("panel-right")}</a>${saveButton(r)}</div></div></article>`;
 }
 function typeCount(v) {
   return v === "explore"
@@ -665,7 +665,7 @@ function viewer(r) {
     parameter[4] = previewValues.get(chosen.id);
   return `<article class="resource-page"><div class="market-viewer full-viewer experience-viewer"><header class="market-viewer-toolbar"><div class="viewer-leading"><button class="icon-button" data-close-viewer aria-label="${t("返回资源市场", "Back to market")}">${icon("arrow-left")}</button><div class="viewer-title"><h1 tabindex="-1">${esc(l(r.type === "case" ? r.name : chosen.name))}</h1><small>${esc(resourceSource(chosen).name)}</small></div>${c && r.type !== "component" ? `<select data-shell-control id="preview-page" aria-label="${t("预览页面", "Preview page")}">${c.pages.map((p) => `<option value="${p.id}" ${p.id === chosen.id ? "selected" : ""}>${esc(l(p.name))}</option>`).join("")}</select>` : ""}</div><div class="viewer-tools"><button class="icon-button" data-share aria-label="${t("复制分享链接", "Copy share link")}">${icon("link")}</button><span data-shell-appearance></span>${language(true)}<button class="icon-button" data-close-viewer aria-label="${t("关闭预览", "Close preview")}">${icon("x")}</button></div></header>
   <div class="experience-actions"><div class="full-resource-tabs" role="tablist" aria-label="${t("资源内容", "Resource content")}"><button data-full-tab data-tab="notes" role="tab" aria-selected="${tab !== "code"}" aria-controls="preview-panel">${t("预览", "Preview")}</button><button data-full-tab data-tab="code" role="tab" aria-selected="${tab === "code"}" aria-controls="full-code">${t("代码", "Code")}</button></div><button class="button" data-toggle-details aria-controls="inspector" aria-expanded="false">${t("详情", "Details")}</button><button class="button" data-copy-resource-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></div><div class="market-detail-layout"><div class="full-preview-column"><section class="market-preview-panel" id="preview-panel" data-layout="${framing.layout}" style="--stage-height:${framing.stageHeight}px"><div class="preview-toolbar"><span class="preview-label">${t("交互预览", "Live preview")}</span><div class="viewer-devices">${[
-    ["0", "monitor", t("桌面画布", "Desktop canvas")],
+    ["0", "monitor", t("自适应画布", "Responsive canvas")],
     ["768", "tablet", "768px"],
     ["375", "smartphone", "375px"],
   ]
@@ -683,7 +683,7 @@ function viewer(r) {
 function showViewer(r) {
   stopAllLive();
   tab = route.params.get("tab") === "code" ? "code" : "notes";
-  width = innerWidth < 600 ? 375 : innerWidth < 1024 ? 768 : 0;
+  width = 0;
   fit = true;
   document.body.classList.add("is-experience");
   document.querySelector("#footer").hidden = true;
@@ -807,10 +807,9 @@ function scalePreview() {
     frame = document.querySelector("#case-preview"),
     canvas = document.querySelector("#preview-canvas");
   if (!viewport || !selected || !viewport.clientWidth) return;
-  const framing = resourcePresentation(selected, "detail"),
-    isSmall = framing.layout === "compact";
-  const desired =
-    width || (isSmall ? viewport.clientWidth : selected.preview.width);
+  // Default to the available viewport at native scale. Only an explicit
+  // device selection emulates a fixed CSS width and may scale down to fit.
+  const desired = width || viewport.clientWidth;
   const scale = fit ? Math.min(1, viewport.clientWidth / desired) : 1;
   // The iframe owns content scrolling. Its scaled height fits the available stage.
   const h = viewport.clientHeight / scale;
