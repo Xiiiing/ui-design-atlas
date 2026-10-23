@@ -1,4 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
-  <title>Design Atlas</title>
-  <rect width="64" height="64" rx="16" fill="#E3EEE5"/><path fill="#2D6049" d="M12 12h17v17H12zM12 35h17v17H12zM35 35h17v17H35z"/><path fill="#6B9278" d="M35 12h9l8 8v9H35z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title">
+<title id="title">FOLD UI ATLAS — standard color</title>
+<defs>
+<clipPath id="contour">
+<path d="M36 62 Q36 40 58 40 H173 Q183 40 191 47 L225 78 Q240 91 229 111 L201 165 L216 198 Q229 228 204 228 H58 Q36 228 36 206 Z" fill="white"/>
+</clipPath>
+</defs>
+<g>
+<g clip-path="url(#contour)">
+<path d="M36 62 Q36 40 58 40 H173 Q183 40 191 47 L225 78 Q240 91 229 111 L201 165 L216 198 Q229 228 204 228 H58 Q36 228 36 206 Z" fill="#091936"/>
+<path d="M83 105 Q98 118 118 112 L184 93 Q195 91 195 105 L177 172 L111 145 Z" fill="#FFFDF7"/>
+<path d="M36 62 Q36 40 58 40 H173 Q183 40 191 47 L225 78 Q214 73 201 80 L117 112 Q94 121 79 106 Z" fill="#0750F5"/>
+<path d="M36 205 L111 145 L202 177 Q210 180 213 186 L159 225 Q155 228 148 228 H58 Q36 228 36 206 Z" fill="#0750F5"/>
+<g fill="#091936">
+<ellipse cx="151" cy="128" rx="5.5" ry="9"/>
+<ellipse cx="168" cy="128" rx="5.5" ry="9"/>
+</g>
+</g>
+</g>
 </svg>
