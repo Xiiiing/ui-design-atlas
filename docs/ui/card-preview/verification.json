@@ -1,5 +1,5 @@
 {
-  "bundleSHA256": "7915d09af8638de3e45a5e6f8fd7f856e7b84e34f61beee8e3567a60772e3b81",
+  "bundleSHA256": "c94d798db4c3d32ce3d3d6a7360fd26f073f7daca7cd1a5a48544a709f63fb6c",
   "results": [
     {
       "width": 1440,
@@ -90,6 +90,22 @@
           "left": 450.5
         }
       },
+      "actions": [
+        {
+          "class": "icon-button asset-save ",
+          "width": 32,
+          "height": 32,
+          "dx": 0,
+          "dy": 0
+        },
+        {
+          "class": "icon-button asset-open",
+          "width": 32,
+          "height": 32,
+          "dx": 0,
+          "dy": 0
+        }
+      ],
       "screenshot": "motion-1440-dark-zh-CN.png",
       "overflow": false,
       "errors": []
@@ -183,6 +199,22 @@
           "left": 393.5
         }
       },
+      "actions": [
+        {
+          "class": "icon-button asset-save ",
+          "width": 32,
+          "height": 32,
+          "dx": 0,
+          "dy": 0
+        },
+        {
+          "class": "icon-button asset-open",
+          "width": 32,
+          "height": 32,
+          "dx": 0,
+          "dy": 0
+        }
+      ],
       "screenshot": "motion-768-light-en.png",
       "overflow": false,
       "errors": []
@@ -276,6 +308,22 @@
           "left": 31
         }
       },
+      "actions": [
+        {
+          "class": "icon-button asset-save ",
+          "width": 36,
+          "height": 36,
+          "dx": 0,
+          "dy": 0
+        },
+        {
+          "class": "icon-button asset-open",
+          "width": 36,
+          "height": 36,
+          "dx": 0,
+          "dy": 0
+        }
+      ],
       "screenshot": "motion-375-dark-zh-CN.png",
       "overflow": false,
       "errors": []
@@ -369,6 +417,22 @@
           "left": 171.5
         }
       },
+      "actions": [
+        {
+          "class": "icon-button asset-save ",
+          "width": 32,
+          "height": 32,
+          "dx": 0,
+          "dy": 0
+        },
+        {
+          "class": "icon-button asset-open",
+          "width": 32,
+          "height": 32,
+          "dx": 0,
+          "dy": 0
+        }
+      ],
       "screenshot": "blocks-1440-light-en.png",
       "overflow": false,
       "errors": []

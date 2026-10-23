@@ -144,3 +144,67 @@ test("Touch cards keep descriptions outside the preview and open the actual reso
     await ctx.close();
   }
 });
+
+test("Top-right card actions center both icons and keep separate click targets", async ({
+  page,
+}) => {
+  for (const width of [1440, 768, 375])
+    for (const colorScheme of ["dark", "light"]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await page.emulateMedia({ colorScheme });
+      await page.goto("#motion?lang=zh-CN&category=buttons");
+      const card = page.locator(
+        '[data-resource="component:magicui-shimmer-button"]',
+      );
+      await card.scrollIntoViewIfNeeded();
+      await card.locator(".asset-open").focus();
+      const metrics = await card.evaluate((el) => {
+        const open = el.querySelector(".asset-open"),
+          save = el.querySelector(".asset-save");
+        const rect = (e) => e.getBoundingClientRect();
+        const controls = [open, save].map((e) => {
+          const b = rect(e),
+            s = rect(e.querySelector("svg"));
+          return {
+            width: b.width,
+            height: b.height,
+            top: b.top,
+            dx: Math.abs(b.x + b.width / 2 - s.x - s.width / 2),
+            dy: Math.abs(b.y + b.height / 2 - s.y - s.height / 2),
+          };
+        });
+        const o = rect(open),
+          s = rect(save),
+          p = rect(el.querySelector(".asset-preview"));
+        return {
+          controls,
+          gap: s.left - o.right,
+          rightInset: p.right - s.right,
+          topInset: s.top - p.top,
+        };
+      });
+      for (const m of metrics.controls) {
+        expect(m.dx).toBeLessThan(0.75);
+        expect(m.dy).toBeLessThan(0.75);
+        expect(m.width).toBe(m.height);
+      }
+      expect(metrics.controls[0].width).toBe(metrics.controls[1].width);
+      expect(metrics.controls[0].top).toBe(metrics.controls[1].top);
+      expect(metrics.gap).toBeGreaterThanOrEqual(6);
+      expect(metrics.rightInset).toBeGreaterThanOrEqual(8);
+      expect(metrics.topInset).toBe(metrics.rightInset);
+      const save = card.locator(".asset-save");
+      const saved = await save.getAttribute("aria-pressed");
+      await save.click();
+      await expect(save).toHaveAttribute(
+        "aria-pressed",
+        saved === "true" ? "false" : "true",
+      );
+      await expect(page.locator("#asset-dialog")).not.toBeVisible();
+      await card.locator(".asset-open").press("Enter");
+      await expect(page.locator("#asset-dialog")).toBeVisible();
+      await expect(page.locator(".inspector-head h2")).toHaveText("微光按钮");
+      await page.getByRole("button", { name: "关闭预览", exact: true }).click();
+      await expect(card.locator(".asset-cover-link")).toBeFocused();
+    }
+});

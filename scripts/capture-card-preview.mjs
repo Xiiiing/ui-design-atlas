@@ -81,6 +81,30 @@ try {
     );
     const screenshot = `${view}-${width}-${colorScheme}-${lang}.png`;
     await page.screenshot({ path: new URL(screenshot, out).pathname });
+    const actions = await card.evaluate((el) =>
+      Array.from(el.querySelectorAll(".asset-open, .asset-save"), (action) => {
+        const box = action.getBoundingClientRect(),
+          svg = action.querySelector("svg").getBoundingClientRect();
+        return {
+          class: action.className,
+          width: box.width,
+          height: box.height,
+          dx: Math.abs(box.x + box.width / 2 - svg.x - svg.width / 2),
+          dy: Math.abs(box.y + box.height / 2 - svg.y - svg.height / 2),
+        };
+      }),
+    );
+    for (const action of actions) {
+      expect(action.dx).toBeLessThan(0.75);
+      expect(action.dy).toBeLessThan(0.75);
+    }
+    if (width === 1440 && colorScheme === "dark") {
+      const box = await card.locator(".asset-preview").boundingBox();
+      await page.screenshot({
+        path: new URL("actions-closeup.png", out).pathname,
+        clip: { x: box.x + box.width - 100, y: box.y, width: 100, height: 64 },
+      });
+    }
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth > innerWidth,
     );
@@ -93,6 +117,7 @@ try {
       view,
       before,
       after,
+      actions,
       screenshot,
       overflow,
       errors,
