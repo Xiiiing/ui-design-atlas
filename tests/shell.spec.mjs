@@ -111,7 +111,7 @@ test("Resource type navigation keeps stable geometry and detail tabs support key
   expect(errors).toEqual([]);
 });
 
-test("Shell appearance persists across tabs and stays independent of archived previews", async ({
+test("Shell appearance cycles, persists across tabs and synchronizes archived previews", async ({
   page,
   context,
 }) => {
@@ -119,19 +119,13 @@ test("Shell appearance persists across tabs and stays independent of archived pr
   await page.emulateMedia({ colorScheme: "dark" });
   await page.goto("#explore?lang=en");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-  await page
-    .getByRole("button", { name: "Atlas appearance", exact: true })
-    .click();
-  await page.getByRole("menuitem", { name: "Light", exact: true }).click();
+  await page.getByRole("button", { name: /^Atlas appearance:/ }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   const other = await context.newPage();
   await other.goto("#explore?lang=en");
-  await page
-    .getByRole("button", { name: "Atlas appearance", exact: true })
-    .click();
-  await page.getByRole("menuitem", { name: "Dark", exact: true }).click();
+  await page.getByRole("button", { name: /^Atlas appearance:/ }).click();
   await expect(other.locator("html")).toHaveAttribute("data-theme", "dark");
   await other.close();
   await page
@@ -143,23 +137,18 @@ test("Shell appearance persists across tabs and stays independent of archived pr
       .frameLocator("#case-preview")
       .getByRole("button", { name: "Shimmer Button", exact: true }),
   ).toBeVisible();
-  await expect(
-    page.frameLocator("#case-preview").locator("html"),
-  ).not.toHaveClass(/dark/);
-  await page.locator("[data-preview-theme]").click();
   await expect(page.frameLocator("#case-preview").locator("html")).toHaveClass(
     /dark/,
   );
+  await page.locator("[data-preview-theme]").click();
+  await expect(
+    page.frameLocator("#case-preview").locator("html"),
+  ).not.toHaveClass(/dark/);
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await page
     .getByRole("button", { name: "Back to market", exact: true })
     .click();
-  await page
-    .getByRole("button", { name: "Atlas appearance", exact: true })
-    .click();
-  await page
-    .getByRole("menuitem", { name: "Follow system", exact: true })
-    .click();
+  await page.getByRole("button", { name: /^Atlas appearance:/ }).click();
   await page.emulateMedia({ colorScheme: "light" });
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   expect(errors).toEqual([]);

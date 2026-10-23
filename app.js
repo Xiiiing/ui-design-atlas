@@ -57,6 +57,9 @@ let route,
   limit = 24,
   toastTimer,
   previewLoadTimer;
+const shellTheme = () =>
+  document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+let viewerThemeTarget;
 let browseFiltersExpanded;
 let originBrowse = null,
   currentFiles = {},
@@ -94,15 +97,39 @@ function saveButton(r) {
   return `<button class="icon-button asset-save ${favorites.has(key(r)) ? "saved" : ""}" data-save="${key(r)}" aria-pressed="${favorites.has(key(r))}" aria-label="${t("收藏", "Save")} ${esc(l(r.name))}">${icon("bookmark")}</button>`;
 }
 function language(viewer = false) {
-  return `<select data-shell-control data-locale id="${viewer ? "locale" : "site-locale"}" aria-label="${t("语言", "Language")}"><option value="zh-CN" ${locale === "zh-CN" ? "selected" : ""}>中文</option><option value="en" ${locale === "en" ? "selected" : ""}>EN</option></select>`;
+  return `<select data-shell-control data-locale id="${viewer ? "locale" : "site-locale"}" aria-label="${t("语言", "Language")}"><option value="zh-CN" ${locale === "zh-CN" ? "selected" : ""}>中文</option><option value="en" ${locale === "en" ? "selected" : ""}>English</option></select>`;
 }
+let compactNavigation = false;
+function syncNavigation() {
+  compactNavigation = scrollY > (compactNavigation ? 48 : 96);
+  document
+    .querySelector("#topbar")
+    .classList.toggle("is-compact", compactNavigation);
+}
+window.addEventListener("scroll", syncNavigation, { passive: true });
 function header() {
   document.documentElement.lang = locale;
   document.querySelector("#sidebar").innerHTML = "";
+  const nav = [
+    ["discover", "发现", "Discover", "grid-2x2"],
+    ["explore", "探索资源", "Explore", "layers"],
+    ["cases", "完整案例", "Systems", "layout-template"],
+    ["favorites", "我的收藏", "Saved", "bookmark"],
+  ]
+    .map(([view, zh, en, glyph]) => {
+      const active =
+        route.view === view ||
+        (view === "explore" &&
+          ["motion", "components", "blocks", "pages"].includes(route.view));
+      const label = t(zh, en);
+      return `<a href="${href(view)}" class="${active ? "active" : ""}" aria-label="${label}" title="${label}" ${active ? 'aria-current="page"' : ""}>${icon(glyph)}<span class="nav-label">${label}${view === "favorites" && favorites.size ? ` <small>${favorites.size}</small>` : ""}</span></a>`;
+    })
+    .join("");
   replaceShellHTML(
     document.querySelector("#topbar"),
-    `<div class="market-header"><a class="brand" href="${href()}" aria-label="${t("UI 设计图鉴首页", "UI Design Atlas home")}"><img class="brand-mark brand-light" src="./logo.svg" width="32" height="32" alt=""><img class="brand-mark brand-dark" src="./logo-reverse.svg" width="32" height="32" alt=""><span>atlas<span class="brand-dot">.</span></span></a><nav class="market-navigation" data-shell-group data-shell-key="primary-navigation" data-shell-variant="underline" aria-label="${t("主导航", "Main navigation")}"><a href="${href("discover")}" class="${route.view === "discover" ? "active" : ""}">${t("发现", "Discover")}</a><a href="${href("explore")}" class="${["explore", "motion", "components", "blocks", "pages"].includes(route.view) ? "active" : ""}">${t("探索资源", "Explore")}</a><a href="${href("cases")}" class="${route.view === "cases" ? "active" : ""}">${t("完整案例", "Systems")}</a><a href="${href("favorites")}" class="${route.view === "favorites" ? "active" : ""}">${icon("bookmark")}${t("我的收藏", "Saved")}<span>${favorites.size || ""}</span></a></nav><div class="market-header-actions"><span data-shell-navigation></span><span data-shell-appearance></span><button class="icon-button" data-search aria-label="${t("搜索设计", "Search designs")}">${icon("search")}</button>${language()}${external("https://github.com/Xiiiing/ui-design-atlas", "GitHub")}</div></div>`,
+    `<div class="market-header"><a class="brand" href="${href()}" aria-label="${t("UI 设计图鉴首页", "UI Design Atlas home")}"><img class="brand-mark brand-light" src="./logo.svg" width="32" height="32" alt=""><img class="brand-mark brand-dark" src="./logo-reverse.svg" width="32" height="32" alt=""><span class="brand-name">atlas<span class="brand-dot">.</span></span></a><nav class="market-navigation" data-shell-group data-shell-key="primary-navigation" data-shell-variant="underline" aria-label="${t("主导航", "Main navigation")}">${nav}</nav><div class="market-header-actions"><span data-shell-navigation></span><span data-shell-appearance></span><button class="icon-button" data-search aria-label="${t("搜索设计", "Search designs")}" title="${t("搜索设计", "Search designs")}">${icon("search")}</button>${language()}<a class="header-github" href="https://github.com/Xiiiing/ui-design-atlas" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><span class="nav-label">GitHub</span>${icon("code-xml")}</a></div></div>`,
   );
+  syncNavigation();
   document.querySelector("#footer").innerHTML =
     `<div class="market-footer"><a class="brand" href="${href()}" aria-label="${t("UI 设计图鉴首页", "UI Design Atlas home")}"><img class="brand-mark brand-light" src="./logo.svg" width="32" height="32" alt=""><img class="brand-mark brand-dark" src="./logo-reverse.svg" width="32" height="32" alt=""><span>atlas.</span></a><span>${t("找到喜欢的界面，把设计与代码一起带走。", "Find an interface. Take its ideas and code.")}</span><a href="${href("resources")}">${t("来源与许可", "Sources & licenses")}</a><a href="${href("guide")}">${t("使用指南", "How to reuse")}</a></div>`;
   document.querySelector("#copy-title").textContent = t(
@@ -692,6 +719,7 @@ function showViewer(r) {
   scalePreview();
   previewResizeObserver.observe(document.querySelector("#preview-viewport"));
   const frame = document.querySelector("#case-preview");
+  viewerThemeTarget = theme;
   beginPreviewLoad();
   frame.addEventListener("load", () => {
     if (!frame.contentDocument?.querySelector("#root, #preview-root"))
@@ -699,6 +727,7 @@ function showViewer(r) {
   });
   frame.addEventListener("error", () => previewLoadState("error"));
   frame.addEventListener("load", () => {
+    sendPreviewTheme();
     const input = document.querySelector("[data-preview-setting]");
     if (input && previewValues.has(selected?.id))
       frame.contentWindow.postMessage(
@@ -733,7 +762,7 @@ function openResource(id, type, replace = false, details = false) {
   const r = findResource(id, type);
   if (!r) return;
   if (!selected) {
-    theme = resourcePresentation(r).theme;
+    theme = shellTheme();
     originBrowse = {
       hash: location.hash || href(),
       scroll: browseScroll(),
@@ -760,7 +789,6 @@ function openResource(id, type, replace = false, details = false) {
     resourceDepth: replace ? Math.max(1, depth) : depth + 1,
   };
   const url = href(r.type, r.id, {
-    theme,
     ...(details ? { panel: "details" } : {}),
   });
   history[replace ? "replaceState" : "pushState"](state, "", url);
@@ -843,7 +871,8 @@ function render() {
     const r = findResource(route.id, route.view);
     if (r) {
       originBrowse = history.state?.background || null;
-      if (!route.params.has("theme")) theme = resourcePresentation(r).theme;
+      if (!["light", "dark"].includes(route.params.get("theme")))
+        theme = shellTheme();
       showViewer(r);
       return;
     }
@@ -912,7 +941,8 @@ const liveCards = createLiveCards({
     const [type, id] = card.dataset.resource.split(":");
     return findResource(id, type);
   },
-  url: (r) => resourcePreview(r, locale, resourcePresentation(r).theme),
+  url: (r) => resourcePreview(r, locale, shellTheme()),
+  config: () => ({ locale, theme: shellTheme() }),
   label: (r) => l(r.name),
   failure: () => t("体验加载失败", "Experience could not be loaded"),
   loading: () => t("正在加载体验…", "Loading experience…"),
@@ -1150,6 +1180,7 @@ document.addEventListener("click", async (e) => {
   }
   if (b.hasAttribute("data-preview-theme")) {
     theme = theme === "light" ? "dark" : "light";
+    viewerThemeTarget = theme;
     updateThemeURL();
     b.innerHTML = icon(theme === "dark" ? "sun" : "moon");
     document
@@ -1310,6 +1341,7 @@ document.addEventListener("input", (e) => {
 });
 document.addEventListener("change", async (e) => {
   if (e.target.matches("[data-locale]")) {
+    const triggerId = e.target.dataset.shellField || e.target.id;
     locale = e.target.value;
     try {
       localStorage.setItem("atlas-language", locale);
@@ -1322,6 +1354,9 @@ document.addEventListener("change", async (e) => {
       "#" + p.view + (p.id ? "/" + p.id : "") + "?" + p.params,
     );
     render();
+    requestAnimationFrame(() =>
+      document.getElementById(triggerId)?.focus({ preventScroll: true }),
+    );
   }
   if (e.target.closest("#filters") && e.target.matches("select")) {
     limit = 24;
@@ -1381,13 +1416,7 @@ window.addEventListener("message", (e) => {
     e.data?.type === "atlas:resource-state" &&
     e.data.resourceId === selected.id
   ) {
-    if (["light", "dark"].includes(e.data.theme)) {
-      theme = e.data.theme;
-      document.querySelector("[data-preview-theme]").innerHTML = icon(
-        theme === "dark" ? "sun" : "moon",
-      );
-      updateThemeURL();
-    }
+    acceptPreviewTheme(e.data.theme);
     return;
   }
   if (
@@ -1395,7 +1424,7 @@ window.addEventListener("message", (e) => {
     e.data.caseId !== selected.caseId
   )
     return;
-  if (["light", "dark"].includes(e.data.theme)) theme = e.data.theme;
+  acceptPreviewTheme(e.data.theme);
   if (selected.type === "component") return;
   const c = getCase(selected.caseId);
   previewLoadState("ready");
@@ -1525,9 +1554,48 @@ window.addEventListener("storage", (e) => {
 const previewResizeObserver = new ResizeObserver(scalePreview);
 render();
 
-function updateThemeURL() {
+function sendPreviewTheme() {
+  document
+    .querySelector("#case-preview")
+    ?.contentWindow.postMessage(
+      { type: "atlas:preview-config", locale, theme },
+      location.origin,
+    );
+}
+function acceptPreviewTheme(value) {
+  if (
+    !["light", "dark"].includes(value) ||
+    (viewerThemeTarget && value !== viewerThemeTarget)
+  )
+    return;
+  viewerThemeTarget = null;
+  // An initial acknowledgement must not turn a following theme into a URL override.
+  if (theme === value) return;
+  theme = value;
+  document.querySelector("[data-preview-theme]").innerHTML = icon(
+    theme === "dark" ? "sun" : "moon",
+  );
+  updateThemeURL();
+}
+window.addEventListener("atlas:shell-theme", () => {
+  liveCards.configure();
+  if (!selected) return;
+  const nextTheme = shellTheme();
+  // Same-color mode changes do not produce an iframe acknowledgement.
+  // Do not leave a pending target that would reject the next native choice.
+  if (theme !== nextTheme) viewerThemeTarget = nextTheme;
+  theme = nextTheme;
+  sendPreviewTheme();
+  document.querySelector("[data-preview-theme]").innerHTML = icon(
+    theme === "dark" ? "sun" : "moon",
+  );
+  updateThemeURL(true);
+});
+
+function updateThemeURL(follow = false) {
   const p = parse();
-  p.params.set("theme", theme);
+  if (follow) p.params.delete("theme");
+  else p.params.set("theme", theme);
   history.replaceState(
     history.state,
     "",

@@ -2,10 +2,23 @@ import { inlinePreviewURL } from "./presentation.js";
 
 // Only frames owned by this controller may report readiness. The detail viewer
 // has its own channel; card messages never change its resource, locale or theme.
-export function createLiveCards({ resource, url, label, loading, failure }) {
+export function createLiveCards({
+  resource,
+  url,
+  label,
+  loading,
+  failure,
+  config,
+}) {
   const frames = new Map(),
     visible = new Set();
   let preferred;
+  function configure(entry) {
+    entry.frame.contentWindow.postMessage(
+      { type: "atlas:preview-config", resourceId: entry.id, ...config() },
+      location.origin,
+    );
+  }
   const focused = (entry) => document.activeElement === entry.frame;
   function release(card) {
     const entry = frames.get(card);
@@ -43,6 +56,7 @@ export function createLiveCards({ resource, url, label, loading, failure }) {
       try {
         // HTTP errors can emit load instead of error. A real archive has a root.
         if (!frame.contentDocument?.querySelector("#root")) fail(card, entry);
+        else configure(entry);
       } catch {
         fail(card, entry);
       }
@@ -86,6 +100,7 @@ export function createLiveCards({ resource, url, label, loading, failure }) {
         clearTimeout(entry.timeout);
         card.dataset.previewState = "ready";
         card.classList.add("is-live");
+        configure(entry);
       } else if (event.data.type === "atlas:inline-error") fail(card, entry);
       break;
     }
@@ -100,6 +115,9 @@ export function createLiveCards({ resource, url, label, loading, failure }) {
   document.addEventListener("focusin", reconcile);
   window.addEventListener("focus", () => setTimeout(reconcile, 0));
   return {
+    configure() {
+      for (const entry of frames.values()) configure(entry);
+    },
     observe(cards) {
       observer.disconnect();
       visible.clear();

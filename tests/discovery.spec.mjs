@@ -215,9 +215,10 @@ test("The library puts a continuous, framed resource wall directly below its bro
   await expect(page.locator(".library-browser .asset-card")).toHaveCount(48);
 });
 
-test("Thumbnail and wide experience preserve the source theme and fixed-height demos fit their cover", async ({
+test("Live cards and wide experience follow the shell while fixed-height demos fit their frame", async ({
   page,
 }) => {
+  await page.emulateMedia({ colorScheme: "light" });
   await page.goto("#discover?lang=en");
   const particles = page.locator(
     '[data-resource="component:magicui-particles"]',
@@ -231,7 +232,7 @@ test("Thumbnail and wide experience preserve the source theme and fixed-height d
         f.contentDocument?.documentElement.classList.contains("dark"),
       ),
     )
-    .toBe(true);
+    .toBe(false);
   await expect
     .poll(() =>
       iframe.evaluate((f) =>
@@ -260,9 +261,9 @@ test("Thumbnail and wide experience preserve the source theme and fixed-height d
   expect(bounds.top).toBeGreaterThanOrEqual(0);
   expect(bounds.bottom).toBeLessThanOrEqual(bounds.height);
   await particles.locator(".asset-caption [data-open]").click();
-  await expect(page.frameLocator("#case-preview").locator("html")).toHaveClass(
-    /dark/,
-  );
+  await expect(
+    page.frameLocator("#case-preview").locator("html"),
+  ).not.toHaveClass(/dark/);
 });
 
 test("Responsive cards keep structured tags outside previews and loading does not duplicate recommendations", async ({

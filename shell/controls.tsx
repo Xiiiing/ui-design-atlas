@@ -23,6 +23,7 @@ const islands = new Map<HTMLElement, Island>();
 const fields = new Map<string, (value: string) => void>();
 const preferenceKey = "atlas-shell-theme";
 type Preference = "system" | "light" | "dark";
+let currentPreference: Preference;
 const systemTheme = matchMedia("(prefers-color-scheme: dark)");
 function preference(): Preference {
   try {
@@ -32,52 +33,54 @@ function preference(): Preference {
   return "system";
 }
 function applyTheme(value: Preference) {
+  currentPreference = value;
   document.documentElement.dataset.themePreference = value;
   document.documentElement.dataset.theme =
     value === "system" ? (systemTheme.matches ? "dark" : "light") : value;
+  window.dispatchEvent(new Event("atlas:shell-theme"));
 }
 applyTheme(preference());
-systemTheme.addEventListener("change", () => applyTheme(preference()));
+systemTheme.addEventListener("change", () => {
+  if (currentPreference === "system") applyTheme("system");
+});
 window.addEventListener("storage", (e) => {
   if (e.key === preferenceKey) {
     applyTheme(preference());
-    window.dispatchEvent(new Event("atlas:shell-theme"));
   }
 });
 
 function Appearance({ english }: { english: boolean }) {
-  const [value, setValue] = useState(preference);
+  const [value, setValue] = useState(() => currentPreference);
   useLayoutEffect(() => {
-    const update = () => setValue(preference());
+    const update = () => setValue(currentPreference);
     window.addEventListener("atlas:shell-theme", update);
     return () => window.removeEventListener("atlas:shell-theme", update);
   }, []);
   const Icon = value === "system" ? Monitor : value === "light" ? Sun : Moon;
+  const modes: Preference[] = ["system", "light", "dark"];
+  const next = modes[(modes.indexOf(value) + 1) % modes.length];
+  const labels = english
+    ? { system: "Follow system", light: "Light", dark: "Dark" }
+    : { system: "跟随系统", light: "浅色", dark: "深色" };
+  const description = english
+    ? `${labels[value]}; switch to ${labels[next]}`
+    : `${labels[value]}；切换为${labels[next]}`;
   return (
-    <MarketMenu
-      ariaLabel={english ? "Atlas appearance" : "图鉴显示模式"}
-      label={<Icon size={18} aria-hidden="true" />}
-      triggerClassName="appearance-trigger"
-      items={(
-        [
-          ["system", english ? "Follow system" : "跟随系统"],
-          ["light", english ? "Light" : "浅色"],
-          ["dark", english ? "Dark" : "深色"],
-        ] as const
-      ).map(([id, label]) => ({
-        key: id,
-        label,
-        selected: value === id,
-        onSelect: () => {
-          try {
-            localStorage.setItem(preferenceKey, id);
-          } catch {}
-          applyTheme(id);
-          setValue(id);
-          window.dispatchEvent(new Event("atlas:shell-theme"));
-        },
-      }))}
-    />
+    <button
+      type="button"
+      className="icon-button appearance-trigger"
+      data-mode={value}
+      aria-label={`${english ? "Atlas appearance" : "图鉴显示模式"}: ${description}`}
+      title={description}
+      onClick={() => {
+        try {
+          localStorage.setItem(preferenceKey, next);
+        } catch {}
+        applyTheme(next);
+      }}
+    >
+      <Icon size={18} aria-hidden="true" />
+    </button>
   );
 }
 function MobileNavigation({ source }: { source: HTMLElement }) {
@@ -91,7 +94,7 @@ function MobileNavigation({ source }: { source: HTMLElement }) {
         document.querySelectorAll<HTMLAnchorElement>(".market-navigation a"),
       ).map((a) => ({
         key: a.hash,
-        label: a.textContent,
+        label: a.getAttribute("aria-label") || a.textContent,
         selected: a.classList.contains("active"),
         onSelect: () => {
           location.hash = a.hash;
@@ -117,6 +120,7 @@ function SelectAdapter({ source }: { source: HTMLSelectElement }) {
   return (
     <MarketSelect
       {...attributes}
+      iconOnly={source.hasAttribute("data-locale")}
       id={id}
       name={source.name || undefined}
       data-shell-field={id}
