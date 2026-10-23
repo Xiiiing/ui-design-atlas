@@ -46,6 +46,7 @@ const assets = [
   "legacy-i18n.js",
   "legacy-translations.js",
   "favicon.svg",
+  "logo.svg",
   ".nojekyll",
 ];
 for (const file of assets)

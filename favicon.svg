@@ -1,1 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="#202024"/><g fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 25 20-11 20 11-20 11-20-11Z"/><path d="m12 34 20 11 20-11M12 43l20 11 20-11"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <title>Design Atlas</title>
+  <rect width="64" height="64" rx="16" fill="#E3EEE5"/><path fill="#2D6049" d="M12 12h17v17H12zM12 35h17v17H12zM35 35h17v17H35z"/><path fill="#6B9278" d="M35 12h9l8 8v9H35z"/>
+</svg>

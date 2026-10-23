@@ -85,6 +85,7 @@ const files = [
   "legacy-i18n.js",
   "legacy-translations.js",
   "favicon.svg",
+  "logo.svg",
 ];
 for (const file of files) await access(new URL(file, base));
 for (const file of [
