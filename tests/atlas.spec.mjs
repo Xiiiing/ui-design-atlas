@@ -34,8 +34,10 @@ test("Market quick view preserves filters, navigation context, prompt and source
   await expect(page.locator(".inline-prompt")).toContainText(
     "User editor dialog",
   );
-  await page.getByRole("tab", { name: "Code", exact: true }).click();
+  await page.locator("[data-full-detail=code]").click();
   await expect(page.locator("#code-text")).toContainText("UsersActionDialog");
+  await page.goBack();
+  await expect(page.locator("#asset-dialog")).toBeVisible();
   await page
     .getByRole("button", { name: "Close preview", exact: true })
     .click();
@@ -48,7 +50,6 @@ test("Market quick view preserves filters, navigation context, prompt and source
   await demo.getByRole("link", { name: "Tasks", exact: true }).first().click();
   await expect(page.locator(".inspector-head h2")).toHaveText("Tasks");
   await expect(page).toHaveURL(/page=tasks/);
-  await page.getByRole("tab", { name: "Prompt", exact: true }).click();
   await page
     .locator("#inspector")
     .getByRole("button", { name: "Copy prompt", exact: true })
@@ -56,7 +57,6 @@ test("Market quick view preserves filters, navigation context, prompt and source
   expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(
     "Task table with search",
   );
-  await page.getByRole("tab", { name: "Components", exact: true }).click();
   await page
     .locator('#related a[href*="component/shadcn-admin-task-table"]')
     .first()
@@ -65,12 +65,11 @@ test("Market quick view preserves filters, navigation context, prompt and source
   await expect(
     page.frameLocator("#case-preview").getByRole("table"),
   ).toBeVisible();
-  await page.getByRole("tab", { name: "Components", exact: true }).click();
   await page
     .locator('#related a[href*="page/shadcn-admin-tasks"]')
     .first()
     .click();
-  await page.locator("#locale").click();
+  await page.locator("#site-locale").click();
   await page.getByRole("option", { name: "中文", exact: true }).click();
   await expect(page.locator(".inspector-head h2")).toHaveText("任务管理");
   await page.reload();
@@ -94,6 +93,7 @@ test("Bilingual market searches, library and source filters retain existing cont
   await page.locator("[name=q]").fill("任务");
   await expect(page.locator("#results .card")).toHaveCount(1);
   await page.locator("[data-reset-filters]").click();
+  await page.locator("[data-advanced-filters]").click();
   await page.locator("#filter-source").click();
   await page.getByRole("option", { name: "Open source", exact: true }).click();
   await expect(page.locator("#results .card")).toHaveCount(6);
@@ -101,6 +101,7 @@ test("Bilingual market searches, library and source filters retain existing cont
   await expect(page.locator("#results .card")).toHaveCount(6);
   await page.goto("#cases?lang=zh-CN");
   await expect(page.locator("#results .card")).toHaveCount(cases.length);
+  await page.locator("[data-advanced-filters]").click();
   await page.locator("#filter-audience").click();
   await page
     .getByRole("option", { name: "B 端 / 工作工具", exact: true })
@@ -466,8 +467,10 @@ test("Market and quick-view layouts remain usable at all viewport sizes", async 
       await expect(page.locator("#asset-dialog")).toBeVisible();
       await expect(page.locator("#inspector h2")).toBeVisible();
       await noOverflow(page);
-      await page.locator('[data-tab="code"]').click();
+      await page.locator("[data-full-detail=code]").click();
       await expect(page.locator("#code-text")).toBeVisible();
+      await page.goBack();
+      await expect(page.locator("#asset-dialog")).toBeVisible();
       await page.locator("[data-close-viewer]").last().click();
       await expect(page.locator("#asset-dialog")).not.toBeVisible();
       await expect(page.locator("[name=q]")).toHaveValue("用户编辑");
@@ -516,9 +519,7 @@ test("Native page canvases, browser history, keyboard search and preview limits"
     await page
       .locator("#case-preview")
       .evaluate((f) => f.contentWindow.innerWidth),
-  ).toBe(
-    await page.locator("#preview-viewport").evaluate((el) => el.clientWidth),
-  );
+  ).toBe(1280);
   await page.locator('[data-device="375"]').click();
   await expect
     .poll(() =>
@@ -529,11 +530,7 @@ test("Native page canvases, browser history, keyboard search and preview limits"
   await page.locator("[data-more]").click();
   await expect(page.locator("#results .card")).toHaveCount(48);
   await page.locator(".asset-card").nth(30).scrollIntoViewIfNeeded();
-  const scroll = await page.evaluate(() =>
-    innerWidth > 1023
-      ? document.querySelector(".main-shell").scrollTop
-      : scrollY,
-  );
+  const scroll = await page.evaluate(() => scrollY);
   await page
     .locator(".asset-card")
     .nth(30)
@@ -544,15 +541,7 @@ test("Native page canvases, browser history, keyboard search and preview limits"
   await page.goBack();
   await expect(page.locator("#asset-dialog")).not.toBeVisible();
   await expect(page.locator("#results .card")).toHaveCount(48);
-  await expect
-    .poll(() =>
-      page.evaluate(() =>
-        innerWidth > 1023
-          ? document.querySelector(".main-shell").scrollTop
-          : scrollY,
-      ),
-    )
-    .toBe(scroll);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(scroll);
   await page.keyboard.press("Control+k");
   await page.locator("#quick-search").fill("用户编辑");
   await page.locator("#quick-search").press("Enter");
@@ -596,12 +585,13 @@ test("Independent upstream resources load locally with source, prompts and reduc
   await expect(page.locator(".provenance")).toContainText("Magic UI");
   await page.getByRole("tab", { name: "Code", exact: true }).click();
   await expect(page.locator("#code-text")).toContainText("BorderBeam");
+  await page.getByRole("tab", { name: "Preview", exact: true }).click();
   const demo = page.frameLocator("#case-preview");
-  await demo
-    .getByRole("spinbutton", { name: "Duration", exact: true })
+  await page
+    .getByRole("spinbutton", { name: "Duration (seconds)", exact: true })
     .fill("4");
   await expect(
-    demo.getByRole("spinbutton", { name: "Duration", exact: true }),
+    page.getByRole("spinbutton", { name: "Duration (seconds)", exact: true }),
   ).toHaveValue("4");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(
@@ -765,7 +755,7 @@ test("Original shadcn blocks validate local forms and preserve native dashboard 
   await page.locator("[name=q]").fill("signup");
   await page.locator('[data-open="block:shadcn-signup-01"]').last().click();
   await expect(page.locator("#asset-dialog")).toBeVisible();
-  await page.getByRole("tab", { name: "Code", exact: true }).click();
+  await page.locator("[data-full-detail=code]").click();
   await expect(page.locator("#code-text")).toContainText("SignupForm");
   expect(errors).toEqual([]);
 });

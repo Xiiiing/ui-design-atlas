@@ -7,13 +7,9 @@ import {
 import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
 import { Monitor, Moon, Sun, Menu } from "lucide-react";
-import { SelectionGroup } from "../vendor/yingxu-ui/reference/react/SelectionGroup";
-import { StudioSelect } from "../vendor/yingxu-ui/reference/react/StudioSelect";
-import { StudioMenu } from "../vendor/yingxu-ui/reference/react/StudioMenu";
-import { lockPageScroll } from "../vendor/yingxu-ui/reference/react/ScrollLock";
-import "../vendor/yingxu-ui/reference/css/tokens.css";
-import "../vendor/yingxu-ui/reference/css/accents.css";
-import "../vendor/yingxu-ui/reference/css/final-overrides.css";
+import { MarketSelect, MarketMenu } from "./primitives";
+import { lockPageScroll } from "./scroll-lock";
+import "./theme.css";
 
 // React islands reuse the production controls without replacing the catalog,
 // native form values, hash routing or the separately built archived interfaces.
@@ -38,7 +34,6 @@ function applyTheme(value: Preference) {
   document.documentElement.dataset.themePreference = value;
   document.documentElement.dataset.theme =
     value === "system" ? (systemTheme.matches ? "dark" : "light") : value;
-  document.documentElement.dataset.accent = "slate";
 }
 applyTheme(preference());
 systemTheme.addEventListener("change", () => applyTheme(preference()));
@@ -58,7 +53,7 @@ function Appearance({ english }: { english: boolean }) {
   }, []);
   const Icon = value === "system" ? Monitor : value === "light" ? Sun : Moon;
   return (
-    <StudioMenu
+    <MarketMenu
       ariaLabel={english ? "Atlas appearance" : "图鉴显示模式"}
       label={<Icon size={18} aria-hidden="true" />}
       triggerClassName="appearance-trigger"
@@ -87,7 +82,7 @@ function Appearance({ english }: { english: boolean }) {
 function MobileNavigation({ source }: { source: HTMLElement }) {
   const english = document.documentElement.lang === "en";
   return (
-    <StudioMenu
+    <MarketMenu
       ariaLabel={english ? "Main navigation" : "主导航"}
       label={<Menu size={18} aria-hidden="true" />}
       triggerClassName="mobile-nav-trigger"
@@ -119,7 +114,7 @@ function SelectAdapter({ source }: { source: HTMLSelectElement }) {
       .map((a) => [a.name, a.value]),
   );
   return (
-    <StudioSelect
+    <MarketSelect
       {...attributes}
       id={id}
       name={source.name || undefined}
@@ -135,7 +130,7 @@ function SelectAdapter({ source }: { source: HTMLSelectElement }) {
           {o.textContent}
         </option>
       ))}
-    </StudioSelect>
+    </MarketSelect>
   );
 }
 export function fieldValue(id: string) {
@@ -185,22 +180,13 @@ function selection(source: HTMLElement): ReactNode {
       dangerouslySetInnerHTML: { __html: node.innerHTML },
     });
   });
-  return (
-    <SelectionGroup
-      {...attributes}
-      as={source.tagName === "NAV" ? "nav" : "div"}
-      className={source.className}
-      variant={
-        source.dataset.shellVariant === "underline" ? "underline" : "outline"
-      }
-      value={
-        source.querySelector('.active, [aria-selected="true"]')?.textContent
-      }
-    >
-      {children}
-    </SelectionGroup>
+  return createElement(
+    source.tagName === "NAV" ? "nav" : "div",
+    { ...attributes, className: source.className },
+    children,
   );
 }
+
 function island(source: HTMLElement, kind: string) {
   const host = document.createElement("span");
   host.dataset.shellMounted = kind;
@@ -211,8 +197,7 @@ function island(source: HTMLElement, kind: string) {
   islands.set(host, record);
   return { host, root, record };
 }
-// Preserve selection roots across imperative view updates: the actual Motion
-// values keep their velocity and only the marker moves, even on rapid clicks.
+// Retain navigation roots across catalog updates so keyboard focus stays stable.
 export function replaceShellHTML(target: Element, html: string) {
   // A select can portal into a dialog or body, outside its own mount. Unmount
   // those controls while their portal parent still exists. Clearing the dialog
@@ -321,14 +306,8 @@ export function showShellDialog(dialog: HTMLDialogElement) {
   dialog.showModal();
 }
 export function browseScroll() {
-  return innerWidth > 1023
-    ? document.querySelector(".main-shell")!.scrollTop
-    : scrollY;
+  return scrollY;
 }
 export function scrollBrowseTo(top: number) {
-  if (innerWidth > 1023)
-    document
-      .querySelector(".main-shell")!
-      .scrollTo({ top, behavior: "instant" });
-  else scrollTo({ top, behavior: "instant" });
+  scrollTo({ top, behavior: "instant" });
 }

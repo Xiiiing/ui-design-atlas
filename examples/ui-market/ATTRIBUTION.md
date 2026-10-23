@@ -24,3 +24,5 @@ Each imported project is pinned in `sources.lock.json`. Dependency notices are i
   - The dashboard uses the upstream TanStack Table v9 API and Recharts 3.8.0, isolated from the existing Shadcn Admin project's dependencies.
 
 Original Magic UI neutral colour tokens and animation definitions are preserved in `src/styles/source-themes.css` and `magic-animations.css`. The shadcn blocks use their own original scoped colour/chart tokens from `apps/v4/app/globals.css`. Geist is bundled locally (OFL). Thumbnail previews are inert so upstream dialogs never take keyboard focus away from the marketplace; full previews retain normal interaction.
+
+Embedded previews use `embed=1` to omit the standalone adapter toolbar. Atlas exposes only the existing duration, quantity and target-value props beside the preview, using same-origin `atlas:preview-settings` messages. Component source styles and providers are unchanged.

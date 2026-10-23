@@ -1,0 +1,103 @@
+{
+  "title": {
+    "zh-CN": "界面资源库",
+    "en": "The UI library"
+  },
+  "description": {
+    "zh-CN": "发现值得复用的组件、动效与完整界面。直接体验，带走提示词和源码。",
+    "en": "Components, motion and complete interfaces worth reusing. Try the real thing. Take the prompt and code."
+  },
+  "featured": [
+    "magicui-bento-grid",
+    "magicui-particles",
+    "magicui-shimmer-button",
+    "shadcn-login-01",
+    "magicui-marquee",
+    "magicui-dock",
+    "magicui-magic-card",
+    "folio-home"
+  ],
+  "categories": [
+    "buttons",
+    "text",
+    "backgrounds",
+    "cards",
+    "navigation",
+    "forms",
+    "data",
+    "feedback"
+  ],
+  "collections": [
+    {
+      "id": "micro-interactions",
+      "name": {
+        "zh-CN": "让界面回应每一次操作",
+        "en": "Make every interaction count"
+      },
+      "description": {
+        "zh-CN": "按钮、卡片与导航里的微交互动效。",
+        "en": "Small moments of motion in buttons, cards and navigation."
+      },
+      "motion": true,
+      "categories": ["buttons", "cards", "navigation"]
+    },
+    {
+      "id": "text-and-backgrounds",
+      "name": {
+        "zh-CN": "文字与背景",
+        "en": "Text & backgrounds"
+      },
+      "description": {
+        "zh-CN": "用文字节奏与背景运动建立第一印象。",
+        "en": "Set the scene with animated typography and backgrounds."
+      },
+      "motion": true,
+      "categories": ["text", "backgrounds"]
+    },
+    {
+      "id": "login-and-signup",
+      "name": {
+        "zh-CN": "登录与注册",
+        "en": "Login & sign up"
+      },
+      "description": {
+        "zh-CN": "从表单校验到完整登录区块。",
+        "en": "From form validation to complete authentication blocks."
+      },
+      "resources": [
+        "magicui-border-beam",
+        "antd-form",
+        "shadcn-login-01",
+        "shadcn-signup-01"
+      ]
+    }
+  ],
+  "cases": ["shadcn-admin", "folio", "bloom"],
+  "gallery": [
+    "magicui-number-ticker",
+    "shadcn-sidebar-07",
+    "shadcn-dashboard-01",
+    "magicui-blur-fade",
+    "magicui-border-beam",
+    "forma-home",
+    "bloom-home",
+    "shadcn-admin-dashboard",
+    "antd-table",
+    "fluent-data-grid",
+    "antd-search",
+    "magicui-animated-list",
+    "magicui-text-animate",
+    "fluent-toast",
+    "antd-form",
+    "fluent-toolbar"
+  ],
+  "previewThemes": {
+    "magicui-magic-card": "dark",
+    "magicui-dock": "dark",
+    "magicui-text-animate": "dark",
+    "magicui-particles": "dark",
+    "magicui-number-ticker": "dark",
+    "magicui-blur-fade": "dark",
+    "magicui-border-beam": "dark"
+  }
+}

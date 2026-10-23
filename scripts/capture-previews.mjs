@@ -2,6 +2,7 @@ import { chromium } from "@playwright/test";
 import { spawn } from "node:child_process";
 import { mkdir } from "node:fs/promises";
 import { resources, resourcePreview } from "../catalog.js";
+import { resourcePresentation } from "../presentation.js";
 const port = 4188;
 const server = spawn(process.execPath, ["scripts/serve.mjs", "--dist"], {
   env: { ...process.env, PORT: String(port) },
@@ -23,9 +24,13 @@ try {
   const jobs = resources.filter(
     (r) =>
       !process.argv[2] ||
-      (process.argv[2] === "--new"
-        ? Boolean(r.preview.url)
-        : r.id.includes(process.argv[2])),
+      (process.argv[2] === "--controls"
+        ? r.type === "component" &&
+          r.category === "buttons" &&
+          r.preview.width < 900
+        : process.argv[2] === "--new"
+          ? Boolean(r.preview.url)
+          : r.id.includes(process.argv[2])),
   );
   let index = 0;
   await Promise.all(
@@ -34,16 +39,13 @@ try {
       while (index < jobs.length) {
         const r = jobs[index++];
         try {
+          const framing = resourcePresentation(r);
           await page.setViewportSize({
-            width: r.preview.width,
-            height: r.preview.height,
+            width: framing.width,
+            height: framing.height,
           });
           const url = new URL(
-            resourcePreview(
-              r,
-              "zh-CN",
-              r.sourceId === "shadcn-admin" ? "dark" : "light",
-            ),
+            resourcePreview(r, "zh-CN", framing.theme),
             `http://127.0.0.1:${port}/`,
           );
           url.searchParams.set("thumb", "1");

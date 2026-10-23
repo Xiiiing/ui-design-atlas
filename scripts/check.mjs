@@ -199,3 +199,74 @@ for (const [file, hash] of Object.entries(shellSources.files)) {
   );
 }
 console.log("Verified pinned Yingxu UI components and design tokens.");
+
+const marketDesign = JSON.parse(
+  await readFile(new URL("vendor/21st-market/sources.lock.json", base), "utf8"),
+);
+assert.equal(marketDesign.commit, "b96d84dcf748d5e56f2f72f2bab9a4f7f33574cf");
+for (const [file, hash] of Object.entries(marketDesign.files)) {
+  const content = await readFile(new URL("vendor/21st-market/" + file, base));
+  assert.equal(
+    createHash("sha256").update(content).digest("hex"),
+    hash,
+    "21st reference changed: " + file,
+  );
+}
+const { resourcePresentation, thumbnailURL } =
+  await import("../presentation.js");
+for (const r of resources) {
+  const p = resourcePresentation(r);
+  assert.ok(p.width > 0 && p.height > 0);
+  if (r.type !== "component" || r.preview.width >= 900)
+    assert.equal(p.width, r.preview.width);
+  else assert.equal(p.width, r.category === "buttons" ? 320 : 480);
+}
+assert.equal(
+  thumbnailURL("./demo.html?a=b#/tasks"),
+  "./demo.html?a=b&thumb=1#/tasks",
+);
+console.log(
+  "Verified pinned 21st design reference and shared preview framing.",
+);
+
+const { discovery, discoveryResources, collectionResources } =
+  await import("../catalog.js");
+for (const field of ["title", "description"])
+  for (const lang of ["zh-CN", "en"]) assert.ok(discovery[field][lang]);
+for (const section of ["featured", "gallery", "cases"]) {
+  assert.equal(new Set(discovery[section]).size, discovery[section].length);
+  assert.ok(discoveryResources(section).length);
+  assert.ok(
+    discoveryResources(section).every(Boolean),
+    `Invalid discovery ${section}`,
+  );
+}
+assert.equal(
+  new Set(discovery.collections.map((c) => c.id)).size,
+  discovery.collections.length,
+);
+for (const collection of discovery.collections) {
+  for (const lang of ["zh-CN", "en"])
+    for (const field of ["name", "description"])
+      assert.ok(collection[field][lang]);
+  const items = collectionResources(collection.id);
+  assert.ok(items.length && items.every(Boolean), collection.id);
+  assert.equal(new Set(items.map((r) => r.id)).size, items.length);
+}
+assert.equal(new Set(discovery.categories).size, discovery.categories.length);
+assert.ok(discoveryResources("cases").every((r) => r.type === "case"));
+for (const category of discovery.categories)
+  assert.ok(resources.some((r) => r.category === category));
+
+for (const [id, theme] of Object.entries(discovery.previewThemes)) {
+  assert.ok(resources.some((r) => r.id === id));
+  assert.ok(["light", "dark"].includes(theme));
+}
+const { discoveryGallery } = await import("../catalog.js");
+assert.equal(discoveryGallery().length, resources.length);
+
+assert.equal(
+  new Set([...discovery.featured, ...discovery.gallery]).size,
+  discovery.featured.length + discovery.gallery.length,
+  "The first gallery must not repeat resources",
+);

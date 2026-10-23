@@ -1,0 +1,124 @@
+{
+  "referenceCommit": "b96d84dcf748d5e56f2f72f2bab9a4f7f33574cf",
+  "sourceHashes": {
+    "app.js": "fff9f85b46a670eebdf5043954291e553cee2a2359781514e4a9eb987acc9ccc",
+    "market.css": "7a89210568f920bbfeeca65bb92fd4310afa4a4e36682f220e4369c165078c8a",
+    "presentation.js": "54c1604e1b8aaf6f506ff94849f2e839e88f4bf2020de1193c8fee0027aac485",
+    "shell/controls.tsx": "0f75407129e06df495db230c42781e649bf2ccf5af62a103e2598fba9b87a9d9",
+    "shell/primitives.tsx": "396242b15faa42e701a3717c154495ac66865f680525502e21a76cb7c2c7e691",
+    "shell/theme.css": "adb9faccf4d76b041d57ef1fa8a4adb895da7e8189284344dad4fab6af83490c",
+    "examples/ui-market/src/main.tsx": "cb145f0338477bb9d7286bf78cf5f89eaf3fb1c4b116d39cf9534cfaff5f1012"
+  },
+  "results": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "light",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "light",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "height": 1000,
+      "mode": "light",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "height": 1000,
+      "mode": "light",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "height": 1000,
+      "mode": "light",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "height": 1000,
+      "mode": "light",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    }
+  ],
+  "recording": "browse-and-reuse.webm",
+  "data": "Existing local demo data; actual browser captures, no generated mockups.",
+  "downloadVerification": {
+    "project": "ui-market.zip",
+    "install": "passed",
+    "build": "passed",
+    "previewStartup": "passed",
+    "browserParameterCheck": "--speed: 7s",
+    "externalRuntimeBlocked": true
+  },
+  "browserTests": {
+    "passed": 27,
+    "failed": 0
+  }
+}

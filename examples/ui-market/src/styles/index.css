@@ -30,6 +30,10 @@
   max-width: 100%;
   width: 100%;
 }
+/* Archive framing only: preserve the actual component's typography and styles. */
+html[data-thumbnail="true"] .demo-surface:not([data-source="blocks"]) {
+  padding: 16px;
+}
 .demo-surface[data-source="magicui"] > div {
   display: flex;
   justify-content: center;
@@ -110,4 +114,14 @@
   border-radius: 8px;
   font-size: 12px;
   max-width: 90vw;
+}
+
+/* Archive viewport fitting preserves fixed-size source components in thumbnail mode. */
+.demo-surface[data-fitted-thumbnail="true"] {
+  height: 100svh;
+  min-height: 0 !important;
+}
+.demo-surface[data-fitted-thumbnail="true"] > div {
+  flex-shrink: 0;
+  transform-origin: center;
 }

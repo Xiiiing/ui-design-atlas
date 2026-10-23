@@ -1,0 +1,143 @@
+{
+  "referenceCommit": "b96d84dcf748d5e56f2f72f2bab9a4f7f33574cf",
+  "sourceHashes": {
+    "app.js": "0184c0b370a5b5ffe5b97c0dfefa13060aae0d5c722ae0e412f922ca941b8dc7",
+    "catalog.js": "7dc00d5d36f08bd79d5ce4bb687104bb9815062696ff06bbefe7e203f9ddf6ce",
+    "content/discovery.json": "589c0fa655d531716765bd0c3b3f1edb2e92b2015c3dae960ebd6200c08b3dee",
+    "presentation.js": "8f44095bcfc912567395b4fe23c57b51fe4c6a8a3dc4e51d4740cb73b6d00dbf",
+    "market.css": "bad274647a98d74a4093dd88d81379df75d254c4165c710b2b0643f8558c8990",
+    "shell/controls.tsx": "0f75407129e06df495db230c42781e649bf2ccf5af62a103e2598fba9b87a9d9",
+    "examples/ui-market/src/main.tsx": "65a7cf7d01035fdd7b04a50b581b0d059d8b598a87cfec5b5d5429bdd7132f1f",
+    "examples/ui-market/src/styles/index.css": "98dbbfa3e3fcd20ced06cf4d97343b4f40f550484b0cdbcf0bf1bfd33ae01cf2"
+  },
+  "results": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "light",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "light",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "height": 1000,
+      "mode": "light",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "height": 1000,
+      "mode": "light",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "height": 1000,
+      "mode": "light",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "height": 1000,
+      "mode": "light",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    }
+  ],
+  "recording": "discover-and-reuse.webm",
+  "screenshots": 60,
+  "data": "Actual same-origin browser captures using existing local demo data.",
+  "download": {
+    "project": "ui-market",
+    "sha256": "98a3ab8bd8d9fe6cbd4b9105a6ac8f281da4b79f072032295ac4e802d53c4c78",
+    "install": "npm ci",
+    "build": "npm run build",
+    "startup": "Vite preview; external runtime requests blocked",
+    "checks": [
+      "Fixed-height thumbnail fits its canvas",
+      "Pinned source dark theme",
+      "Real Ant Design form validation"
+    ],
+    "errors": [],
+    "payloadMatchesIndependentlyTestedFiles": true
+  },
+  "referenceObservation": {
+    "url": "https://21st.dev/community/components",
+    "observed": "2026-10-23",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "contentWidth": 1104,
+    "headingFont": "700 58px / 59.16px Inter",
+    "searchWidth": 280,
+    "columns": 4,
+    "horizontalGap": 12,
+    "previewAspect": "4:3",
+    "note": "Live browser measurements; the pinned 2025 source remains the palette reference."
+  }
+}
