@@ -5,14 +5,14 @@ test("Discovery offers curated resources, counted categories, themes and complet
   page,
 }) => {
   await page.goto("./");
-  await expect(page.locator("#discovery-search")).toBeVisible();
-  await expect(page.locator("#filters")).toHaveCount(0);
+  await expect(page.locator("#filters")).toBeVisible();
+  await expect(page.locator("#filters")).toHaveCount(1);
   await expect(page.locator(".featured-section .asset-card")).toHaveCount(8);
   await expect(page.locator(".systems-section .asset-card")).toHaveCount(3);
   for (const id of discovery.categories)
-    await expect(
-      page.locator(`.discovery-categories a[href*="category=${id}"]`),
-    ).toContainText(String(resources.filter((r) => r.category === id).length));
+    await expect(page.locator(`[data-category="${id}"]`)).toContainText(
+      String(resources.filter((r) => r.category === id).length),
+    );
   await page.locator('.collection-card[href*="micro-interactions"]').click();
   await expect(page.locator("#results .asset-card")).toHaveCount(
     collectionResources("micro-interactions").length,
@@ -21,9 +21,9 @@ test("Discovery offers curated resources, counted categories, themes and complet
   await page.locator("[data-remove-filter=collection]").click();
   await expect(page.locator("#results .asset-card")).toHaveCount(24);
   await page.goto("#discover?lang=en");
-  await page.locator("#discovery-search input").fill("Fluent");
+  await page.locator("#filters [name=q]").fill("Fluent");
   await page
-    .locator("#discovery-search")
+    .locator("#filters")
     .getByRole("button", { name: "Search", exact: true })
     .click();
   await expect(page.locator("#results .asset-card")).toHaveCount(4);
@@ -201,9 +201,9 @@ test("The library puts a continuous, framed resource wall directly below its bro
   await page.goto("#discover?lang=en");
   await expect(page.locator(".library-browser .asset-card")).toHaveCount(24);
   const geometry = await page.evaluate(() => {
-    const hero = document.querySelector(".discovery-hero h1"),
-      search = document.querySelector("#discovery-search"),
-      types = document.querySelector(".library-types"),
+    const hero = document.querySelector(".browse-intro h1"),
+      search = document.querySelector(".market-search"),
+      types = document.querySelector(".market-tabs"),
       grid = document.querySelector(".featured-section .market-grid"),
       first = grid.querySelector(".asset-preview"),
       secondRow = grid.querySelectorAll(".asset-preview")[4];
@@ -218,7 +218,7 @@ test("The library puts a continuous, framed resource wall directly below its bro
       gap: getComputedStyle(grid).columnGap,
     };
   });
-  expect(geometry.fontSize).toBe("58px");
+  expect(geometry.fontSize).toBe("42px");
   expect(Math.abs(geometry.searchTop - geometry.typesTop)).toBeLessThan(5);
   expect(geometry.imageTop).toBeLessThan(460);
   expect(geometry.imageBottom).toBeLessThan(1000);

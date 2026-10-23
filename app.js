@@ -54,6 +54,7 @@ let route,
   fit = true,
   limit = 24,
   toastTimer;
+let browseFiltersExpanded;
 let originBrowse = null,
   currentFiles = {},
   previewCache = new Map();
@@ -166,19 +167,9 @@ function discoveryPage() {
   const recommendedCases = discoveryResources("cases").filter(
     (r) => !items.some((item) => key(item) === key(r)),
   );
-  return `<section class="discovery-hero"><h1>${esc(l(discovery.title))}</h1><p>${esc(l(discovery.description))}</p></section>
-  <section class="library-browser" aria-label="${t("浏览资源", "Browse resources")}"><div class="library-toolbar"><nav class="library-types" data-shell-group data-shell-key="market-types" aria-label="${t("资源类型", "Resource types")}">${Object.entries(
-    viewModes,
-  )
-    .map(
-      ([v, labels]) =>
-        `<a data-market-mode="${v}" class="${v === "explore" ? "active" : ""}" href="${href(v === "explore" ? "discover" : v)}" ${v === "explore" ? 'aria-current="page"' : ""}>${t(...labels)}<span>${typeCount(v)}</span></a>`,
-    )
-    .join(
-      "",
-    )}</nav><form id="discovery-search"><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${t("搜索 UI", "Search UI")}" placeholder="${t("搜索组件、界面…", "Search the library…")}"><button class="icon-button" type="submit" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label></form></div>
-  <nav class="library-category-row" data-shell-group data-shell-key="resource-categories" aria-label="${t("用途分类", "Categories")}"><a class="all-categories active" href="${href("discover")}">${t("全部", "All")}<span>${resources.length}</span></a><div class="discovery-shortcuts discovery-categories">${discovery.categories.map((id) => `<a href="${href("explore", "", { category: id })}"><strong>${t(...categories[id])}</strong><span>${resources.filter((r) => r.category === id).length}</span></a>`).join("")}</div></nav>
-  <section class="featured-section"><h2 class="sr-only">${t("精选 UI", "Featured UI")}</h2><div class="market-grid discovery-grid">${items.slice(0, 8).map(card).join("")}</div></section><div class="market-grid discovery-grid library-continuation">${items.slice(8).map(card).join("")}</div>${items.length < resources.length ? `<button class="button load-more" data-discovery-more>${t("继续浏览", "Keep exploring")}${icon("arrow-down")}</button>` : ""}</section>
+  return `${browseIntro()}
+  <section class="library-browser" aria-label="${t("浏览资源", "Browse resources")}">${browseFilters()}
+  <div class="browse-results">${resultsSummary(resources.length)}<section class="featured-section resource-group"><h2>${t("精选 UI", "Featured UI")}</h2><div class="market-grid discovery-grid">${items.slice(0, 8).map(card).join("")}</div></section><div class="market-grid discovery-grid library-continuation">${items.slice(8).map(card).join("")}</div></div>${items.length < resources.length ? `<button class="button load-more" data-discovery-more>${t("继续浏览", "Keep exploring")}${icon("arrow-down")}</button>` : ""}</section>
   <section class="discovery-section collection-section"><div class="discovery-section-heading"><h2>${t("主题合集", "Collections")}</h2></div><div class="discovery-collections">${discovery.collections
     .map((c) => {
       const parts = collectionResources(c.id);
@@ -219,34 +210,47 @@ const viewModes = {
   pages: ["页面", "Pages"],
   cases: ["完整案例", "Systems"],
 };
-function listing() {
+function browseIntro() {
   const collection = discovery.collections.find(
     (c) => c.id === route.params.get("collection"),
   );
   const favorite = route.view === "favorites";
-  const expanded = ["interaction", "style", "source", "audience"].some((k) =>
-    route.params.has(k),
+  return `<section class="market-intro browse-intro"><div><h1>${favorite ? t("我的收藏", "Saved resources") : collection ? esc(l(collection.name)) : esc(l(discovery.title))}</h1><p>${esc(l(discovery.description))}</p></div>${favorite ? `<div class="button-row"><button class="button" data-export-favorites>${t("导出收藏", "Export saved")}</button><label class="button">${t("导入收藏", "Import saved")}<input type="file" hidden id="import-favorites" accept=".json"></label></div>` : ""}</section>`;
+}
+function listing() {
+  return `${browseIntro()}<section class="market-collection" id="collection">${browseFilters()}<div id="results" class="browse-results" aria-live="polite"></div></section>`;
+}
+function browseFilters() {
+  const isDiscovery = route.view === "discover";
+  const collection = discovery.collections.find(
+    (c) => c.id === route.params.get("collection"),
   );
-  return `<section class="market-intro"><div><h1>${favorite ? t("我的收藏", "Saved resources") : route.view === "cases" ? t("完整案例", "Complete systems") : collection ? esc(l(collection.name)) : t("探索资源", "Explore resources")}</h1><p>${t("真实体验，从一个组件到完整系统。带走提示词与代码。", "Real interfaces, from a component to a complete system. Take the prompt and code.")}</p></div>${favorite ? `<div class="button-row"><button class="button" data-export-favorites>${t("导出收藏", "Export saved")}</button><label class="button">${t("导入收藏", "Import saved")}<input type="file" hidden id="import-favorites" accept=".json"></label></div>` : ""}</section>
-  <section class="market-collection" id="collection"><form id="filters" class="market-filters" data-expanded="${expanded}">
+  const expanded = (browseFiltersExpanded ??= [
+    "interaction",
+    "style",
+    "source",
+    "audience",
+  ].some((k) => route.params.has(k)));
+  return `<form id="filters" class="market-filters" data-expanded="${expanded}">
   <div class="catalog-toolbar">  <nav class="market-tabs" data-shell-group data-shell-key="market-types" aria-label="${t("资源类型", "Resource types")}">${Object.entries(
     viewModes,
   )
     .map(
       ([v, labels]) =>
-        `<a href="${href(v, "", Object.fromEntries(route.params))}" data-market-mode="${v}" class="${route.view === v ? "active" : ""}" ${route.view === v ? 'aria-current="page"' : ""}>${icon(viewIcons[v])}${t(...labels)}<span>${typeCount(v)}</span></a>`,
+        `<a href="${href(v, "", Object.fromEntries(route.params))}" data-market-mode="${v}" class="${(isDiscovery ? "explore" : route.view) === v ? "active" : ""}" ${(isDiscovery ? "explore" : route.view) === v ? 'aria-current="page"' : ""}>${icon(viewIcons[v])}${t(...labels)}<span>${typeCount(v)}</span></a>`,
     )
     .join(
       "",
-    )}</nav><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(route.params.get("q") || "")}"><kbd>/</kbd></label></div><div class="catalog-facets">
+    )}</nav><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(route.params.get("q") || "")}"><button class="icon-button" type="submit" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label></div>
+  ${collection ? `<input type="hidden" name="collection" value="${collection.id}">` : ""}<input type="hidden" name="category" value="${esc(route.params.get("category") || "all")}">
+  <nav class="category-strip" data-shell-group data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${[["all", ["全部分类", "All categories"]], ...Object.entries(categories)].map(([id, labels]) => `<button type="button" data-category="${id}" aria-pressed="${(route.params.get("category") || "all") === id}">${t(...labels)}<span>${id === "all" ? resources.length : resources.filter((r) => r.category === id).length}</span></button>`).join("")}</nav>
+  <div class="filter-options-row"><div class="active-filters" id="active-filters" aria-label="${t("已选条件", "Selected filters")}"></div><div class="catalog-facets">
   ${selectFilter(
     "library",
     t("全部组件库", "All libraries"),
     Object.values(libraries).map((x) => [x.id, x.name]),
   )}
-  <button type="button" class="button advanced-filters-toggle" data-advanced-filters aria-controls="advanced-filters" aria-expanded="${expanded}">${icon("sliders-horizontal")}${t("更多筛选", "Filters")}</button></div>
-  ${collection ? `<input type="hidden" name="collection" value="${collection.id}">` : ""}<input type="hidden" name="category" value="${esc(route.params.get("category") || "all")}">
-  <nav class="category-strip" data-shell-group data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${[["all", ["全部分类", "All categories"]], ...Object.entries(categories)].map(([id, labels]) => `<button type="button" data-category="${id}" aria-pressed="${(route.params.get("category") || "all") === id}">${t(...labels)}</button>`).join("")}</nav>
+  <button type="button" class="button advanced-filters-toggle" data-advanced-filters aria-controls="advanced-filters" aria-expanded="${expanded}">${icon("sliders-horizontal")}${t("更多筛选", "Filters")}</button></div></div>
   <div class="advanced-filters" id="advanced-filters">${selectFilter(
     "interaction",
     t("交互方式", "Interaction"),
@@ -262,7 +266,7 @@ function listing() {
     ["b2b", t("B 端 / 工作工具", "B2B / Work tools")],
     ["b2c", t("C 端 / 网站", "B2C / Websites")],
   ])}</div>
-  <div class="active-filters" id="active-filters" aria-label="${t("已选条件", "Selected filters")}"></div></form><div id="results" aria-live="polite"></div></section>`;
+  </form>`;
 }
 function updateFilterChips() {
   const form = document.querySelector("#filters");
@@ -364,12 +368,24 @@ function filtered() {
     }),
   );
 }
+function resultsSummary(count) {
+  return `<div class="market-results-line"><span><strong>${count}</strong> ${t("个设计资源", "design resources")}</span><span><i class="status-dot"></i>${t("真实交互预览 · 提示词与源码", "LIVE PREVIEWS · PROMPTS & SOURCE")}</span></div>`;
+}
 function updateResults(updateURL = false) {
+  if (route.view === "discover" && updateURL) {
+    const params = Object.fromEntries(
+      new FormData(document.querySelector("#filters")),
+    );
+    for (const k in params)
+      if (!params[k] || params[k] === "all") delete params[k];
+    location.hash = href("explore", "", params);
+    return;
+  }
   if (!document.querySelector("#results")) return;
   stopAllLive();
   const items = filtered();
   document.querySelector("#results").innerHTML =
-    `<div class="market-results-line"><span><strong>${items.length}</strong> ${t("个设计资源", "design resources")}</span><span><i class="status-dot"></i>${t("真实交互预览 · 提示词与源码", "LIVE PREVIEWS · PROMPTS & SOURCE")}</span></div>${items.length ? `${resultGroups(items.slice(0, limit))}${items.length > limit ? `<button class="button load-more" data-more>${t("再看一些", "Explore more")} ${icon("arrow-down")}</button>` : ""}` : `<div class="market-empty">${icon("search")}<h2>${t("换个关键词试试", "Try another search")}</h2><p>${t("也可以清空筛选，看看其他界面。", "Clear the filters to discover more interfaces.")}</p><button class="button" data-reset-filters>${t("清空筛选", "Clear filters")}</button></div>`}`;
+    `${resultsSummary(items.length)}${items.length ? `${resultGroups(items.slice(0, limit))}${items.length > limit ? `<button class="button load-more" data-more>${t("再看一些", "Explore more")} ${icon("arrow-down")}</button>` : ""}` : `<div class="market-empty">${icon("search")}<h2>${t("换个关键词试试", "Try another search")}</h2><p>${t("也可以清空筛选，看看其他界面。", "Clear the filters to discover more interfaces.")}</p><button class="button" data-reset-filters>${t("清空筛选", "Clear filters")}</button></div>`}`;
   if (updateURL) {
     const params = Object.fromEntries(
       new FormData(document.querySelector("#filters")),
@@ -983,9 +999,9 @@ function updateContext() {
   scalePreview();
 }
 document.addEventListener("submit", (e) => {
-  if (e.target.id !== "discovery-search") return;
+  if (e.target.id !== "filters") return;
   e.preventDefault();
-  location.hash = href("explore", "", { q: new FormData(e.target).get("q") });
+  updateResults(true);
 });
 document.addEventListener("click", async (e) => {
   const fullLink = e.target.closest("[data-full-detail]");
@@ -1213,6 +1229,7 @@ document.addEventListener("click", async (e) => {
   }
   if (b.hasAttribute("data-advanced-filters")) {
     const expanded = b.getAttribute("aria-expanded") !== "true";
+    browseFiltersExpanded = expanded;
     b.setAttribute("aria-expanded", expanded);
     document.querySelector("#filters").dataset.expanded = String(expanded);
     return;
@@ -1273,14 +1290,11 @@ document.addEventListener("input", (e) => {
     return;
   }
 
-  if (e.target.closest("#filters")) {
+  if (e.target.closest("#filters") && route.view !== "discover") {
     limit = 24;
     updateResults(true);
   }
   if (e.target.id === "quick-search") searchResults();
-});
-document.addEventListener("submit", (e) => {
-  if (e.target.id === "filters") e.preventDefault();
 });
 document.addEventListener("change", async (e) => {
   if (e.target.matches("[data-locale]")) {

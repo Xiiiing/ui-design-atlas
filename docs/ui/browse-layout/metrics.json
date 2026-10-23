@@ -1,0 +1,122 @@
+[
+  {
+    "width": 1440,
+    "view": "discover",
+    "boxes": {
+      ".market-tabs": {
+        "x": 160.5,
+        "y": 238.296875,
+        "width": 463,
+        "height": 42
+      },
+      ".market-search": {
+        "x": 984.5,
+        "y": 240.296875,
+        "width": 280,
+        "height": 38
+      },
+      ".category-strip": {
+        "x": 160.5,
+        "y": 280.296875,
+        "width": 1104,
+        "height": 54
+      },
+      ".asset-preview": {
+        "x": 160.5,
+        "y": 438.296875,
+        "width": 267,
+        "height": 200.25
+      }
+    }
+  },
+  {
+    "width": 1440,
+    "view": "explore",
+    "boxes": {
+      ".market-tabs": {
+        "x": 160.5,
+        "y": 238.296875,
+        "width": 463,
+        "height": 42
+      },
+      ".market-search": {
+        "x": 984.5,
+        "y": 240.296875,
+        "width": 280,
+        "height": 38
+      },
+      ".category-strip": {
+        "x": 160.5,
+        "y": 280.296875,
+        "width": 1104,
+        "height": 54
+      },
+      ".asset-preview": {
+        "x": 160.5,
+        "y": 438.296875,
+        "width": 267,
+        "height": 200.25
+      }
+    }
+  },
+  {
+    "width": 375,
+    "view": "discover",
+    "boxes": {
+      ".market-tabs": {
+        "x": 20,
+        "y": 224.796875,
+        "width": 320,
+        "height": 44
+      },
+      ".market-search": {
+        "x": 20,
+        "y": 282.796875,
+        "width": 320,
+        "height": 44
+      },
+      ".category-strip": {
+        "x": 20,
+        "y": 326.796875,
+        "width": 320,
+        "height": 54
+      },
+      ".asset-preview": {
+        "x": 20,
+        "y": 528.796875,
+        "width": 320,
+        "height": 240
+      }
+    }
+  },
+  {
+    "width": 375,
+    "view": "explore",
+    "boxes": {
+      ".market-tabs": {
+        "x": 20,
+        "y": 224.796875,
+        "width": 320,
+        "height": 44
+      },
+      ".market-search": {
+        "x": 20,
+        "y": 282.796875,
+        "width": 320,
+        "height": 44
+      },
+      ".category-strip": {
+        "x": 20,
+        "y": 326.796875,
+        "width": 320,
+        "height": 54
+      },
+      ".asset-preview": {
+        "x": 20,
+        "y": 528.796875,
+        "width": 320,
+        "height": 240
+      }
+    }
+  }
+]

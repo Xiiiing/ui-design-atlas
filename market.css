@@ -2179,131 +2179,9 @@ dialog {
 #topbar {
   border-bottom: 0;
 }
-.discovery-hero {
-  padding: 32px 0 48px;
-}
-.discovery-hero h1 {
-  font-size: 58px;
-  line-height: 1.04;
-  letter-spacing: -0.055em;
-  font-weight: 700;
-}
-.discovery-hero > p {
-  font-size: 17px;
-  line-height: 26px;
-  color: var(--muted-text);
-  max-width: 640px;
-  margin-top: 18px;
-}
-.library-toolbar {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  align-items: center;
-}
-.library-types {
-  display: flex;
-  gap: 3px;
-  padding: 3px;
-  border-radius: 12px;
-  background: var(--surface);
-  width: max-content;
-  max-width: 100%;
-  overflow: auto;
-  scrollbar-width: none;
-}
-.library-types a {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 12px;
-  border-radius: 9px;
-  color: var(--muted-text);
-  white-space: nowrap;
-  font-size: 13px;
-  font-weight: 500;
-  min-height: 36px;
-}
-.library-types a.active {
-  background: var(--ink);
-  color: var(--panel);
-}
-.library-types a span {
-  opacity: 0.55;
-  font-size: 12px;
-  font-weight: 400;
-}
-#discovery-search {
-  width: 280px;
-  flex-shrink: 0;
-}
-#discovery-search .market-search {
-  width: 100%;
-  max-width: none;
-  height: 38px;
-  min-height: 38px;
-  padding: 0 8px 0 12px;
-  border: 0;
-  border-radius: 10px;
-  background: var(--surface);
-  gap: 8px;
-}
-#discovery-search input {
-  min-height: 0;
-  height: 38px;
-  font-size: 13px;
-  width: 100%;
-}
-#discovery-search .icon-button {
-  width: 26px;
-  height: 26px;
-  min-width: 26px;
-  min-height: 26px;
-  color: var(--muted-text);
-}
-.library-category-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 12px;
-  overflow: auto;
-  scrollbar-width: none;
-}
-.library-category-row > a,
-.discovery-categories a {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-  border: 0;
-  border-radius: 100px;
-  padding: 5px 12px;
-  font-size: 12px;
-  line-height: 20px;
-  background: var(--surface);
-  color: var(--muted-text);
-  white-space: nowrap;
-}
-.library-category-row > a.active {
-  background: var(--ink);
-  color: var(--panel);
-}
-.discovery-categories {
-  display: flex;
-  gap: 6px;
-}
-.discovery-categories strong {
-  font-weight: 400;
-}
-.library-category-row a span {
-  opacity: 0.55;
-  font-size: 11px;
-}
-.discovery-categories a:hover {
-  color: var(--ink);
-}
-.library-browser > .featured-section {
-  margin-top: 44px;
+.library-browser .featured-section {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 .library-continuation {
   margin-top: 32px;
@@ -2457,61 +2335,11 @@ dialog {
   aspect-ratio: 1.6;
 }
 @media (max-width: 1199px) {
-  .library-types a {
-    padding: 7px 10px;
-  }
-  .library-toolbar {
-    gap: 16px;
-  }
-  #discovery-search {
-    width: 240px;
-  }
   .discovery-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (max-width: 767px) {
-  .discovery-hero {
-    padding: 24px 0 32px;
-  }
-  .discovery-hero h1 {
-    font-size: 40px;
-  }
-  .discovery-hero > p {
-    font-size: 14px;
-    line-height: 23px;
-    margin-top: 14px;
-  }
-  .library-toolbar {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 14px;
-  }
-  .library-types {
-    width: 100%;
-  }
-  .library-types a {
-    min-height: 38px;
-    padding: 8px 12px;
-  }
-  #discovery-search {
-    width: 100%;
-  }
-  #discovery-search .market-search,
-  #discovery-search input {
-    height: 44px;
-  }
-  #discovery-search .icon-button {
-    min-height: 36px;
-    min-width: 36px;
-  }
-  .library-category-row {
-    margin-top: 14px;
-  }
-  .library-browser > .featured-section {
-    margin-top: 28px;
-  }
   .discovery-collections {
     grid-template-columns: minmax(0, 1fr);
     gap: 28px;
@@ -2817,6 +2645,7 @@ dialog {
   min-width: 0;
   height: 38px;
   min-height: 38px;
+  margin-right: 0;
   background: var(--surface);
   border: 0;
   border-radius: 10px;
@@ -2830,7 +2659,10 @@ dialog {
   justify-content: flex-end;
   align-items: center;
   gap: 8px;
-  padding-top: 14px;
+  flex-shrink: 0;
+}
+.catalog-facets .filter-select {
+  width: 180px;
 }
 .catalog-facets .filter-select,
 .catalog-facets .button {
@@ -2843,6 +2675,11 @@ dialog {
   padding-bottom: 12px;
 }
 .library-page .category-strip button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  line-height: 20px;
   border: 0;
   padding: 5px 12px;
   min-height: 30px;
@@ -2911,42 +2748,33 @@ dialog {
 
 /* The archived SelectionGroup supplies motion only; the library keeps its
    neutral palette and dimensions. Text and hit targets never animate. */
-.library-types.selection-group,
 .catalog-toolbar .market-tabs.selection-group,
-.library-category-row.selection-group,
 .library-page .category-strip.selection-group {
   --selection-fill: var(--ink);
   --selection-stroke: transparent;
   --selection-radius: 9px;
 }
-.library-category-row.selection-group,
 .library-page .category-strip.selection-group {
   --selection-radius: 999px;
 }
-.library-types.selection-group a.active,
 .catalog-toolbar .market-tabs.selection-group a.active,
-.library-category-row.selection-group a,
 .library-page .category-strip.selection-group button {
   background: transparent;
 }
-.library-toolbar > [data-shell-mounted="selection"],
 .catalog-toolbar > [data-shell-mounted="selection"] {
   max-width: 100%;
 }
-/* Shared link metrics keep type labels fixed when moving to/from discovery. */
-.library-types a,
+/* Both browse views use these same control metrics. */
 .catalog-toolbar .market-tabs a {
   flex-shrink: 0;
   padding: 7px 12px;
   line-height: 20px;
 }
-.library-types a span,
 .catalog-toolbar .market-tabs a span {
   font-weight: 400;
   font-variant-numeric: tabular-nums;
 }
 @media (max-width: 767px) {
-  .library-types a,
   .catalog-toolbar .market-tabs a {
     min-height: 38px;
     padding: 8px 12px;
@@ -2977,4 +2805,67 @@ dialog {
 .code-integration p {
   line-height: 1.7;
   margin: 12px 0;
+}
+
+/* Keep the selected conditions and secondary controls in one stable row. */
+.filter-options-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+.filter-options-row .active-filters {
+  flex: 1;
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow-x: auto;
+  height: 44px;
+}
+.filter-options-row .filter-chip,
+.filter-options-row .clear-filters {
+  margin-top: 0;
+  flex-shrink: 0;
+}
+.library-page .category-strip button > span {
+  opacity: 0.55;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.catalog-toolbar .market-search .icon-button {
+  min-width: 26px;
+  min-height: 26px;
+  width: 26px;
+  height: 26px;
+}
+@media (max-width: 767px) {
+  .filter-options-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .catalog-facets {
+    justify-content: flex-start;
+  }
+  .catalog-toolbar .market-search .icon-button {
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
+
+.browse-results {
+  position: relative;
+  margin-top: 16px;
+}
+.library-page .browse-results .market-results-line {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0;
+  min-height: 26px;
+}
+.browse-results .resource-group h2 {
+  line-height: 26px;
+}
+.browse-results .resource-group:first-of-type h2 {
+  padding-right: 150px;
 }

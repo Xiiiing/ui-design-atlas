@@ -101,7 +101,10 @@ test("Bilingual market searches, library and source filters retain existing cont
   await expect(page.locator("#results .card")).toHaveCount(6);
   await page.goto("#cases?lang=zh-CN");
   await expect(page.locator("#results .card")).toHaveCount(cases.length);
-  await page.locator("[data-advanced-filters]").click();
+  await expect(page.locator("[data-advanced-filters]")).toHaveAttribute(
+    "aria-expanded",
+    "true",
+  );
   await page.locator("#filter-audience").click();
   await page
     .getByRole("option", { name: "B 端 / 工作工具", exact: true })
