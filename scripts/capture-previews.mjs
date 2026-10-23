@@ -46,27 +46,32 @@ try {
             width: framing.width,
             height: framing.height,
           });
-          const url = new URL(
-            resourcePreview(r, "zh-CN", framing.theme),
-            `http://127.0.0.1:${port}/`,
-          );
-          url.searchParams.set("thumb", "1");
-          await page.goto(url.href, {
-            waitUntil: "networkidle",
-            timeout: 20000,
-          });
-          await page.evaluate(() => document.fonts.ready);
-          await page.waitForTimeout(r.motion ? 1100 : 200);
-          // Screenshot-only chrome removal: live demos keep all native scrolling.
-          await page.addStyleTag({
-            content:
-              "* { scrollbar-width: none !important; } *::-webkit-scrollbar { display: none !important; }",
-          });
-          await page.screenshot({
-            path: r.cover.replace("./", ""),
-            animations: "allow",
-          });
-          console.log(`Captured ${r.type}:${r.id}`);
+          for (const theme of ["light", "dark"]) {
+            await page.emulateMedia({ colorScheme: theme });
+            const url = new URL(
+              resourcePreview(r, "zh-CN", theme),
+              `http://127.0.0.1:${port}/`,
+            );
+            url.searchParams.set("thumb", "1");
+            await page.goto(url.href, {
+              waitUntil: "networkidle",
+              timeout: 20000,
+            });
+            await page.evaluate(() => document.fonts.ready);
+            await page.waitForTimeout(r.motion ? 1100 : 200);
+            // Screenshot-only chrome removal: live demos keep all native scrolling.
+            await page.addStyleTag({
+              content:
+                "* { scrollbar-width: none !important; } *::-webkit-scrollbar { display: none !important; }",
+            });
+            await page.screenshot({
+              path: r.cover
+                .replace("./", "")
+                .replace(/\.png$/, theme === "dark" ? "-dark.png" : ".png"),
+              animations: "allow",
+            });
+            console.log(`Captured ${r.type}:${r.id}/${theme}`);
+          }
         } catch (e) {
           failures.push(`${r.id}: ${e.message}`);
         }

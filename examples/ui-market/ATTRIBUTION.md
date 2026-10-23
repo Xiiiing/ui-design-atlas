@@ -28,3 +28,16 @@ Original Magic UI neutral colour tokens and animation definitions are preserved 
 Embedded previews use `embed=1` to omit the standalone adapter toolbar. Atlas exposes only the existing duration, quantity and target-value props beside the preview, using same-origin `atlas:preview-settings` messages. Component source styles are unchanged; the existing theme provider uses a resource-specific storage key to isolate simultaneous cards from one another and from the viewer.
 
 Interactive cards use `embed=1&inline=1` with real pointer, input and keyboard handling. The archive viewport adapts padding and decorative particle height to phone cards; source typography and interaction are retained. The bridge reports readiness/errors with resource identity; MotionConfig and existing reduced-motion styles respect user preferences. Static `thumb=1` capture remains inert.
+
+## Additional Atlas compositions and Magic UI resources
+
+Atlas file selection, step flow, document search, recoverable feedback, file workspace,
+onboarding and product/pricing pages are original compositions of the existing pinned
+Ant Design dependency. They are not official Ant Design example pages. Their own
+source is licensed under `licenses/atlas-compositions-LICENSE`; Ant Design retains
+its original license and attribution. Inputs and files stay local to the browser.
+
+Word Rotate, Shine Border and Meteors use the existing Magic UI commit
+`efe76fc5755eca1142dd4f74c1d6f0ace2887e3c`. Unmodified originals and hashes are in
+`upstream/magicui/components` and `sources.lock.json`. Atlas supplies bilingual demo
+wrappers, pause controls, reduced-motion handling and the required animation CSS.

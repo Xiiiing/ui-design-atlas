@@ -1,0 +1,133 @@
+{
+  "base": "http://127.0.0.1:4173/ui-design-atlas/",
+  "beforeBase": "http://127.0.0.1:4189/ui-design-atlas/",
+  "hashes": {
+    "app.js": "8d760b9f86c485dafbb32273a2d7627a6c73f29e67f8298eaa7693daadcdb012",
+    "market.css": "3dab0a91a91c8e46366b6a912e75e29fa7a984fc3d0033fef97c5c99d7503222",
+    "legacy-theme.js": "4932c2ee0a078f9259cda34592c67da454230ecc603614d24f23d98f477bd774"
+  },
+  "results": [
+    {
+      "name": "before-original-dark",
+      "url": "http://127.0.0.1:4189/ui-design-atlas/#page/folio-home?lang=zh-CN",
+      "scroll": 0
+    },
+    {
+      "name": "before-navigation",
+      "url": "http://127.0.0.1:4189/ui-design-atlas/#discover?lang=zh-CN",
+      "scroll": 0
+    },
+    {
+      "name": "browse-2560",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#explore?lang=zh-CN",
+      "scroll": 0
+    },
+    {
+      "name": "product-2560",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#page/atlas-product-page?lang=zh-CN",
+      "scroll": 0,
+      "geometry": {
+        "native": [
+          1280,
+          800
+        ],
+        "displayed": [
+          1227.199951171875,
+          767
+        ]
+      }
+    },
+    {
+      "name": "browse-1440",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#explore?lang=en",
+      "scroll": 0
+    },
+    {
+      "name": "product-1440",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#page/atlas-product-page?lang=en",
+      "scroll": 0,
+      "geometry": {
+        "native": [
+          1280,
+          800
+        ],
+        "displayed": [
+          907.199951171875,
+          567
+        ]
+      }
+    },
+    {
+      "name": "browse-768",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#explore?lang=en",
+      "scroll": 0
+    },
+    {
+      "name": "product-768",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#page/atlas-product-page?lang=en",
+      "scroll": 0,
+      "geometry": {
+        "native": [
+          768,
+          1024
+        ],
+        "displayed": [
+          525,
+          700
+        ]
+      }
+    },
+    {
+      "name": "browse-375",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#explore?lang=zh-CN",
+      "scroll": 0
+    },
+    {
+      "name": "product-375",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#page/atlas-product-page?lang=zh-CN",
+      "scroll": 0,
+      "geometry": {
+        "native": [
+          375,
+          812
+        ],
+        "displayed": [
+          230.91131591796875,
+          500
+        ]
+      }
+    },
+    {
+      "name": "after-original-dark",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#page/folio-home?lang=zh-CN",
+      "scroll": 0
+    },
+    {
+      "name": "local-light-override",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#page/folio-home?lang=zh-CN&theme=light",
+      "scroll": 0
+    },
+    {
+      "name": "after-navigation",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#discover?lang=zh-CN",
+      "scroll": 650
+    },
+    {
+      "name": "feedback-error",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#component/atlas-feedback?lang=zh-CN",
+      "scroll": 0
+    },
+    {
+      "name": "feedback-recovered",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#component/atlas-feedback?lang=zh-CN",
+      "scroll": 0
+    },
+    {
+      "name": "product-interaction",
+      "url": "http://127.0.0.1:4173/ui-design-atlas/#page/atlas-product-page?lang=zh-CN",
+      "scroll": 0
+    }
+  ],
+  "errors": [],
+  "baselineRevision": "7209de890becf19f57db8ecd0c0fbd778d531e8f"
+}

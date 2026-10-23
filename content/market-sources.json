@@ -38,5 +38,15 @@
     "commit": "25af02b1b467fcd53b63e0c6d6d324c57c16ef18",
     "license": "MIT",
     "licenseFile": "./examples/ui-market/licenses/shadcn-ui-LICENSE.md"
+  },
+  "atlas-compositions": {
+    "id": "atlas-compositions",
+    "name": "Atlas Compositions",
+    "author": "UI Design Atlas contributors",
+    "repo": "https://github.com/Xiiiing/ui-design-atlas",
+    "docs": "https://github.com/Xiiiing/ui-design-atlas",
+    "original": true,
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/atlas-compositions-LICENSE"
   }
 }

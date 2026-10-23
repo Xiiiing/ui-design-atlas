@@ -1802,6 +1802,730 @@ export const marketResources = [
       en: "Apply neutral minimalism to my content: Preserve original shadcn/ui components, corners, borders, semantic colours and spacing. Centre auth forms; retain desktop sidebars and narrow-screen sheets in application layouts.Use titles, help text and primary/secondary actions to express hierarchy.",
     },
   },
+  {
+    id: "atlas-upload",
+    key: "upload",
+    type: "component",
+    sourceId: "atlas-compositions",
+    libraryIds: ["antd"],
+    category: "forms",
+    interactions: ["input", "click"],
+    motion: false,
+    styleId: "enterprise-antd",
+    style: {
+      "zh-CN": "企业应用 · Ant Design",
+      en: "Enterprise · Ant Design",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "本地文件选择",
+      en: "Local file picker",
+    },
+    description: {
+      "zh-CN": "选择、移除文件并校验大小，不发送任何上传请求。",
+      en: "Select and remove files with size validation and no upload requests.",
+    },
+    tags: {
+      "zh-CN": ["本地文件选择", "本地交互", "表单"],
+      en: ["Local file picker", "local interaction", "forms"],
+    },
+    useCases: {
+      "zh-CN": "表单附件、工单资料、交付文件选择。",
+      en: "Form attachments, support files and handoff documents.",
+    },
+    principle: {
+      "zh-CN":
+        "让信息层级服务于真实操作；选择、移除文件并校验大小，不发送任何上传请求。",
+      en: "Support real actions with clear hierarchy. Select and remove files with size validation and no upload requests.",
+    },
+    rules: {
+      "zh-CN": [
+        "允许多选，最多保留 5 个文件；拒绝超过 5MB 的文件并展示错误。提供移除操作和已选数量，不自动上传。",
+        "基于固定版本官方组件的本站原创组合，业务数据仅存于当前页面。",
+      ],
+      en: [
+        "Allow multiple selection with a five-file limit; reject files above 5MB with a visible error. Include removal and a selected count without automatic upload.",
+        "Atlas composition built on pinned official components; business data stays in the current page.",
+      ],
+    },
+    files: ["src/demos/atlas/upload.tsx"],
+    supportFiles: [
+      "src/demos/atlas/shared.tsx",
+      "src/demos/atlas/styles.css",
+      "src/archive/ant-provider.tsx",
+    ],
+    originalUrl: "https://ant.design/components/overview/",
+    sourceUrl:
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/upload.tsx",
+    cover: "./assets/previews/component-atlas-upload.png",
+    preview: {
+      width: 640,
+      height: 480,
+      url: "./examples/ui-market/index.html?item=atlas-upload",
+      mode: "canvas",
+    },
+    prompt: {
+      "zh-CN":
+        "请复用「本地文件选择」的资源级源码，保留 React、TypeScript 和所列组件库。允许多选，最多保留 5 个文件；拒绝超过 5MB 的文件并展示错误。提供移除操作和已选数量，不自动上传。\n使用语义化明暗主题并默认跟随宿主，保留中英文文案、可见焦点和触屏操作。完整交付本资源使用的组件、样式与依赖，保留来源和许可说明。范围为当前演示，不连接外部业务服务。",
+      en: "Reuse the resource source for Local file picker with React, TypeScript and the listed component library. Allow multiple selection with a five-file limit; reject files above 5MB with a visible error. Include removal and a selected count without automatic upload.\nUse semantic light/dark themes that follow the host by default. Retain bilingual text, visible focus and touch interaction. Deliver the components, styles and dependencies used by this resource with source and license credits. Keep the scope to this demo without external business services.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "保持原始组件和品牌强调色，使用语义化明暗表面；保留键盘焦点、状态文本、窄屏重排与减少动态效果。",
+      en: "Preserve component behaviour and accent colours with semantic light/dark surfaces, keyboard focus, status text, narrow layouts and reduced motion.",
+    },
+  },
+  {
+    id: "atlas-steps",
+    key: "steps",
+    type: "component",
+    sourceId: "atlas-compositions",
+    libraryIds: ["antd"],
+    category: "navigation",
+    interactions: ["input", "click"],
+    motion: false,
+    styleId: "enterprise-antd",
+    style: {
+      "zh-CN": "企业应用 · Ant Design",
+      en: "Enterprise · Ant Design",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "分步设置",
+      en: "Step-by-step setup",
+    },
+    description: {
+      "zh-CN": "输入工作区名称、确认并完成可返回的设置流程。",
+      en: "Name a workspace, review it and finish a reversible setup flow.",
+    },
+    tags: {
+      "zh-CN": ["分步设置", "本地交互", "流程"],
+      en: ["Step-by-step setup", "local interaction", "navigation"],
+    },
+    useCases: {
+      "zh-CN": "团队开通、工作区设置、短流程引导。",
+      en: "Team onboarding, workspace setup and short guided flows.",
+    },
+    principle: {
+      "zh-CN":
+        "让信息层级服务于真实操作；输入工作区名称、确认并完成可返回的设置流程。",
+      en: "Support real actions with clear hierarchy. Name a workspace, review it and finish a reversible setup flow.",
+    },
+    rules: {
+      "zh-CN": [
+        "名称为空时禁用下一步；确认页保留输入，支持返回修改；完成后显示结果并允许重新开始。",
+        "基于固定版本官方组件的本站原创组合，业务数据仅存于当前页面。",
+      ],
+      en: [
+        "Disable Next for blank names, retain input when reviewing or going back, and show a completion result with a restart action.",
+        "Atlas composition built on pinned official components; business data stays in the current page.",
+      ],
+    },
+    files: ["src/demos/atlas/steps.tsx"],
+    supportFiles: [
+      "src/demos/atlas/shared.tsx",
+      "src/demos/atlas/styles.css",
+      "src/archive/ant-provider.tsx",
+    ],
+    originalUrl: "https://ant.design/components/overview/",
+    sourceUrl:
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/steps.tsx",
+    cover: "./assets/previews/component-atlas-steps.png",
+    preview: {
+      width: 640,
+      height: 480,
+      url: "./examples/ui-market/index.html?item=atlas-steps",
+      mode: "canvas",
+    },
+    prompt: {
+      "zh-CN":
+        "请复用「分步设置」的资源级源码，保留 React、TypeScript 和所列组件库。名称为空时禁用下一步；确认页保留输入，支持返回修改；完成后显示结果并允许重新开始。\n使用语义化明暗主题并默认跟随宿主，保留中英文文案、可见焦点和触屏操作。完整交付本资源使用的组件、样式与依赖，保留来源和许可说明。范围为当前演示，不连接外部业务服务。",
+      en: "Reuse the resource source for Step-by-step setup with React, TypeScript and the listed component library. Disable Next for blank names, retain input when reviewing or going back, and show a completion result with a restart action.\nUse semantic light/dark themes that follow the host by default. Retain bilingual text, visible focus and touch interaction. Deliver the components, styles and dependencies used by this resource with source and license credits. Keep the scope to this demo without external business services.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "保持原始组件和品牌强调色，使用语义化明暗表面；保留键盘焦点、状态文本、窄屏重排与减少动态效果。",
+      en: "Preserve component behaviour and accent colours with semantic light/dark surfaces, keyboard focus, status text, narrow layouts and reduced motion.",
+    },
+  },
+  {
+    id: "atlas-search",
+    key: "search",
+    type: "component",
+    sourceId: "atlas-compositions",
+    libraryIds: ["antd"],
+    category: "forms",
+    interactions: ["input", "click"],
+    motion: false,
+    styleId: "enterprise-antd",
+    style: {
+      "zh-CN": "企业应用 · Ant Design",
+      en: "Enterprise · Ant Design",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "快捷文档搜索",
+      en: "Quick document search",
+    },
+    description: {
+      "zh-CN": "关键词过滤建议，支持键盘选择和无结果提示。",
+      en: "Filter suggestions with keyboard selection and an empty state.",
+    },
+    tags: {
+      "zh-CN": ["快捷文档搜索", "本地交互", "表单"],
+      en: ["Quick document search", "local interaction", "forms"],
+    },
+    useCases: {
+      "zh-CN": "帮助中心、文档入口、轻量快捷搜索。",
+      en: "Help centers, document entry points and lightweight quick search.",
+    },
+    principle: {
+      "zh-CN":
+        "让信息层级服务于真实操作；关键词过滤建议，支持键盘选择和无结果提示。",
+      en: "Support real actions with clear hierarchy. Filter suggestions with keyboard selection and an empty state.",
+    },
+    rules: {
+      "zh-CN": [
+        "按关键词过滤三条双语文档建议，支持方向键和回车选中、清除与无匹配状态；用状态区域反馈选择。",
+        "基于固定版本官方组件的本站原创组合，业务数据仅存于当前页面。",
+      ],
+      en: [
+        "Filter three bilingual document suggestions, support arrow-key/Enter selection, clearing and an empty state, and announce the selected result.",
+        "Atlas composition built on pinned official components; business data stays in the current page.",
+      ],
+    },
+    files: ["src/demos/atlas/search.tsx"],
+    supportFiles: [
+      "src/demos/atlas/shared.tsx",
+      "src/demos/atlas/styles.css",
+      "src/archive/ant-provider.tsx",
+    ],
+    originalUrl: "https://ant.design/components/overview/",
+    sourceUrl:
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/search.tsx",
+    cover: "./assets/previews/component-atlas-search.png",
+    preview: {
+      width: 640,
+      height: 480,
+      url: "./examples/ui-market/index.html?item=atlas-search",
+      mode: "canvas",
+    },
+    prompt: {
+      "zh-CN":
+        "请复用「快捷文档搜索」的资源级源码，保留 React、TypeScript 和所列组件库。按关键词过滤三条双语文档建议，支持方向键和回车选中、清除与无匹配状态；用状态区域反馈选择。\n使用语义化明暗主题并默认跟随宿主，保留中英文文案、可见焦点和触屏操作。完整交付本资源使用的组件、样式与依赖，保留来源和许可说明。范围为当前演示，不连接外部业务服务。",
+      en: "Reuse the resource source for Quick document search with React, TypeScript and the listed component library. Filter three bilingual document suggestions, support arrow-key/Enter selection, clearing and an empty state, and announce the selected result.\nUse semantic light/dark themes that follow the host by default. Retain bilingual text, visible focus and touch interaction. Deliver the components, styles and dependencies used by this resource with source and license credits. Keep the scope to this demo without external business services.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "保持原始组件和品牌强调色，使用语义化明暗表面；保留键盘焦点、状态文本、窄屏重排与减少动态效果。",
+      en: "Preserve component behaviour and accent colours with semantic light/dark surfaces, keyboard focus, status text, narrow layouts and reduced motion.",
+    },
+  },
+  {
+    id: "atlas-feedback",
+    key: "feedback",
+    type: "component",
+    sourceId: "atlas-compositions",
+    libraryIds: ["antd"],
+    category: "feedback",
+    interactions: ["click"],
+    motion: false,
+    styleId: "enterprise-antd",
+    style: {
+      "zh-CN": "企业应用 · Ant Design",
+      en: "Enterprise · Ant Design",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "可恢复状态反馈",
+      en: "Recoverable status feedback",
+    },
+    description: {
+      "zh-CN": "保存成功、失败和重试状态，用图标与文字表达。",
+      en: "Success, failure and retry with both icons and text.",
+    },
+    tags: {
+      "zh-CN": ["可恢复状态反馈", "本地交互", "反馈"],
+      en: ["Recoverable status feedback", "local interaction", "feedback"],
+    },
+    useCases: {
+      "zh-CN": "表单保存、操作确认、可恢复的失败反馈。",
+      en: "Form saving, action confirmation and recoverable error feedback.",
+    },
+    principle: {
+      "zh-CN":
+        "让信息层级服务于真实操作；保存成功、失败和重试状态，用图标与文字表达。",
+      en: "Support real actions with clear hierarchy. Success, failure and retry with both icons and text.",
+    },
+    rules: {
+      "zh-CN": [
+        "提供保存成功、模拟失败和重试三种操作，使用文字、图标及状态区域传达结果，不只依赖颜色。",
+        "基于固定版本官方组件的本站原创组合，业务数据仅存于当前页面。",
+      ],
+      en: [
+        "Provide save, simulated failure and retry actions; convey outcomes through text, icons and a status region rather than color alone.",
+        "Atlas composition built on pinned official components; business data stays in the current page.",
+      ],
+    },
+    files: ["src/demos/atlas/feedback.tsx"],
+    supportFiles: [
+      "src/demos/atlas/shared.tsx",
+      "src/demos/atlas/styles.css",
+      "src/archive/ant-provider.tsx",
+    ],
+    originalUrl: "https://ant.design/components/overview/",
+    sourceUrl:
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/feedback.tsx",
+    cover: "./assets/previews/component-atlas-feedback.png",
+    preview: {
+      width: 640,
+      height: 480,
+      url: "./examples/ui-market/index.html?item=atlas-feedback",
+      mode: "inline",
+    },
+    prompt: {
+      "zh-CN":
+        "请复用「可恢复状态反馈」的资源级源码，保留 React、TypeScript 和所列组件库。提供保存成功、模拟失败和重试三种操作，使用文字、图标及状态区域传达结果，不只依赖颜色。\n使用语义化明暗主题并默认跟随宿主，保留中英文文案、可见焦点和触屏操作。完整交付本资源使用的组件、样式与依赖，保留来源和许可说明。范围为当前演示，不连接外部业务服务。",
+      en: "Reuse the resource source for Recoverable status feedback with React, TypeScript and the listed component library. Provide save, simulated failure and retry actions; convey outcomes through text, icons and a status region rather than color alone.\nUse semantic light/dark themes that follow the host by default. Retain bilingual text, visible focus and touch interaction. Deliver the components, styles and dependencies used by this resource with source and license credits. Keep the scope to this demo without external business services.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "保持原始组件和品牌强调色，使用语义化明暗表面；保留键盘焦点、状态文本、窄屏重排与减少动态效果。",
+      en: "Preserve component behaviour and accent colours with semantic light/dark surfaces, keyboard focus, status text, narrow layouts and reduced motion.",
+    },
+  },
+  {
+    id: "atlas-file-workspace",
+    key: "file-workspace",
+    type: "page",
+    sourceId: "atlas-compositions",
+    libraryIds: ["antd"],
+    category: "layout",
+    interactions: ["input", "click"],
+    motion: false,
+    styleId: "enterprise-antd",
+    style: {
+      "zh-CN": "企业应用 · Ant Design",
+      en: "Enterprise · Ant Design",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "团队文件空间",
+      en: "Team file workspace",
+    },
+    description: {
+      "zh-CN": "完整文件工作区：搜索、移除、恢复资料并选择本地附件。",
+      en: "A complete file workspace with search, removal, restore and local attachments.",
+    },
+    tags: {
+      "zh-CN": ["团队文件空间", "本地交互", "页面"],
+      en: ["Team file workspace", "local interaction", "layout"],
+    },
+    useCases: {
+      "zh-CN": "团队文件管理、项目资料整理。",
+      en: "Team file management and project document organization.",
+    },
+    principle: {
+      "zh-CN":
+        "让信息层级服务于真实操作；完整文件工作区：搜索、移除、恢复资料并选择本地附件。",
+      en: "Support real actions with clear hierarchy. A complete file workspace with search, removal, restore and local attachments.",
+    },
+    rules: {
+      "zh-CN": [
+        "主列表与附件区按约 1.618:1 布局，手机改为单列；支持文件名搜索、移除、空状态、恢复演示文件和本地附件选择。",
+        "基于固定版本官方组件的本站原创组合，业务数据仅存于当前页面。",
+      ],
+      en: [
+        "Use an approximately 1.618:1 file-list/attachment split, stacking on mobile. Support filename search, removal, an empty state, restoring demo files and local attachment selection.",
+        "Atlas composition built on pinned official components; business data stays in the current page.",
+      ],
+    },
+    files: ["src/demos/atlas/file-workspace.tsx"],
+    supportFiles: [
+      "src/demos/atlas/shared.tsx",
+      "src/demos/atlas/styles.css",
+      "src/archive/ant-provider.tsx",
+    ],
+    originalUrl: "https://ant.design/components/overview/",
+    sourceUrl:
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/file-workspace.tsx",
+    cover: "./assets/previews/page-atlas-file-workspace.png",
+    preview: {
+      width: 1280,
+      height: 800,
+      url: "./examples/ui-market/index.html?item=atlas-file-workspace",
+      mode: "canvas",
+    },
+    prompt: {
+      "zh-CN":
+        "请复用「团队文件空间」的资源级源码，保留 React、TypeScript 和所列组件库。主列表与附件区按约 1.618:1 布局，手机改为单列；支持文件名搜索、移除、空状态、恢复演示文件和本地附件选择。\n使用语义化明暗主题并默认跟随宿主，保留中英文文案、可见焦点和触屏操作。完整交付本资源使用的组件、样式与依赖，保留来源和许可说明。范围为当前演示，不连接外部业务服务。",
+      en: "Reuse the resource source for Team file workspace with React, TypeScript and the listed component library. Use an approximately 1.618:1 file-list/attachment split, stacking on mobile. Support filename search, removal, an empty state, restoring demo files and local attachment selection.\nUse semantic light/dark themes that follow the host by default. Retain bilingual text, visible focus and touch interaction. Deliver the components, styles and dependencies used by this resource with source and license credits. Keep the scope to this demo without external business services.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "保持原始组件和品牌强调色，使用语义化明暗表面；保留键盘焦点、状态文本、窄屏重排与减少动态效果。",
+      en: "Preserve component behaviour and accent colours with semantic light/dark surfaces, keyboard focus, status text, narrow layouts and reduced motion.",
+    },
+  },
+  {
+    id: "atlas-onboarding-page",
+    key: "onboarding-page",
+    type: "page",
+    sourceId: "atlas-compositions",
+    libraryIds: ["antd"],
+    category: "layout",
+    interactions: ["input", "click"],
+    motion: false,
+    styleId: "enterprise-antd",
+    style: {
+      "zh-CN": "企业应用 · Ant Design",
+      en: "Enterprise · Ant Design",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "项目入门页面",
+      en: "Project onboarding",
+    },
+    description: {
+      "zh-CN": "主流程与说明区组成完整项目入门页，包含输入、确认和结果。",
+      en: "A complete onboarding page with input, review, completion and supporting guidance.",
+    },
+    tags: {
+      "zh-CN": ["项目入门页面", "本地交互", "页面"],
+      en: ["Project onboarding", "local interaction", "layout"],
+    },
+    useCases: {
+      "zh-CN": "产品首次使用、团队工作区引导。",
+      en: "First-run product experiences and workspace onboarding.",
+    },
+    principle: {
+      "zh-CN":
+        "让信息层级服务于真实操作；主流程与说明区组成完整项目入门页，包含输入、确认和结果。",
+      en: "Support real actions with clear hierarchy. A complete onboarding page with input, review, completion and supporting guidance.",
+    },
+    rules: {
+      "zh-CN": [
+        "以约 1.618:1 分配设置流程与辅助说明；手机单列。实现必填名称、确认、返回、完成及重新设置，保留键盘操作。",
+        "基于固定版本官方组件的本站原创组合，业务数据仅存于当前页面。",
+      ],
+      en: [
+        "Allocate setup and supporting guidance at about 1.618:1, stacking on mobile. Implement required name entry, review, back, finish and restart with keyboard support.",
+        "Atlas composition built on pinned official components; business data stays in the current page.",
+      ],
+    },
+    files: ["src/demos/atlas/onboarding-page.tsx"],
+    supportFiles: [
+      "src/demos/atlas/shared.tsx",
+      "src/demos/atlas/styles.css",
+      "src/archive/ant-provider.tsx",
+    ],
+    originalUrl: "https://ant.design/components/overview/",
+    sourceUrl:
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/onboarding-page.tsx",
+    cover: "./assets/previews/page-atlas-onboarding-page.png",
+    preview: {
+      width: 1280,
+      height: 800,
+      url: "./examples/ui-market/index.html?item=atlas-onboarding-page",
+      mode: "canvas",
+    },
+    prompt: {
+      "zh-CN":
+        "请复用「项目入门页面」的资源级源码，保留 React、TypeScript 和所列组件库。以约 1.618:1 分配设置流程与辅助说明；手机单列。实现必填名称、确认、返回、完成及重新设置，保留键盘操作。\n使用语义化明暗主题并默认跟随宿主，保留中英文文案、可见焦点和触屏操作。完整交付本资源使用的组件、样式与依赖，保留来源和许可说明。范围为当前演示，不连接外部业务服务。",
+      en: "Reuse the resource source for Project onboarding with React, TypeScript and the listed component library. Allocate setup and supporting guidance at about 1.618:1, stacking on mobile. Implement required name entry, review, back, finish and restart with keyboard support.\nUse semantic light/dark themes that follow the host by default. Retain bilingual text, visible focus and touch interaction. Deliver the components, styles and dependencies used by this resource with source and license credits. Keep the scope to this demo without external business services.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "保持原始组件和品牌强调色，使用语义化明暗表面；保留键盘焦点、状态文本、窄屏重排与减少动态效果。",
+      en: "Preserve component behaviour and accent colours with semantic light/dark surfaces, keyboard focus, status text, narrow layouts and reduced motion.",
+    },
+  },
+  {
+    id: "atlas-product-page",
+    key: "product-page",
+    type: "page",
+    sourceId: "atlas-compositions",
+    libraryIds: ["antd"],
+    category: "layout",
+    interactions: ["input", "click"],
+    motion: false,
+    styleId: "enterprise-antd",
+    style: {
+      "zh-CN": "企业应用 · Ant Design",
+      en: "Enterprise · Ant Design",
+    },
+    audience: "b2b",
+    name: {
+      "zh-CN": "产品介绍与定价页",
+      en: "Product and pricing page",
+    },
+    description: {
+      "zh-CN": "品牌首屏、计费切换、常见问题和可校验联系表单。",
+      en: "A product hero, billing switch, FAQ and validated contact form.",
+    },
+    tags: {
+      "zh-CN": ["产品介绍与定价页", "本地交互", "页面"],
+      en: ["Product and pricing page", "local interaction", "layout"],
+    },
+    useCases: {
+      "zh-CN": "SaaS 产品介绍、定价与联系入口。",
+      en: "SaaS product introductions, pricing and contact entry points.",
+    },
+    principle: {
+      "zh-CN":
+        "让信息层级服务于真实操作；品牌首屏、计费切换、常见问题和可校验联系表单。",
+      en: "Support real actions with clear hierarchy. A product hero, billing switch, FAQ and validated contact form.",
+    },
+    rules: {
+      "zh-CN": [
+        "介绍与定价卡按约 1.618:1 排列，手机单列；月付/年付切换演示价格，FAQ 可展开；联系弹窗校验邮箱并显示本地提交结果。",
+        "基于固定版本官方组件的本站原创组合，业务数据仅存于当前页面。",
+      ],
+      en: [
+        "Arrange introduction and pricing at about 1.618:1, stacking on mobile. Switch monthly/yearly demo prices, expand FAQs, and validate email in a contact dialog with a local submission result.",
+        "Atlas composition built on pinned official components; business data stays in the current page.",
+      ],
+    },
+    files: ["src/demos/atlas/product-page.tsx"],
+    supportFiles: [
+      "src/demos/atlas/shared.tsx",
+      "src/demos/atlas/styles.css",
+      "src/archive/ant-provider.tsx",
+    ],
+    originalUrl: "https://ant.design/components/overview/",
+    sourceUrl:
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/product-page.tsx",
+    cover: "./assets/previews/page-atlas-product-page.png",
+    preview: {
+      width: 1280,
+      height: 800,
+      url: "./examples/ui-market/index.html?item=atlas-product-page",
+      mode: "canvas",
+    },
+    prompt: {
+      "zh-CN":
+        "请复用「产品介绍与定价页」的资源级源码，保留 React、TypeScript 和所列组件库。介绍与定价卡按约 1.618:1 排列，手机单列；月付/年付切换演示价格，FAQ 可展开；联系弹窗校验邮箱并显示本地提交结果。\n使用语义化明暗主题并默认跟随宿主，保留中英文文案、可见焦点和触屏操作。完整交付本资源使用的组件、样式与依赖，保留来源和许可说明。范围为当前演示，不连接外部业务服务。",
+      en: "Reuse the resource source for Product and pricing page with React, TypeScript and the listed component library. Arrange introduction and pricing at about 1.618:1, stacking on mobile. Switch monthly/yearly demo prices, expand FAQs, and validate email in a contact dialog with a local submission result.\nUse semantic light/dark themes that follow the host by default. Retain bilingual text, visible focus and touch interaction. Deliver the components, styles and dependencies used by this resource with source and license credits. Keep the scope to this demo without external business services.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "保持原始组件和品牌强调色，使用语义化明暗表面；保留键盘焦点、状态文本、窄屏重排与减少动态效果。",
+      en: "Preserve component behaviour and accent colours with semantic light/dark surfaces, keyboard focus, status text, narrow layouts and reduced motion.",
+    },
+  },
+  {
+    id: "magicui-word-rotate",
+    key: "word-rotate",
+    type: "component",
+    sourceId: "magicui",
+    libraryIds: ["magicui"],
+    category: "text",
+    interactions: ["auto", "click"],
+    motion: true,
+    styleId: "motion-neutral",
+    style: {
+      "zh-CN": "中性动效",
+      en: "Neutral motion",
+    },
+    audience: "b2c",
+    name: {
+      "zh-CN": "轮换关键词",
+      en: "Rotating keywords",
+    },
+    description: {
+      "zh-CN": "自动轮换关键词，可暂停，减少动态效果时保持静态。",
+      en: "Rotate keywords with pause and a static reduced-motion state.",
+    },
+    tags: {
+      "zh-CN": ["轮换关键词", "动效", "文字"],
+      en: ["Rotating keywords", "motion", "text"],
+    },
+    useCases: {
+      "zh-CN": "产品主标题、轮换价值主张。",
+      en: "Product headlines and rotating value propositions.",
+    },
+    principle: {
+      "zh-CN":
+        "让信息层级服务于真实操作；自动轮换关键词，可暂停，减少动态效果时保持静态。",
+      en: "Support real actions with clear hierarchy. Rotate keywords with pause and a static reduced-motion state.",
+    },
+    rules: {
+      "zh-CN": [
+        "保持文字舞台高度固定以避免布局跳动；轮换三段双语文字，提供暂停/播放；减少动态效果时显示静态文字。",
+        "基于固定版本官方组件的本站原创组合，业务数据仅存于当前页面。",
+      ],
+      en: [
+        "Keep a fixed-height text stage to prevent layout shifts, rotate three bilingual phrases, provide pause/play, and show static text when reduced motion is requested.",
+        "Atlas composition built on pinned official components; business data stays in the current page.",
+      ],
+    },
+    files: [
+      "src/demos/magicui/word-rotate.tsx",
+      "src/vendor/magicui/word-rotate.tsx",
+    ],
+    supportFiles: ["src/styles/magic-animations.css", "src/archive/i18n.ts"],
+    originalUrl: "https://magicui.design/docs/components/word-rotate",
+    sourceUrl:
+      "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/word-rotate.tsx",
+    cover: "./assets/previews/component-magicui-word-rotate.png",
+    preview: {
+      width: 640,
+      height: 480,
+      url: "./examples/ui-market/index.html?item=magicui-word-rotate",
+      mode: "inline",
+    },
+    prompt: {
+      "zh-CN":
+        "请复用「轮换关键词」的资源级源码，保留 React、TypeScript 和所列组件库。保持文字舞台高度固定以避免布局跳动；轮换三段双语文字，提供暂停/播放；减少动态效果时显示静态文字。\n使用语义化明暗主题并默认跟随宿主，保留中英文文案、可见焦点和触屏操作。完整交付本资源使用的组件、样式与依赖，保留来源和许可说明。范围为当前演示，不连接外部业务服务。",
+      en: "Reuse the resource source for Rotating keywords with React, TypeScript and the listed component library. Keep a fixed-height text stage to prevent layout shifts, rotate three bilingual phrases, provide pause/play, and show static text when reduced motion is requested.\nUse semantic light/dark themes that follow the host by default. Retain bilingual text, visible focus and touch interaction. Deliver the components, styles and dependencies used by this resource with source and license credits. Keep the scope to this demo without external business services.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "保持原始组件和品牌强调色，使用语义化明暗表面；保留键盘焦点、状态文本、窄屏重排与减少动态效果。",
+      en: "Preserve component behaviour and accent colours with semantic light/dark surfaces, keyboard focus, status text, narrow layouts and reduced motion.",
+    },
+  },
+  {
+    id: "magicui-shine-border",
+    key: "shine-border",
+    type: "component",
+    sourceId: "magicui",
+    libraryIds: ["magicui"],
+    category: "cards",
+    interactions: ["click", "auto"],
+    motion: true,
+    styleId: "motion-neutral",
+    style: {
+      "zh-CN": "中性动效",
+      en: "Neutral motion",
+    },
+    audience: "b2c",
+    name: {
+      "zh-CN": "柔光边框卡片",
+      en: "Shining border card",
+    },
+    description: {
+      "zh-CN": "多色边框沿卡片流动，保留可操作的收藏按钮。",
+      en: "A flowing multicolour border around a card with a working save button.",
+    },
+    tags: {
+      "zh-CN": ["柔光边框卡片", "动效", "卡片"],
+      en: ["Shining border card", "motion", "cards"],
+    },
+    useCases: {
+      "zh-CN": "精选内容、重点功能卡片。",
+      en: "Featured content and highlighted feature cards.",
+    },
+    principle: {
+      "zh-CN":
+        "让信息层级服务于真实操作；多色边框沿卡片流动，保留可操作的收藏按钮。",
+      en: "Support real actions with clear hierarchy. A flowing multicolour border around a card with a working save button.",
+    },
+    rules: {
+      "zh-CN": [
+        "保留固定版本 ShineBorder 的渐变边框，边框不拦截点击；卡片内收藏按钮可切换并反馈按下状态，减少动态效果时停用循环动画。",
+        "基于固定版本官方组件的本站原创组合，业务数据仅存于当前页面。",
+      ],
+      en: [
+        "Retain the pinned ShineBorder gradient without intercepting pointer events. Toggle the card save button with a pressed state and disable looping motion under reduced motion.",
+        "Atlas composition built on pinned official components; business data stays in the current page.",
+      ],
+    },
+    files: [
+      "src/demos/magicui/shine-border.tsx",
+      "src/vendor/magicui/shine-border.tsx",
+    ],
+    supportFiles: ["src/styles/magic-animations.css", "src/archive/i18n.ts"],
+    originalUrl: "https://magicui.design/docs/components/shine-border",
+    sourceUrl:
+      "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/shine-border.tsx",
+    cover: "./assets/previews/component-magicui-shine-border.png",
+    preview: {
+      width: 640,
+      height: 480,
+      url: "./examples/ui-market/index.html?item=magicui-shine-border",
+      mode: "inline",
+    },
+    prompt: {
+      "zh-CN":
+        "请复用「柔光边框卡片」的资源级源码，保留 React、TypeScript 和所列组件库。保留固定版本 ShineBorder 的渐变边框，边框不拦截点击；卡片内收藏按钮可切换并反馈按下状态，减少动态效果时停用循环动画。\n使用语义化明暗主题并默认跟随宿主，保留中英文文案、可见焦点和触屏操作。完整交付本资源使用的组件、样式与依赖，保留来源和许可说明。范围为当前演示，不连接外部业务服务。",
+      en: "Reuse the resource source for Shining border card with React, TypeScript and the listed component library. Retain the pinned ShineBorder gradient without intercepting pointer events. Toggle the card save button with a pressed state and disable looping motion under reduced motion.\nUse semantic light/dark themes that follow the host by default. Retain bilingual text, visible focus and touch interaction. Deliver the components, styles and dependencies used by this resource with source and license credits. Keep the scope to this demo without external business services.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "保持原始组件和品牌强调色，使用语义化明暗表面；保留键盘焦点、状态文本、窄屏重排与减少动态效果。",
+      en: "Preserve component behaviour and accent colours with semantic light/dark surfaces, keyboard focus, status text, narrow layouts and reduced motion.",
+    },
+  },
+  {
+    id: "magicui-meteors",
+    key: "meteors",
+    type: "component",
+    sourceId: "magicui",
+    libraryIds: ["magicui"],
+    category: "backgrounds",
+    interactions: ["auto", "click"],
+    motion: true,
+    styleId: "motion-neutral",
+    style: {
+      "zh-CN": "中性动效",
+      en: "Neutral motion",
+    },
+    audience: "b2c",
+    name: {
+      "zh-CN": "流星背景",
+      en: "Meteor background",
+    },
+    description: {
+      "zh-CN": "带暂停控制的流星背景，前景文字与操作保持清晰。",
+      en: "A pausable meteor background with readable foreground content and controls.",
+    },
+    tags: {
+      "zh-CN": ["流星背景", "动效", "背景"],
+      en: ["Meteor background", "motion", "backgrounds"],
+    },
+    useCases: {
+      "zh-CN": "产品首屏、活动介绍的装饰背景。",
+      en: "Decorative backgrounds for product heroes and event introductions.",
+    },
+    principle: {
+      "zh-CN":
+        "让信息层级服务于真实操作；带暂停控制的流星背景，前景文字与操作保持清晰。",
+      en: "Support real actions with clear hierarchy. A pausable meteor background with readable foreground content and controls.",
+    },
+    rules: {
+      "zh-CN": [
+        "使用固定版本 Meteors，保持前景文字与按钮可操作；提供暂停/播放，减少动态效果时移除流星；不要让背景产生页面溢出。",
+        "基于固定版本官方组件的本站原创组合，业务数据仅存于当前页面。",
+      ],
+      en: [
+        "Use the pinned Meteors component while keeping foreground text and controls usable. Provide pause/play, omit meteors for reduced motion, and prevent background overflow.",
+        "Atlas composition built on pinned official components; business data stays in the current page.",
+      ],
+    },
+    files: ["src/demos/magicui/meteors.tsx", "src/vendor/magicui/meteors.tsx"],
+    supportFiles: ["src/styles/magic-animations.css", "src/archive/i18n.ts"],
+    originalUrl: "https://magicui.design/docs/components/meteors",
+    sourceUrl:
+      "https://github.com/magicuidesign/magicui/blob/efe76fc5755eca1142dd4f74c1d6f0ace2887e3c/apps/www/registry/magicui/meteors.tsx",
+    cover: "./assets/previews/component-magicui-meteors.png",
+    preview: {
+      width: 640,
+      height: 480,
+      url: "./examples/ui-market/index.html?item=magicui-meteors",
+      mode: "inline",
+    },
+    prompt: {
+      "zh-CN":
+        "请复用「流星背景」的资源级源码，保留 React、TypeScript 和所列组件库。使用固定版本 Meteors，保持前景文字与按钮可操作；提供暂停/播放，减少动态效果时移除流星；不要让背景产生页面溢出。\n使用语义化明暗主题并默认跟随宿主，保留中英文文案、可见焦点和触屏操作。完整交付本资源使用的组件、样式与依赖，保留来源和许可说明。范围为当前演示，不连接外部业务服务。",
+      en: "Reuse the resource source for Meteor background with React, TypeScript and the listed component library. Use the pinned Meteors component while keeping foreground text and controls usable. Provide pause/play, omit meteors for reduced motion, and prevent background overflow.\nUse semantic light/dark themes that follow the host by default. Retain bilingual text, visible focus and touch interaction. Deliver the components, styles and dependencies used by this resource with source and license credits. Keep the scope to this demo without external business services.",
+    },
+    stylePrompt: {
+      "zh-CN":
+        "保持原始组件和品牌强调色，使用语义化明暗表面；保留键盘焦点、状态文本、窄屏重排与减少动态效果。",
+      en: "Preserve component behaviour and accent colours with semantic light/dark surfaces, keyboard focus, status text, narrow layouts and reduced motion.",
+    },
+  },
 ];
 export const marketSources = {
   magicui: {
@@ -1843,6 +2567,16 @@ export const marketSources = {
     commit: "25af02b1b467fcd53b63e0c6d6d324c57c16ef18",
     license: "MIT",
     licenseFile: "./examples/ui-market/licenses/shadcn-ui-LICENSE.md",
+  },
+  "atlas-compositions": {
+    id: "atlas-compositions",
+    name: "Atlas Compositions",
+    author: "UI Design Atlas contributors",
+    repo: "https://github.com/Xiiiing/ui-design-atlas",
+    docs: "https://github.com/Xiiiing/ui-design-atlas",
+    original: true,
+    license: "MIT",
+    licenseFile: "./examples/ui-market/licenses/atlas-compositions-LICENSE",
   },
 };
 export const marketLibraries = {

@@ -80,7 +80,9 @@ function App() {
     setTheme(
       new URLSearchParams(location.search).get("theme") === "dark"
         ? "dark"
-        : "light",
+        : new URLSearchParams(location.search).get("theme") === "light"
+          ? "light"
+          : "system",
     );
   }, [setTheme]);
   useEffect(
@@ -307,9 +309,11 @@ createRoot(document.querySelector("#root")!).render(
     defaultTheme={
       new URLSearchParams(location.search).get("theme") === "dark"
         ? "dark"
-        : "light"
+        : new URLSearchParams(location.search).get("theme") === "light"
+          ? "light"
+          : "system"
     }
-    enableSystem={false}
+    enableSystem
     forcedTheme={undefined}
     storageKey={`atlas:ui-market:${new URLSearchParams(location.search).get("item")}:${new URLSearchParams(location.search).has("inline") ? "card" : "viewer"}:theme`}
   >

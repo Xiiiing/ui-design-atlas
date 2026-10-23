@@ -1,3 +1,4 @@
+import { installLegacyTheme } from "./legacy-theme.js";
 if (new URLSearchParams(location.search).has("thumb"))
   document.body.inert = true;
 import { getComponent } from "./data.js";
@@ -42,3 +43,5 @@ if (item && parent !== window)
     { type: "atlas:inline-ready", resourceId: item.id },
     location.origin,
   );
+
+if (item) installLegacyTheme({ resourceId: item.id });

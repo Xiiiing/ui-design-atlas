@@ -1,3 +1,4 @@
+import { installLegacyTheme } from "./legacy-theme.js";
 if (new URLSearchParams(location.search).has("thumb")) document.body.inert = true;
 import { observeLegacy,translateLegacyString as tr } from './legacy-i18n.js';
 import { styles, getStyle } from './data.js';
@@ -10,7 +11,7 @@ const page = ['home', 'work', 'about'].includes(params.get('page')) ? params.get
 const root = document.getElementById('preview-root');
 document.body.className = `theme-${style.id}${params.has('thumb') ? ' thumbnail' : ''}`;
 document.title = `${style.name} · ${style.pages.find(p => p.id === page).name} · 原创演示案例`;
-const url = (p = 'home', extra = '') => `./preview.html?style=${style.id}&page=${p}&lang=${lang}${extra}`;
+const url = (p = 'home', extra = '') => `./preview.html?style=${style.id}&page=${p}&lang=${lang}&theme=${document.documentElement.dataset.theme}${params.has("embed") ? "&embed=1" : ""}${extra}`;
 const btn = (text, href, secondary = false) => `<a class="p-button ${secondary ? 'p-secondary' : ''}" href="${href}">${text} <span>↗</span></a>`;
 function header() {
   const names = { folio: ['首页', '精选项目', '关于 / 联系'], orbit: ['概览', '项目', '设置'], forma: ['工作室', '项目档案', '合作咨询'], bloom: ['商店', '精选商品', '购物袋'] }[style.id];
@@ -72,7 +73,7 @@ function announce(text) { const el = document.getElementById('demo-toast'); el.t
 function render() { root.innerHTML = header() + ({ folio, orbit, forma, bloom }[style.id])() + footer(); }
 render();
 observeLegacy(root,lang);
-if(parent!==window)parent.postMessage({type:'atlas:preview-state',caseId:style.id,page,locale:lang},location.origin);
+installLegacyTheme({ caseId: style.id, page });
 function filterProjects() { const q = document.getElementById('project-search').value.toLowerCase(), status = document.getElementById('project-status').value; document.getElementById('projects-table').innerHTML = projectsTable(projects.filter(p => p.name.toLowerCase().includes(q) && (status === 'all' || p.status === status))); }
 document.addEventListener('input', event => { if (event.target.id === 'project-search') filterProjects(); });
 document.addEventListener('change', event => { if (event.target.id === 'project-status') filterProjects(); });

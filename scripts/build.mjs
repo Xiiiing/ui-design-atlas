@@ -46,6 +46,7 @@ const assets = [
   "preview.js",
   "component-preview.js",
   "legacy-i18n.js",
+  "legacy-theme.js",
   "legacy-translations.js",
   "favicon.svg",
   "logo.svg",

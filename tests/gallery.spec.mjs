@@ -154,7 +154,7 @@ test("Original motion parameters affect the real preview, prompt and replay", as
   );
 });
 
-test("Page details preserve the authored canvas, support fullscreen and keep the inspector at 360px", async ({
+test("Page details preserve the authored canvas, support fullscreen and use a golden-ratio inspector split", async ({
   page,
 }) => {
   await page.goto("#page/shadcn-admin-dashboard?lang=en&panel=details");
@@ -162,7 +162,9 @@ test("Page details preserve the authored canvas, support fullscreen and keep the
   await expect(
     demo.getByRole("heading", { name: "Dashboard", exact: true }),
   ).toBeVisible();
-  expect((await page.locator("#inspector").boundingBox()).width).toBe(360);
+  const inspector = await page.locator("#inspector").boundingBox();
+  const preview = await page.locator(".full-preview-column").boundingBox();
+  expect(preview.width / inspector.width).toBeCloseTo(1.618, 2);
   expect(
     await page
       .locator("#case-preview")

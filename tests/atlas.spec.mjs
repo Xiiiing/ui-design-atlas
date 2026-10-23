@@ -89,7 +89,9 @@ test("Bilingual market searches, library and source filters retain existing cont
 }) => {
   const errors = watch(page);
   await page.goto("#pages?lang=en");
-  await expect(page.locator("#results .card")).toHaveCount(pages.length);
+  await expect(page.locator("#results .card")).toHaveCount(
+    resources.filter((r) => r.type === "page").length,
+  );
   await page.locator("[name=q]").fill("任务");
   await expect(page.locator("#results .card")).toHaveCount(1);
   await page.locator("[data-reset-filters]").click();

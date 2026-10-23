@@ -99,6 +99,37 @@ function saveButton(r) {
 function language(viewer = false) {
   return `<select data-shell-control data-locale id="${viewer ? "locale" : "site-locale"}" aria-label="${t("语言", "Language")}"><option value="zh-CN" ${locale === "zh-CN" ? "selected" : ""}>中文</option><option value="en" ${locale === "en" ? "selected" : ""}>English</option></select>`;
 }
+const sectionMemory = new Map();
+let browseSaveTimer;
+const sectionOf = (view) =>
+  ["motion", "components", "blocks", "pages"].includes(view) ? "explore" : view;
+function rememberSection(defer = false) {
+  if (
+    !route ||
+    selected ||
+    !["discover", "explore", "cases", "favorites"].includes(
+      sectionOf(route.view),
+    )
+  )
+    return;
+  const browse = {
+    ...history.state?.browse,
+    hash: location.hash || href(),
+    scroll: browseScroll(),
+    limit,
+  };
+  sectionMemory.set(sectionOf(route.view), browse);
+  // Avoid writing browser history on every animation frame while scrolling.
+  clearTimeout(browseSaveTimer);
+  const url = location.href;
+  const persist = () => {
+    if (location.href !== url) return;
+    history.replaceState({ ...history.state, browse }, "", url);
+    renderedNavigation = url + JSON.stringify(history.state);
+  };
+  if (defer) browseSaveTimer = setTimeout(persist, 150);
+  else persist();
+}
 let compactNavigation = false;
 function syncNavigation() {
   compactNavigation = scrollY > (compactNavigation ? 48 : 96);
@@ -106,7 +137,14 @@ function syncNavigation() {
     .querySelector("#topbar")
     .classList.toggle("is-compact", compactNavigation);
 }
-window.addEventListener("scroll", syncNavigation, { passive: true });
+window.addEventListener(
+  "scroll",
+  () => {
+    syncNavigation();
+    rememberSection(true);
+  },
+  { passive: true },
+);
 function header() {
   document.documentElement.lang = locale;
   document.querySelector("#sidebar").innerHTML = "";
@@ -122,7 +160,7 @@ function header() {
         (view === "explore" &&
           ["motion", "components", "blocks", "pages"].includes(route.view));
       const label = t(zh, en);
-      return `<a href="${href(view)}" class="${active ? "active" : ""}" aria-label="${label}" title="${label}" ${active ? 'aria-current="page"' : ""}>${icon(glyph)}<span class="nav-label">${label}${view === "favorites" && favorites.size ? ` <small>${favorites.size}</small>` : ""}</span></a>`;
+      return `<a data-primary-view="${view}" href="${href(view)}" class="${active ? "active" : ""}" aria-label="${label}" title="${label}" ${active ? 'aria-current="page"' : ""}>${icon(glyph)}<span class="nav-label">${label}${view === "favorites" && favorites.size ? ` <small>${favorites.size}</small>` : ""}</span></a>`;
     })
     .join("");
   replaceShellHTML(
@@ -184,15 +222,17 @@ function tagLinks(r, full = false) {
       : ""
   }</div>`;
 }
+const coverURL = (cover, theme) =>
+  theme === "dark" ? cover.replace(/\.png$/, "-dark.png") : cover;
 function card(r) {
   const framing = resourcePresentation(r),
     inline = framing.mode === "inline";
   const name =
-    r.type === "page"
+    r.type === "page" && r.caseId
       ? `${l(getCase(r.caseId).name).split(" · ")[0]} · ${l(r.name)}`
       : l(r.name);
   return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${framing.layout}" data-experience="${framing.mode}" data-cover-layout="${framing.layout}">
-  <div class="asset-preview"><img src="${esc(r.cover)}" alt="${esc(name)}" loading="lazy" width="${framing.width}" height="${framing.height}">${inline ? `<div class="asset-live" data-live="${key(r)}"></div><div class="preview-state" role="status"><span>${t("正在加载体验…", "Loading experience…")}</span><button type="button" class="button" data-retry-preview hidden>${t("重试", "Retry")}</button></div>` : `<a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("打开体验", "Open experience")} ${esc(name)}"><span>${icon("arrow-up-right")}${t("打开体验", "Open experience")}</span></a>`}</div>
+  <div class="asset-preview"><img data-cover="${esc(r.cover)}" src="${esc(coverURL(r.cover, shellTheme()))}" alt="${esc(name)}" loading="lazy" width="${framing.width}" height="${framing.height}">${inline ? `<div class="asset-live" data-live="${key(r)}"></div><div class="preview-state" role="status"><span>${t("正在加载体验…", "Loading experience…")}</span><button type="button" class="button" data-retry-preview hidden>${t("重试", "Retry")}</button></div>` : `<a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("打开体验", "Open experience")} ${esc(name)}"><span>${icon("arrow-up-right")}${t("打开体验", "Open experience")}</span></a>`}</div>
   <div class="asset-caption"><a data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}">${esc(name)}</a><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" title="${esc(libraries[id].name)}">${esc(libraries[id].name)}</span>`).join("")}</span></div>
   <p class="asset-description" id="description-${r.id}" title="${esc(l(r.description))}">${esc(l(r.description))}</p><div class="asset-footer">${tagLinks(r)}
   <div class="asset-actions"><button class="icon-button" data-card-prompt="${key(r)}" aria-label="${t("复制提示词", "Copy prompt")}" title="${t("复制提示词", "Copy prompt")}">${icon("copy")}</button><a class="icon-button" data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}" aria-label="${t("查看详情", "Details")}" title="${t("查看详情", "Details")}">${icon("panel-right")}</a>${saveButton(r)}</div></div></article>`;
@@ -412,7 +452,7 @@ function filtered() {
       if (
         values.source &&
         values.source !== "all" &&
-        (values.source === "original") !== (r.sourceId === "original")
+        (values.source === "original") !== Boolean(resourceSource(r).original)
       )
         return false;
       return true;
@@ -481,7 +521,7 @@ function provenance(r) {
     })
     .join(
       "",
-    )}<p><strong>${esc(s.name)}</strong> · ${esc(s.author)}</p><div class="credit-links">${external(r.originalUrl || s.docs || s.repo, t("原始示例", "Original example"))}${external(r.sourceUrl || s.repo, t("源码地址", "Source code"))}${s.licenseFile ? external(s.licenseFile, s.license) : `<span>${esc(s.license)}</span>`}</div>${s.commit ? `<p class="commit-credit">${t("固定源码版本", "Pinned source")} <code>${s.commit}</code></p>` : ""}<p class="curator-label">${t("保留上游视觉与实现；本站适配语言、本地数据和预览入口。设计解读与提示词由本站整理。", "Upstream visuals and implementation, adapted for language, local data and previews. Notes and prompts are curated by Atlas.")}</p></section>`;
+    )}<p><strong>${esc(s.name)}</strong> · ${esc(s.author)}</p><div class="credit-links">${external(r.originalUrl || s.docs || s.repo, t("原始示例", "Original example"))}${external(r.sourceUrl || s.repo, t("源码地址", "Source code"))}${s.licenseFile ? external(s.licenseFile, s.license) : `<span>${esc(s.license)}</span>`}</div>${s.commit ? `<p class="commit-credit">${t("固定源码版本", "Pinned source")} <code>${s.commit}</code></p>` : ""}<p class="curator-label">${s.original ? t("本站原创组合；使用所列组件库，不代表上游官方页面。提示词、样式和业务交互随资源源码交付。", "An original Atlas composition using the listed libraries, not an official upstream page. Prompts, styles and interactions are included with the resource source.") : t("保留上游视觉与实现；本站适配语言、本地数据和预览入口。设计解读与提示词由本站整理。", "Upstream visuals and implementation, adapted for language, local data and previews. Notes and prompts are curated by Atlas.")}</p></section>`;
 }
 function related(r) {
   const c = r.type === "case" ? getCase(r.id) : getCase(r.caseId);
@@ -912,11 +952,12 @@ function render() {
   if (b)
     requestAnimationFrame(() => {
       scrollBrowseTo(b.scroll);
-      document
-        .querySelector(
-          `[data-resource="${b.focus}"] ${b.focusSelector || "[data-open]"}`,
-        )
-        ?.focus({ preventScroll: true });
+      if (b.focus)
+        document
+          .querySelector(
+            `[data-resource="${b.focus}"] ${b.focusSelector || "[data-open]"}`,
+          )
+          ?.focus({ preventScroll: true });
     });
   document.title = t("UI 资源市场", "UI marketplace") + " · UI Design Atlas";
 }
@@ -1056,6 +1097,35 @@ document.addEventListener("submit", (e) => {
   updateResults(true);
 });
 document.addEventListener("click", async (e) => {
+  const primary = e.target.closest("[data-primary-view]");
+  if (primary && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
+    e.preventDefault();
+    const target = primary.dataset.primaryView;
+    if (!selected && sectionOf(route.view) === target) return;
+    rememberSection();
+    const previous = sectionMemory.get(target);
+    // Main navigation restores the section, not a previous detail-entry focus.
+    const browse = {
+      hash: previous?.hash || href(target),
+      scroll: previous?.scroll ?? browseScroll(),
+      limit: previous?.limit || 24,
+    };
+    const destination = new URLSearchParams(browse.hash.split("?")[1] || "");
+    destination.set("lang", locale);
+    history.pushState(
+      { browse },
+      "",
+      browse.hash.split("?")[0] + "?" + destination,
+    );
+    render();
+    scrollBrowseTo(browse.scroll);
+    syncNavigation();
+    document
+      .querySelector(`[data-primary-view="${target}"]`)
+      ?.focus({ preventScroll: true });
+    return;
+  }
+
   const tagLink = e.target.closest("[data-resource-tag]");
   if (tagLink && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
     e.preventDefault();
@@ -1593,6 +1663,9 @@ function acceptPreviewTheme(value) {
 }
 window.addEventListener("atlas:shell-theme", () => {
   liveCards.configure();
+  document.querySelectorAll("img[data-cover]").forEach((img) => {
+    img.src = coverURL(img.dataset.cover, shellTheme());
+  });
   if (!selected) return;
   const nextTheme = shellTheme();
   // Same-color mode changes do not produce an iframe acknowledgement.
