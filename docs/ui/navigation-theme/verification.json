@@ -1,0 +1,54 @@
+{
+  "issue": "https://github.com/Xiiiing/ui-design-atlas/issues/17",
+  "baseline": "779aab7cdb4b7c29249de4981cfe960b9647d68c",
+  "implementation": "eccf17404edda970a89e9153889b4bd8349bb95f",
+  "verifiedAt": "2026-10-23T10:56:25.087464+00:00",
+  "checks": {
+    "check": "passed, including 5 unit tests",
+    "build": "passed; existing chunk-size warnings",
+    "playwright": "72 passed (1.8m), no retries"
+  },
+  "bundleSha256": "be473cdde69b828916ffad8cea3f6ab6b1083435c923f4968336d08d2013ebb7",
+  "navigation": {
+    "widths": [
+      2560,
+      1440,
+      768,
+      375
+    ],
+    "languages": [
+      "zh-CN",
+      "en"
+    ],
+    "headerSlot": 64,
+    "compactHeight": 56,
+    "collapseAfter": 96,
+    "restoreAt": 48,
+    "notes": "Keyboard, touch, language popup while scrolled, content-position stability, reduced motion and history return verified."
+  },
+  "themes": {
+    "cycle": [
+      "system",
+      "light",
+      "dark"
+    ],
+    "default": "Resolved shell theme; OS changes broadcast in system mode",
+    "manualOverride": "Demo choice remains local until next shell appearance change; explicit theme links remain valid. Same-color mode switches preserve subsequent native theme changes.",
+    "state": "Iframe theme updates preserve entered text and iframe URL; existing origin/window/resource checks remain in effect.",
+    "exceptions": "Fixed-palette legacy examples and static cover images retain original colors."
+  },
+  "recording": "navigation-and-theme.webm",
+  "screenshots": [
+    "viewer-synced-dark.png",
+    "compact-light.png",
+    "compact-375.png",
+    "compact-768.png",
+    "header-compact.png",
+    "header-expanded.png",
+    "viewer-synced-light.png",
+    "compact-2560.png",
+    "language-menu.png"
+  ],
+  "reproduce": "After npm run build, serve with node scripts/serve.mjs --dist --base=/ui-design-atlas/ then run node scripts/capture-navigation-theme.mjs output/navigation-theme. ATLAS_CAPTURE_BASE can override the server URL.",
+  "evidenceEnvironment": "Local production build in Chromium; these are not production deployment captures."
+}

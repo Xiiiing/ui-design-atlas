@@ -23,6 +23,8 @@ The marketplace ranks bilingual search by exact name, name match, aliases/tags a
 图鉴外层以固定版本 21st 源码为设计基线，使用开放式资源画廊：轻量吸顶导航、可清除筛选标签、紧凑组件与宽页面分尺寸陈列。详情提供真实预览、360px 说明栏、提示词、源码和原有动效参数。
 The shell adapts a pinned 21st design reference into an open resource gallery, with document scrolling, removable filters, compact/wide previews and a 360px detail inspector. Archived interfaces retain their own visual styles. Theme-aware live cards and viewers initially follow the shell, and synchronize without reloading when its appearance changes (including OS changes in system mode). A demo can still be switched independently until the next shell appearance change; explicit `theme=light|dark` links remain supported. Fixed-palette demos and static covers keep their original colors.
 
+下滑后导航收缩为固定图标栏，回到顶部恢复文字，原有内容位置不变。显示模式按系统、浅色、深色循环；语言通过图标弹层切换。支持主题的实时演示默认跟随站点，可单独改色，下一次站点模式变化时重新同步；静态封面及固定配色示例保留原色。
+
 The header contracts into a pinned icon bar after scrolling and restores its full labels near the top, without moving the gallery. Appearance cycles through system, light and dark in one button; the language icon opens a keyboard-accessible picker. Reduced-motion preferences disable the contraction animation.
 
 Gallery previews use a square column-sized unit, with wide resources spanning two columns at the same height. Captions, a one-line description, filter tags and accessible icon actions sit outside the preview. Tall demos open from static overviews. The experience viewer uses its available width at native scale by default; explicit tablet/phone selections retain fixed device widths.
