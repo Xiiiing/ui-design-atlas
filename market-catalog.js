@@ -1856,7 +1856,7 @@ export const marketResources = [
     ],
     originalUrl: "https://ant.design/components/overview/",
     sourceUrl:
-      "https://github.com/Xiiiing/ui-design-atlas/blob/codex/cohesive-theme-navigation-resources/examples/ui-market/src/demos/atlas/upload.tsx",
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/upload.tsx",
     cover: "./assets/previews/component-atlas-upload.png",
     preview: {
       width: 640,
@@ -1929,7 +1929,7 @@ export const marketResources = [
     ],
     originalUrl: "https://ant.design/components/overview/",
     sourceUrl:
-      "https://github.com/Xiiiing/ui-design-atlas/blob/codex/cohesive-theme-navigation-resources/examples/ui-market/src/demos/atlas/steps.tsx",
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/steps.tsx",
     cover: "./assets/previews/component-atlas-steps.png",
     preview: {
       width: 640,
@@ -2002,7 +2002,7 @@ export const marketResources = [
     ],
     originalUrl: "https://ant.design/components/overview/",
     sourceUrl:
-      "https://github.com/Xiiiing/ui-design-atlas/blob/codex/cohesive-theme-navigation-resources/examples/ui-market/src/demos/atlas/search.tsx",
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/search.tsx",
     cover: "./assets/previews/component-atlas-search.png",
     preview: {
       width: 640,
@@ -2075,7 +2075,7 @@ export const marketResources = [
     ],
     originalUrl: "https://ant.design/components/overview/",
     sourceUrl:
-      "https://github.com/Xiiiing/ui-design-atlas/blob/codex/cohesive-theme-navigation-resources/examples/ui-market/src/demos/atlas/feedback.tsx",
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/feedback.tsx",
     cover: "./assets/previews/component-atlas-feedback.png",
     preview: {
       width: 640,
@@ -2148,7 +2148,7 @@ export const marketResources = [
     ],
     originalUrl: "https://ant.design/components/overview/",
     sourceUrl:
-      "https://github.com/Xiiiing/ui-design-atlas/blob/codex/cohesive-theme-navigation-resources/examples/ui-market/src/demos/atlas/file-workspace.tsx",
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/file-workspace.tsx",
     cover: "./assets/previews/page-atlas-file-workspace.png",
     preview: {
       width: 1280,
@@ -2221,7 +2221,7 @@ export const marketResources = [
     ],
     originalUrl: "https://ant.design/components/overview/",
     sourceUrl:
-      "https://github.com/Xiiiing/ui-design-atlas/blob/codex/cohesive-theme-navigation-resources/examples/ui-market/src/demos/atlas/onboarding-page.tsx",
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/onboarding-page.tsx",
     cover: "./assets/previews/page-atlas-onboarding-page.png",
     preview: {
       width: 1280,
@@ -2294,7 +2294,7 @@ export const marketResources = [
     ],
     originalUrl: "https://ant.design/components/overview/",
     sourceUrl:
-      "https://github.com/Xiiiing/ui-design-atlas/blob/codex/cohesive-theme-navigation-resources/examples/ui-market/src/demos/atlas/product-page.tsx",
+      "https://github.com/Xiiiing/ui-design-atlas/blob/de131e79384f25ecd019989428467a820286e18b/examples/ui-market/src/demos/atlas/product-page.tsx",
     cover: "./assets/previews/page-atlas-product-page.png",
     preview: {
       width: 1280,

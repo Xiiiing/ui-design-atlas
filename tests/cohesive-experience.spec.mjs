@@ -64,6 +64,14 @@ test("Primary navigation keeps current scroll and restores each section and hist
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(420);
   await page.goForward();
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(start);
+  await page.locator(".asset-caption [data-open]").first().click();
+  await page.goBack();
+  await expect(
+    page.locator(".asset-caption [data-open]").first(),
+  ).toBeFocused();
+  await page.locator("[data-primary-view=discover]").click();
+  await page.locator("[data-primary-view=explore]").click();
+  await expect(page.locator("[data-primary-view=explore]")).toBeFocused();
 });
 
 test("Cover variants change with appearance without changing card geometry", async ({

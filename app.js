@@ -1104,10 +1104,11 @@ document.addEventListener("click", async (e) => {
     if (!selected && sectionOf(route.view) === target) return;
     rememberSection();
     const previous = sectionMemory.get(target);
-    const browse = previous || {
-      hash: href(target),
-      scroll: browseScroll(),
-      limit: 24,
+    // Main navigation restores the section, not a previous detail-entry focus.
+    const browse = {
+      hash: previous?.hash || href(target),
+      scroll: previous?.scroll ?? browseScroll(),
+      limit: previous?.limit || 24,
     };
     const destination = new URLSearchParams(browse.hash.split("?")[1] || "");
     destination.set("lang", locale);
