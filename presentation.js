@@ -1,11 +1,29 @@
 // One framing rule for screenshots, live cards and detail previews. The source
 // component and its theme stay intact; only the surrounding demo viewport changes.
-export function resourcePresentation(resource) {
+export function resourcePresentation(resource, context = "card") {
   const wide = resource.type !== "component" || resource.preview.width >= 900;
+  const control = !wide && resource.category === "buttons";
   return {
     layout: wide ? "wide" : "compact",
-    width: wide ? resource.preview.width : 400,
-    height: wide ? resource.preview.height : 400,
+    width: wide
+      ? resource.preview.width
+      : control && context === "card"
+        ? 320
+        : 400,
+    height: wide
+      ? resource.preview.height
+      : control && context === "card"
+        ? 240
+        : 400,
+    context,
+    stageHeight:
+      context === "detail"
+        ? wide
+          ? 660
+          : 560
+        : context === "quick"
+          ? 520
+          : 260,
   };
 }
 

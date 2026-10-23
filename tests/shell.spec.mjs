@@ -30,7 +30,6 @@ test("Marketplace selects preserve FormData, reset, dialog portals and focus", a
   await expect(page.locator(".asset-card")).toHaveCount(24);
   await page.locator("[name=q]").fill("流光边框");
   await page.locator(".asset-caption [data-open]").click();
-  await page.getByRole("tab", { name: "Prompt", exact: true }).click();
   await page.locator("#prompt-scope").click();
   const popover = page.locator(".atlas-select-content");
   await expect(popover).toBeVisible();
@@ -50,10 +49,12 @@ test("Marketplace selects preserve FormData, reset, dialog portals and focus", a
   await expect(page.locator("#locale")).toBeFocused();
   await choose(page, "#locale", "中文");
   await expect(page.locator(".inspector-head h2")).toHaveText("流光边框");
-  await page.getByRole("tab", { name: "代码", exact: true }).click();
+  await page.locator("[data-full-detail=code]").click();
   await expect(page.locator("#code-text")).toContainText("BorderBeam");
   await choose(page, "#code-file", "src/vendor/magicui/border-beam.tsx");
   await expect(page.locator("#code-text")).toContainText("motion/react");
+  await page.goBack();
+  await expect(page.locator("#asset-dialog")).toBeVisible();
   await page.getByRole("button", { name: "关闭预览", exact: true }).click();
   await expect(page.locator("#asset-dialog")).not.toBeVisible();
   await expect(page.locator(".asset-cover-link")).toBeFocused();
@@ -70,14 +71,12 @@ test("Resource type navigation keeps stable geometry and detail tabs support key
   const errors = watch(page);
   await page.goto("#explore?lang=en");
   const geometry = () =>
-    page
-      .locator(".market-tabs a")
-      .evaluateAll((els) =>
-        els.map((el) => ({
-          width: el.getBoundingClientRect().width,
-          height: el.getBoundingClientRect().height,
-        })),
-      );
+    page.locator(".market-tabs a").evaluateAll((els) =>
+      els.map((el) => ({
+        width: el.getBoundingClientRect().width,
+        height: el.getBoundingClientRect().height,
+      })),
+    );
   const before = await geometry();
   for (const mode of [
     "motion",
@@ -97,13 +96,14 @@ test("Resource type navigation keeps stable geometry and detail tabs support key
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.locator("[name=q]").fill("流光边框");
   await page.locator(".asset-caption [data-open]").click();
+  await page.locator("[data-full-detail]").first().click();
   await page.getByRole("tab").first().focus();
   await page.keyboard.press("ArrowRight");
   await expect(
-    page.getByRole("tab", { name: "Prompt", exact: true }),
+    page.getByRole("tab", { name: "Code", exact: true }),
   ).toBeFocused();
   await expect(
-    page.getByRole("tab", { name: "Prompt", exact: true }),
+    page.getByRole("tab", { name: "Code", exact: true }),
   ).toHaveAttribute("aria-selected", "true");
   await page.keyboard.press("End");
   await expect(

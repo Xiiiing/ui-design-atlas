@@ -7,14 +7,14 @@
 [原始参考与 MIT 许可](../../vendor/21st-market/ATTRIBUTION.md)随项目保留并校验 SHA-256。
 公开源码版本早于目前官网；本次是基于固定源码的业务适配，不声称与当前官网像素一致。
 
-| 参考部分 | 图鉴中的应用 |
-| --- | --- |
-| 21st globals.css 的 background、foreground、muted、border、input、ring、primary | 同一套中性明暗表面、文字、边框、焦点与操作色，无额外品牌调色板 |
-| Tailwind 配置中的 Geist、默认字级与间距、8px 圆角 | 本地 Geist 5.3.0（OFL）、中文系统字体回退，12/14/16/24/32px 字级、4px 间距步进 |
-| 21st 卡片和横向分类示例 | 预览优先，卡片下方只放名称和组件库，分类与已选筛选条件明确分开 |
-| [Origin UI 按钮页](https://coss.com/origin/button) | 小组件采用紧凑的真实取景，避免按钮被缩进整张页面截图 |
-| [Blocks.so 表格页](https://blocks.so/tables) | 表格、区块和完整页面使用宽预览，并提供设备宽度与原尺寸操作 |
-| [React Bits 动效页](https://reactbits.dev/text-animations/split-text) | 重播和原有参数紧邻舞台；不收录或再分发该站组件 |
+| 参考部分                                                                        | 图鉴中的应用                                                                   |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| 21st globals.css 的 background、foreground、muted、border、input、ring、primary | 同一套中性明暗表面、文字、边框、焦点与操作色，无额外品牌调色板                 |
+| Tailwind 配置中的 Geist、默认字级与间距、8px 圆角                               | 本地 Geist 5.3.0（OFL）、中文系统字体回退，12/14/16/24/32px 字级、4px 间距步进 |
+| 21st 卡片和横向分类示例                                                         | 预览优先，卡片下方只放名称和组件库，分类与已选筛选条件明确分开                 |
+| [Origin UI 按钮页](https://coss.com/origin/button)                              | 小组件采用紧凑的真实取景，避免按钮被缩进整张页面截图                           |
+| [Blocks.so 表格页](https://blocks.so/tables)                                    | 表格、区块和完整页面使用宽预览，并提供设备宽度与原尺寸操作                     |
+| [React Bits 动效页](https://reactbits.dev/text-animations/split-text)           | 重播和原有参数紧邻舞台；不收录或再分发该站组件                                 |
 
 映序的历史设计资料及许可证保留，但运行中的图鉴不再导入其样式或专用控件。
 收录演示仍隔离在同源 iframe 中，保留自身组件库与主题。
@@ -75,3 +75,28 @@ node scripts/capture-market.mjs
 The next iteration separates discovery, comparison, quick experience and full reuse. `content/discovery.json` curates eight existing resources, three thematic collections and three complete systems; categories display live registry counts. No resource records or upstream visuals are added. Search results group components, blocks, pages and systems so comparable samples share a presentation grid. The design continues to use the pinned 21st neutral tokens and local Geist fonts.
 
 The public 21st snapshot predates the current site. Product structure is informed by the current [21st library](https://21st.dev/community/components) and its separate preview/full resource journey, [Origin UI buttons](https://coss.com/origin/button) for direct comparison, [Blocks.so tables](https://blocks.so/tables) for wide examples, and [React Bits](https://reactbits.dev/text-animations/split-text) for a stage with nearby replay controls. Their branding is not combined into a new palette. Uiverse was accessible as public text during research, but its interactions were blocked by Cloudflare and are not claimed as browser verified.
+
+### Final discovery / reuse composition
+
+- Default route: `#discover`; `#explore` remains the searchable archive. Four main navigation entries separate discovery, exploration, systems and saved resources.
+- A JSON editorial layer chooses existing IDs and selector rules. Three collections are discoverable and removable as filter chips; switching type retains the collection and query. Components compare in equal grid cells, while blocks, pages and systems use wider samples. All 87 resource records remain.
+- Quick previews carry the real demonstration, concise purpose, current/style prompt copying, save and full-detail/code links. Full canonical routes retain website navigation and document scrolling, a preview/code body, expanded interpretation/prompt/provenance and related resources. System pages include a thumbnail directory and follow internal demo navigation.
+- Quick → full uses a separate browser history entry, including when the canonical URL does not change. Back/Forward restore each layer; closing quick preview restores the original filters, loaded count, scroll and focus. Animation parameter choices survive the quick/full transition and replay.
+- `presentation.js` supplies card/quick/detail context. Six button covers were recaptured at 320×240 to show the actual control more clearly; hover frames use exactly that same viewport. Upstream component code and themes are unchanged. Full desktop previews retain their original canvas width.
+- Touch card hit targets are transparent. Real-browser screenshot review exposed opaque legacy overlays and overlapping mobile metadata; the corrected layout now has a dedicated regression check. Full-page prompts expand in the document; only source text has a bounded scroll area.
+
+### Acceptance evidence for the discovery upgrade
+
+`npm run check`, `npm run build` and all **34 Playwright tests** passed. The suite retains local CRUD/settings, source downloads, library validation, nested dialog/Escape behavior, bilingual/theme checks and responsive source previews; new coverage adds discovery counts/collections, mixed type groups, context-preserving filters, empty results, canonical sharing, same-URL history, full-code reuse and touch cover visibility.
+
+The browser capture script `node scripts/capture-discovery.mjs` checks **12 viewport/theme/language configurations**, records **60 real screenshots**, visits favorites/systems/sources/guide, and saves a discovery-to-code/system recording. External runtime requests are blocked in this capture pass, with no page or HTTP errors and no document overflow. Runtime source hashes in the [verification report](discovery/verification.json) match the final files. Existing runnable ZIP implementation and lockfiles remain unchanged; the build regenerates both downloads.
+
+| Evidence         | Desktop                                                  | Mobile                                                |
+| ---------------- | -------------------------------------------------------- | ----------------------------------------------------- |
+| Discovery        | [Chinese / light](discovery/home-1440-light-zh-CN.png)   | [Chinese / light](discovery/home-375-light-zh-CN.png) |
+| Comparison       | [Buttons](discovery/category-1440-light-en.png)          | [Buttons](discovery/category-375-light-en.png)        |
+| Quick preview    | [Chinese / light](discovery/quick-1440-light-zh-CN.png)  | [English / dark](discovery/quick-375-dark-en.png)     |
+| Full resource    | [Chinese / light](discovery/detail-1440-light-zh-CN.png) | [English / dark](discovery/detail-375-dark-en.png)    |
+| System directory | [Chinese / light](discovery/case-1440-light-zh-CN.png)   | [English / dark](discovery/case-375-dark-en.png)      |
+
+[Discovery, prompt/source copying, browser return and system navigation recording](discovery/discover-and-reuse.webm). Earlier gallery screenshots remain above for comparison. This iteration updates PR #4; it does not merge or deploy it.

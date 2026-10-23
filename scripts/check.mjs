@@ -219,7 +219,7 @@ for (const r of resources) {
   assert.ok(p.width > 0 && p.height > 0);
   if (r.type !== "component" || r.preview.width >= 900)
     assert.equal(p.width, r.preview.width);
-  else assert.equal(p.width, 400);
+  else assert.equal(p.width, r.category === "buttons" ? 320 : 400);
 }
 assert.equal(
   thumbnailURL("./demo.html?a=b#/tasks"),
@@ -253,5 +253,7 @@ for (const collection of discovery.collections) {
   assert.ok(items.length && items.every(Boolean), collection.id);
   assert.equal(new Set(items.map((r) => r.id)).size, items.length);
 }
+assert.equal(new Set(discovery.categories).size, discovery.categories.length);
+assert.ok(discoveryResources("cases").every((r) => r.type === "case"));
 for (const category of discovery.categories)
   assert.ok(resources.some((r) => r.category === category));

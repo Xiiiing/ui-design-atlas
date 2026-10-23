@@ -42,7 +42,7 @@ test("Gallery uses native document scrolling, compact previews and wide spans", 
     await thumb.evaluate((img) => img.decode());
     expect(
       await thumb.evaluate((img) => [img.naturalWidth, img.naturalHeight]),
-    ).toEqual([400, 400]);
+    ).toEqual([320, 240]);
   }
 });
 
@@ -134,7 +134,6 @@ test("Original motion parameters affect the real preview, prompt and replay", as
   await expect
     .poll(() => button.evaluate((el) => el.style.getPropertyValue("--speed")))
     .toBe("6s");
-  await page.getByRole("tab", { name: "Prompt", exact: true }).click();
   await expect(page.locator(".full-prompt")).toContainText("duration = 6");
   await page.locator("#inspector [data-copy-prompt]").click();
   expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(

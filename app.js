@@ -56,6 +56,7 @@ let route,
 let originBrowse = null,
   currentFiles = {},
   previewCache = new Map();
+const previewValues = new Map();
 const t = (zh, en) => (locale === "en" ? en : zh);
 const l = (v) => (v && typeof v === "object" ? v[locale] : v);
 const key = (r) => `${r.type}:${r.id}`;
@@ -204,7 +205,7 @@ function listing() {
   )
     .map(
       ([v, labels]) =>
-        `<a href="${href(v)}" data-market-mode="${v}" class="${route.view === v ? "active" : ""}" ${route.view === v ? 'aria-current="page"' : ""}>${icon(viewIcons[v])}${t(...labels)}${v === "explore" || v === "motion" ? `<span>${v === "explore" ? resources.length : resources.filter((r) => r.motion).length}</span>` : ""}</a>`,
+        `<a href="${href(v, "", Object.fromEntries(route.params))}" data-market-mode="${v}" class="${route.view === v ? "active" : ""}" ${route.view === v ? 'aria-current="page"' : ""}>${icon(viewIcons[v])}${t(...labels)}${v === "explore" || v === "motion" ? `<span>${v === "explore" ? resources.length : resources.filter((r) => r.motion).length}</span>` : ""}</a>`,
     )
     .join("")}</nav>
   ${collection ? `<input type="hidden" name="collection" value="${collection.id}">` : ""}<input type="hidden" name="category" value="${esc(route.params.get("category") || "all")}">
@@ -347,10 +348,13 @@ function updateResults(updateURL = false) {
     );
     route = parse();
   }
+  document.querySelectorAll("[data-market-mode]").forEach((el) => {
+    el.href = href(el.dataset.marketMode, "", Object.fromEntries(route.params));
+  });
   updateFilterChips();
   observeCards();
 }
-function resourceDetails(r) {
+function resourceDetails(r, promptHTML) {
   const c = r.caseId
     ? getCase(r.caseId)
     : r.type === "case"
@@ -364,7 +368,7 @@ function resourceDetails(r) {
           .map((x) => `<li>${esc(x)}</li>`)
           .join("")}</ul>`
       : ""
-  }</section><section class="detail-section"><div class="section-heading"><h3>${t("当前提示词", "Current prompt")}</h3><button class="button small" data-copy-prompt>${icon("copy")}${t("复制", "Copy")}</button></div><p class="curator-label">${t("本站整理 · 与左侧演示对应", "Curated by Atlas · Matches this preview")}</p><pre class="inline-prompt prompt-text">${esc(promptText(r))}</pre></section>${provenance(r)}`;
+  }</section>${promptHTML}${provenance(r)}`;
 }
 function provenance(r) {
   const s = resourceSource(r);
@@ -408,28 +412,27 @@ function related(r) {
 }
 function inspector() {
   if (!selected) return;
-  const r = selected,
-    s = resourceSource(r);
+  const r = selected;
+  const quick = !!history.state?.atlasModal;
+  const head = `<div class="inspector-head"><div class="detail-eyebrow"><span>${labelType(r)}${r.motion ? " · " + t("动效", "Motion") : ""}</span>${saveButton(r)}</div><h2>${esc(l(r.name))}</h2><p>${esc(l(r.description))}</p></div>`;
+  const prompt = `<section class="detail-section"><div class="section-heading"><h3>${t("当前提示词", "Current prompt")}</h3></div><p class="curator-label">${t("本站整理 · 对应当前演示", "Curated by Atlas · Matches this preview")}</p><select data-shell-control id="prompt-scope" aria-label="${t("提示词层级", "Prompt scope")}"><option value="current">${t("当前资源", "Current resource")}</option><option value="style">${t("只复用视觉风格", "Visual style only")}</option></select><pre class="inline-prompt full-prompt prompt-text ${quick ? "prompt-summary" : ""}">${esc(promptText(r))}</pre><button class="button primary" data-copy-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></section>`;
   replaceShellHTML(
     document.querySelector("#inspector"),
-    `<div class="inspector-head"><div class="detail-eyebrow"><span>${labelType(r)}${r.motion ? " · " + t("动效", "Motion") : ""}</span>${saveButton(r)}</div><h2>${esc(l(r.name))}</h2><p>${esc(l(r.description))}</p></div><div class="detail-tabs tabs" data-shell-group data-shell-key="inspector-tabs" data-shell-variant="underline" role="tablist" aria-label="${t("设计详情", "Design details")}">${[
-      ["notes", t("说明", "Notes")],
-      ["prompt", t("提示词", "Prompt")],
-      ["parts", t("关联", "Components")],
-      ["code", t("代码", "Code")],
-    ]
-      .map(
-        ([id, label]) =>
-          `<button role="tab" id="tab-${id}" data-tab="${id}" tabindex="${tab === id ? "0" : "-1"}" aria-selected="${tab === id}" aria-controls="inspector-content">${label}</button>`,
-      )
-      .join(
-        "",
-      )}</div><div id="inspector-content" class="inspector-content" role="tabpanel" aria-labelledby="tab-${tab}">${tab === "notes" ? resourceDetails(r) : tab === "parts" ? related(r) : tab === "prompt" ? `<section class="detail-section"><p>${t("本站整理 · 对应当前资源", "Curated by Atlas · Current resource")}</p><select data-shell-control id="prompt-scope" aria-label="${t("提示词层级", "Prompt scope")}"><option value="current">${t("当前资源", "Current resource")}</option><option value="style">${t("只复用视觉风格", "Visual style only")}</option></select><pre class="prompt-text full-prompt">${esc(promptText(r))}</pre><button class="button primary" data-copy-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></section>` : `<p>${t("正在读取源码…", "Loading source…")}</p>`}</div>`,
+    `${head}<div class="inspector-content">${quick ? `<section class="detail-section"><h3>${t("适用场景", "Use cases")}</h3><p>${esc(l(r.useCases || getCase(r.caseId)?.scene || r.description))}</p></section>${prompt}<div class="quick-detail-actions"><a class="button primary" href="${href(detailResource.type, detailResource.id)}" data-full-detail>${t("完整详情", "Full details")}${icon("arrow-right")}</a><a class="button" href="${href(detailResource.type, detailResource.id, { tab: "code" })}" data-full-detail="code">${icon("code-xml")}${t("查看代码", "View code")}</a></div>` : resourceDetails(r, prompt)}</div>`,
   );
-  if (tab === "code") void loadCode(r);
+  if (!quick) {
+    const code = document.querySelector("#full-code");
+    code.hidden = tab !== "code";
+    document.querySelector("#preview-panel").hidden = tab === "code";
+    document.querySelectorAll("[data-full-tab]").forEach((el) => {
+      el.setAttribute("aria-selected", String(el.dataset.tab === tab));
+      el.tabIndex = el.dataset.tab === tab ? 0 : -1;
+    });
+    if (tab === "code") void loadCode(r);
+  }
 }
 async function loadCode(r) {
-  const target = document.querySelector("#inspector-content");
+  const target = document.querySelector("#full-code");
   try {
     let files;
     if (r.sourceId === "original") {
@@ -467,7 +470,7 @@ async function loadCode(r) {
         );
       files = (await previewCache.get(url)).files;
     }
-    if (selected?.id !== r.id || tab !== "code") return;
+    if (selected?.id !== r.id || tab !== "code" || !target?.isConnected) return;
     currentFiles = files;
     const first =
       r.sourceId === "original" && r.type === "component"
@@ -493,7 +496,7 @@ async function loadCode(r) {
         );
     }
   } catch {
-    if (selected?.id === r.id && tab === "code")
+    if (selected?.id === r.id && tab === "code" && target?.isConnected)
       target.innerHTML = `<p>${t("源码读取失败，请重试。", "Source could not be loaded.")}</p><button class="button" data-tab="code">${t("重试", "Retry")}</button>`;
   }
 }
@@ -542,10 +545,26 @@ function viewer(r) {
       : r;
   const c = r.type === "case" ? getCase(r.id) : getCase(r.caseId),
     chosen = selected;
-  const framing = resourcePresentation(chosen),
+  const framing = resourcePresentation(
+      chosen,
+      history.state?.atlasModal ? "quick" : "detail",
+    ),
     parameter = previewParameters(chosen);
-  return `<div class="market-viewer"><header class="market-viewer-toolbar"><div class="viewer-leading"><button class="icon-button" data-close-viewer aria-label="${t("返回资源市场", "Back to market")}">${icon("arrow-left")}</button><div class="viewer-title"><strong>${esc(l(r.type === "case" ? r.name : chosen.name))}</strong><small>${esc(resourceSource(chosen).name)}</small></div>${c && r.type !== "component" ? `<select data-shell-control id="preview-page" aria-label="${t("预览页面", "Preview page")}">${c.pages.map((p) => `<option value="${p.id}" ${p.id === chosen.id ? "selected" : ""}>${esc(l(p.name))}</option>`).join("")}</select>` : ""}</div><div class="viewer-tools"><button class="icon-button" data-share aria-label="${t("复制分享链接", "Copy share link")}">${icon("link")}</button><span data-shell-appearance></span>${language(true)}<button class="icon-button" data-close-viewer aria-label="${t("关闭预览", "Close preview")}">${icon("x")}</button></div></header>
-  <div class="market-detail-layout"><section class="market-preview-panel" id="preview-panel" data-layout="${framing.layout}"><div class="preview-toolbar"><span class="preview-label">${t("交互预览", "Live preview")}</span>${
+  if (parameter && previewValues.has(chosen.id))
+    parameter[4] = previewValues.get(chosen.id);
+  const quick = !!history.state?.atlasModal;
+  const pageDirectory =
+    r.type === "case"
+      ? `<section class="case-directory"><div class="discovery-section-heading"><div><h2>${t("这个案例有哪些页面？", "Inside this system")}</h2><p>${r.pages.length} ${t("个页面 · 选择页面开始体验", "pages · Choose a page to try")}</p></div></div><div class="case-page-grid">${r.pages
+          .map((p) => {
+            const item = findResource(p.id, "page");
+            return `<button data-page-preview="${p.id}" aria-pressed="${p.id === chosen.id}"><img loading="lazy" src="${item.cover}" alt=""><span>${esc(l(p.name))}</span></button>`;
+          })
+          .join("")}</div></section>`
+      : "";
+  const pageHead = `<div class="resource-page-heading"><a class="text-link" href="${href("explore")}">${icon("arrow-left")}${t("探索资源", "Explore resources")}</a><div class="resource-title-line"><h1>${esc(l(r.name))}</h1>${saveButton(r)}</div><p>${esc(l(r.description))}</p><div class="resource-meta"><span>${labelType(r)}</span>${r.libraryIds.map((id) => `<span>${esc(libraries[id].name)}</span>`).join("")}${external(resourceSource(r).repo, resourceSource(r).name)}<span>${esc(resourceSource(r).license)}</span></div></div>${pageDirectory}`;
+  return `${quick ? "" : `<article class="resource-page">${pageHead}`}<div class="market-viewer ${quick ? "quick-viewer" : "full-viewer"}"><header class="market-viewer-toolbar"><div class="viewer-leading"><button class="icon-button" data-close-viewer aria-label="${t("返回资源市场", "Back to market")}">${icon("arrow-left")}</button><div class="viewer-title"><strong>${esc(l(r.type === "case" ? r.name : chosen.name))}</strong><small>${esc(resourceSource(chosen).name)}</small></div>${c && r.type !== "component" ? `<select data-shell-control id="preview-page" aria-label="${t("预览页面", "Preview page")}">${c.pages.map((p) => `<option value="${p.id}" ${p.id === chosen.id ? "selected" : ""}>${esc(l(p.name))}</option>`).join("")}</select>` : ""}</div><div class="viewer-tools"><button class="icon-button" data-share aria-label="${t("复制分享链接", "Copy share link")}">${icon("link")}</button><span data-shell-appearance></span>${language(true)}<button class="icon-button" data-close-viewer aria-label="${t("关闭预览", "Close preview")}">${icon("x")}</button></div></header>
+  ${quick ? "" : `<div class="full-resource-tabs" role="tablist" aria-label="${t("资源内容", "Resource content")}"><button data-full-tab data-tab="notes" role="tab" aria-selected="${tab !== "code"}" aria-controls="preview-panel">${t("预览", "Preview")}</button><button data-full-tab data-tab="code" role="tab" aria-selected="${tab === "code"}" aria-controls="full-code">${t("代码", "Code")}</button></div>`}<div class="market-detail-layout">${quick ? "" : `<div class="full-preview-column">`}<section class="market-preview-panel" id="preview-panel" data-layout="${framing.layout}" style="--stage-height:${framing.stageHeight}px"><div class="preview-toolbar"><span class="preview-label">${t("交互预览", "Live preview")}</span>${
     framing.layout === "wide"
       ? `<div class="viewer-devices">${[
           ["0", "monitor", t("桌面画布", "Desktop canvas")],
@@ -563,27 +582,45 @@ function viewer(r) {
   }<div class="preview-actions">${chosen.motion ? `<button class="icon-button" data-replay aria-label="${t("重播动效", "Replay animation")}">${icon("rotate-ccw")}</button>` : ""}<button class="icon-button" data-preview-theme aria-label="${t("切换演示主题", "Toggle preview theme")}">${icon(theme === "dark" ? "sun" : "moon")}</button><button class="icon-button" data-fullscreen aria-label="${t("全屏预览", "Fullscreen preview")}">${icon("maximize")}</button><a id="standalone" class="icon-button" href="${esc(resourcePreview(chosen, locale, theme))}" target="_blank" rel="noopener noreferrer" aria-label="${t("独立打开演示", "Open standalone demo")}">${icon("arrow-up-right")}</a></div></div>
   <div class="market-preview-viewport" id="preview-viewport"><div id="preview-canvas"><iframe id="case-preview" src="${esc(embeddedPreviewURL(resourcePreview(chosen, locale, theme)))}" title="${esc(l(chosen.name))}" allow="clipboard-write"></iframe></div></div>
   ${parameter ? `<div class="preview-parameters"><label>${parameter[1]}<input type="number" data-preview-setting="${parameter[0]}" data-applied-value="${parameter[4]}" min="${parameter[2]}" max="${parameter[3]}" value="${parameter[4]}" aria-label="${parameter[1]}"></label><span>${t("上游原有参数", "Original component parameter")}</span></div>` : ""}
-  <div class="market-preview-bottom"><div><button class="icon-button" data-neighbor="-1" aria-label="${t("上一个资源", "Previous resource")}">${icon("chevron-left")}</button><button class="icon-button" data-neighbor="1" aria-label="${t("下一个资源", "Next resource")}">${icon("chevron-right")}</button><span>${labelType(chosen)} · ${esc(resourceSource(chosen).license)}</span></div><button class="text-link" data-tab="prompt">${t("查看提示词", "View prompt")}${icon("arrow-up-right")}</button></div></section><aside id="inspector" class="market-inspector" aria-label="${t("设计说明", "Design details")}"></aside></div></div>`;
+  <div class="market-preview-bottom"><div><button class="icon-button" data-neighbor="-1" aria-label="${t("上一个资源", "Previous resource")}">${icon("chevron-left")}</button><button class="icon-button" data-neighbor="1" aria-label="${t("下一个资源", "Next resource")}">${icon("chevron-right")}</button><span>${labelType(chosen)} · ${esc(resourceSource(chosen).license)}</span></div><button class="text-link" data-focus-prompt>${t("查看提示词", "View prompt")}${icon("arrow-up-right")}</button></div></section>${quick ? "" : `<div id="full-code" role="tabpanel" hidden></div></div>`}<aside id="inspector" class="market-inspector" aria-label="${t("设计说明", "Design details")}"></aside></div></div>${quick ? "" : `<div class="full-related">${related(r)}</div></article>`}`;
 }
 function showViewer(r) {
   stopAllLive();
-  tab = "notes";
+  tab = route.params.get("tab") === "code" ? "code" : "notes";
   width = 0;
   fit = true;
   const isModal = !!history.state?.atlasModal;
-  document.body.classList.toggle("is-viewer", !isModal);
+  document.body.classList.remove("is-viewer");
   if (isModal) {
     const d = document.querySelector("#asset-dialog");
     replaceShellHTML(d, viewer(r));
     showShellDialog(d);
   } else {
     replaceShellHTML(main, viewer(r));
-    document.querySelector("#topbar").hidden = true;
-    document.querySelector("#footer").hidden = true;
   }
   inspector();
   scalePreview();
-  document.querySelector("[data-close-viewer]")?.focus({ preventScroll: true });
+  const frame = document.querySelector("#case-preview");
+  frame.addEventListener("load", () => {
+    const input = document.querySelector("[data-preview-setting]");
+    if (input && previewValues.has(selected?.id))
+      frame.contentWindow.postMessage(
+        {
+          type: "atlas:preview-settings",
+          settings: {
+            [input.dataset.previewSetting]: Number(input.dataset.appliedValue),
+          },
+        },
+        location.origin,
+      );
+  });
+  if (isModal && history.state?.quickScroll)
+    document.querySelector(".market-detail-layout").scrollTop =
+      history.state.quickScroll;
+  if (isModal)
+    document
+      .querySelector("[data-close-viewer]")
+      ?.focus({ preventScroll: true });
   document.title = l(r.name) + " · UI Design Atlas";
 }
 function openResource(id, type, replace = false) {
@@ -595,6 +632,9 @@ function openResource(id, type, replace = false) {
       scroll: browseScroll(),
       limit,
       focus: key(r),
+      items: [...document.querySelectorAll(".asset-card")].map(
+        (el) => el.dataset.resource,
+      ),
     };
     history.replaceState(
       { ...history.state, browse: originBrowse },
@@ -602,25 +642,37 @@ function openResource(id, type, replace = false) {
       location.href,
     );
   }
-  const state = { atlasModal: !!originBrowse, background: originBrowse };
+  const state = {
+    atlasModal: !selected ? true : !!history.state?.atlasModal,
+    background: originBrowse,
+    resourceFrom: !!selected && !history.state?.atlasModal,
+  };
   const url = href(r.type, r.id, { theme });
   history[replace ? "replaceState" : "pushState"](state, "", url);
   route = parse();
-  showViewer(r);
+  render();
+  if (!state.atlasModal) scrollBrowseTo(0);
 }
 function closeViewer() {
   if (history.state?.atlasModal && history.state?.background) {
     history.back();
     return;
   }
-  location.hash = href().slice(1);
+  if (history.state?.fromQuick || history.state?.resourceFrom) {
+    history.back();
+    return;
+  }
+  location.hash = href("explore").slice(1);
 }
 function scalePreview() {
   const viewport = document.querySelector("#preview-viewport"),
     frame = document.querySelector("#case-preview"),
     canvas = document.querySelector("#preview-canvas");
-  if (!viewport || !selected) return;
-  const framing = resourcePresentation(selected),
+  if (!viewport || !selected || !viewport.clientWidth) return;
+  const framing = resourcePresentation(
+      selected,
+      history.state?.atlasModal ? "quick" : "detail",
+    ),
     isSmall = framing.layout === "compact";
   const desired =
     width || (isSmall ? viewport.clientWidth : selected.preview.width);
@@ -634,7 +686,10 @@ function scalePreview() {
   frame.style.height = h + "px";
   frame.style.transform = `scale(${scale})`;
 }
+let renderedNavigation;
 function render() {
+  stopAllLive();
+  renderedNavigation = location.href + JSON.stringify(history.state);
   const d = document.querySelector("#asset-dialog");
   if (d.open) d.close();
   replaceShellHTML(d, "");
@@ -653,6 +708,7 @@ function render() {
     if (r) {
       if (history.state?.atlasModal) {
         originBrowse = history.state.background;
+        limit = originBrowse.limit || 24;
         const detailRoute = route;
         route = parseHash(originBrowse.hash);
         replaceShellHTML(
@@ -662,6 +718,8 @@ function render() {
         restoreFilters();
         route = detailRoute;
       }
+      if (!history.state?.atlasModal)
+        originBrowse = history.state?.background || null;
       showViewer(r);
       return;
     }
@@ -721,7 +779,7 @@ function sourcePage() {
     )}</div><section class="source-card"><h2>${t("图鉴界面设计基线", "Atlas shell design baseline")}</h2><p>${t("21st：资源优先的浏览层级、中性明暗表面、轻量边界与统一字级。固定源码提交 b96d84d，图鉴按静态资源市场需求适配。", "21st: preview-first discovery, neutral light/dark surfaces, quiet borders and a shared type scale. Adapted from pinned source b96d84d for this static resource marketplace.")}</p>${external("./vendor/21st-market/ATTRIBUTION.md", t("来源与适配说明", "Source & adaptations"))}</section><section class="source-card"><h2>${t("展示逻辑参考", "Browsing references")}</h2><p>${external("https://21st.dev/community/components", "21st.dev")} · ${external("https://coss.com/origin/button", "Origin UI")} · ${external("https://blocks.so/tables", "Blocks.so")} · ${external("https://reactbits.dev/", "React Bits")}</p><p>${t("借鉴资源分类与预览交互。本站未再分发 React Bits 组件。", "References for discovery and preview interactions. React Bits components are not redistributed.")}</p>${external("./vendor/shadcn-ui/ATTRIBUTION.md", "shadcn/ui · MIT")} · ${external("./vendor/lucide/LICENSE", "Lucide · ISC")} · ${external("./vendor/inter/LICENSE", "Inter · OFL")} · ${external("./vendor/geist/LICENSE", "Geist · OFL")}</section>`;
 }
 function guidePage() {
-  return `<section class="market-intro"><div><h1>${t("从一个 UI，开始你的项目。", "From a UI to your project.")}</h1></div></section><div class="source-card guide-copy"><h2>1. ${t("搜索并体验", "Find and try")}</h2><p>${t("按名称、用途或组件库搜索，选择动效、组件、区块或完整案例。点击卡片打开真实交互预览，关闭后继续原来的浏览位置。", "Search by name, purpose or library. Open an effect, component, block or system. Close the preview to resume browsing.")}</p><h2>2. ${t("读说明，复制提示词", "Read and copy a prompt")}</h2><p>${t("右侧说明与当前预览同步。复制当前资源提示词，或选择只复用视觉风格，替换成自己的业务需求。", "The notes follow the current preview. Copy its prompt, or the visual style only, and substitute your business requirements.")}</p><h2>3. ${t("带走实际代码", "Take the actual code")}</h2><p>${t("代码标签提供入口、实现和依赖说明。下载 ZIP 后运行以下命令，官方文档和原始源码地址也保留在详情中。", "The Code tab includes the demo, implementation and dependencies. Extract the ZIP and run the commands below. Official documentation and original source links remain in the details.")}</p><pre>npm ci\nnpm run dev\n\n# Build\nnpm run build</pre><h2>4. ${t("收藏并备份", "Save and back up")}</h2><p>${t("收藏保存在当前浏览器，可导出或导入 JSON。原有案例与组件收藏继续有效。", "Favorites stay in this browser and can be exported or imported as JSON. Existing favorites still work.")}</p></div>`;
+  return `<section class="market-intro"><div><h1>${t("从一个 UI，开始你的项目。", "From a UI to your project.")}</h1></div></section><div class="source-card guide-copy"><h2>1. ${t("搜索并体验", "Find and try")}</h2><p>${t("按名称、用途或组件库搜索，选择动效、组件、区块或完整案例。点击卡片打开真实交互预览，关闭后继续原来的浏览位置。", "Search by name, purpose or library. Open an effect, component, block or system. Close the preview to resume browsing.")}</p><h2>2. ${t("读说明，复制提示词", "Read and copy a prompt")}</h2><p>${t("右侧说明与当前预览同步。复制当前资源提示词，或选择只复用视觉风格，替换成自己的业务需求。", "The notes follow the current preview. Copy its prompt, or the visual style only, and substitute your business requirements.")}</p><h2>3. ${t("带走实际代码", "Take the actual code")}</h2><p>${t("从快速预览进入「完整详情」或「查看代码」。完整资源页提供实际入口、实现、依赖与来源说明；完整案例先浏览页面目录，再体验系统。下载 ZIP 后运行以下命令。", "Choose Full details or View code in quick preview. The full resource page includes implementation, dependencies and provenance. Systems start with a page directory. Extract the ZIP and run the commands below.")}</p><pre>npm ci\nnpm run dev\n\n# Build\nnpm run build</pre><h2>4. ${t("收藏并备份", "Save and back up")}</h2><p>${t("收藏保存在当前浏览器，可导出或导入 JSON。原有案例与组件收藏继续有效。", "Favorites stay in this browser and can be exported or imported as JSON. Existing favorites still work.")}</p></div>`;
 }
 const liveFrames = new Map();
 function stopLive(el) {
@@ -837,11 +895,26 @@ function updateContext() {
   );
   const url =
     detailResource.type === "case"
-      ? href("case", detailResource.id, { page: selected.key, theme })
-      : href(selected.type, selected.id, { theme });
+      ? href("case", detailResource.id, {
+          page: selected.key,
+          theme,
+          ...(tab === "code" ? { tab: "code" } : {}),
+        })
+      : href(selected.type, selected.id, {
+          theme,
+          ...(tab === "code" ? { tab: "code" } : {}),
+        });
   history.replaceState(history.state, "", url);
   route = parse();
   inspector();
+  document
+    .querySelectorAll("[data-page-preview]")
+    .forEach((el) =>
+      el.setAttribute(
+        "aria-pressed",
+        String(el.dataset.pagePreview === selected.id),
+      ),
+    );
   scalePreview();
 }
 document.addEventListener("submit", (e) => {
@@ -850,12 +923,37 @@ document.addEventListener("submit", (e) => {
   location.hash = href("explore", "", { q: new FormData(e.target).get("q") });
 });
 document.addEventListener("click", async (e) => {
+  const fullLink = e.target.closest("[data-full-detail]");
+  if (fullLink && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
+    e.preventDefault();
+    history.replaceState(
+      {
+        ...history.state,
+        quickScroll:
+          document.querySelector(".market-detail-layout")?.scrollTop || 0,
+      },
+      "",
+      location.href,
+    );
+    history.pushState(
+      { atlasModal: false, fromQuick: true, background: originBrowse },
+      "",
+      href(detailResource.type, detailResource.id, {
+        theme,
+        ...(detailResource.type === "case" ? { page: selected.key } : {}),
+        ...(fullLink.dataset.fullDetail === "code" ? { tab: "code" } : {}),
+      }),
+    );
+    render();
+    scrollBrowseTo(0);
+    return;
+  }
   const link = e.target.closest("[data-open],[data-related]");
   if (link && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
     e.preventDefault();
     document.querySelector("#search-dialog").close();
     const [type, id] = (link.dataset.open || link.dataset.related).split(":");
-    openResource(id, type, !!selected);
+    openResource(id, type, !!selected && !!history.state?.atlasModal);
     return;
   }
   if (e.target.closest("#search-results a"))
@@ -887,10 +985,28 @@ document.addEventListener("click", async (e) => {
   }
   if (b.dataset.tab) {
     tab = b.dataset.tab;
+    const params = new URLSearchParams(route.params);
+    if (tab === "code") params.set("tab", "code");
+    else params.delete("tab");
+    history.replaceState(
+      history.state,
+      "",
+      href(route.view, route.id, Object.fromEntries(params)),
+    );
     inspector();
+    document.querySelector(`[data-full-tab][data-tab="${tab}"]`)?.focus();
+    return;
+  }
+  if (b.dataset.pagePreview) {
+    syncPage(b.dataset.pagePreview);
+    document.querySelector(".full-viewer")?.scrollIntoView({ block: "start" });
+    return;
+  }
+  if (b.hasAttribute("data-focus-prompt")) {
+    document.querySelector("#prompt-scope")?.focus();
     document
-      .querySelector(`#inspector [role="tab"][data-tab="${tab}"]`)
-      ?.focus();
+      .querySelector("#prompt-scope")
+      ?.scrollIntoView({ block: "center" });
     return;
   }
   if (b.dataset.device !== undefined) {
@@ -951,15 +1067,22 @@ document.addEventListener("click", async (e) => {
     return;
   }
   if (b.dataset.neighbor) {
-    const list = originBrowse
-      ? (() => {
-          const saved = route;
-          route = parseHash(originBrowse.hash);
-          const a = filtered();
-          route = saved;
-          return a;
-        })()
-      : resources;
+    const list = originBrowse?.items?.length
+      ? originBrowse.items
+          .map((k) => {
+            const [type, id] = k.split(":");
+            return findResource(id, type);
+          })
+          .filter(Boolean)
+      : originBrowse
+        ? (() => {
+            const saved = route;
+            route = parseHash(originBrowse.hash);
+            const a = filtered();
+            route = saved;
+            return a;
+          })()
+        : resources;
     const i = list.findIndex((r) => key(r) === key(detailResource));
     const r =
       list[(i + Number(b.dataset.neighbor) + list.length) % list.length];
@@ -1045,6 +1168,7 @@ document.addEventListener("input", (e) => {
       location.origin,
     );
     field.dataset.appliedValue = String(value);
+    previewValues.set(selected.id, value);
     const text = document.querySelector(".inline-prompt, .full-prompt");
     if (text) text.textContent = currentPrompt();
     return;
@@ -1227,11 +1351,8 @@ document.addEventListener("keydown", (e) => {
             ? tabs.length - 1
             : (i + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) %
               tabs.length;
-    tab = tabs[n].dataset.tab;
-    inspector();
-    document
-      .querySelector(`#inspector [role="tab"][data-tab="${tab}"]`)
-      .focus();
+    tabs[n].click();
+    document.querySelector(`[data-full-tab][data-tab="${tab}"]`)?.focus();
   }
 });
 const dialog = document.createElement("dialog");
@@ -1245,11 +1366,15 @@ dialog.addEventListener("cancel", (e) => {
 dialog.addEventListener("click", (e) => {
   if (e.target === dialog) closeViewer();
 });
-window.addEventListener("hashchange", () => {
+function navigationChanged() {
+  if (renderedNavigation === location.href + JSON.stringify(history.state))
+    return;
   document.querySelector("#search-dialog").close();
   render();
-  if (!selected && !history.state?.browse) scrollBrowseTo(0);
-});
+  if (!history.state?.browse) scrollBrowseTo(0);
+}
+window.addEventListener("hashchange", navigationChanged);
+window.addEventListener("popstate", navigationChanged);
 window.addEventListener("resize", () => {
   scalePreview();
   document.querySelectorAll(".asset-card.is-live").forEach(sizeLive);

@@ -1,0 +1,112 @@
+{
+  "referenceCommit": "b96d84dcf748d5e56f2f72f2bab9a4f7f33574cf",
+  "sourceHashes": {
+    "app.js": "973b84d44ff319e80efa323536bf4311e9965220012059ab738a306eb86944ab",
+    "catalog.js": "3aea2ee581afab2874452b8347b52d061f0f691aedc9ad315786dbceec76929b",
+    "content/discovery.json": "1e6405c77350e5756d223e70e05bd19b561a95d1ad5a1c3e21c43f9d64e37ebd",
+    "presentation.js": "80c8b7e104c50eebc83acd094bb073646b62f1ae2ca93ace8a70aa8140d89855",
+    "market.css": "a7edcefb65ceb2240dfa7100cf2d6d5eb3d26e60a5eb93d8aacf34c7e20b2833",
+    "shell/controls.tsx": "0f75407129e06df495db230c42781e649bf2ccf5af62a103e2598fba9b87a9d9"
+  },
+  "results": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "light",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "light",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "height": 1000,
+      "mode": "light",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "height": 1000,
+      "mode": "light",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "height": 1000,
+      "mode": "light",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "height": 1000,
+      "mode": "light",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "zh-CN",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    },
+    {
+      "width": 375,
+      "height": 1000,
+      "mode": "dark",
+      "lang": "en",
+      "externalRuntimeBlocked": true,
+      "errors": []
+    }
+  ],
+  "recording": "discover-and-reuse.webm",
+  "screenshots": 60,
+  "data": "Actual same-origin browser captures using existing local demo data."
+}

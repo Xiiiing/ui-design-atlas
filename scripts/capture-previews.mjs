@@ -24,9 +24,13 @@ try {
   const jobs = resources.filter(
     (r) =>
       !process.argv[2] ||
-      (process.argv[2] === "--new"
-        ? Boolean(r.preview.url)
-        : r.id.includes(process.argv[2])),
+      (process.argv[2] === "--controls"
+        ? r.type === "component" &&
+          r.category === "buttons" &&
+          r.preview.width < 900
+        : process.argv[2] === "--new"
+          ? Boolean(r.preview.url)
+          : r.id.includes(process.argv[2])),
   );
   let index = 0;
   await Promise.all(
