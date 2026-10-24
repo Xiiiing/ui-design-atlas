@@ -16,6 +16,7 @@ import {
 import { icon } from "./icons.js";
 import {
   resources,
+  resourceCounts,
   findResource,
   resourcePreview,
   resourcePrompt,
@@ -239,19 +240,17 @@ function card(r) {
 }
 function typeCount(v) {
   return v === "explore"
-    ? resources.length
+    ? resourceCounts.total
     : v === "motion"
-      ? resources.filter((r) => r.motion).length
-      : resources.filter(
-          (r) =>
-            r.type ===
-            {
-              components: "component",
-              blocks: "block",
-              pages: "page",
-              cases: "case",
-            }[v],
-        ).length;
+      ? resourceCounts.motion
+      : resourceCounts.byType.get(
+          {
+            components: "component",
+            blocks: "block",
+            pages: "page",
+            cases: "case",
+          }[v],
+        ) || 0;
 }
 function discoveryPage() {
   const items = discoveryGallery().slice(0, limit);
@@ -334,7 +333,7 @@ function browseFilters() {
       "",
     )}</nav><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(route.params.get("q") || "")}"><button class="icon-button" type="submit" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label></div>
   ${collection ? `<input type="hidden" name="collection" value="${collection.id}">` : ""}<input type="hidden" name="category" value="${esc(route.params.get("category") || "all")}">
-  <nav class="category-strip" data-shell-group data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${[["all", ["全部分类", "All categories"]], ...Object.entries(categories)].map(([id, labels]) => `<button type="button" data-category="${id}" aria-pressed="${(route.params.get("category") || "all") === id}">${t(...labels)}<span>${id === "all" ? resources.length : resources.filter((r) => r.category === id).length}</span></button>`).join("")}</nav>
+  <nav class="category-strip" data-shell-group data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${[["all", ["全部分类", "All categories"]], ...Object.entries(categories)].map(([id, labels]) => `<button type="button" data-category="${id}" aria-pressed="${(route.params.get("category") || "all") === id}">${t(...labels)}<span>${id === "all" ? resourceCounts.total : resourceCounts.byCategory.get(id) || 0}</span></button>`).join("")}</nav>
   <div class="filter-options-row"><div class="active-filters" id="active-filters" aria-label="${t("已选条件", "Selected filters")}"></div><div class="catalog-facets">
   ${selectFilter(
     "library",

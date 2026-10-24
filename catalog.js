@@ -412,9 +412,18 @@ export const components = [
   }),
 ];
 export const pages = cases.flatMap((c) => c.pages);
-export const getCase = (id) => cases.find((c) => c.id === id);
-export const getPage = (id) => pages.find((p) => p.id === id);
-export const getComponent = (id) => components.find((c) => c.id === id);
+function indexById(items) {
+  const index = new Map();
+  // Match Array.find: duplicate IDs keep their first object, not their last.
+  for (const item of items) if (!index.has(item.id)) index.set(item.id, item);
+  return index;
+}
+const casesById = indexById(cases);
+const pagesById = indexById(pages);
+const componentsById = indexById(components);
+export const getCase = (id) => casesById.get(id);
+export const getPage = (id) => pagesById.get(id);
+export const getComponent = (id) => componentsById.get(id);
 export function promptFor(c, item, scope, locale) {
   const en = locale === "en",
     v = (x) => (typeof x === "object" ? x[locale] : x);
@@ -563,8 +572,31 @@ export const resources = [
     };
   }),
 ];
+const resourcesById = indexById(resources);
+const resourcesByType = new Map();
+// The catalog is static after initialization; these are global navigation counts.
+export const resourceCounts = {
+  total: resources.length,
+  motion: 0,
+  byType: new Map(),
+  byCategory: new Map(),
+};
+for (const r of resources) {
+  if (!resourcesByType.has(r.type)) resourcesByType.set(r.type, new Map());
+  const index = resourcesByType.get(r.type);
+  if (!index.has(r.id)) index.set(r.id, r);
+  resourceCounts.byType.set(
+    r.type,
+    (resourceCounts.byType.get(r.type) || 0) + 1,
+  );
+  resourceCounts.byCategory.set(
+    r.category,
+    (resourceCounts.byCategory.get(r.category) || 0) + 1,
+  );
+  if (r.motion) resourceCounts.motion++;
+}
 export const findResource = (id, type) =>
-  resources.find((r) => r.id === id && (!type || r.type === type));
+  type ? resourcesByType.get(type)?.get(id) : resourcesById.get(id);
 export const resourceSource = (r) => sourceProjects[r.sourceId];
 export function resourcePreview(r, lang = "zh-CN", theme = "light") {
   if (r.preview.url)
