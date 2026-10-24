@@ -406,14 +406,13 @@ function filtered() {
     ? Object.fromEntries(new FormData(document.querySelector("#filters")))
     : Object.fromEntries(route.params);
   const mode = route.view === "favorites" ? "explore" : route.view;
+  const collectionIds = values.collection
+    ? new Set(collectionResources(values.collection).map((r) => r.id))
+    : null;
   return searchResources(
     values.q,
     resources.filter((r) => {
-      if (
-        values.collection &&
-        !collectionResources(values.collection).some((x) => x.id === r.id)
-      )
-        return false;
+      if (collectionIds && !collectionIds.has(r.id)) return false;
       if (route.view === "favorites" && !favorites.has(key(r))) return false;
       if (mode === "motion" && !r.motion) return false;
       const type = {
@@ -462,14 +461,17 @@ function filtered() {
 function resultsSummary(count) {
   return `<div class="market-results-line"><span><strong>${count}</strong> ${t("个设计资源", "design resources")}</span><span><i class="status-dot"></i>${t("真实交互预览 · 提示词与源码", "LIVE PREVIEWS · PROMPTS & SOURCE")}</span></div>`;
 }
+function filterParameters() {
+  const params = Object.fromEntries(
+    new FormData(document.querySelector("#filters")),
+  );
+  for (const k in params)
+    if (!params[k] || params[k] === "all") delete params[k];
+  return params;
+}
 function updateResults(updateURL = false) {
   if (route.view === "discover" && updateURL) {
-    const params = Object.fromEntries(
-      new FormData(document.querySelector("#filters")),
-    );
-    for (const k in params)
-      if (!params[k] || params[k] === "all") delete params[k];
-    location.hash = href("explore", "", params);
+    location.hash = href("explore", "", filterParameters());
     return;
   }
   if (!document.querySelector("#results")) return;
@@ -478,15 +480,10 @@ function updateResults(updateURL = false) {
   document.querySelector("#results").innerHTML =
     `${resultsSummary(items.length)}${items.length ? `${resultGroups(items.slice(0, limit))}${items.length > limit ? `<button class="button load-more" data-more>${t("再看一些", "Explore more")} ${icon("arrow-down")}</button>` : ""}` : `<div class="market-empty">${icon("search")}<h2>${t("换个关键词试试", "Try another search")}</h2><p>${t("也可以清空筛选，看看其他界面。", "Clear the filters to discover more interfaces.")}</p><button class="button" data-reset-filters>${t("清空筛选", "Clear filters")}</button></div>`}`;
   if (updateURL) {
-    const params = Object.fromEntries(
-      new FormData(document.querySelector("#filters")),
-    );
-    for (const k in params)
-      if (!params[k] || params[k] === "all") delete params[k];
     history.replaceState(
       { ...history.state, limit },
       "",
-      href(route.view, "", params),
+      href(route.view, "", filterParameters()),
     );
     route = parse();
   }
