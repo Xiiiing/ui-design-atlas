@@ -77,27 +77,24 @@ export function resourcePresentation(resource, context = "card") {
   };
 }
 
-export function thumbnailURL(url) {
+function appendPreviewParameter(url, parameter) {
   const [path, hash] = url.split("#");
   return (
     path +
     (path.includes("?") ? "&" : "?") +
-    "thumb=1" +
+    parameter +
     (hash ? "#" + hash : "")
   );
+}
+
+export function thumbnailURL(url) {
+  return appendPreviewParameter(url, "thumb=1");
 }
 
 export function embeddedPreviewURL(url) {
-  const [path, hash] = url.split("#");
-  return (
-    path +
-    (path.includes("?") ? "&" : "?") +
-    "embed=1" +
-    (hash ? "#" + hash : "")
-  );
+  return appendPreviewParameter(url, "embed=1");
 }
 
 export function inlinePreviewURL(url) {
-  const [path, hash] = embeddedPreviewURL(url).split("#");
-  return path + "&inline=1" + (hash ? "#" + hash : "");
+  return appendPreviewParameter(embeddedPreviewURL(url), "inline=1");
 }
