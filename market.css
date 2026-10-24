@@ -127,9 +127,6 @@ svg {
 iframe {
   border: 0;
 }
-[hidden] {
-  display: none !important;
-}
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -182,8 +179,6 @@ textarea:focus-visible {
   position: sticky;
   top: 0;
   z-index: 20;
-  border-bottom: 1px solid var(--line);
-  background: var(--panel);
 }
 #footer {
   max-width: 1440px;
@@ -273,9 +268,6 @@ html[data-theme="dark"] .brand-mark.brand-dark {
 }
 [data-shell-mounted="navigation"] {
   display: none;
-}
-.market-header-actions [data-shell-mounted="select"] {
-  width: 82px;
 }
 .icon-button,
 .atlas-menu-trigger {
@@ -611,7 +603,6 @@ kbd {
   top: 50%;
   left: 50%;
   transform-origin: center;
-  pointer-events: none;
 }
 .asset-card.is-live .asset-live {
   opacity: 1;
@@ -845,15 +836,12 @@ kbd {
 
 /* The archive's immersive preview is a workspace, not a second application shell. */
 #asset-dialog {
-  width: calc(100vw - 40px);
   max-width: 1600px;
   height: calc(100dvh - 40px);
-  max-height: 1200px;
   margin: auto;
   padding: 0;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 12px;
   color: var(--ink);
   background: var(--panel);
   box-shadow: var(--shadow-lg);
@@ -891,35 +879,28 @@ dialog::backdrop {
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
-  min-height: 80px;
   gap: 12px;
-  padding: 14px 18px;
   border-bottom: 1px solid var(--line);
   background: var(--panel);
 }
 .viewer-leading {
   display: flex;
   align-items: center;
-  gap: 12px;
   min-width: 0;
 }
 .viewer-title {
-  display: flex;
   flex-direction: column;
   gap: 3px;
   min-width: 0;
 }
 .viewer-title strong {
-  max-width: 220px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 14px;
   line-height: 22px;
   font-weight: 500;
 }
 .viewer-title small {
-  font-size: 12px;
   line-height: 18px;
   color: var(--muted-text);
 }
@@ -929,7 +910,6 @@ dialog::backdrop {
 .viewer-tools {
   display: flex;
   align-items: center;
-  gap: 4px;
   flex-shrink: 0;
 }
 .viewer-tools > [data-shell-mounted="select"] {
@@ -941,14 +921,9 @@ dialog::backdrop {
 .viewer-devices {
   display: flex;
   gap: 2px;
-  padding: 3px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--surface);
 }
 .market-detail-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
   flex: 1;
   min-height: 0;
   overflow: hidden;
@@ -991,9 +966,7 @@ dialog::backdrop {
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
-  min-height: 60px;
   gap: 12px;
-  padding: 8px 14px;
   border-top: 1px solid var(--line);
   background: var(--panel);
 }
@@ -1032,9 +1005,6 @@ dialog::backdrop {
   scrollbar-width: thin;
   scrollbar-color: var(--line-strong) transparent;
 }
-.inspector-head {
-  padding: 24px 24px 20px;
-}
 .detail-eyebrow {
   display: flex;
   align-items: center;
@@ -1060,11 +1030,8 @@ dialog::backdrop {
   line-height: 32px;
   font-weight: 600;
   letter-spacing: -0.03em;
-  margin-bottom: 12px;
 }
 .inspector-head p {
-  font-size: 14px;
-  line-height: 24px;
   color: var(--muted-text);
 }
 .market-inspector > [data-shell-mounted="selection"] {
@@ -1075,45 +1042,31 @@ dialog::backdrop {
 }
 .detail-tabs {
   display: flex;
-  padding: 0 20px;
   border-bottom: 1px solid var(--line);
-  gap: 8px;
   --selection-stroke: var(--ink);
 }
 .detail-tabs button {
   flex: 1;
-  min-height: 48px;
-  padding: 12px 4px;
   border: 0;
   border-bottom: 2px solid transparent;
   background: transparent;
   color: var(--muted-text);
-  font-size: 14px;
   line-height: 22px;
   font-weight: 400;
 }
 .detail-tabs button[aria-selected="true"] {
   color: var(--ink);
 }
-.inspector-content {
-  padding: 0 24px 28px;
-}
 .detail-section {
-  padding-top: 24px;
   overflow-wrap: anywhere;
   font-size: 14px;
   line-height: 22px;
 }
 .detail-section h3 {
-  font-size: 16px;
-  line-height: 24px;
   font-weight: 500;
-  margin-bottom: 12px;
 }
 .detail-section p,
 .detail-section ul {
-  font-size: 14px;
-  line-height: 24px;
   color: var(--muted-text);
 }
 .detail-section p {
@@ -1150,9 +1103,6 @@ dialog::backdrop {
   border-radius: 11px;
   background: var(--surface);
   color: var(--ink);
-  font:
-    14px/24px system-ui,
-    sans-serif;
 }
 .inline-prompt {
   max-height: 320px;
@@ -1174,8 +1124,6 @@ dialog::backdrop {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 6px 10px;
-  padding: 12px;
-  margin-bottom: 16px;
   border: 1px solid var(--line);
   border-radius: 11px;
   background: var(--surface);
@@ -1270,7 +1218,6 @@ dialog::backdrop {
 /* Search and supporting routes use the same semantic surfaces and controls. */
 dialog {
   border: 1px solid var(--line);
-  border-radius: 16px;
   background: var(--panel);
   color: var(--ink);
   box-shadow: var(--shadow-lg);
@@ -1431,24 +1378,17 @@ dialog {
 .source-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
 }
 .source-card {
   padding: 24px;
-  margin-bottom: 20px;
   border: 1px solid var(--line);
-  border-radius: 16px;
   background: var(--panel);
   overflow-wrap: anywhere;
 }
 .source-card h2 {
-  font-size: 20px;
-  line-height: 28px;
   margin-bottom: 12px;
 }
 .source-card p {
-  font-size: 14px;
-  line-height: 24px;
   color: var(--muted-text);
 }
 .source-card a {
@@ -1462,16 +1402,12 @@ dialog {
 .source-card code {
   font-size: 12px;
 }
-.guide-copy {
-  max-width: 880px;
-}
 .guide-copy h2:not(:first-child) {
   margin-top: 28px;
 }
 .guide-copy pre {
   padding: 20px;
   border: 1px solid var(--line);
-  border-radius: 11px;
   background: var(--surface);
   font:
     14px/24px ui-monospace,
@@ -1571,7 +1507,6 @@ dialog {
   .asset-save,
   .asset-open {
     opacity: 1;
-    min-width: 36px;
     height: 36px;
   }
   .asset-open {
@@ -1667,17 +1602,10 @@ dialog {
 }
 @media (max-width: 1023px) {
   #asset-dialog {
-    width: calc(100vw - 24px);
-    height: calc(100dvh - 24px);
     max-height: none;
     border-radius: 12px;
   }
-  .market-viewer-toolbar {
-    flex-wrap: wrap;
-    padding: 10px 12px;
-  }
   .viewer-tools {
-    flex-wrap: wrap;
     gap: 2px;
     min-width: 0;
     max-width: 100%;
@@ -1688,21 +1616,10 @@ dialog {
   .viewer-title {
     display: flex;
   }
-  .viewer-title strong {
-    max-width: 140px;
-  }
   .toolbar-copy {
     display: none;
   }
-  .market-detail-layout {
-    display: block;
-    overflow: auto;
-  }
-  .market-preview-panel {
-    height: 500px;
-  }
   .market-inspector {
-    overflow: visible;
     border-left: 0;
     border-top: 1px solid var(--line);
   }
@@ -1714,10 +1631,6 @@ dialog {
     min-width: 36px;
     height: 36px;
     min-height: 36px;
-  }
-  .viewer-tools > .icon-button[data-share],
-  .viewer-tools > [data-shell-mounted="appearance"] {
-    display: none;
   }
   .viewer-tools > [data-shell-mounted="select"] {
     width: 72px;
@@ -1746,12 +1659,7 @@ dialog {
   .viewer-tools {
     justify-content: flex-start;
   }
-  .viewer-title strong {
-    max-width: 200px;
-  }
   .viewer-tools .icon-button {
-    width: 32px;
-    min-width: 32px;
     height: 36px;
   }
   .viewer-tools > .icon-button[data-preview-theme] {
@@ -1759,10 +1667,6 @@ dialog {
   }
   .viewer-leading > [data-shell-mounted="select"] {
     margin-left: auto;
-    max-width: 145px;
-  }
-  .market-preview-panel {
-    height: 430px;
   }
   .market-preview-bottom {
     padding: 6px 10px;
@@ -1771,9 +1675,6 @@ dialog {
   .market-preview-bottom span {
     font-size: 10px;
     margin-left: 0;
-  }
-  .market-preview-bottom .text-link {
-    font-size: 12px;
   }
   .inspector-head {
     padding: 20px;
@@ -2206,7 +2107,6 @@ dialog {
 .library-page .asset-preview > img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 .library-page .asset-live,
 .library-page .asset-cover-link {
@@ -2472,15 +2372,11 @@ dialog {
   min-width: 0;
 }
 .full-viewer .market-preview-panel {
-  height: 660px;
   min-height: 0;
   border: 0;
 }
 .full-viewer .market-preview-panel[data-layout="compact"] {
   height: 560px;
-}
-.full-viewer .market-preview-panel:fullscreen {
-  height: 100dvh;
 }
 .full-viewer .market-inspector {
   overflow: visible;
@@ -2623,7 +2519,6 @@ dialog {
 }
 .catalog-toolbar .market-tabs a {
   border: 0;
-  padding: 7px 12px;
   min-height: 36px;
   border-radius: 9px;
   font-size: 13px;
@@ -3398,12 +3293,34 @@ dialog {
 
 /* Golden proportion defines hierarchy; demo aspect ratios and modular cards
    remain resource-specific. Narrow screens retain one readable column. */
-:root{--atlas-phi:1.618;--atlas-major:61.8%;--atlas-reading-leading:1.618}
-.library-page .market-intro p{line-height:var(--atlas-reading-leading);max-width:62ch}
-.detail-section p,.detail-section li{line-height:var(--atlas-reading-leading)}
-@media(min-width:1024px){
- .library-page .market-intro{max-width:var(--atlas-major);margin-bottom:32px}
- .catalog-toolbar{display:grid;grid-template-columns:minmax(0,1.618fr) minmax(0,1fr);gap:24px}
- .catalog-toolbar .market-search{width:100%;max-width:none}
- .experience-viewer[data-details-open="true"] .market-detail-layout{grid-template-columns:minmax(0,1.618fr) minmax(320px,1fr)}
+:root {
+  --atlas-phi: 1.618;
+  --atlas-major: 61.8%;
+  --atlas-reading-leading: 1.618;
+}
+.library-page .market-intro p {
+  line-height: var(--atlas-reading-leading);
+  max-width: 62ch;
+}
+.detail-section p,
+.detail-section li {
+  line-height: var(--atlas-reading-leading);
+}
+@media (min-width: 1024px) {
+  .library-page .market-intro {
+    max-width: var(--atlas-major);
+    margin-bottom: 32px;
+  }
+  .catalog-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1.618fr) minmax(0, 1fr);
+    gap: 24px;
+  }
+  .catalog-toolbar .market-search {
+    width: 100%;
+    max-width: none;
+  }
+  .experience-viewer[data-details-open="true"] .market-detail-layout {
+    grid-template-columns: minmax(0, 1.618fr) minmax(320px, 1fr);
+  }
 }

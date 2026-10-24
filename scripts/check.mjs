@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readFile, access } from "node:fs/promises";
+import { readFile, access, readdir } from "node:fs/promises";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -69,6 +69,9 @@ for (const c of components) {
 for (const item of originals)
   assert.ok(componentMarkup(item, true).length > 100);
 const files = [
+  ...(await readdir(new URL("atlas/", base)))
+    .filter((file) => file.endsWith(".js"))
+    .map((file) => `atlas/${file}`),
   "index.html",
   "preview.html",
   "component-preview.html",
