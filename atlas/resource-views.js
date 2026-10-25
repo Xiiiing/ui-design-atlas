@@ -25,11 +25,7 @@ export const types = {
 export const coverURL = (cover, theme) =>
   theme === "dark" ? cover.replace(/\.png$/, "-dark.png") : cover;
 
-export function validFavorite(k) {
-  if (typeof k !== "string") return false;
-  const [type, id] = k.split(":");
-  return !!findResource(id, type);
-}
+export { validFavorite } from "./favorite-data.js";
 
 export function createResourceViews({
   appState,
@@ -56,7 +52,7 @@ export function createResourceViews({
               appState.route.view,
             ));
         const label = t(zh, en);
-        return `<a data-primary-view="${view}" href="${href(view)}" class="${active ? "active" : ""}" aria-label="${label}" title="${label}" ${active ? 'aria-current="page"' : ""}>${icon(glyph)}<span class="nav-label">${label}${view === "favorites" && appState.favorites.size ? ` <small>${appState.favorites.size}</small>` : ""}</span></a>`;
+        return `<a data-primary-view="${view}" href="${href(view)}" class="${active ? "active" : ""}" aria-label="${label}" title="${label}" ${active ? 'aria-current="page"' : ""}>${icon(glyph)}<span class="nav-label">${label}${view === "favorites" ? ` <small data-favorite-count${appState.favorites.size ? "" : " hidden"}>${appState.favorites.size}</small>` : ""}</span></a>`;
       })
       .join("");
     replaceShellHTML(

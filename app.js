@@ -1,3 +1,5 @@
+import { createFavorites } from "./atlas/favorites.js";
+import { readFavorites } from "./atlas/favorite-data.js";
 import { validFavorite, types, key, coverURL } from "./atlas/resource-views.js";
 import {
   replaceShellHTML,
@@ -54,10 +56,8 @@ try {
 } catch {}
 
 try {
-  appState.favorites = new Set(
-    JSON.parse(localStorage.getItem("design-atlas-favorites") || "[]").filter(
-      validFavorite,
-    ),
+  appState.favorites = readFavorites(
+    localStorage.getItem("design-atlas-favorites"),
   );
 } catch {
   appState.favorites = new Set();
@@ -227,6 +227,8 @@ const {
 const { discoveryPage, listing, filtered, updateResults, restoreFilters } =
   createBrowse({ appState, t, card, href, l, stopAllLive, observeCards });
 
+const favoriteActions = createFavorites({ appState, t, notify, updateResults });
+
 const { openSearch, searchResults, handleSearchKeys } = createSearch({
   href,
   l,
@@ -290,28 +292,11 @@ document.addEventListener("click", async (e) => {
   if (b.hasAttribute("data-copy-resource-prompt"))
     return copy(promptText(appState.selected));
   if (b.hasAttribute("data-close-viewer")) return closeViewer();
-  if (b.dataset.save) {
-    const k = b.dataset.save;
-    appState.favorites.has(k)
-      ? appState.favorites.delete(k)
-      : appState.favorites.add(k);
-    try {
-      localStorage.setItem(
-        "design-atlas-favorites",
-        JSON.stringify([...appState.favorites]),
-      );
-    } catch {
-      notify(t("请导出收藏备份。", "Export a backup of your favorites."));
-    }
-    document
-      .querySelectorAll(`[data-save="${k}"]`)
-      .forEach(
-        (el) =>
-          (el.outerHTML = saveButton(
-            findResource(k.split(":")[1], k.split(":")[0]),
-          )),
-      );
-    if (appState.route.view === "favorites") updateResults();
+  if (b.dataset.save) return favoriteActions.toggle(b.dataset.save);
+  if (b.hasAttribute("data-import-favorites")) {
+    const input = document.querySelector("#import-favorites");
+    input.value = "";
+    input.click();
     return;
   }
   if (b.dataset.tab) {
@@ -592,29 +577,10 @@ document.addEventListener("change", async (e) => {
   if ((e.target.dataset.shellField || e.target.id) === "prompt-scope")
     document.querySelector(".full-prompt").textContent = currentPrompt();
   if (e.target.id === "import-favorites") {
-    try {
-      const file = e.target.files[0];
-      if (!file || file.size > 100000) throw Error();
-      const data = JSON.parse(await file.text());
-      if (
-        data.format !== "ui-design-atlas" ||
-        data.version !== 1 ||
-        !Array.isArray(data.favorites) ||
-        !data.favorites.every(validFavorite)
-      )
-        throw Error();
-      data.favorites.forEach((x) => appState.favorites.add(x));
-      localStorage.setItem(
-        "design-atlas-favorites",
-        JSON.stringify([...appState.favorites]),
-      );
-      render();
-      notify(t("收藏已导入。", "Favorites imported."));
-    } catch {
-      notify(
-        t("请选择有效的收藏备份文件。", "Choose a valid favorites backup."),
-      );
-    }
+    await favoriteActions.importFile(e.target);
+    document
+      .querySelector("[data-import-favorites]")
+      ?.focus({ preventScroll: true });
   }
 });
 window.addEventListener("message", (e) => {
@@ -722,16 +688,17 @@ window.addEventListener("resize", () => {
   scalePreview();
 });
 window.addEventListener("fullscreenchange", scalePreview);
-window.addEventListener("storage", (e) => {
-  if (e.key === "design-atlas-favorites") {
-    try {
-      appState.favorites = new Set(
-        JSON.parse(e.newValue || "[]").filter(validFavorite),
-      );
-      render();
-    } catch {}
-  }
-});
+window.addEventListener("storage", favoriteActions.receive);
+document.addEventListener(
+  "cancel",
+  (event) => {
+    if (event.target.id === "import-favorites")
+      document
+        .querySelector("[data-import-favorites]")
+        ?.focus({ preventScroll: true });
+  },
+  true,
+);
 appState.previewResizeObserver = new ResizeObserver(scalePreview);
 render();
 
