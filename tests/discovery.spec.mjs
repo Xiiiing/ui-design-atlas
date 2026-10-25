@@ -11,7 +11,7 @@ test("Discovery offers curated resources, counted categories, themes and complet
   await expect(page.locator(".systems-section .asset-card")).toHaveCount(3);
   for (const id of discovery.categories)
     await expect(page.locator(`[data-category="${id}"]`)).toContainText(
-      String(resources.filter((r) => r.category === id).length),
+      String(resources.filter((r) => r.categories.includes(id)).length),
     );
   await page.locator('.collection-card[href*="micro-interactions"]').click();
   await expect(page.locator("#results .asset-card")).toHaveCount(

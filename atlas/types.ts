@@ -42,7 +42,12 @@ export interface Resource {
   audience: string;
   caseId?: string;
   pageIds?: string[];
-  preview: { width: number; height: number; url?: string };
+  preview: {
+    width: number;
+    height: number;
+    url?: string;
+    mode?: "inline" | "canvas";
+  };
   files?: string[];
   supportFiles?: string[];
   pages?: CasePage[];
@@ -52,8 +57,20 @@ export interface Resource {
   originalUrl?: string;
   sourceUrl?: string;
 }
+export type View =
+  | ResourceType
+  | "discover"
+  | "explore"
+  | "favorites"
+  | "motion"
+  | "components"
+  | "blocks"
+  | "pages"
+  | "cases"
+  | "resources"
+  | "guide";
 export interface Route {
-  view: string;
+  view: View;
   id?: string;
   params: URLSearchParams;
 }
@@ -71,7 +88,7 @@ export interface AppState {
   route: Route;
   selected: Resource | null;
   detailResource: Resource | null;
-  tab: string;
+  tab: "notes" | "code";
   theme: Theme;
   width: number;
   fit: boolean;

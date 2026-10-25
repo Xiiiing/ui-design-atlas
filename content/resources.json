@@ -8577,106 +8577,22 @@
     },
     "pages": [
       {
-        "id": "shadcn-admin-dashboard",
-        "key": "dashboard",
-        "caseId": "shadcn-admin",
-        "name": {
-          "zh-CN": "工作台",
-          "en": "Dashboard"
-        },
-        "description": {
-          "zh-CN": "指标卡、收入趋势、近期交易与分析标签页。",
-          "en": "Metrics, revenue chart, recent sales and analytics tabs."
-        },
-        "path": "/",
-        "files": [
-          "src/features/dashboard/index.tsx"
-        ]
+        "id": "shadcn-admin-dashboard"
       },
       {
-        "id": "shadcn-admin-tasks",
-        "key": "tasks",
-        "caseId": "shadcn-admin",
-        "name": {
-          "zh-CN": "任务管理",
-          "en": "Tasks"
-        },
-        "description": {
-          "zh-CN": "带搜索、筛选、排序与分页的任务表格，以及新增、编辑和删除流程。",
-          "en": "Task table with search, filters, sorting, pagination and create, edit and delete flows."
-        },
-        "path": "/tasks",
-        "files": [
-          "src/features/tasks/index.tsx"
-        ]
+        "id": "shadcn-admin-tasks"
       },
       {
-        "id": "shadcn-admin-users",
-        "key": "users",
-        "caseId": "shadcn-admin",
-        "name": {
-          "zh-CN": "用户管理",
-          "en": "Users"
-        },
-        "description": {
-          "zh-CN": "用户列表、状态与角色筛选，新增、编辑和确认删除。",
-          "en": "User list, role and status filters, creation, editing and confirmed deletion."
-        },
-        "path": "/users",
-        "files": [
-          "src/features/users/index.tsx"
-        ]
+        "id": "shadcn-admin-users"
       },
       {
-        "id": "shadcn-admin-profile",
-        "key": "profile",
-        "caseId": "shadcn-admin",
-        "name": {
-          "zh-CN": "个人资料",
-          "en": "Profile"
-        },
-        "description": {
-          "zh-CN": "带即时校验的用户名、邮箱、个人简介与链接表单。",
-          "en": "Validated username, email, biography and website fields."
-        },
-        "path": "/settings",
-        "files": [
-          "src/features/settings/profile/profile-form.tsx"
-        ]
+        "id": "shadcn-admin-profile"
       },
       {
-        "id": "shadcn-admin-appearance",
-        "key": "appearance",
-        "caseId": "shadcn-admin",
-        "name": {
-          "zh-CN": "外观设置",
-          "en": "Appearance"
-        },
-        "description": {
-          "zh-CN": "明暗主题、字体选择与本地保存。",
-          "en": "Light and dark themes, font selection and local persistence."
-        },
-        "path": "/settings/appearance",
-        "files": [
-          "src/features/settings/appearance/appearance-form.tsx"
-        ]
+        "id": "shadcn-admin-appearance"
       },
       {
-        "id": "shadcn-admin-notifications",
-        "key": "notifications",
-        "caseId": "shadcn-admin",
-        "name": {
-          "zh-CN": "通知设置",
-          "en": "Notifications"
-        },
-        "description": {
-          "zh-CN": "消息范围、邮件通知和移动端偏好设置。",
-          "en": "Message scope, email notifications and mobile preferences."
-        },
-        "path": "/settings/notifications",
-        "files": [
-          "src/features/settings/notifications/notifications-form.tsx"
-        ]
+        "id": "shadcn-admin-notifications"
       }
     ],
     "type": "case",
@@ -8793,58 +8709,13 @@
     },
     "pages": [
       {
-        "id": "folio-home",
-        "key": "home",
-        "caseId": "folio",
-        "name": {
-          "zh-CN": "首页",
-          "en": "Home"
-        },
-        "description": {
-          "zh-CN": "导航、介绍首屏、精选作品、服务、联系与页脚。",
-          "en": "Navigation, introduction, featured projects, services, contact and footer."
-        },
-        "files": [
-          "preview.js",
-          "preview.css",
-          "legacy-theme.js"
-        ]
+        "id": "folio-home"
       },
       {
-        "id": "folio-work",
-        "key": "work",
-        "caseId": "folio",
-        "name": {
-          "zh-CN": "作品详情",
-          "en": "Project detail"
-        },
-        "description": {
-          "zh-CN": "项目背景、问题、设计过程、成果展示与下一项目入口。",
-          "en": "Project context, problem, process, outcomes and next-project navigation."
-        },
-        "files": [
-          "preview.js",
-          "preview.css",
-          "legacy-theme.js"
-        ]
+        "id": "folio-work"
       },
       {
-        "id": "folio-about",
-        "key": "about",
-        "caseId": "folio",
-        "name": {
-          "zh-CN": "关于与联系",
-          "en": "About & contact"
-        },
-        "description": {
-          "zh-CN": "个人介绍、工作方法、服务范围和可验证的联系表单。",
-          "en": "Biography, working methods, services and a contact form with validation."
-        },
-        "files": [
-          "preview.js",
-          "preview.css",
-          "legacy-theme.js"
-        ]
+        "id": "folio-about"
       }
     ],
     "brief": "为独立创作者制作个人作品集。先在首屏说明身份和工作方向，再展示 3 个精选项目、服务与联系入口。作品详情应包含背景、任务、过程与结果。关于页包含简介、工作方法和联系表单。",
@@ -8976,58 +8847,13 @@
     },
     "pages": [
       {
-        "id": "orbit-home",
-        "key": "home",
-        "caseId": "orbit",
-        "name": {
-          "zh-CN": "工作台概览",
-          "en": "Dashboard"
-        },
-        "description": {
-          "zh-CN": "侧栏、概览指标、活动图、近期项目、活动记录。",
-          "en": "Sidebar, metrics, activity chart, recent projects and activity feed."
-        },
-        "files": [
-          "preview.js",
-          "preview.css",
-          "legacy-theme.js"
-        ]
+        "id": "orbit-home"
       },
       {
-        "id": "orbit-work",
-        "key": "work",
-        "caseId": "orbit",
-        "name": {
-          "zh-CN": "项目管理",
-          "en": "Projects"
-        },
-        "description": {
-          "zh-CN": "状态筛选、项目列表、项目创建表单与反馈。",
-          "en": "Status filters, project list, creation form and local feedback."
-        },
-        "files": [
-          "preview.js",
-          "preview.css",
-          "legacy-theme.js"
-        ]
+        "id": "orbit-work"
       },
       {
-        "id": "orbit-about",
-        "key": "about",
-        "caseId": "orbit",
-        "name": {
-          "zh-CN": "工作区设置",
-          "en": "Workspace settings"
-        },
-        "description": {
-          "zh-CN": "基本信息、通知偏好、保存与结果提示。",
-          "en": "Workspace details, notification preferences and save feedback."
-        },
-        "files": [
-          "preview.js",
-          "preview.css",
-          "legacy-theme.js"
-        ]
+        "id": "orbit-about"
       }
     ],
     "brief": "为开发团队设计项目管理 SaaS 工作台。概览展示演示指标、活动趋势、近期项目与动态；项目页支持状态筛选与本地添加项目；设置页包含工作区名称和通知偏好，并提供保存反馈。",
@@ -9065,7 +8891,9 @@
     },
     "categories": [
       "layout",
-      "forms"
+      "forms",
+      "data",
+      "settings"
     ],
     "styleIds": [
       "technology"
@@ -9158,58 +8986,13 @@
     },
     "pages": [
       {
-        "id": "forma-home",
-        "key": "home",
-        "caseId": "forma",
-        "name": {
-          "zh-CN": "工作室首页",
-          "en": "Studio home"
-        },
-        "description": {
-          "zh-CN": "品牌宣言、精选项目、服务能力、合作流程与页脚。",
-          "en": "Brand statement, featured work, services, process and footer."
-        },
-        "files": [
-          "preview.js",
-          "preview.css",
-          "legacy-theme.js"
-        ]
+        "id": "forma-home"
       },
       {
-        "id": "forma-work",
-        "key": "work",
-        "caseId": "forma",
-        "name": {
-          "zh-CN": "项目档案",
-          "en": "Project archive"
-        },
-        "description": {
-          "zh-CN": "项目目录、分类筛选、交付范围与作品构图。",
-          "en": "Project directory, category filters, deliverables and artwork."
-        },
-        "files": [
-          "preview.js",
-          "preview.css",
-          "legacy-theme.js"
-        ]
+        "id": "forma-work"
       },
       {
-        "id": "forma-about",
-        "key": "about",
-        "caseId": "forma",
-        "name": {
-          "zh-CN": "合作咨询",
-          "en": "Project inquiry"
-        },
-        "description": {
-          "zh-CN": "项目类型、预算范围、需求说明和本地提交反馈。",
-          "en": "Project type, budget, requirements and local submission feedback."
-        },
-        "files": [
-          "preview.js",
-          "preview.css",
-          "legacy-theme.js"
-        ]
+        "id": "forma-about"
       }
     ],
     "brief": "为独立创意工作室制作品牌网站。首页包含品牌宣言、精选项目、三类服务与四步合作流程；项目页支持类型筛选；合作页使用简洁表单收集项目方向、预算和需求说明，并明确演示提交状态。",
@@ -9341,58 +9124,13 @@
     },
     "pages": [
       {
-        "id": "bloom-home",
-        "key": "home",
-        "caseId": "bloom",
-        "name": {
-          "zh-CN": "商品首页",
-          "en": "Store home"
-        },
-        "description": {
-          "zh-CN": "导航、品牌首屏、分类筛选、商品网格、品牌理念与页脚。",
-          "en": "Brand introduction, category filters, products, philosophy and footer."
-        },
-        "files": [
-          "preview.js",
-          "preview.css",
-          "legacy-theme.js"
-        ]
+        "id": "bloom-home"
       },
       {
-        "id": "bloom-work",
-        "key": "work",
-        "caseId": "bloom",
-        "name": {
-          "zh-CN": "商品详情",
-          "en": "Product detail"
-        },
-        "description": {
-          "zh-CN": "商品插画、价格、规格、数量、加入购物袋与材质说明。",
-          "en": "Product illustration, price, specifications, quantity and shopping-bag action."
-        },
-        "files": [
-          "preview.js",
-          "preview.css",
-          "legacy-theme.js"
-        ]
+        "id": "bloom-work"
       },
       {
-        "id": "bloom-about",
-        "key": "about",
-        "caseId": "bloom",
-        "name": {
-          "zh-CN": "购物袋",
-          "en": "Shopping bag"
-        },
-        "description": {
-          "zh-CN": "本地商品数量调整、删除、金额合计及演示结算反馈。",
-          "en": "Quantity changes, removal, totals and demonstration checkout."
-        },
-        "files": [
-          "preview.js",
-          "preview.css",
-          "legacy-theme.js"
-        ]
+        "id": "bloom-about"
       }
     ],
     "brief": "制作自然系生活方式商店。首页包含品牌首屏、分类与商品列表；商品页展示插画、名称、价格、规格、数量和材质信息；购物袋支持数量增减、移除与金额计算。标明所有商品、价格与结算为演示。",

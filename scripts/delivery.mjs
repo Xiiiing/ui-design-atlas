@@ -15,8 +15,19 @@ export async function generateDelivery(root, out) {
   await mkdir(path.join(out, "examples/shadcn-admin"), { recursive: true });
   await mkdir(marketOut, { recursive: true });
   await writeDetails(root, out);
-  const exampleDelivery = await deliveryFiles(example);
-  const marketDelivery = await deliveryFiles(market);
+  const allowLists = JSON.parse(
+    await readFile(path.join(root, "content/delivery-files.json"), "utf8"),
+  );
+  if (
+    !Array.isArray(allowLists["shadcn-admin"]) ||
+    !Array.isArray(allowLists["ui-market"])
+  )
+    throw Error("Missing project delivery allowlist");
+  const exampleDelivery = await deliveryFiles(
+    example,
+    allowLists["shadcn-admin"],
+  );
+  const marketDelivery = await deliveryFiles(market, allowLists["ui-market"]);
   const files = {};
   for (const file of exampleDelivery) {
     if (/\.(tsx?|css|json)$/.test(file))

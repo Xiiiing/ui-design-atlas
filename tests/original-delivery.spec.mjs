@@ -61,6 +61,31 @@ for (const id of ["folio", "forma", "orbit", "bloom"])
         await expect(page).toHaveURL(/page=work/);
         await page.locator(".p-header nav a").nth(2).click();
         await expect(page).toHaveURL(/page=about/);
+        if (id === "orbit") {
+          await page
+            .locator("#settings-form [name=workspace]")
+            .fill("Standalone workspace");
+          await page.locator("#settings-form button.p-button").click();
+          await expect(
+            page.locator("#settings-form .form-result"),
+          ).not.toBeEmpty();
+          await page.reload();
+          await expect(
+            page.locator("#settings-form [name=workspace]"),
+          ).toHaveValue("Standalone workspace");
+        }
+        if (id === "bloom") {
+          await page.locator(".p-header nav a").nth(1).click();
+          await page.locator("[data-add-product]").click();
+          await expect(page.locator("[data-bag-count]").first()).not.toHaveText(
+            "0",
+          );
+          await page.locator(".p-header nav a").nth(2).click();
+          await expect(
+            page.locator("[data-cart-remove]").first(),
+          ).toBeVisible();
+          await page.locator("[data-cart-remove]").first().click();
+        }
         if (id === "folio" || id === "forma") {
           await page.locator("[name=name]").fill("Atlas Audit");
           await page.locator("[name=email]").fill("audit@example.com");

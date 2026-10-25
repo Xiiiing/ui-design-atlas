@@ -46,13 +46,14 @@ test("Delivery allows source and assets but excludes local files and rejects esc
       "src/main.ts",
       ".env.local",
       "private-note.md",
+      "src/unrelated-local.ts",
       "src/main.ts.bak",
       "src/.env",
       "debug.log",
     ])
       await writeFile(path.join(root, file), "AUDIT PUBLIC SENTINEL");
     assert.deepEqual(
-      (await deliveryFiles(root)).map((f) => path.relative(root, f)),
+      (await deliveryFiles(root,["README.md","package.json","src/main.ts"])).map((f) => path.relative(root, f)),
       ["README.md", "package.json", "src/main.ts"],
     );
     await writeFile(path.join(temp, "outside.ts"), "AUDIT OUTSIDE");

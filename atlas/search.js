@@ -5,7 +5,7 @@ import { showShellDialog } from "../shell/controls.tsx";
 import { searchResources, libraries } from "../catalog.js";
 import { key } from "./resource-views.js";
 import { icon } from "../icons.js";
-import { escapeHTML as esc } from "../components.js";
+import { escapeHTML as esc } from "./html.js";
 
 /** @param {Omit<import("./types").BaseDependencies,"appState"> & {labelType:import("./types").Card}} dependencies */
 export function createSearch({ href, l, labelType, t }) {
@@ -40,8 +40,11 @@ export function createSearch({ href, l, labelType, t }) {
     }
     if (e.target.id === "quick-search" && e.key === "Enter") {
       e.preventDefault();
-      maybe("#search-results a")?.click();
-      element("#search-dialog").close();
+      const first = maybe("#search-results a");
+      if (first) {
+        first.click();
+        element("#search-dialog").close();
+      }
     }
     if (e.target.id === "quick-search" && e.key === "ArrowDown") {
       e.preventDefault();

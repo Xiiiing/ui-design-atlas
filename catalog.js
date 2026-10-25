@@ -1,4 +1,5 @@
 // @ts-check
+import { resolveCasePages } from "./catalog-pages.js";
 import records from "./content/resources.json" with { type: "json" };
 import sourceRecords from "./content/sources.json" with { type: "json" };
 import libraryRecords from "./content/libraries.json" with { type: "json" };
@@ -8,8 +9,10 @@ import { createSearchIndex, rankSearch } from "./search.js";
 // The same validated catalog feeds Node delivery and browser summaries. Build
 // adapters strip detail fields from this JSON only for the browser bundle.
 /** @type {import("./atlas/types").Resource[]} */
-export const resources = /** @type {import("./atlas/types").Resource[]} */ (
-  /** @type {unknown} */ (records)
+export const resources = resolveCasePages(
+  /** @type {import("./atlas/types").Resource[]} */ (
+    /** @type {unknown} */ (records)
+  ),
 );
 /** @type {Record<string,import("./atlas/types").Source>} */
 export const sourceProjects = sourceRecords;

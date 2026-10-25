@@ -2,6 +2,22 @@ import { test, expect } from "@playwright/test";
 
 const browseTop = (page) => page.evaluate(() => scrollY);
 async function choose(page, id, name) {
+  if (id.startsWith("#filter-")) {
+    if (
+      (await page
+        .locator("[data-advanced-filters]")
+        .getAttribute("aria-expanded")) !== "true"
+    )
+      await page.locator("[data-advanced-filters]").click();
+    const map = {
+      "Fluent UI React v9": "fluent",
+      "Open source": "open-source",
+    };
+    await page
+      .locator(`input[name="${id.slice(8)}"][value="${map[name]}"]`)
+      .check();
+    return;
+  }
   await page.locator(id).click();
   await page.getByRole("option", { name, exact: true }).click();
 }
@@ -26,7 +42,7 @@ test("Marketplace selects preserve FormData, reset, dialog portals and focus", a
       .evaluate((form) => new FormData(form).getAll("library")),
   ).toEqual(["fluent"]);
   await page.locator("[data-reset-filters]").click();
-  await expect(page.locator("#filter-library")).toHaveText("All libraries");
+  await expect(page.locator("input[name=library]:checked")).toHaveCount(0);
   await expect(page.locator(".asset-card")).toHaveCount(24);
   await page.locator("[name=q]").fill("流光边框");
   await expect(page.locator(".asset-caption [data-open]")).toHaveCount(1);
@@ -164,9 +180,9 @@ test("Document scrolling, touch controls and progressive filters work across siz
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("#explore?lang=en");
     if (width === 375) {
-      await expect(page.locator("#filter-source")).not.toBeVisible();
+      await expect(page.locator("[data-facet=source]")).not.toBeVisible();
       await page.locator("[data-advanced-filters]").click();
-      await expect(page.locator("#filter-source")).toBeVisible();
+      await expect(page.locator("[data-facet=source]")).toBeVisible();
       await choose(page, "#filter-source", "Open source");
       await page.reload();
       await expect(page.locator("[data-advanced-filters]")).toHaveAttribute(

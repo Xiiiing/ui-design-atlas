@@ -2,7 +2,7 @@
 import { element, maybe, all } from "./dom.js";
 import { icon } from "../icons.js";
 import { replaceShellHTML } from "../shell/controls.tsx";
-import { escapeHTML as esc } from "../components.js";
+import { escapeHTML as esc } from "./html.js";
 import { parseHash } from "./navigation.js";
 import { resourceTags, interactions } from "../resource-tags.js";
 import { resourcePresentation } from "../presentation.js";

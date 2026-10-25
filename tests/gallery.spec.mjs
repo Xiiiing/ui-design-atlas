@@ -2,6 +2,22 @@ import { test, expect } from "@playwright/test";
 import { resources } from "../catalog.js";
 
 const choose = async (page, id, name) => {
+  if (id.startsWith("#filter-")) {
+    if (
+      (await page
+        .locator("[data-advanced-filters]")
+        .getAttribute("aria-expanded")) !== "true"
+    )
+      await page.locator("[data-advanced-filters]").click();
+    const map = {
+      "Fluent UI React v9": "fluent",
+      "Open source": "open-source",
+    };
+    await page
+      .locator(`input[name="${id.slice(8)}"][value="${map[name]}"]`)
+      .check();
+    return;
+  }
   await page.locator(id).click();
   await page.getByRole("option", { name, exact: true }).click();
 };
@@ -51,12 +67,11 @@ test("Filter chips remove individual conditions and collapsed filters retain the
   await page.goto("#explore?lang=en");
   await page.locator("[data-category=feedback]").click();
   await choose(page, "#filter-library", "Fluent UI React v9");
-  await page.locator("[data-advanced-filters]").click();
   await choose(page, "#filter-source", "Open source");
   await expect(page.locator(".asset-card")).toHaveCount(2);
   await expect(page.locator("[data-remove-filter]")).toHaveCount(3);
   await page.locator("[data-advanced-filters]").click();
-  await expect(page.locator("#filter-source")).not.toBeVisible();
+  await expect(page.locator("[data-facet=source]")).not.toBeVisible();
   await expect(page.locator(".asset-card")).toHaveCount(2);
   await page.locator("[data-remove-filter=category]").click();
   await expect(page.locator(".asset-card")).toHaveCount(4);

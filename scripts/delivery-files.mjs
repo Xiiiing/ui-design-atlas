@@ -20,7 +20,17 @@ const sourceExtensions =
 const excluded = (name) =>
   name.startsWith(".") ||
   /(?:~|\.bak|\.backup|\.old|\.tmp|\.sw[op]|\.log|\.tsbuildinfo)$/i.test(name);
-export async function deliveryFiles(root) {
+export async function deliveryFiles(root, allowList) {
+  if (
+    allowList?.some(
+      (file) =>
+        typeof file !== "string" ||
+        path.isAbsolute(file) ||
+        file.includes("\\") ||
+        file.split("/").some((part) => part === ".." || excluded(part)),
+    )
+  )
+    throw Error("Invalid delivery allowlist path");
   const boundary = await realpath(root),
     result = [];
   async function visit(relative, ancestors = new Set()) {
@@ -63,23 +73,36 @@ export async function deliveryFiles(root) {
     )
       await visit(entry.name);
   }
+  if (allowList) {
+    const found = new Set(
+      result.map((file) => path.relative(root, file).split(path.sep).join("/")),
+    );
+    for (const file of allowList)
+      if (!found.has(file))
+        throw Error(`Missing or excluded delivery file: ${file}`);
+    return result
+      .filter((file) =>
+        allowList.includes(path.relative(root, file).split(path.sep).join("/")),
+      )
+      .sort();
+  }
   return result.sort();
 }
 export async function originalFiles(root) {
-  const names = [
-    "preview.html",
-    "preview.js",
-    "preview.css",
-    "component-preview.html",
-    "component-preview.js",
-    "components.js",
-    "components.css",
-    "data.js",
-    "legacy-i18n.js",
-    "legacy-translations.js",
-    "legacy-theme.js",
-    "favicon.svg",
-  ];
+  const names = JSON.parse(
+    await readFile(path.join(root, "content/delivery-files.json"), "utf8"),
+  ).original;
+  if (
+    !Array.isArray(names) ||
+    names.some(
+      (name) =>
+        typeof name !== "string" ||
+        name.includes("/") ||
+        name.includes("\\") ||
+        excluded(name),
+    )
+  )
+    throw Error("Invalid original delivery allowlist");
   const boundary = await realpath(root);
   const files = {};
   for (const name of names) {

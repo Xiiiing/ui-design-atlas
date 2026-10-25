@@ -1,5 +1,6 @@
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { resolveCasePages } from "../catalog-pages.js";
 import taxonomy from "../content/taxonomy.json" with { type: "json" };
 const detailFields = new Set([
   "prompt",
@@ -10,12 +11,29 @@ const detailFields = new Set([
   "useCases",
   "subtitle",
   "scene",
+  "files",
+  "supportFiles",
+  "sourceUrl",
+  "originalUrl",
+  "libraryVersions",
 ]);
-export const summaryOf = (resource) =>
-  Object.fromEntries(
-    Object.entries(resource).filter(([key]) => !detailFields.has(key)),
-  );
-export function validateCatalog(resources, sources, libraries, discovery) {
+export const summaryOf = (resource) => ({
+  ...Object.fromEntries(
+    Object.entries(resource).filter(
+      ([key]) => !detailFields.has(key) && key !== "pages",
+    ),
+  ),
+  ...(resource.pages
+    ? { pages: resource.pages.map(({ id }) => ({ id })) }
+    : {}),
+});
+export function validateCatalog(
+  resources,
+  sources,
+  libraries,
+  discovery,
+  vocabulary = taxonomy,
+) {
   if (!Array.isArray(resources) || !resources.length)
     throw Error("Catalog must contain resources");
   const ids = new Set(),
@@ -34,12 +52,25 @@ export function validateCatalog(resources, sources, libraries, discovery) {
     if (keys.has(key) || ids.has(r.id)) fail(r, "duplicate identity");
     keys.add(key);
     ids.add(r.id);
+    if (!["b2b", "b2c"].includes(r.audience)) fail(r, "audience");
+    if (typeof r.motion !== "boolean") fail(r, "motion");
+    if (r.preview?.mode && !["inline", "canvas"].includes(r.preview.mode))
+      fail(r, "preview mode");
+    for (const file of [...(r.files || []), ...(r.supportFiles || [])])
+      if (
+        typeof file !== "string" ||
+        file.startsWith("/") ||
+        file.includes("\\") ||
+        file.split("/").some((part) => part === ".." || part.startsWith("."))
+      )
+        fail(r, "file path");
+    if (r.type === "page" && r.caseId && !r.key) fail(r, "page key");
     if (!sources[r.sourceId]) fail(r, "source");
-    for (const [field, vocabulary] of [
-      ["categories", taxonomy.categories],
-      ["interactions", taxonomy.interactions],
-      ["styleIds", taxonomy.styles],
-      ["technologyIds", taxonomy.technologies],
+    for (const [field, allowed] of [
+      ["categories", vocabulary.categories],
+      ["interactions", vocabulary.interactions],
+      ["styleIds", vocabulary.styles],
+      ["technologyIds", vocabulary.technologies],
       ["libraryIds", libraries],
     ]) {
       const values = r[field];
@@ -47,11 +78,14 @@ export function validateCatalog(resources, sources, libraries, discovery) {
         !Array.isArray(values) ||
         (field !== "interactions" && !values.length) ||
         new Set(values).size !== values.length ||
-        values.some((v) => !Object.hasOwn(vocabulary, v))
+        values.some((v) => !Object.hasOwn(allowed, v))
       )
         fail(r, field);
     }
-    if (!taxonomy.categories[r.category] || !taxonomy.provenance[r.provenance])
+    if (
+      !vocabulary.categories[r.category] ||
+      !vocabulary.provenance[r.provenance]
+    )
       fail(r, "legacy category/provenance");
     for (const field of ["name", "description", "prompt", "stylePrompt"])
       for (const lang of ["zh-CN", "en"])
@@ -64,10 +98,7 @@ export function validateCatalog(resources, sources, libraries, discovery) {
       r.preview.height <= 0
     )
       fail(r, "preview");
-    if (
-      r.type === "case" &&
-      (!r.pages?.length || r.pages.some((p) => !p.id || !p.key))
-    )
+    if (r.type === "case" && (!r.pages?.length || r.pages.some((p) => !p.id)))
       fail(r, "pages");
   }
   for (const r of resources) {
@@ -84,7 +115,7 @@ export function validateCatalog(resources, sources, libraries, discovery) {
     for (const id of collection.resources || [])
       if (!ids.has(id)) throw Error(`Unknown collection resource: ${id}`);
     for (const category of collection.categories || [])
-      if (!taxonomy.categories[category])
+      if (!vocabulary.categories[category])
         throw Error(`Unknown collection category: ${category}`);
   }
   return resources;
@@ -94,10 +125,13 @@ export async function readCatalog(root) {
     readFile(path.join(root, "content", name + ".json"), "utf8").then(
       JSON.parse,
     );
-  const [resources, sources, libraries, discovery] = await Promise.all(
-    ["resources", "sources", "libraries", "discovery"].map(read),
+  const [resources, sources, libraries, discovery, vocabulary] =
+    await Promise.all(
+      ["resources", "sources", "libraries", "discovery", "taxonomy"].map(read),
+    );
+  return resolveCasePages(
+    validateCatalog(resources, sources, libraries, discovery, vocabulary),
   );
-  return validateCatalog(resources, sources, libraries, discovery);
 }
 export async function writeDetails(root, out) {
   const resources = await readCatalog(root);

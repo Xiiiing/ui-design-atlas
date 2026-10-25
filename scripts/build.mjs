@@ -34,6 +34,7 @@ const assets = [
   "icons.js",
   "data.js",
   "catalog.js",
+  "catalog-pages.js",
   "search.js",
   "presentation.js",
   "resource-tags.js",
