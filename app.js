@@ -209,17 +209,43 @@ const {
 
 /** @type {Promise<ReturnType<typeof import("./atlas/source-code.js").createSourceCode>>|undefined} */
 let sourceController;
+let sourceLoadSerial = 0;
 /** @param {import("./atlas/types").Resource} resource @param {string} [scope] */
 async function loadCode(resource, scope) {
-  sourceController ||= import("./atlas/source-code.js")
-    .then(({ createSourceCode }) =>
-      createSourceCode({ appState, t, l, external }),
-    )
-    .catch((error) => {
-      sourceController = undefined;
-      throw error;
-    });
-  return (await sourceController).loadCode(resource, scope);
+  const target = maybe("#full-code");
+  if (!target) return;
+  const serial = ++sourceLoadSerial;
+  const language = appState.locale;
+  const active = () =>
+    serial === sourceLoadSerial &&
+    target.isConnected &&
+    appState.selected?.id === resource.id &&
+    appState.selected?.type === resource.type &&
+    appState.tab === "code" &&
+    appState.locale === language;
+  const sourceScope = scope === "project" ? "project" : "resource";
+  replaceShellHTML(
+    target,
+    `<p role="status">${t("正在读取源码…", "Loading source…")}</p>`,
+  );
+  try {
+    sourceController ||= import("./atlas/source-code.js")
+      .then(({ createSourceCode }) =>
+        createSourceCode({ appState, t, l, external }),
+      )
+      .catch((error) => {
+        sourceController = undefined;
+        throw error;
+      });
+    const controller = await sourceController;
+    if (active()) return await controller.loadCode(resource, sourceScope);
+  } catch {
+    if (active())
+      replaceShellHTML(
+        target,
+        `<p role="alert">${t("源码工具加载失败，请重新加载页面重试。", "Source tools could not be loaded. Reload the page to retry.")}</p><button class="button" data-reload-source>${t("重新加载页面", "Reload page")}</button>`,
+      );
+  }
 }
 
 const {

@@ -5,6 +5,11 @@ import { fieldValue } from "../shell/controls.tsx";
 export function createSourceActions({ appState, loadCode, copy, download }) {
   /** @param {HTMLButtonElement} b */
   return async function handleSourceAction(b) {
+    if (b.hasAttribute("data-reload-source")) {
+      // Browsers cache failed module imports; a new document retries the graph.
+      location.reload();
+      return true;
+    }
     if (b.hasAttribute("data-code-scope") && appState.selected) {
       const updated = await loadCode(appState.selected, b.dataset.codeScope);
       if (updated)

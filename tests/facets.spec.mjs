@@ -141,3 +141,52 @@ test("Discovery appends preserve visible frames, documents and input without doc
     contentType: "application/json",
   });
 });
+
+test("Entering and clearing search preserves a retained card across result groups", async ({
+  page,
+}) => {
+  let requests = 0;
+  page.on("request", (r) => {
+    if (r.isNavigationRequest() && r.frame() !== page.mainFrame()) requests++;
+  });
+  await page.goto("#favorites?lang=en");
+  await page.evaluate(() =>
+    localStorage.setItem(
+      "design-atlas-favorites",
+      JSON.stringify(["component:folio-form"]),
+    ),
+  );
+  await page.reload();
+  const card = page.locator('[data-resource="component:folio-form"]');
+  await expect(card).toHaveAttribute("data-preview-state", "ready");
+  await card
+    .frameLocator("iframe")
+    .locator("input[type=email]")
+    .fill("retained@example.com");
+  await card.locator("iframe").evaluate((frame) => {
+    window.savedFrame = frame;
+    window.savedDocument = frame.contentDocument;
+  });
+  const before = requests;
+  for (const query of ["form", ""]) {
+    await page.locator("[name=q]").fill(query);
+    await expect(page.locator(".resource-group")).toHaveAttribute(
+      "data-type",
+      query ? "search" : "component",
+    );
+    await expect(card).toHaveCount(1);
+    expect(
+      await card
+        .locator("iframe")
+        .evaluate(
+          (frame) =>
+            frame === window.savedFrame &&
+            frame.contentDocument === window.savedDocument,
+        ),
+    ).toBe(true);
+    await expect(
+      card.frameLocator("iframe").locator("input[type=email]"),
+    ).toHaveValue("retained@example.com");
+  }
+  expect(requests - before).toBe(0);
+});

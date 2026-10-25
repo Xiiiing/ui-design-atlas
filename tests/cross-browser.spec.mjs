@@ -36,3 +36,56 @@ test("Core filter, navigation, saved state, source and preview workflow", async 
   ).not.toBeEmpty();
   expect(errors).toEqual([]);
 });
+
+test("Lazy source loading recovers from a failed module request", async ({
+  page,
+}) => {
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  let failed = false;
+  await page.route(/\/atlas-source-code-[^/]+\.js$/, async (route) => {
+    if (!failed) {
+      failed = true;
+      await route.abort();
+    } else await route.continue();
+  });
+  await page.goto("#component/folio-form?lang=en&tab=code");
+  await expect(page.locator("#full-code [role=alert]")).toBeVisible();
+  await page.locator("#full-code [data-reload-source]").click();
+  await expect(page.locator("#code-text")).toContainText("<!doctype html>");
+  expect(errors).toEqual([]);
+});
+
+test("A delayed source module cannot overwrite a newer navigation", async ({
+  page,
+}) => {
+  let release;
+  const ready = new Promise((resolve) => {
+    release = resolve;
+  });
+  let requested = false;
+  await page.route(/\/atlas-source-code-[^/]+\.js$/, async (route) => {
+    requested = true;
+    await ready;
+    await route.continue();
+  });
+  await page.goto("#component/folio-form?lang=en");
+  try {
+    await page.locator("[data-tab=code]").click();
+    await expect.poll(() => requested).toBe(true);
+    await page.evaluate(() => {
+      location.hash = "#component/orbit-button?lang=en";
+    });
+    await expect(page.locator("[data-tab=notes]")).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+  } finally {
+    release();
+  }
+  await expect(page.locator("#case-preview")).toBeVisible();
+  await expect(page.locator("#full-code")).toBeEmpty();
+  await page.locator("[data-tab=code]").click();
+  await expect(page.locator("#code-text")).toContainText("Orbit");
+  await expect(page.locator("#code-text")).not.toContainText("Folio");
+});

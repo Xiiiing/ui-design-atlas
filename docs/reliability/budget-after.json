@@ -3,8 +3,8 @@
   "startup": [
     {
       "file": "atlas-shell.js",
-      "bytes": 71599,
-      "gzip": 23926
+      "bytes": 72545,
+      "gzip": 24236
     },
     {
       "file": "atlas-chunk-KOST2MZS.js",
@@ -17,6 +17,6 @@
       "gzip": 361
     }
   ],
-  "startupGzip": 186577,
+  "startupGzip": 186887,
   "budget": 190000
 }

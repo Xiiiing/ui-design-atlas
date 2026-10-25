@@ -1,11 +1,11 @@
 {
-  "startupGzip": 186577,
+  "startupGzip": 186887,
   "main": [
     {
       "url": "/ui-design-atlas/atlas-shell.js",
       "main": true,
-      "bytes": 71599,
-      "gzip": 23926
+      "bytes": 72545,
+      "gzip": 24236
     },
     {
       "url": "/ui-design-atlas/atlas-chunk-GIV5B5TQ.js",
@@ -28,16 +28,16 @@
       "gzip": 698
     },
     {
-      "url": "/ui-design-atlas/examples/ui-market/assets/react-Cdxb2Qku.js",
-      "main": false,
-      "bytes": 7871,
-      "gzip": 3003
-    },
-    {
       "url": "/ui-design-atlas/examples/ui-market/assets/scheduler-BcmhDw3o.js",
       "main": false,
       "bytes": 3561,
       "gzip": 1562
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/MotionConfigContext-DgwNq-ZN.js",
+      "main": false,
+      "bytes": 323,
+      "gzip": 252
     },
     {
       "url": "/ui-design-atlas/examples/ui-market/assets/react-dom-Bs_xv98U.js",
@@ -46,10 +46,10 @@
       "gzip": 1408
     },
     {
-      "url": "/ui-design-atlas/examples/ui-market/assets/MotionConfigContext-DgwNq-ZN.js",
+      "url": "/ui-design-atlas/examples/ui-market/assets/react-Cdxb2Qku.js",
       "main": false,
-      "bytes": 323,
-      "gzip": 252
+      "bytes": 7871,
+      "gzip": 3003
     },
     {
       "url": "/ui-design-atlas/examples/ui-market/assets/jsx-runtime-C40oxPSl.js",
@@ -58,6 +58,36 @@
       "gzip": 698
     },
     {
+      "url": "/ui-design-atlas/examples/ui-market/assets/MotionConfigContext-DgwNq-ZN.js",
+      "main": false,
+      "bytes": 323,
+      "gzip": 252
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/scheduler-BcmhDw3o.js",
+      "main": false,
+      "bytes": 3561,
+      "gzip": 1562
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/jsx-runtime-C40oxPSl.js",
+      "main": false,
+      "bytes": 1283,
+      "gzip": 698
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/react-dom-Bs_xv98U.js",
+      "main": false,
+      "bytes": 3892,
+      "gzip": 1408
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/react-Cdxb2Qku.js",
+      "main": false,
+      "bytes": 7871,
+      "gzip": 3003
+    },
+    {
       "url": "/ui-design-atlas/examples/ui-market/assets/scheduler-BcmhDw3o.js",
       "main": false,
       "bytes": 3561,
@@ -70,16 +100,16 @@
       "gzip": 252
     },
     {
-      "url": "/ui-design-atlas/examples/ui-market/assets/react-Cdxb2Qku.js",
-      "main": false,
-      "bytes": 7871,
-      "gzip": 3003
-    },
-    {
       "url": "/ui-design-atlas/examples/ui-market/assets/react-dom-Bs_xv98U.js",
       "main": false,
       "bytes": 3892,
       "gzip": 1408
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/react-Cdxb2Qku.js",
+      "main": false,
+      "bytes": 7871,
+      "gzip": 3003
     },
     {
       "url": "/ui-design-atlas/examples/ui-market/assets/index-EZpFbjgH.js",
@@ -92,36 +122,6 @@
       "main": false,
       "bytes": 260452,
       "gzip": 84940
-    },
-    {
-      "url": "/ui-design-atlas/examples/ui-market/assets/jsx-runtime-C40oxPSl.js",
-      "main": false,
-      "bytes": 1283,
-      "gzip": 698
-    },
-    {
-      "url": "/ui-design-atlas/examples/ui-market/assets/scheduler-BcmhDw3o.js",
-      "main": false,
-      "bytes": 3561,
-      "gzip": 1562
-    },
-    {
-      "url": "/ui-design-atlas/examples/ui-market/assets/MotionConfigContext-DgwNq-ZN.js",
-      "main": false,
-      "bytes": 323,
-      "gzip": 252
-    },
-    {
-      "url": "/ui-design-atlas/examples/ui-market/assets/react-Cdxb2Qku.js",
-      "main": false,
-      "bytes": 7871,
-      "gzip": 3003
-    },
-    {
-      "url": "/ui-design-atlas/examples/ui-market/assets/react-dom-Bs_xv98U.js",
-      "main": false,
-      "bytes": 3892,
-      "gzip": 1408
     },
     {
       "url": "/ui-design-atlas/examples/ui-market/assets/index-EZpFbjgH.js",
@@ -166,6 +166,12 @@
       "gzip": 746
     },
     {
+      "url": "/ui-design-atlas/examples/ui-market/assets/label-CwpVb-oG.js",
+      "main": false,
+      "bytes": 2254,
+      "gzip": 837
+    },
+    {
       "url": "/ui-design-atlas/examples/ui-market/assets/dist-Cxg1S2i2.js",
       "main": false,
       "bytes": 3801,
@@ -176,12 +182,6 @@
       "main": false,
       "bytes": 98505,
       "gzip": 31485
-    },
-    {
-      "url": "/ui-design-atlas/examples/ui-market/assets/label-CwpVb-oG.js",
-      "main": false,
-      "bytes": 2254,
-      "gzip": 837
     },
     {
       "url": "/ui-design-atlas/examples/ui-market/assets/dist-CQd-IK0r.js",
@@ -208,16 +208,16 @@
       "gzip": 233
     },
     {
-      "url": "/ui-design-atlas/examples/ui-market/assets/utils-BoaXfs8y.js",
-      "main": false,
-      "bytes": 27236,
-      "gzip": 8537
-    },
-    {
       "url": "/ui-design-atlas/examples/ui-market/assets/particles-DJpyo-7J.js",
       "main": false,
       "bytes": 4197,
       "gzip": 1832
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/utils-BoaXfs8y.js",
+      "main": false,
+      "bytes": 27236,
+      "gzip": 8537
     },
     {
       "url": "/ui-design-atlas/examples/ui-market/assets/clsx-DB0hHKMi.js",
