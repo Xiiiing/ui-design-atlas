@@ -145,3 +145,53 @@ test("Short landscape motion previews keep canvas, parameter controls and a way 
     await expect(page.locator(".experience-viewer")).toHaveCount(0);
   }
 });
+
+test("Fullscreen and its API fallback fill the screen and restore keyboard focus", async ({
+  page,
+}) => {
+  const { expectViewerContained } = await import("./viewer-assertions.mjs");
+  for (const fallback of [false, true]) {
+    if (fallback)
+      await page.addInitScript(() => {
+        Element.prototype.requestFullscreen = () =>
+          Promise.reject(new Error("Not supported"));
+      });
+    await page.goto(
+      `./?fullscreenFallback=${fallback}#component/magicui-border-beam?lang=en`,
+    );
+    await expect(page.locator(".viewer-load-state")).toBeHidden();
+    const input = page.frameLocator("#case-preview").locator("#email");
+    await input.fill("screen@example.com");
+    await page.locator("[data-fullscreen]").click();
+    await expect(page.locator("#preview-panel")).toHaveAttribute(
+      "data-fullscreen-active",
+      "true",
+    );
+    if (fallback)
+      await expect(page.locator("#preview-panel")).toHaveClass(/is-immersive/);
+    await expectViewerContained(page);
+    await page.locator("[data-fullscreen-controls]").click();
+    await page.locator('[data-device="375"]').click();
+    await expect
+      .poll(() =>
+        page
+          .locator("#case-preview")
+          .evaluate((f) => f.contentWindow.innerWidth),
+      )
+      .toBe(375);
+    await page.locator("[data-exit-fullscreen]").click();
+    await expect(page.locator("#preview-panel")).toHaveAttribute(
+      "data-fullscreen-active",
+      "false",
+    );
+    await expect(page.locator("[data-fullscreen]")).toBeFocused();
+    await expect(input).toHaveValue("screen@example.com");
+    await page.locator("[data-fullscreen]").click();
+    await input.press("Escape");
+    await expect(page.locator("#preview-panel")).toHaveAttribute(
+      "data-fullscreen-active",
+      "false",
+    );
+    await expect(page).toHaveURL(/component\/magicui-border-beam/);
+  }
+});

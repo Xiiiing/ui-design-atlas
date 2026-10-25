@@ -3,6 +3,31 @@ import { expect } from "@playwright/test";
 // Check actual content geometry as well as the document: overflow:hidden alone
 // must never hide the bottom controls or turn a cropped canvas into a passing fit.
 export async function expectViewerContained(page) {
+  if (
+    await page.evaluate(
+      () =>
+        !!document.fullscreenElement ||
+        !!document.querySelector("#preview-panel.is-immersive"),
+    )
+  ) {
+    await expect
+      .poll(async () => {
+        const stage = await page.locator("#preview-viewport").boundingBox();
+        const size = await page.evaluate(() => ({
+          width: innerWidth,
+          height: innerHeight,
+        }));
+        return Math.max(
+          Math.abs(stage.x),
+          Math.abs(stage.y),
+          Math.abs(stage.width - size.width),
+          Math.abs(stage.height - size.height),
+        );
+      })
+      .toBeLessThanOrEqual(1);
+    await expect(page.locator("[data-exit-fullscreen]")).toBeVisible();
+    return;
+  }
   await expect
     .poll(() =>
       page.evaluate(() => {

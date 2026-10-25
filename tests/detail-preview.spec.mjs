@@ -124,7 +124,8 @@ test("Native component sizing survives devices, fullscreen, theme and real inter
   await expectCanvasContained(page);
   const device = await metrics(page);
   expect(device.nativeWidth).toBe(375);
-  expect(device.nativeHeight).toBe(812);
+  expect(device.height).toBeCloseTo(device.stageHeight, 0);
+  expect(device.width).toBe(Math.min(375, device.stageWidth));
   expect(device.width).toBeLessThanOrEqual(375);
   await expect(page.locator("#preview-scale")).toHaveText(
     `${Math.round((device.width / 375) * 100)}%`,

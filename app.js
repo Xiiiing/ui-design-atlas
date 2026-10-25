@@ -1,3 +1,4 @@
+import { createFullscreen } from "./atlas/fullscreen.js";
 // @ts-check
 import { element, maybe, all } from "./atlas/dom.js";
 import {
@@ -127,6 +128,7 @@ function render() {
   main.classList.toggle("library-page", !types[appState.route.view]);
   element("#topbar").hidden = false;
   element("#footer").hidden = false;
+  fullscreen.reset();
   document.body.classList.remove("is-viewer", "is-experience");
   if (types[appState.route.view]) {
     const r = findResource(appState.route.id || "", appState.route.view);
@@ -294,10 +296,16 @@ const handleNavigationClick = createNavigationActions({
   openResource,
 });
 
+const fullscreen = createFullscreen({
+  t,
+  scalePreview,
+  onChange: syncDetailsPanel,
+});
 const handlePreviewAction = createPreviewActions({
   appState,
   t,
-  notify,
+  toggleFullscreen: fullscreen.toggle,
+  toggleFullscreenTools: fullscreen.toggleTools,
   beginPreviewLoad,
   loadViewerDetails,
   toggleDetails,
@@ -647,6 +655,7 @@ document.addEventListener("keydown", (e) => {
   }
   if (
     e.key === "Escape" &&
+    !fullscreen.active() &&
     !e.defaultPrevented &&
     !e.target.closest(".atlas-select-content, .atlas-menu-content") &&
     appState.selected &&
@@ -692,7 +701,7 @@ window.addEventListener("resize", () => {
   syncDetailsPanel();
   scalePreview();
 });
-window.addEventListener("fullscreenchange", scalePreview);
+window.addEventListener("fullscreenchange", fullscreen.sync);
 window.addEventListener("storage", favoriteActions.receive);
 document.addEventListener(
   "cancel",

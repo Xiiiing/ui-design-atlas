@@ -3,11 +3,12 @@ import { element, all } from "./dom.js";
 import { embeddedPreviewURL } from "../presentation.js";
 import { resourcePreview } from "../catalog.js";
 import { icon } from "../icons.js";
-/** @param {{appState:import('./types').AppState;t:import('./types').Translate;notify:(message:string)=>void;beginPreviewLoad:()=>void;loadViewerDetails:(r:import('./types').Resource)=>Promise<void>;toggleDetails:()=>void;scalePreview:()=>void;updateThemeURL:()=>void}} actions */
+/** @param {{appState:import('./types').AppState;t:import('./types').Translate;toggleFullscreen:()=>Promise<void>;toggleFullscreenTools:()=>void;beginPreviewLoad:()=>void;loadViewerDetails:(r:import('./types').Resource)=>Promise<void>;toggleDetails:()=>void;scalePreview:()=>void;updateThemeURL:()=>void}} actions */
 export function createPreviewActions({
   appState,
   t,
-  notify,
+  toggleFullscreen,
+  toggleFullscreenTools,
   beginPreviewLoad,
   loadViewerDetails,
   toggleDetails,
@@ -78,15 +79,15 @@ export function createPreviewActions({
       );
       return true;
     }
-    if (b.hasAttribute("data-fullscreen")) {
-      try {
-        const p = element("#preview-panel");
-        document.fullscreenElement
-          ? await document.exitFullscreen()
-          : await p.requestFullscreen();
-      } catch {
-        notify(t("可使用独立打开查看演示。", "Use the standalone preview."));
-      }
+    if (b.hasAttribute("data-fullscreen-controls")) {
+      toggleFullscreenTools();
+      return true;
+    }
+    if (
+      b.hasAttribute("data-fullscreen") ||
+      b.hasAttribute("data-exit-fullscreen")
+    ) {
+      await toggleFullscreen();
       return true;
     }
     return false;

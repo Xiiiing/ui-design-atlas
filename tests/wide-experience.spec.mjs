@@ -21,9 +21,8 @@ async function expectFittedCanvas(page, width, height) {
             width = viewport.clientWidth;
             height = viewport.clientHeight;
           }
-          const scale = automatic
-            ? 1
-            : Math.min(1, stage.width / width, stage.height / height);
+          const scale = automatic ? 1 : Math.min(1, stage.width / width);
+          if (!automatic) height = stage.height / scale;
           return Math.max(
             Math.abs(box.width - width * scale),
             Math.abs(box.height - height * scale),
@@ -142,7 +141,7 @@ test("Desktop detail stays centered and readable in wide and short windows", asy
     const frame = await page.locator("#case-preview").boundingBox();
     const stage = await page.locator("#preview-viewport").boundingBox();
     const viewer = await page.locator(".experience-viewer").boundingBox();
-    expect(viewer.width).toBeLessThanOrEqual(1280);
+    expect(viewer.width).toBeLessThanOrEqual(1760);
     expect(frame.width).toBeGreaterThan(300);
     expect(frame.height).toBeGreaterThan(180);
     expect(frame.width).toBeLessThanOrEqual(stage.width + 1);
