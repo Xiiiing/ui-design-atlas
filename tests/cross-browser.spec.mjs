@@ -114,3 +114,34 @@ test("Viewer fit contains the canvas and controls within short desktop and phone
     await expectCanvasContained(page);
   }
 });
+
+test("Short landscape motion previews keep canvas, parameter controls and a way back usable", async ({
+  page,
+}) => {
+  const { expectViewerContained, expectCanvasContained } =
+    await import("./viewer-assertions.mjs");
+  for (const [width, height] of [
+    [812, 320],
+    [812, 375],
+    [1440, 400],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await page.goto(
+      `./?landscape=${width}-${height}#component/magicui-border-beam?lang=en`,
+    );
+    await expect(page.locator(".viewer-load-state")).toBeHidden();
+    await expectViewerContained(page);
+    await expectCanvasContained(page);
+    await expect(page.locator("#topbar")).toBeHidden();
+    const email = page.frameLocator("#case-preview").locator("#email");
+    await email.fill("landscape@example.com");
+    await expect(email).toHaveValue("landscape@example.com");
+    const duration = page.locator("[data-preview-setting=duration]");
+    await duration.fill("5");
+    await duration.press("Tab");
+    await expect(duration).toHaveAttribute("data-applied-value", "5");
+    await page.locator("[data-close-viewer]").first().click();
+    await expect(page.locator("#topbar")).toBeVisible();
+    await expect(page.locator(".experience-viewer")).toHaveCount(0);
+  }
+});

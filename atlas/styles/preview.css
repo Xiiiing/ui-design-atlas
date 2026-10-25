@@ -415,3 +415,25 @@ body.is-experience {
 .viewer-load-state[hidden] {
   display: none;
 }
+
+/* Keep the preview usable in phone landscape and short desktop windows. The
+   viewer's back button remains available when the site navigation is hidden. */
+@media (max-height: 480px) {
+  .is-experience #topbar {
+    display: none;
+  }
+  .is-experience #main {
+    padding: 4px;
+  }
+  .experience-viewer .market-viewer-toolbar {
+    min-height: 44px;
+    padding: 2px 8px;
+  }
+  .experience-viewer .viewer-title small {
+    display: none;
+  }
+  .experience-viewer .market-preview-bottom {
+    min-height: 44px;
+    padding: 0 8px;
+  }
+}
