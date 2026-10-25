@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { resources } from "../catalog.js";
 
 const browseTop = (page) => page.evaluate(() => scrollY);
 async function choose(page, id, name) {
@@ -58,7 +59,7 @@ test("Marketplace selects preserve FormData, reset, dialog portals and focus", a
     .click();
   await expect(page.locator("#prompt-scope")).toBeFocused();
   await expect(page.locator(".full-prompt")).toContainText(
-    "Apply these visual and motion rules",
+    resources.find((r) => r.id === "magicui-border-beam").stylePrompt.en,
   );
   await page.locator("#site-locale").click();
   await page.keyboard.press("Escape");
