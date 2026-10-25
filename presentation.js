@@ -1,3 +1,4 @@
+// @ts-check
 import discovery from "./content/discovery.json" with { type: "json" };
 // Capability overrides describe demo space, not the upstream component's type.
 const canvasComponents = new Set([
@@ -12,6 +13,7 @@ const canvasComponents = new Set([
   "shadcn-admin-filter-toolbar",
   "shadcn-admin-trend-chart",
 ]);
+/** @param {import("./atlas/types").Resource} resource @returns {"inline"|"canvas"} */
 export function experienceMode(resource) {
   if (resource.preview.mode) return resource.preview.mode;
   return resource.type !== "component" ||
@@ -25,6 +27,7 @@ export function experienceMode(resource) {
 }
 // One framing rule for screenshots, live cards and detail previews. The source
 // component and its theme stay intact; only the surrounding demo viewport changes.
+/** @param {import("./atlas/types").Resource} resource @param {"card"|"detail"|"quick"} [context] */
 export function resourcePresentation(resource, context = "card") {
   const wide = resource.type !== "component" || resource.preview.width >= 900;
   const mode = experienceMode(resource);
@@ -63,8 +66,9 @@ export function resourcePresentation(resource, context = "card") {
             ? 360
             : 400,
     theme:
-      discovery.previewThemes[resource.id] ||
-      (resource.sourceId === "shadcn-admin" ? "dark" : "light"),
+      /** @type {Record<string,string>} */ (discovery.previewThemes)[
+        resource.id
+      ] || (resource.sourceId === "shadcn-admin" ? "dark" : "light"),
     context,
     stageHeight:
       context === "detail"
@@ -77,6 +81,7 @@ export function resourcePresentation(resource, context = "card") {
   };
 }
 
+/** @param {string} url @param {string} parameter */
 function appendPreviewParameter(url, parameter) {
   const [path, hash] = url.split("#");
   return (
@@ -87,14 +92,17 @@ function appendPreviewParameter(url, parameter) {
   );
 }
 
+/** @param {string} url */
 export function thumbnailURL(url) {
   return appendPreviewParameter(url, "thumb=1");
 }
 
+/** @param {string} url */
 export function embeddedPreviewURL(url) {
   return appendPreviewParameter(url, "embed=1");
 }
 
+/** @param {string} url */
 export function inlinePreviewURL(url) {
   return appendPreviewParameter(embeddedPreviewURL(url), "inline=1");
 }

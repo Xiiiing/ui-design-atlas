@@ -1,0 +1,140 @@
+{
+  "categories": {
+    "buttons": [
+      "按钮",
+      "Buttons"
+    ],
+    "text": [
+      "文字",
+      "Text"
+    ],
+    "backgrounds": [
+      "背景",
+      "Backgrounds"
+    ],
+    "cards": [
+      "卡片",
+      "Cards"
+    ],
+    "navigation": [
+      "导航",
+      "Navigation"
+    ],
+    "forms": [
+      "表单",
+      "Forms"
+    ],
+    "data": [
+      "数据展示",
+      "Data"
+    ],
+    "loading": [
+      "加载",
+      "Loading"
+    ],
+    "feedback": [
+      "反馈",
+      "Feedback"
+    ],
+    "layout": [
+      "布局",
+      "Layout"
+    ],
+    "auth": [
+      "登录注册",
+      "Authentication"
+    ],
+    "commerce": [
+      "电商",
+      "Commerce"
+    ],
+    "files": [
+      "文件管理",
+      "Files"
+    ],
+    "search": [
+      "搜索筛选",
+      "Search & filtering"
+    ],
+    "settings": [
+      "设置",
+      "Settings"
+    ],
+    "portfolio": [
+      "作品展示",
+      "Portfolio"
+    ]
+  },
+  "styles": {
+    "minimal": [
+      "中性极简",
+      "Neutral minimal"
+    ],
+    "enterprise": [
+      "企业应用",
+      "Enterprise"
+    ],
+    "editorial": [
+      "编辑式",
+      "Editorial"
+    ],
+    "technology": [
+      "科技感",
+      "Technology"
+    ],
+    "swiss": [
+      "瑞士风格",
+      "Swiss"
+    ],
+    "natural": [
+      "自然柔和",
+      "Natural"
+    ]
+  },
+  "technologies": {
+    "native": [
+      "HTML / CSS / JavaScript",
+      "HTML / CSS / JavaScript"
+    ],
+    "react": [
+      "React",
+      "React"
+    ]
+  },
+  "interactions": {
+    "hover": [
+      "悬停",
+      "Hover"
+    ],
+    "click": [
+      "点击",
+      "Click"
+    ],
+    "scroll": [
+      "滚动",
+      "Scroll"
+    ],
+    "auto": [
+      "自动播放",
+      "Autoplay"
+    ],
+    "input": [
+      "输入",
+      "Input"
+    ],
+    "drag": [
+      "拖拽",
+      "Drag"
+    ]
+  },
+  "provenance": {
+    "original": [
+      "本站原创",
+      "Original"
+    ],
+    "open-source": [
+      "开源收录",
+      "Open source"
+    ]
+  }
+}

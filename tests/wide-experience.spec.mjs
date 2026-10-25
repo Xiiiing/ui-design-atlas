@@ -8,7 +8,23 @@ async function expectFittedCanvas(page, width, height) {
           const viewport = document.querySelector("#preview-viewport");
           const box = frame.getBoundingClientRect();
           const stage = viewport.getBoundingClientRect();
-          const scale = Math.min(stage.width / width, stage.height / height);
+          const device = Number(
+            document.querySelector('[data-device][aria-pressed="true"]')
+              ?.dataset.device || 0,
+          );
+          const automatic =
+            !device && innerWidth < 1024 && !document.fullscreenElement;
+          if (automatic) {
+            width = viewport.clientWidth;
+            height = Math.max(480, Math.min(812, innerHeight));
+          }
+          const scale = automatic
+            ? 1
+            : document.fullscreenElement
+              ? Math.min(stage.width / width, stage.height / height)
+              : device
+                ? Math.min(1, stage.width / width)
+                : stage.width / width;
           return Math.max(
             Math.abs(box.width - width * scale),
             Math.abs(box.height - height * scale),
@@ -18,11 +34,6 @@ async function expectFittedCanvas(page, width, height) {
             Math.abs(frame.contentWindow.innerHeight - height),
             viewport.scrollWidth - viewport.clientWidth,
             viewport.scrollHeight - viewport.clientHeight,
-            // Desktop uses a proportional stage with normal page scrolling.
-            // Compact devices still fit the whole viewer into the viewport.
-            innerWidth < 1024
-              ? document.documentElement.scrollHeight - innerHeight
-              : 0,
           );
         },
         [width, height],
@@ -94,8 +105,16 @@ test("Wide experience preserves the original aspect ratio and keeps portrait dev
         y: box.y - v.y,
       };
     });
-    expect(native.width).toBe(canvasWidth);
-    expect(native.height).toBe(canvasHeight);
+    expect(native.width).toBe(
+      width < 1024
+        ? await page
+            .locator("#preview-viewport")
+            .evaluate((el) => el.clientWidth)
+        : canvasWidth,
+    );
+    expect(native.height).toBe(
+      width < 1024 ? Math.max(480, Math.min(812, height)) : canvasHeight,
+    );
     expect(native.x).toBeGreaterThanOrEqual(0);
     expect(native.y).toBeGreaterThanOrEqual(0);
     await page.locator("[data-fit]").click();
@@ -163,7 +182,7 @@ test("Original component ratios survive resize, fullscreen and a real dialog int
 test("Details entry, code deep link and back restore filters, load count and exact entry focus", async ({
   page,
 }) => {
-  await page.goto("#components?lang=en&style=minimal");
+  await page.goto("#components?lang=en&style=motion-neutral");
   const entry = page.locator(".asset-actions [data-details]").last();
   await entry.scrollIntoViewIfNeeded();
   const hash = await page.evaluate(() => location.hash),

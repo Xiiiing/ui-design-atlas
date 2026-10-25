@@ -1,6 +1,7 @@
 // @ts-check
+import { loadResourceDetails } from "./resource-data.js";
 import { element, maybe, all } from "./dom.js";
-import { escapeHTML as esc } from "../components.js";
+import { escapeHTML as esc } from "./html.js";
 import { icon } from "../icons.js";
 import {
   replaceShellHTML,
@@ -39,6 +40,30 @@ export function createViewer({
   href,
   render,
 }) {
+  let detailsSerial = 0;
+  /** @param {import("./types").Resource} resource */
+  async function loadViewerDetails(resource) {
+    const serial = ++detailsSerial;
+    try {
+      const full = await loadResourceDetails(resource);
+      if (
+        serial !== detailsSerial ||
+        appState.selected?.id !== resource.id ||
+        appState.selected?.type !== resource.type
+      )
+        return;
+      appState.selected = full;
+      if (appState.tab !== "code") inspector();
+    } catch {
+      if (
+        serial === detailsSerial &&
+        appState.selected?.id === resource.id &&
+        maybe("#inspector")
+      )
+        element("#inspector").innerHTML =
+          `<p role="alert">${t("详情读取失败", "Could not load details")}</p><button class="button" data-retry-details>${t("重试", "Retry")}</button>`;
+    }
+  }
   function inspector() {
     if (!appState.selected) return;
     const r = appState.selected;
@@ -82,7 +107,9 @@ export function createViewer({
 
   /** @param {import("./types").Resource} r @param {string} [scope] */
   function promptText(r, scope = r.type) {
-    const text = resourcePrompt(r, appState.locale, scope),
+    const text = r.prompt
+        ? resourcePrompt(r, appState.locale, scope)
+        : t("正在读取详情…", "Loading details…"),
       config = previewParameters(r);
     const input = maybe("[data-preview-setting]");
     return config &&
@@ -153,6 +180,7 @@ export function createViewer({
     element("#footer").hidden = true;
     replaceShellHTML(main, viewer(r));
     inspector();
+    void loadViewerDetails(appState.selected || r);
     scalePreview();
     appState.previewResizeObserver?.observe(element("#preview-viewport"));
     const frame = element("#case-preview");
@@ -299,26 +327,30 @@ export function createViewer({
       "--preview-aspect",
       `${appState.selected.preview.width} / ${appState.selected.preview.height}`,
     );
-    // Keep the authored viewport intact on desktop. On smaller screens, wide
-    // resources use a portrait device so their responsive controls remain usable.
-    // Base automatic device selection on the window, not the inspector's width.
-    const device =
-      appState.width ||
-      (appState.selected.preview.width >= 900 && innerWidth < 1024
-        ? innerWidth < 600
-          ? 375
-          : 768
-        : 0);
-    const desired = device || appState.selected.preview.width;
-    const h =
-      device === 375
+    const fullscreen = Boolean(document.fullscreenElement);
+    const automatic = !appState.width && innerWidth < 1024 && !fullscreen;
+    const desired = automatic
+      ? viewport.clientWidth
+      : appState.width || appState.selected.preview.width;
+    const h = automatic
+      ? Math.max(480, Math.min(812, innerHeight))
+      : appState.width === 375
         ? 812
-        : device === 768
+        : appState.width === 768
           ? 1024
           : appState.selected.preview.height;
-    const scale = appState.fit
-      ? Math.min(viewport.clientWidth / desired, viewport.clientHeight / h)
-      : 1;
+    const scale =
+      automatic || !appState.fit
+        ? 1
+        : fullscreen
+          ? Math.min(viewport.clientWidth / desired, viewport.clientHeight / h)
+          : appState.width
+            ? Math.min(1, viewport.clientWidth / desired)
+            : viewport.clientWidth / desired;
+    if (!fullscreen)
+      viewport.style.height =
+        automatic || appState.width ? Math.max(480, h * scale) + "px" : "";
+    else viewport.style.height = "";
     canvas.style.width = desired * scale + "px";
     canvas.style.height = h * scale + "px";
     frame.style.width = desired + "px";
@@ -380,6 +412,7 @@ export function createViewer({
     history.replaceState(history.state, "", url);
     appState.route = parse();
     inspector();
+    if (!appState.selected.prompt) void loadViewerDetails(appState.selected);
     all("[data-page-preview]").forEach((el) =>
       el.setAttribute(
         "aria-pressed",
@@ -437,6 +470,7 @@ export function createViewer({
   }
   return {
     inspector,
+    loadViewerDetails,
     promptText,
     showViewer,
     previewLoadState,

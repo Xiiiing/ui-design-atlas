@@ -2,16 +2,37 @@
 import { element, maybe, all } from "./dom.js";
 import { browseScroll, scrollBrowseTo } from "../shell/controls.tsx";
 
+/** @type {readonly import('./types').View[]} */
+const views = [
+  "discover",
+  "explore",
+  "favorites",
+  "motion",
+  "components",
+  "blocks",
+  "pages",
+  "cases",
+  "resources",
+  "guide",
+  "component",
+  "block",
+  "page",
+  "case",
+];
+/** @param {string} value @returns {value is import('./types').View} */
+const isView = (value) => views.some((view) => view === value);
 export function parse() {
-  const [path, q = ""] = location.hash.slice(1).split("?");
-  const [view = "discover", id] = path.split("/");
-  return { view: view || "discover", id, params: new URLSearchParams(q) };
+  return parseHash(location.hash);
 }
-
-/** @param {string} hash */
+/** @param {string} hash @returns {import('./types').Route} */
 export function parseHash(hash) {
-  const [p, q = ""] = hash.replace(/^#/, "").split("?");
-  return { view: p || "discover", params: new URLSearchParams(q) };
+  const [path, query = ""] = hash.replace(/^#/, "").split("?");
+  const [candidate = "discover", id] = path.split("/");
+  return {
+    view: isView(candidate) ? candidate : "discover",
+    id,
+    params: new URLSearchParams(query),
+  };
 }
 
 /** @param {string} view */

@@ -1,7 +1,11 @@
+// @ts-check
+import { element } from "./atlas/dom.js";
 import { inlinePreviewURL } from "./presentation.js";
 
 // Only frames owned by this controller may report readiness. The detail viewer
 // has its own channel; card messages never change its resource, locale or theme.
+/** @typedef {{frame:HTMLIFrameElement;id:string;timeout:ReturnType<typeof setTimeout>|undefined}} Entry */
+/** @param {{resource:(card:HTMLElement)=>import('./atlas/types').Resource|undefined;url:(resource:import('./atlas/types').Resource)=>string;label:(resource:import('./atlas/types').Resource)=>string;loading:()=>string;failure:()=>string;config:()=>{locale:string;theme:string}}} options */
 export function createLiveCards({
   resource,
   url,
@@ -10,17 +14,24 @@ export function createLiveCards({
   failure,
   config,
 }) {
-  const frames = new Map(),
-    visible = new Set(),
-    observed = new Set();
+  /** @type {Map<HTMLElement,Entry>} */
+  const frames = new Map();
+  /** @type {Set<HTMLElement>} */
+  const visible = new Set();
+  /** @type {Set<HTMLElement>} */
+  const observed = new Set();
+  /** @type {HTMLElement|null|undefined} */
   let preferred;
+  /** @param {Entry} entry */
   function configure(entry) {
-    entry.frame.contentWindow.postMessage(
+    entry.frame.contentWindow?.postMessage(
       { type: "atlas:preview-config", resourceId: entry.id, ...config() },
       location.origin,
     );
   }
+  /** @param {Entry} entry */
   const focused = (entry) => document.activeElement === entry.frame;
+  /** @param {HTMLElement} card */
   function release(card) {
     const entry = frames.get(card);
     if (!entry) return;
@@ -30,25 +41,29 @@ export function createLiveCards({
     card.classList.remove("is-live");
     card.dataset.previewState = "idle";
   }
+  /** @param {HTMLElement} card @param {Entry} entry */
   function fail(card, entry) {
     if (frames.get(card) !== entry) return;
     release(card);
     card.dataset.previewState = "error";
-    card.querySelector(".preview-state span").textContent = failure();
-    card.querySelector("[data-retry-preview]").hidden = false;
+    element(".preview-state span", card).textContent = failure();
+    element("[data-retry-preview]", card).hidden = false;
   }
+  /** @param {HTMLElement} card */
   function mount(card) {
     if (frames.has(card) || card.dataset.previewState === "error") return;
     const r = resource(card),
       frame = document.createElement("iframe");
+    if (!r) return;
     frame.title = label(r);
     frame.src = inlinePreviewURL(url(r));
     frame.allow = "clipboard-write";
     frame.dataset.resource = r.id;
     card.dataset.previewState = "loading";
-    card.querySelector(".preview-state span").textContent = loading();
-    card.querySelector("[data-retry-preview]").hidden = true;
-    const entry = { frame, id: r.id, timeout: null };
+    element(".preview-state span", card).textContent = loading();
+    element("[data-retry-preview]", card).hidden = true;
+    /** @type {Entry} */
+    const entry = { frame, id: r.id, timeout: undefined };
     frames.set(card, entry);
     entry.timeout = setTimeout(() => fail(card, entry), 15000);
     frame.addEventListener("error", () => fail(card, entry));
@@ -62,7 +77,7 @@ export function createLiveCards({
         fail(card, entry);
       }
     });
-    card.querySelector("[data-live]").append(frame);
+    element("[data-live]", card).append(frame);
   }
   function reconcile() {
     for (const [card, entry] of frames)
@@ -84,6 +99,7 @@ export function createLiveCards({
   }
   const observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {
+      if (!(entry.target instanceof HTMLElement)) continue;
       if (entry.isIntersecting) visible.add(entry.target);
       else visible.delete(entry.target);
     }
@@ -107,8 +123,9 @@ export function createLiveCards({
     }
   });
   document.addEventListener("pointerover", (event) => {
+    if (!(event.target instanceof Element)) return;
     const card = event.target.closest('.asset-card[data-experience="inline"]');
-    if (card && card !== preferred) {
+    if (card instanceof HTMLElement && card !== preferred) {
       preferred = card;
       reconcile();
     }
@@ -119,6 +136,7 @@ export function createLiveCards({
     configure() {
       for (const entry of frames.values()) configure(entry);
     },
+    /** @param {Iterable<HTMLElement>} cards */
     observe(cards) {
       const next = new Set(cards);
       for (const card of observed)
@@ -142,7 +160,9 @@ export function createLiveCards({
       preferred = null;
       for (const card of frames.keys()) release(card);
     },
+    /** @param {Element|null} card */
     retry(card) {
+      if (!(card instanceof HTMLElement)) return;
       release(card);
       card.dataset.previewState = "idle";
       preferred = card;

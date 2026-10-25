@@ -2,6 +2,14 @@ export type Locale = "zh-CN" | "en";
 export type Theme = "light" | "dark";
 export type Localized<T = string> = Record<Locale, T>;
 export type ResourceType = "component" | "block" | "page" | "case";
+export type Category =
+  keyof typeof import("../content/taxonomy.json").categories;
+export type Interaction =
+  keyof typeof import("../content/taxonomy.json").interactions;
+export type VisualStyle =
+  keyof typeof import("../content/taxonomy.json").styles;
+export type Technology =
+  keyof typeof import("../content/taxonomy.json").technologies;
 export interface Resource {
   id: string;
   type: ResourceType;
@@ -13,26 +21,56 @@ export interface Resource {
   libraryVersions?: Record<string, string>;
   tags?: Localized<string[]>;
   cover: string;
-  category: string;
-  interactions: string[];
+  category: Category;
+  categories: Category[];
+  interactions: Interaction[];
+  styleIds: VisualStyle[];
+  technologyIds: Technology[];
+  provenance: "original" | "open-source";
+  aliases?: string[];
+  scene?: Localized;
+  source?: "original" | "open-source";
+  path?: string;
+  kind?: string;
+  kindId?: string;
+  tokens?: Record<string, string>;
+  prompt?: Localized;
+  stylePrompt?: Localized;
   motion?: boolean;
   styleId: string;
   style: Localized;
   audience: string;
   caseId?: string;
   pageIds?: string[];
-  preview: { width: number; height: number; url?: string };
+  preview: {
+    width: number;
+    height: number;
+    url?: string;
+    mode?: "inline" | "canvas";
+  };
   files?: string[];
   supportFiles?: string[];
-  pages?: { id: string; key: string; name: Localized }[];
+  pages?: CasePage[];
   principle?: Localized;
   rules?: Localized<string[]>;
   useCases?: Localized;
   originalUrl?: string;
   sourceUrl?: string;
 }
+export type View =
+  | ResourceType
+  | "discover"
+  | "explore"
+  | "favorites"
+  | "motion"
+  | "components"
+  | "blocks"
+  | "pages"
+  | "cases"
+  | "resources"
+  | "guide";
 export interface Route {
-  view: string;
+  view: View;
   id?: string;
   params: URLSearchParams;
 }
@@ -50,7 +88,7 @@ export interface AppState {
   route: Route;
   selected: Resource | null;
   detailResource: Resource | null;
-  tab: string;
+  tab: "notes" | "code";
   theme: Theme;
   width: number;
   fit: boolean;

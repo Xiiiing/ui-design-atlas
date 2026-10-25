@@ -79,12 +79,9 @@ test("Discovery submits search and library filters without moving the browse lay
   await expect(page.locator("#results .asset-card")).toHaveCount(4);
   expect(await positions(page)).toEqual(before);
   await page.goBack();
-  await page
-    .getByRole("combobox", { name: "All libraries", exact: true })
-    .click();
-  await page
-    .getByRole("option", { name: "Fluent UI React v9", exact: true })
-    .click();
+  await page.locator("[data-advanced-filters]").click();
+  await page.locator("input[name=library][value=fluent]").check();
+  await page.locator("[data-advanced-filters]").click();
   await expect(page).toHaveURL(/#explore.*library=fluent/);
   await expect(page.locator("#results .asset-card")).toHaveCount(4);
   expect(await positions(page)).toEqual(before);

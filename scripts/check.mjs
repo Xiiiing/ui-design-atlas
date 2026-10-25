@@ -19,6 +19,8 @@ import {
 } from "../catalog.js";
 import { components as originals } from "../data.js";
 import { componentMarkup } from "../components.js";
+import { readCatalog } from "./catalog-data.mjs";
+await readCatalog(fileURLToPath(new URL("../", import.meta.url)));
 const base = new URL("../", import.meta.url);
 for (const [label, items] of Object.entries({ cases, pages, components })) {
   assert.equal(

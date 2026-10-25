@@ -1,4 +1,22 @@
 {
+  "original": {
+    "id": "original",
+    "name": "UI Design Atlas",
+    "author": "UI Design Atlas",
+    "repo": "https://github.com/Xiiiing/ui-design-atlas",
+    "license": "Atlas original",
+    "original": true
+  },
+  "shadcn-admin": {
+    "id": "shadcn-admin",
+    "name": "Shadcn Admin",
+    "author": "Sat Naing",
+    "repo": "https://github.com/satnaing/shadcn-admin",
+    "commit": "e16c87f213a5ba5e45964e9b67c792105ec74d26",
+    "license": "MIT",
+    "licenseFile": "./examples/shadcn-admin/LICENSE",
+    "docs": "https://shadcn-admin.netlify.app/"
+  },
   "magicui": {
     "id": "magicui",
     "name": "Magic UI",

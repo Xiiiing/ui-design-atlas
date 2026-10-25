@@ -1,0 +1,268 @@
+/* Search uses the same library hierarchy as discovery. */
+.catalog-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.catalog-toolbar .market-tabs {
+  background: var(--surface);
+  border: 0;
+  border-radius: 12px;
+  gap: 3px;
+  padding: 3px;
+  margin: 0;
+  min-width: 0;
+  width: max-content;
+  flex-shrink: 0;
+  overflow: auto;
+  scrollbar-width: none;
+}
+.catalog-toolbar .market-tabs a {
+  border: 0;
+  min-height: 36px;
+  border-radius: 9px;
+  font-size: 13px;
+  gap: 6px;
+  font-weight: 500;
+}
+.catalog-toolbar .market-tabs a.active {
+  color: var(--panel);
+  background: var(--ink);
+  border: 0;
+}
+.catalog-toolbar .market-tabs a svg {
+  display: none;
+}
+.catalog-toolbar .market-tabs a > span {
+  background: none;
+  padding: 0;
+  opacity: 0.55;
+  color: inherit;
+  font-size: 12px;
+}
+.catalog-toolbar .market-search {
+  width: 280px;
+  flex: none;
+  min-width: 0;
+  height: 38px;
+  min-height: 38px;
+  margin-right: 0;
+  background: var(--surface);
+  border: 0;
+  border-radius: 10px;
+}
+.catalog-toolbar .market-search input {
+  height: 38px;
+  font-size: 13px;
+}
+.catalog-facets {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.catalog-facets .filter-select {
+  width: 180px;
+}
+.catalog-facets .filter-select,
+.catalog-facets .button {
+  min-height: 32px;
+}
+.library-page .category-strip {
+  gap: 6px;
+  border: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.library-page .category-strip button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  line-height: 20px;
+  border: 0;
+  padding: 5px 12px;
+  min-height: 30px;
+  border-radius: 100px;
+  background: var(--surface);
+  font-size: 12px;
+}
+.library-page .category-strip button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--panel);
+}
+.library-page .market-intro {
+  margin-bottom: 36px;
+  padding-top: 24px;
+}
+.library-page .market-intro h1 {
+  font-size: 42px;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+}
+.library-page .market-intro p {
+  font-size: 14px;
+  margin-top: 12px;
+}
+.library-page .market-results-line {
+  padding: 14px 0 22px;
+}
+.library-page .market-results-line > span:last-child {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .catalog-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .catalog-toolbar .market-tabs {
+    max-width: 100%;
+    width: max-content;
+  }
+  .catalog-toolbar .market-search {
+    width: 100%;
+    max-width: none;
+  }
+}
+@media (max-width: 767px) {
+  .catalog-toolbar .market-tabs {
+    width: 100%;
+  }
+  .catalog-toolbar .market-search,
+  .catalog-toolbar .market-search input {
+    min-height: 44px;
+  }
+  .library-page .market-intro {
+    padding-top: 16px;
+    margin-bottom: 28px;
+  }
+  .library-page .market-intro h1 {
+    font-size: 32px;
+  }
+  .catalog-facets .button,
+  .catalog-facets .filter-select {
+    min-height: 44px;
+  }
+}
+
+/* The archived SelectionGroup supplies motion only; the library keeps its
+   neutral palette and dimensions. Text and hit targets never animate. */
+.catalog-toolbar .market-tabs.selection-group {
+  --selection-fill: var(--ink);
+  --selection-stroke: transparent;
+  --selection-radius: 9px;
+}
+.catalog-toolbar .market-tabs.selection-group a.active {
+  background: transparent;
+}
+.catalog-toolbar > [data-shell-mounted="selection"] {
+  max-width: 100%;
+}
+/* Both browse views use these same control metrics. */
+.catalog-toolbar .market-tabs a {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  line-height: 20px;
+}
+.catalog-toolbar .market-tabs a span {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 767px) {
+  .catalog-toolbar .market-tabs a {
+    min-height: 38px;
+    padding: 8px 12px;
+  }
+}
+
+.code-scope-heading {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.code-scope-heading h2 {
+  font-size: 18px;
+}
+.code-scope-heading span {
+  color: var(--muted-text);
+  font-size: 13px;
+}
+.code-integration {
+  margin: 16px 0;
+}
+.code-integration summary {
+  cursor: pointer;
+  padding: 8px 0;
+  font-weight: 500;
+}
+.code-integration p {
+  line-height: 1.7;
+  margin: 12px 0;
+}
+
+/* Keep the selected conditions and secondary controls in one stable row. */
+.filter-options-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+.filter-options-row .active-filters {
+  flex: 1;
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow-x: auto;
+  height: 44px;
+}
+.filter-options-row .filter-chip,
+.filter-options-row .clear-filters {
+  margin-top: 0;
+  flex-shrink: 0;
+}
+.library-page .category-strip button > span {
+  opacity: 0.55;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.catalog-toolbar .market-search .icon-button {
+  min-width: 26px;
+  min-height: 26px;
+  width: 26px;
+  height: 26px;
+}
+@media (max-width: 767px) {
+  .filter-options-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .catalog-facets {
+    justify-content: flex-start;
+  }
+  .catalog-toolbar .market-search .icon-button {
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
+
+.browse-results {
+  position: relative;
+  margin-top: 16px;
+}
+.library-page .browse-results .market-results-line {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0;
+  min-height: 26px;
+}
+.browse-results .resource-group h2 {
+  line-height: 26px;
+}
+.browse-results .resource-group:first-of-type h2 {
+  padding-right: 150px;
+}

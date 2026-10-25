@@ -19,9 +19,9 @@ test("Visible cards operate directly and expose prompt, details and filter tags"
   await expect(card.frameLocator("iframe").locator("#feedback")).toBeVisible();
   expect(page.url()).toBe(url);
   await card.locator("[data-card-prompt]").click();
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
-    resourcePrompt(findResource("folio-button"), "en"),
-  );
+  await expect
+    .poll(() => page.evaluate(() => navigator.clipboard.readText()))
+    .toBe(resourcePrompt(findResource("folio-button"), "en"));
   await card.locator("[data-resource-tag=style]").click();
   await expect(page).toHaveURL(/category=buttons.*style=folio/);
   await expect(page.locator(".asset-card")).toHaveCount(1);

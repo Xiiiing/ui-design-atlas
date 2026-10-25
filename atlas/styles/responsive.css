@@ -1,0 +1,74 @@
+/* Golden proportion defines hierarchy; demo aspect ratios and modular cards
+   remain resource-specific. Narrow screens retain one readable column. */
+:root {
+  --atlas-phi: 1.618;
+  --atlas-major: 61.8%;
+  --atlas-reading-leading: 1.618;
+}
+.library-page .market-intro p {
+  line-height: var(--atlas-reading-leading);
+  max-width: 62ch;
+}
+.detail-section p,
+.detail-section li {
+  line-height: var(--atlas-reading-leading);
+}
+@media (min-width: 1024px) {
+  .library-page .market-intro {
+    max-width: var(--atlas-major);
+    margin-bottom: 32px;
+  }
+  .catalog-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1.618fr) minmax(0, 1fr);
+    gap: 24px;
+  }
+  .catalog-toolbar .market-search {
+    width: 100%;
+    max-width: none;
+  }
+  .experience-viewer[data-details-open="true"] .market-detail-layout {
+    grid-template-columns: minmax(0, 1.618fr) minmax(320px, 1fr);
+  }
+}
+
+/* Browse facets: primary purpose strip and expandable multi-select groups. */
+.advanced-filters {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  align-items: start;
+}
+.facet-group {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+  display: grid;
+  gap: 8px;
+}
+.facet-group legend {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.facet-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.facet-group input {
+  accent-color: var(--accent);
+}
+.facet-group [data-facet-count] {
+  margin-left: auto;
+  color: var(--muted-text);
+  font-variant-numeric: tabular-nums;
+}
+.facet-group label:has(input:disabled) {
+  opacity: 0.4;
+  cursor: default;
+}
+.category-strip button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}

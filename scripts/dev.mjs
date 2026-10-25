@@ -1,3 +1,4 @@
+import { catalogBrowserPlugin } from "./catalog-data.mjs";
 import { createServer } from "vite";
 import { spawn } from "node:child_process";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
@@ -150,6 +151,7 @@ try {
       },
     },
     plugins: [
+      catalogBrowserPlugin(root),
       {
         name: "atlas-development",
         transformIndexHtml: {
@@ -209,7 +211,7 @@ try {
               )
                 return next();
               const isDelivery =
-                /^(?:code\/|downloads\/)/.test(relative) ||
+                /^(?:code\/|downloads\/|details\/)/.test(relative) ||
                 /^examples\/(?:ui-market|shadcn-admin)\/THIRD_PARTY_NOTICES\.md$/.test(
                   relative,
                 );

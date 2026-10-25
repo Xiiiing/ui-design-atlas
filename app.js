@@ -8,6 +8,9 @@ import {
 } from "./atlas/input.js";
 import { createFavorites } from "./atlas/favorites.js";
 import { readFavorites } from "./atlas/favorite-data.js";
+import { createFilterActions } from "./atlas/filter-actions.js";
+import { reconcileResults } from "./atlas/results.js";
+import { loadResourceDetails } from "./atlas/resource-data.js";
 import { types, key, coverURL } from "./atlas/resource-views.js";
 import {
   replaceShellHTML,
@@ -28,10 +31,13 @@ import {
 import { createLiveCards } from "./live-cards.js";
 import { embeddedPreviewURL } from "./presentation.js";
 import { icon } from "./icons.js";
+import { createNavigationActions } from "./atlas/navigation-actions.js";
 import { createNavigation } from "./atlas/navigation.js";
 import { createClipboard } from "./atlas/clipboard.js";
 import { createResourceViews } from "./atlas/resource-views.js";
-import { createSourceCode } from "./atlas/source-code.js";
+
+import { createPreviewActions } from "./atlas/preview-actions.js";
+import { createSourceActions } from "./atlas/source-actions.js";
 import { createViewer } from "./atlas/viewer.js";
 import { createBrowse } from "./atlas/browse.js";
 import { createSearch } from "./atlas/search.js";
@@ -201,10 +207,50 @@ const {
   guidePage,
 } = createResourceViews({ appState, t, href, syncNavigation, l, shellTheme });
 
-const { loadCode } = createSourceCode({ appState, t, l, external });
+/** @type {Promise<ReturnType<typeof import("./atlas/source-code.js").createSourceCode>>|undefined} */
+let sourceController;
+let sourceLoadSerial = 0;
+/** @param {import("./atlas/types").Resource} resource @param {string} [scope] */
+async function loadCode(resource, scope) {
+  const target = maybe("#full-code");
+  if (!target) return;
+  const serial = ++sourceLoadSerial;
+  const language = appState.locale;
+  const active = () =>
+    serial === sourceLoadSerial &&
+    target.isConnected &&
+    appState.selected?.id === resource.id &&
+    appState.selected?.type === resource.type &&
+    appState.tab === "code" &&
+    appState.locale === language;
+  const sourceScope = scope === "project" ? "project" : "resource";
+  replaceShellHTML(
+    target,
+    `<p role="status">${t("正在读取源码…", "Loading source…")}</p>`,
+  );
+  try {
+    sourceController ||= import("./atlas/source-code.js")
+      .then(({ createSourceCode }) =>
+        createSourceCode({ appState, t, l, external }),
+      )
+      .catch((error) => {
+        sourceController = undefined;
+        throw error;
+      });
+    const controller = await sourceController;
+    if (active()) return await controller.loadCode(resource, sourceScope);
+  } catch {
+    if (active())
+      replaceShellHTML(
+        target,
+        `<p role="alert">${t("源码工具加载失败，请重新加载页面重试。", "Source tools could not be loaded. Reload the page to retry.")}</p><button class="button" data-reload-source>${t("重新加载页面", "Reload page")}</button>`,
+      );
+  }
+}
 
 const {
   inspector,
+  loadViewerDetails,
   promptText,
   showViewer,
   previewLoadState,
@@ -242,6 +288,28 @@ const {
 const { discoveryPage, listing, filtered, updateResults, restoreFilters } =
   createBrowse({ appState, t, card, href, l, observeCards });
 
+const handleNavigationClick = createNavigationActions({
+  activatePrimary,
+  tagURL,
+  openResource,
+});
+
+const handlePreviewAction = createPreviewActions({
+  appState,
+  t,
+  notify,
+  beginPreviewLoad,
+  loadViewerDetails,
+  toggleDetails,
+  scalePreview,
+  updateThemeURL,
+});
+const handleSourceAction = createSourceActions({
+  appState,
+  loadCode,
+  copy,
+  download,
+});
 const favoriteActions = createFavorites({ appState, t, notify, updateResults });
 
 const { openSearch, searchResults, handleSearchKeys } = createSearch({
@@ -252,6 +320,11 @@ const { openSearch, searchResults, handleSearchKeys } = createSearch({
 });
 
 const listInput = createInputScheduler(() => updateResults(true));
+const handleFilterAction = createFilterActions({
+  appState,
+  updateResults,
+  cancelInput: () => listInput.cancel(),
+});
 document.addEventListener("compositionstart", (event) => {
   beginComposition(event);
   if (
@@ -284,59 +357,36 @@ document.addEventListener("submit", (e) => {
 document.addEventListener("click", async (e) => {
   if (!(e.target instanceof Element)) return;
   if (e.target.closest("a, [data-open], [data-related]")) listInput.flush();
-  const primary = e.target.closest("[data-primary-view]");
-  if (primary && !(primary instanceof HTMLElement)) return;
-  if (primary && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
-    e.preventDefault();
-    activatePrimary(primary.dataset.primaryView || "discover");
-    return;
-  }
-
-  const tagLink = e.target.closest("[data-resource-tag]");
-  if (tagLink && !(tagLink instanceof HTMLElement)) return;
-  if (tagLink && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
-    e.preventDefault();
-    location.hash = tagURL(
-      tagLink.dataset.resourceTag || "",
-      tagLink.dataset.tagValue || "",
-    );
-    return;
-  }
-  const link = e.target.closest("[data-open],[data-related]");
-  if (link && !(link instanceof HTMLElement)) return;
-  if (link && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
-    e.preventDefault();
-    element("#search-dialog").close();
-    const [type, id] = (link.dataset.open || link.dataset.related || "").split(
-      ":",
-    );
-    openResource(
-      id,
-      type,
-      false,
-      link.hasAttribute("data-details") || link.hasAttribute("data-related"),
-    );
-    return;
-  }
-  if (e.target.closest("#search-results a")) element("#search-dialog").close();
+  if (handleNavigationClick(e)) return;
   const b = e.target.closest("button");
   if (!b) return;
+  if ((await handlePreviewAction(b)) || (await handleSourceAction(b))) return;
   if (b.hasAttribute("data-retry-preview"))
     return liveCards.retry(b.closest(".asset-card"));
   if (b.dataset.cardPrompt) {
     const [type, id] = b.dataset.cardPrompt.split(":");
-    return copy(resourcePrompt(findResource(id, type), appState.locale));
-  }
-  if (b.hasAttribute("data-retry-viewer")) {
-    beginPreviewLoad();
-    element("#case-preview").src = embeddedPreviewURL(
-      resourcePreview(appState.selected, appState.locale, appState.theme),
-    );
+    const resource = findResource(id, type);
+    if (resource)
+      try {
+        return copy(
+          resourcePrompt(await loadResourceDetails(resource), appState.locale),
+        );
+      } catch {
+        notify(
+          t("提示词读取失败，请重试。", "Could not load prompt. Please retry."),
+        );
+      }
     return;
   }
-  if (b.hasAttribute("data-toggle-details")) return toggleDetails();
   if (b.hasAttribute("data-copy-resource-prompt") && appState.selected)
-    return copy(promptText(appState.selected));
+    try {
+      return copy(promptText(await loadResourceDetails(appState.selected)));
+    } catch {
+      notify(
+        t("提示词读取失败，请重试。", "Could not load prompt. Please retry."),
+      );
+      return;
+    }
   if (b.hasAttribute("data-close-viewer")) return closeViewer();
   if (b.dataset.save) return favoriteActions.toggle(b.dataset.save);
   if (b.hasAttribute("data-import-favorites")) {
@@ -345,7 +395,7 @@ document.addEventListener("click", async (e) => {
     input.click();
     return;
   }
-  if (b.dataset.tab) {
+  if (b.dataset.tab === "code" || b.dataset.tab === "notes") {
     appState.tab = b.dataset.tab;
     const params = new URLSearchParams(appState.route.params);
     if (appState.tab === "code") params.set("tab", "code");
@@ -372,80 +422,22 @@ document.addEventListener("click", async (e) => {
     maybe("#prompt-scope")?.scrollIntoView({ block: "center" });
     return;
   }
-  if (b.dataset.device !== undefined) {
-    appState.width = Number(b.dataset.device);
-    all("[data-device]").forEach((el) => {
-      el.classList.toggle(
-        "selected",
-        Number(el.dataset.device) === appState.width,
-      );
-      el.setAttribute(
-        "aria-pressed",
-        String(Number(el.dataset.device) === appState.width),
-      );
-    });
-    scalePreview();
-    return;
-  }
-  if (b.hasAttribute("data-fit")) {
-    appState.fit = !appState.fit;
-    b.setAttribute("aria-pressed", String(appState.fit));
-    scalePreview();
-    return;
-  }
-  if (b.hasAttribute("data-code-scope") && appState.selected) {
-    const updated = await loadCode(appState.selected, b.dataset.codeScope);
-    if (updated)
-      maybe("#full-code [data-code-scope]")?.focus({ preventScroll: true });
-    return;
-  }
-  if (b.hasAttribute("data-copy-install"))
-    return copy(element(".code-integration pre").textContent);
-  if (b.hasAttribute("data-copy-prompt")) return copy(currentPrompt());
-  if (b.hasAttribute("data-copy-code"))
-    return copy(element("#code-text").textContent);
-  if (b.hasAttribute("data-download-code"))
-    return download(
-      element("#code-text").textContent,
-      (fieldValue("code-file") || "source.txt").split("/").at(-1) ||
-        "source.txt",
-    );
-  if (b.hasAttribute("data-share")) return copy(location.href);
-  if (b.hasAttribute("data-replay")) {
-    const f = element("#case-preview");
-    f.contentWindow?.postMessage({ type: "atlas:replay" }, location.origin);
-    return;
-  }
-  if (b.hasAttribute("data-preview-theme")) {
-    appState.theme = appState.theme === "light" ? "dark" : "light";
-    appState.viewerThemeTarget = appState.theme;
-    updateThemeURL();
-    b.innerHTML = icon(appState.theme === "dark" ? "sun" : "moon");
-    element("#case-preview").contentWindow?.postMessage(
-      {
-        type: "atlas:preview-config",
-        locale: appState.locale,
-        theme: appState.theme,
-      },
-      location.origin,
-    );
-    element("#standalone").href = resourcePreview(
-      appState.selected,
-      appState.locale,
-      appState.theme,
-    );
-    return;
-  }
-  if (b.hasAttribute("data-fullscreen")) {
+  if (b.hasAttribute("data-copy-prompt") && appState.selected) {
     try {
-      const p = element("#preview-panel");
-      document.fullscreenElement
-        ? await document.exitFullscreen()
-        : await p.requestFullscreen();
+      return copy(
+        promptText(
+          await loadResourceDetails(appState.selected),
+          fieldValue("prompt-scope") === "style"
+            ? "style"
+            : appState.selected.type,
+        ),
+      );
     } catch {
-      notify(t("可使用独立打开查看演示。", "Use the standalone preview."));
+      notify(
+        t("提示词读取失败，请重试。", "Could not load prompt. Please retry."),
+      );
+      return;
     }
-    return;
   }
   if (b.dataset.neighbor) {
     const list = appState.originBrowse?.items?.length
@@ -457,11 +449,7 @@ document.addEventListener("click", async (e) => {
           .filter((r) => r !== undefined)
       : appState.originBrowse
         ? (() => {
-            const saved = appState.route;
-            appState.route = parseHash(appState.originBrowse.hash);
-            const a = filtered();
-            appState.route = saved;
-            return a;
+            return filtered(parseHash(appState.originBrowse.hash));
           })()
         : resources;
     const i = list.findIndex(
@@ -473,7 +461,6 @@ document.addEventListener("click", async (e) => {
     return;
   }
   if (b.hasAttribute("data-discovery-more")) {
-    stopAllLive();
     appState.limit += 24;
     const browse = { ...history.state?.browse, limit: appState.limit };
     history.replaceState(
@@ -485,64 +472,25 @@ document.addEventListener("click", async (e) => {
       "",
       location.href,
     );
-    element(".library-continuation").innerHTML = discoveryGallery()
-      .slice(8, appState.limit)
-      .map(card)
-      .join("");
+    reconcileResults(
+      element(".library-continuation"),
+      discoveryGallery().slice(8, appState.limit).map(card).join(""),
+    );
     const visible = discoveryGallery().slice(0, appState.limit);
     const cases = discoveryResources("cases").filter(
       (r) => !visible.some((item) => key(item) === key(r)),
     );
     const section = element(".systems-section");
     section.hidden = !cases.length;
-    element(".discovery-grid", section).innerHTML = cases.map(card).join("");
+    reconcileResults(
+      element(".discovery-grid", section),
+      cases.map(card).join(""),
+    );
     if (appState.limit >= resources.length) b.remove();
     observeCards();
     return;
   }
-  if (b.hasAttribute("data-more")) {
-    appState.limit += 24;
-    updateResults(true);
-    return;
-  }
-  if (b.dataset.category) {
-    element("#filters [name=category]").value = b.dataset.category;
-    appState.limit = 24;
-    updateResults(true);
-    return;
-  }
-  if (b.dataset.removeFilter) {
-    const name = b.dataset.removeFilter;
-    const field = element(`#filters [name="${name}"]`);
-    if (name === "q") field.value = "";
-    else if (name === "collection") field.remove();
-    else if (name === "category") field.value = "all";
-    else setFieldValue("filter-" + name, "all");
-    appState.limit = 24;
-    updateResults(true);
-    return;
-  }
-  if (b.hasAttribute("data-advanced-filters")) {
-    const expanded = b.getAttribute("aria-expanded") !== "true";
-    appState.browseFiltersExpanded = expanded;
-    b.setAttribute("aria-expanded", String(expanded));
-    element("#filters").dataset.expanded = String(expanded);
-    return;
-  }
-  if (b.hasAttribute("data-reset-filters")) {
-    const form = element("#filters");
-    form.reset();
-    queueMicrotask(() => {
-      for (const el of all("select.atlas-select-native", form))
-        setFieldValue(el.dataset.shellField || "", "all");
-      element("[name=q]", form).value = "";
-      element("[name=category]", form).value = "all";
-      form.querySelector("[name=collection]")?.remove();
-      appState.limit = 24;
-      updateResults(true);
-    });
-    return;
-  }
+  if (handleFilterAction(b)) return;
   if (b.hasAttribute("data-export-favorites"))
     return download(
       JSON.stringify(
@@ -618,7 +566,10 @@ document.addEventListener("change", async (e) => {
       document.getElementById(triggerId)?.focus({ preventScroll: true }),
     );
   }
-  if (e.target.closest("#filters") && e.target.matches("select")) {
+  if (
+    e.target.closest("#filters") &&
+    e.target.matches("select, input[type=checkbox]")
+  ) {
     listInput.cancel();
     appState.limit = 24;
     updateResults(true);

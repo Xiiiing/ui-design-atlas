@@ -97,8 +97,7 @@ test("Bilingual market searches, library and source filters retain existing cont
   await expect(page.locator("#results .card")).toHaveCount(1);
   await page.locator("[data-reset-filters]").click();
   await page.locator("[data-advanced-filters]").click();
-  await page.locator("#filter-source").click();
-  await page.getByRole("option", { name: "Open source", exact: true }).click();
+  await page.locator("input[name=source][value=open-source]").check();
   await expect(page.locator("#results .card")).toHaveCount(6);
   await page.reload();
   await expect(page.locator("#results .card")).toHaveCount(6);
@@ -108,10 +107,7 @@ test("Bilingual market searches, library and source filters retain existing cont
     "aria-expanded",
     "true",
   );
-  await page.locator("#filter-audience").click();
-  await page
-    .getByRole("option", { name: "B 端 / 工作工具", exact: true })
-    .click();
+  await page.goto("#cases?lang=zh-CN&audience=b2b");
   await expect(page.locator("#results .card")).toHaveCount(2);
   expect(errors).toEqual([]);
 });
