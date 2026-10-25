@@ -1,3 +1,9 @@
+import {
+  isComposing,
+  beginComposition,
+  endComposition,
+  createInputScheduler,
+} from "./atlas/input.js";
 import { createFavorites } from "./atlas/favorites.js";
 import { readFavorites } from "./atlas/favorite-data.js";
 import { validFavorite, types, key, coverURL } from "./atlas/resource-views.js";
@@ -86,6 +92,7 @@ window.addEventListener(
 );
 
 function render() {
+  listInput.cancel();
   stopAllLive();
   clearTimeout(appState.previewLoadTimer);
   appState.previewResizeObserver.disconnect();
@@ -225,7 +232,7 @@ const {
 });
 
 const { discoveryPage, listing, filtered, updateResults, restoreFilters } =
-  createBrowse({ appState, t, card, href, l, stopAllLive, observeCards });
+  createBrowse({ appState, t, card, href, l, observeCards });
 
 const favoriteActions = createFavorites({ appState, t, notify, updateResults });
 
@@ -236,12 +243,30 @@ const { openSearch, searchResults, handleSearchKeys } = createSearch({
   t,
 });
 
+const listInput = createInputScheduler(() => updateResults(true));
+document.addEventListener("compositionstart", beginComposition);
+document.addEventListener("compositionend", (event) => {
+  endComposition(event);
+  if (
+    event.target.matches("#filters [name=q]") &&
+    appState.route.view !== "discover"
+  ) {
+    appState.limit = 24;
+    listInput.schedule();
+  }
+  if (event.target.id === "quick-search") searchResults();
+});
+
 document.addEventListener("submit", (e) => {
   if (e.target.id !== "filters") return;
   e.preventDefault();
+  if (isComposing({ target: document.querySelector("#filters [name=q]") }))
+    return;
+  listInput.cancel();
   updateResults(true);
 });
 document.addEventListener("click", async (e) => {
+  if (e.target.closest("a, [data-open], [data-related]")) listInput.flush();
   const primary = e.target.closest("[data-primary-view]");
   if (primary && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
     e.preventDefault();
@@ -540,9 +565,13 @@ document.addEventListener("input", (e) => {
     return;
   }
 
-  if (e.target.closest("#filters") && appState.route.view !== "discover") {
+  if (isComposing(e)) return;
+  if (
+    e.target.matches("#filters [name=q]") &&
+    appState.route.view !== "discover"
+  ) {
     appState.limit = 24;
-    updateResults(true);
+    listInput.schedule();
   }
   if (e.target.id === "quick-search") searchResults();
 });
@@ -566,6 +595,7 @@ document.addEventListener("change", async (e) => {
     );
   }
   if (e.target.closest("#filters") && e.target.matches("select")) {
+    listInput.cancel();
     appState.limit = 24;
     updateResults(true);
   }
@@ -629,6 +659,7 @@ window.addEventListener("message", (e) => {
 });
 
 document.addEventListener("keydown", (e) => {
+  if (isComposing(e)) return;
   handleSearchKeys(e);
   if (
     e.key === "/" &&

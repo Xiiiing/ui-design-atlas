@@ -1,3 +1,4 @@
+import { reconcileResults } from "./results.js";
 import {
   resourceCounts,
   discoveryGallery,
@@ -15,15 +16,7 @@ import { escapeHTML as esc } from "../components.js";
 import { categories, interactions } from "../resource-tags.js";
 import { parse } from "./navigation.js";
 
-export function createBrowse({
-  appState,
-  t,
-  card,
-  href,
-  l,
-  stopAllLive,
-  observeCards,
-}) {
+export function createBrowse({ appState, t, card, href, l, observeCards }) {
   const viewIcons = {
     explore: "grid-2x2",
     motion: "play",
@@ -135,7 +128,6 @@ export function createBrowse({
   }
 
   function browseFilters() {
-    const isDiscovery = appState.route.view === "discover";
     const collection = discovery.collections.find(
       (c) => c.id === appState.route.params.get("collection"),
     );
@@ -313,10 +305,11 @@ export function createBrowse({
       return;
     }
     if (!document.querySelector("#results")) return;
-    stopAllLive();
     const items = filtered();
-    document.querySelector("#results").innerHTML =
-      `${resultsSummary(items.length)}${items.length ? `${resultGroups(items.slice(0, appState.limit))}${items.length > appState.limit ? `<button class="button load-more" data-more>${t("再看一些", "Explore more")} ${icon("arrow-down")}</button>` : ""}` : `<div class="market-empty">${icon("search")}<h2 tabindex="-1">${t("换个关键词试试", "Try another search")}</h2><p>${t("也可以清空筛选，看看其他界面。", "Clear the filters to discover more interfaces.")}</p><button class="button" data-reset-filters>${t("清空筛选", "Clear filters")}</button></div>`}`;
+    reconcileResults(
+      document.querySelector("#results"),
+      `${resultsSummary(items.length)}${items.length ? `${resultGroups(items.slice(0, appState.limit))}${items.length > appState.limit ? `<button class="button load-more" data-more>${t("再看一些", "Explore more")} ${icon("arrow-down")}</button>` : ""}` : `<div class="market-empty">${icon("search")}<h2 tabindex="-1">${t("换个关键词试试", "Try another search")}</h2><p>${t("也可以清空筛选，看看其他界面。", "Clear the filters to discover more interfaces.")}</p><button class="button" data-reset-filters>${t("清空筛选", "Clear filters")}</button></div>`}`,
+    );
     if (updateURL) {
       history.replaceState(
         { ...history.state, limit: appState.limit },

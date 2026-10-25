@@ -11,7 +11,8 @@ export function createLiveCards({
   config,
 }) {
   const frames = new Map(),
-    visible = new Set();
+    visible = new Set(),
+    observed = new Set();
   let preferred;
   function configure(entry) {
     entry.frame.contentWindow.postMessage(
@@ -119,13 +120,24 @@ export function createLiveCards({
       for (const entry of frames.values()) configure(entry);
     },
     observe(cards) {
-      observer.disconnect();
-      visible.clear();
-      for (const card of cards) observer.observe(card);
-      for (const [card] of frames) if (!card.isConnected) release(card);
+      const next = new Set(cards);
+      for (const card of observed)
+        if (!next.has(card)) {
+          observer.unobserve(card);
+          observed.delete(card);
+          visible.delete(card);
+          release(card);
+        }
+      for (const card of next)
+        if (!observed.has(card)) {
+          observed.add(card);
+          observer.observe(card);
+        }
+      reconcile();
     },
     stop() {
       observer.disconnect();
+      observed.clear();
       visible.clear();
       preferred = null;
       for (const card of frames.keys()) release(card);

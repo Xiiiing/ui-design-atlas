@@ -1,3 +1,4 @@
+import { isComposing } from "./input.js";
 import { showShellDialog } from "../shell/controls.tsx";
 import { searchResources, libraries } from "../catalog.js";
 import { key } from "./resource-views.js";
@@ -31,6 +32,7 @@ export function createSearch({ href, l, labelType, t }) {
   }
 
   function handleSearchKeys(e) {
+    if (isComposing(e)) return;
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
       e.preventDefault();
       openSearch();
