@@ -67,11 +67,11 @@ export function createViewer({
   function inspector() {
     if (!appState.selected) return;
     const r = appState.selected;
-    const head = `<div class="inspector-head"><div class="detail-eyebrow"><span>${labelType(r)}${r.motion ? " · " + t("动效", "Motion") : ""}</span>${saveButton(r)}</div><h2>${esc(l(r.name))}</h2><p>${esc(l(r.description))}</p></div>`;
+    const head = `<div class="inspector-head"><div class="detail-eyebrow"><span>${labelType(r)}${r.motion ? " · " + t("动效", "Motion") : ""}</span>${saveButton(r)}<button class="icon-button inspector-close" data-toggle-details aria-label="${t("收起说明", "Close details")}" title="${t("收起说明", "Close details")}">${icon("x")}</button></div><h2>${esc(l(r.name))}</h2><p>${esc(l(r.description))}</p></div>`;
     const prompt = `<section class="detail-section"><div class="section-heading"><h3>${t("当前提示词", "Current prompt")}</h3></div><p class="curator-label">${t("本站整理 · 对应当前演示", "Curated by Atlas · Matches this preview")}</p><select data-shell-control id="prompt-scope" aria-label="${t("提示词层级", "Prompt scope")}"><option value="current">${t("当前资源", "Current resource")}</option><option value="style">${t("只复用视觉风格", "Visual style only")}</option></select><pre class="inline-prompt full-prompt prompt-text">${esc(promptText(r))}</pre><button class="button primary" data-copy-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></section>`;
     replaceShellHTML(
       element("#inspector"),
-      `${head}<button class="button inspector-close" data-toggle-details>${t("收起说明", "Close details")}</button>${tagLinks(r, true)}<div class="inspector-content">${resourceDetails(r, prompt)}${caseDirectory()}${related(r)}</div>`,
+      `${head}${tagLinks(r, true)}<div class="inspector-content">${resourceDetails(r, prompt)}${caseDirectory()}${related(r)}</div>`,
     );
     {
       const code = element("#full-code");
@@ -151,8 +151,8 @@ export function createViewer({
       parameter = previewParameters(chosen);
     if (parameter && appState.previewValues.has(chosen.id))
       parameter[4] = appState.previewValues.get(chosen.id) ?? parameter[4];
-    return `<article class="resource-page"><div class="market-viewer full-viewer experience-viewer" data-preview-kind="${chosen.type}"><header class="market-viewer-toolbar"><div class="viewer-leading"><button class="icon-button" data-close-viewer aria-label="${t("返回资源市场", "Back to market")}">${icon("arrow-left")}</button><div class="viewer-title"><h1 tabindex="-1">${esc(l(r.type === "case" ? r.name : chosen.name))}</h1><small>${esc(resourceSource(chosen).name)}</small></div>${c && r.type !== "component" ? `<select data-shell-control id="preview-page" aria-label="${t("预览页面", "Preview page")}">${c.pages.map((p) => `<option value="${p.id}" ${p.id === chosen.id ? "selected" : ""}>${esc(l(p.name))}</option>`).join("")}</select>` : ""}</div><div class="viewer-tools"><button class="icon-button" data-share aria-label="${t("复制分享链接", "Copy share link")}">${icon("link")}</button><span data-shell-appearance></span>${language(true)}<button class="icon-button" data-close-viewer aria-label="${t("关闭预览", "Close preview")}">${icon("x")}</button></div></header>
-  <div class="experience-actions"><div class="full-resource-tabs" role="tablist" aria-label="${t("资源内容", "Resource content")}"><button data-full-tab data-tab="notes" role="tab" aria-selected="${appState.tab !== "code"}" aria-controls="preview-panel">${t("预览", "Preview")}</button><button data-full-tab data-tab="code" role="tab" aria-selected="${appState.tab === "code"}" aria-controls="full-code">${t("代码", "Code")}</button></div><button class="button" data-toggle-details aria-controls="inspector" aria-expanded="false">${t("详情", "Details")}</button><button class="button" data-copy-resource-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></div><div class="market-detail-layout"><div class="full-preview-column"><section class="market-preview-panel" id="preview-panel" data-layout="${framing.layout}" style="--stage-height:${framing.stageHeight}px"><div class="preview-toolbar"><span class="preview-label">${t("交互预览", "Live preview")}</span><div class="viewer-devices">${[
+    return `<article class="resource-page"><div class="market-viewer full-viewer experience-viewer" data-preview-kind="${chosen.type}"><header class="market-viewer-toolbar"><div class="viewer-leading"><button class="icon-button" data-close-viewer aria-label="${t("返回资源市场", "Back to market")}">${icon("arrow-left")}</button><div class="viewer-title"><h1 tabindex="-1">${esc(l(r.type === "case" ? r.name : chosen.name))}</h1><small>${esc(resourceSource(chosen).name)}</small></div>${c && r.type !== "component" ? `<select data-shell-control id="preview-page" aria-label="${t("预览页面", "Preview page")}">${c.pages.map((p) => `<option value="${p.id}" ${p.id === chosen.id ? "selected" : ""}>${esc(l(p.name))}</option>`).join("")}</select>` : ""}</div><div class="viewer-tools"><div class="market-preview-bottom viewer-resource-nav"><div><button class="icon-button" data-neighbor="-1" aria-label="${t("上一个资源", "Previous resource")}">${icon("chevron-left")}</button><button class="icon-button" data-neighbor="1" aria-label="${t("下一个资源", "Next resource")}">${icon("chevron-right")}</button><span class="sr-only">${labelType(chosen)} · ${esc(resourceSource(chosen).license)}</span></div><button class="icon-button" data-focus-prompt aria-label="${t("查看提示词", "View prompt")}" title="${t("查看提示词", "View prompt")}">${icon("code-xml")}</button></div><button class="icon-button" data-share aria-label="${t("复制分享链接", "Copy share link")}">${icon("link")}</button><span data-shell-appearance></span>${language(true)}<button class="icon-button" data-close-viewer aria-label="${t("关闭预览", "Close preview")}">${icon("x")}</button></div></header>
+  <div class="experience-actions"><div class="full-resource-tabs" role="tablist" aria-label="${t("资源内容", "Resource content")}"><button data-full-tab data-tab="notes" role="tab" aria-selected="${appState.tab !== "code"}" aria-controls="preview-panel">${t("预览", "Preview")}</button><button data-full-tab data-tab="code" role="tab" aria-selected="${appState.tab === "code"}" aria-controls="full-code">${t("代码", "Code")}</button></div><button class="button" data-toggle-details aria-controls="inspector" aria-expanded="false">${t("详情", "Details")}</button><button class="button" data-copy-resource-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></div><div class="market-detail-layout"><div class="full-preview-column"><section class="market-preview-panel" id="preview-panel" data-layout="${framing.layout}" style="--stage-height:${framing.stageHeight}px"><div class="fullscreen-hud" role="group" aria-label="${t("全屏控制", "Fullscreen controls")}"><button class="button" data-fullscreen-controls aria-expanded="false" aria-controls="preview-tools">${icon("sliders-horizontal")}${t("控制", "Controls")}</button><button class="button" data-exit-fullscreen>${icon("minimize")}${t("退出全屏", "Exit fullscreen")}</button></div><div class="preview-toolbar" id="preview-tools"><span class="preview-label">${t("交互预览", "Live preview")}</span><div class="viewer-devices">${[
     ["0", "monitor", t("自动画布", "Automatic canvas")],
     ["768", "tablet", "768px"],
     ["375", "smartphone", "375px"],
@@ -163,10 +163,9 @@ export function createViewer({
     )
     .join(
       "",
-    )}<button class="icon-button ${appState.fit ? "selected" : ""}" data-fit aria-label="${t("等比适应画布", "Fit canvas proportionally")}" aria-pressed="${appState.fit}">${icon("expand")}</button></div><output id="preview-scale" aria-label="${t("预览缩放", "Preview scale")}">100%</output><div class="preview-actions">${chosen.motion ? `<button class="icon-button" data-replay aria-label="${t("重播动效", "Replay animation")}">${icon("rotate-ccw")}</button>` : ""}<button class="icon-button" data-preview-theme aria-label="${t("切换演示主题", "Toggle preview theme")}">${icon(appState.theme === "dark" ? "sun" : "moon")}</button><button class="icon-button" data-fullscreen aria-label="${t("全屏预览", "Fullscreen preview")}">${icon("maximize")}</button><a id="standalone" class="icon-button" href="${esc(resourcePreview(chosen, appState.locale, appState.theme))}" target="_blank" rel="noopener noreferrer" aria-label="${t("独立打开演示", "Open standalone demo")}">${icon("arrow-up-right")}</a></div></div>
+    )}<button class="icon-button ${appState.fit ? "selected" : ""}" data-fit aria-label="${t("适应预览区域", "Fit preview area")}" aria-pressed="${appState.fit}">${icon("expand")}</button></div><output id="preview-scale" aria-label="${t("预览缩放", "Preview scale")}">100%</output>${parameter ? `<div class="preview-parameters"><label>${parameter[1]}<input type="number" data-preview-setting="${parameter[0]}" data-applied-value="${parameter[4]}" min="${parameter[2]}" max="${parameter[3]}" value="${parameter[4]}" aria-label="${parameter[1]}"></label></div>` : ""}<div class="preview-actions">${chosen.motion ? `<button class="icon-button" data-replay aria-label="${t("重播动效", "Replay animation")}">${icon("rotate-ccw")}</button>` : ""}<button class="icon-button" data-preview-theme aria-label="${t("切换演示主题", "Toggle preview theme")}">${icon(appState.theme === "dark" ? "sun" : "moon")}</button><button class="icon-button" data-fullscreen aria-label="${t("全屏预览", "Fullscreen preview")}">${icon("maximize")}</button><a id="standalone" class="icon-button" href="${esc(resourcePreview(chosen, appState.locale, appState.theme))}" target="_blank" rel="noopener noreferrer" aria-label="${t("独立打开演示", "Open standalone demo")}">${icon("arrow-up-right")}</a></div></div>
   <div class="market-preview-viewport" id="preview-viewport"><div class="viewer-load-state" role="status"><span>${t("正在加载体验…", "Loading experience…")}</span><button class="button" data-retry-viewer hidden>${t("重试", "Retry")}</button></div><div id="preview-canvas"><iframe id="case-preview" src="${esc(embeddedPreviewURL(resourcePreview(chosen, appState.locale, appState.theme)))}" title="${esc(l(chosen.name))}" allow="clipboard-write"></iframe></div></div>
-  ${parameter ? `<div class="preview-parameters"><label>${parameter[1]}<input type="number" data-preview-setting="${parameter[0]}" data-applied-value="${parameter[4]}" min="${parameter[2]}" max="${parameter[3]}" value="${parameter[4]}" aria-label="${parameter[1]}"></label><span>${t("上游原有参数", "Original component parameter")}</span></div>` : ""}
-  <div class="market-preview-bottom"><div><button class="icon-button" data-neighbor="-1" aria-label="${t("上一个资源", "Previous resource")}">${icon("chevron-left")}</button><button class="icon-button" data-neighbor="1" aria-label="${t("下一个资源", "Next resource")}">${icon("chevron-right")}</button><span>${labelType(chosen)} · ${esc(resourceSource(chosen).license)}</span></div><button class="text-link" data-focus-prompt>${t("查看提示词", "View prompt")}${icon("arrow-up-right")}</button></div></section><div id="full-code" role="tabpanel" hidden></div></div><aside id="inspector" class="market-inspector" aria-label="${t("设计说明", "Design details")}"></aside></div></div></article>`;
+</section><div id="full-code" role="tabpanel" hidden></div></div><aside id="inspector" class="market-inspector" aria-label="${t("设计说明", "Design details")}"></aside></div></div></article>`;
   }
 
   /** @param {import("./types").Resource} r */
@@ -286,7 +285,8 @@ export function createViewer({
       appState.tab !== "code";
     viewer.dataset.detailsOpen = String(open);
     element("#inspector").hidden = !open;
-    element(".full-preview-column").inert = open && innerWidth < 1024;
+    element(".full-preview-column").inert =
+      open && innerWidth < 1024 && !maybe('[data-fullscreen-active="true"]');
     const toggle = element(".experience-actions [data-toggle-details]", viewer);
     toggle.setAttribute("aria-expanded", String(open));
     if (focus) (open ? element(".inspector-close", viewer) : toggle).focus();
@@ -321,33 +321,20 @@ export function createViewer({
       !viewport.clientHeight
     )
       return;
-    const component = appState.selected.type === "component";
-    const automatic =
-      !appState.width &&
-      (innerWidth < 1024 ||
-        (appState.selected.type === "page" && appState.fit));
+    const automatic = !appState.width && (innerWidth < 1024 || appState.fit);
     const desired = automatic
       ? viewport.clientWidth
       : appState.width || appState.selected.preview.width;
-    const h = automatic
-      ? viewport.clientHeight
-      : appState.width === 375
-        ? 812
-        : appState.width === 768
-          ? 1024
-          : appState.selected.preview.height;
-    // Layout reserves the viewer chrome first. Fit the entire authored canvas
-    // into the remaining space. Responsive pages and mobile auto mode use that
-    // space directly at scale 1; actual-size mode keeps the authored viewport.
-    const inset = component && !appState.width && !automatic ? 24 : 0;
+    // Device presets constrain width. Give their document the visible height,
+    // so short windows scroll inside the demo instead of shrinking all controls.
     const scale =
-      !appState.fit || automatic
+      automatic || !appState.fit
         ? 1
-        : Math.min(
-            component || appState.width ? 1 : Infinity,
-            Math.max(1, viewport.clientWidth - inset * 2) / desired,
-            Math.max(1, viewport.clientHeight - inset * 2) / h,
-          );
+        : Math.min(1, viewport.clientWidth / desired);
+    const h =
+      automatic || appState.width
+        ? viewport.clientHeight / scale
+        : appState.selected.preview.height;
     canvas.style.width = desired * scale + "px";
     canvas.style.height = h * scale + "px";
     frame.style.width = desired + "px";

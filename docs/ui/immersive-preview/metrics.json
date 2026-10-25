@@ -1,0 +1,131 @@
+[
+  {
+    "width": 1910,
+    "height": 873,
+    "lang": "zh-CN",
+    "theme": "light",
+    "file": "after-light.png",
+    "details": true,
+    "frame": {
+      "x": 587.5,
+      "y": 138,
+      "width": 375,
+      "height": 730,
+      "top": 138,
+      "right": 962.5,
+      "bottom": 868,
+      "left": 587.5
+    },
+    "stage": {
+      "x": 80,
+      "y": 138,
+      "width": 1390,
+      "height": 730,
+      "top": 138,
+      "right": 1470,
+      "bottom": 868,
+      "left": 80
+    },
+    "inputFont": 16,
+    "documentOverflow": false
+  },
+  {
+    "width": 1910,
+    "height": 873,
+    "lang": "zh-CN",
+    "theme": "dark",
+    "file": "after-dark.png",
+    "details": true,
+    "frame": {
+      "x": 587.5,
+      "y": 138,
+      "width": 375,
+      "height": 730,
+      "top": 138,
+      "right": 962.5,
+      "bottom": 868,
+      "left": 587.5
+    },
+    "stage": {
+      "x": 80,
+      "y": 138,
+      "width": 1390,
+      "height": 730,
+      "top": 138,
+      "right": 1470,
+      "bottom": 868,
+      "left": 80
+    },
+    "inputFont": 16,
+    "documentOverflow": false
+  },
+  {
+    "mode": "fullscreen-auto",
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "width": 1910,
+      "height": 873
+    }
+  },
+  {
+    "width": 1273,
+    "height": 582,
+    "lang": "en",
+    "theme": "dark",
+    "file": "short.png",
+    "details": true,
+    "frame": {
+      "x": 270.78125,
+      "y": 138,
+      "width": 375,
+      "height": 439,
+      "top": 138,
+      "right": 645.78125,
+      "bottom": 577,
+      "left": 270.78125
+    },
+    "stage": {
+      "x": 5,
+      "y": 138,
+      "width": 906.5625,
+      "height": 439,
+      "top": 138,
+      "right": 911.5625,
+      "bottom": 577,
+      "left": 5
+    },
+    "inputFont": 16,
+    "documentOverflow": false
+  },
+  {
+    "width": 375,
+    "height": 600,
+    "lang": "zh-CN",
+    "theme": "light",
+    "file": "mobile.png",
+    "details": false,
+    "frame": {
+      "x": 5,
+      "y": 248,
+      "width": 365,
+      "height": 346.99334716796875,
+      "top": 248,
+      "right": 370,
+      "bottom": 594.9933471679688,
+      "left": 5
+    },
+    "stage": {
+      "x": 5,
+      "y": 248,
+      "width": 365,
+      "height": 347,
+      "top": 248,
+      "right": 370,
+      "bottom": 595,
+      "left": 5
+    },
+    "inputFont": 15.573333333333334,
+    "documentOverflow": false
+  }
+]

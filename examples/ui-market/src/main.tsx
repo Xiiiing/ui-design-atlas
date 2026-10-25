@@ -271,6 +271,7 @@ function App() {
         <MotionConfig reducedMotion="user">
           <div
             data-inline={inline || undefined}
+            data-detail={(embedded && !inline && !thumb) || undefined}
             data-resource={id}
             className="demo-surface"
             data-source={

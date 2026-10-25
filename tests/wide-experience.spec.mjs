@@ -16,26 +16,13 @@ async function expectFittedCanvas(page, width, height) {
             document.querySelector('[data-device][aria-pressed="true"]')
               ?.dataset.device || 0,
           );
-          const automatic =
-            !device &&
-            (innerWidth < 1024 ||
-              document.querySelector(".experience-viewer").dataset
-                .previewKind === "page");
+          const automatic = !device;
           if (automatic) {
             width = viewport.clientWidth;
             height = viewport.clientHeight;
           }
-          const component =
-            document.querySelector(".experience-viewer").dataset.previewKind ===
-            "component";
-          const inset = component && !device && !automatic ? 24 : 0;
-          const scale = automatic
-            ? 1
-            : Math.min(
-                component || device ? 1 : Infinity,
-                (stage.width - inset * 2) / width,
-                (stage.height - inset * 2) / height,
-              );
+          const scale = automatic ? 1 : Math.min(1, stage.width / width);
+          if (!automatic) height = stage.height / scale;
           return Math.max(
             Math.abs(box.width - width * scale),
             Math.abs(box.height - height * scale),
@@ -55,7 +42,7 @@ async function expectFittedCanvas(page, width, height) {
   await expectCanvasContained(page);
 }
 
-test("Wide experience preserves the original aspect ratio and keeps portrait devices usable", async ({
+test("Responsive experience fills automatic viewports and fits manual portrait devices", async ({
   page,
 }) => {
   for (const [width, height, canvasWidth, canvasHeight] of [
@@ -154,7 +141,7 @@ test("Desktop detail stays centered and readable in wide and short windows", asy
     const frame = await page.locator("#case-preview").boundingBox();
     const stage = await page.locator("#preview-viewport").boundingBox();
     const viewer = await page.locator(".experience-viewer").boundingBox();
-    expect(viewer.width).toBeLessThanOrEqual(1280);
+    expect(viewer.width).toBeLessThanOrEqual(1760);
     expect(frame.width).toBeGreaterThan(300);
     expect(frame.height).toBeGreaterThan(180);
     expect(frame.width).toBeLessThanOrEqual(stage.width + 1);
@@ -173,7 +160,7 @@ test("Desktop detail stays centered and readable in wide and short windows", asy
   }
 });
 
-test("Original component ratios survive resize, fullscreen and a real dialog interaction", async ({
+test("Responsive resources survive resize, fullscreen and a real dialog interaction", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });

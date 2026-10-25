@@ -3,6 +3,31 @@ import { expect } from "@playwright/test";
 // Check actual content geometry as well as the document: overflow:hidden alone
 // must never hide the bottom controls or turn a cropped canvas into a passing fit.
 export async function expectViewerContained(page) {
+  if (
+    await page.evaluate(
+      () =>
+        !!document.fullscreenElement ||
+        !!document.querySelector("#preview-panel.is-immersive"),
+    )
+  ) {
+    await expect
+      .poll(async () => {
+        const stage = await page.locator("#preview-viewport").boundingBox();
+        const size = await page.evaluate(() => ({
+          width: innerWidth,
+          height: innerHeight,
+        }));
+        return Math.max(
+          Math.abs(stage.x),
+          Math.abs(stage.y),
+          Math.abs(stage.width - size.width),
+          Math.abs(stage.height - size.height),
+        );
+      })
+      .toBeLessThanOrEqual(1);
+    await expect(page.locator("[data-exit-fullscreen]")).toBeVisible();
+    return;
+  }
   await expect
     .poll(() =>
       page.evaluate(() => {
@@ -50,4 +75,22 @@ export async function expectCanvasContained(page) {
       }),
     )
     .toBeLessThanOrEqual(1);
+}
+
+export async function expectResponsiveCanvas(page) {
+  await expect
+    .poll(() =>
+      page.locator("#case-preview").evaluate((frame) => {
+        const stage = document.querySelector("#preview-viewport");
+        const rect = frame.getBoundingClientRect();
+        return Math.max(
+          Math.abs(rect.width - stage.clientWidth),
+          Math.abs(rect.height - stage.clientHeight),
+          Math.abs(frame.contentWindow.innerWidth - stage.clientWidth),
+          Math.abs(frame.contentWindow.innerHeight - stage.clientHeight),
+        );
+      }),
+    )
+    .toBeLessThanOrEqual(1);
+  await expectCanvasContained(page);
 }
