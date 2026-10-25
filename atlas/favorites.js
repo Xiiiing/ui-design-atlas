@@ -1,28 +1,32 @@
+// @ts-check
+import { element, maybe, all } from "./dom.js";
 import {
   favoriteStorageKey,
   importFavorites,
   readFavorites,
 } from "./favorite-data.js";
 
+/** @param {Pick<import("./types").BaseDependencies,"appState"|"t"> & {notify:(text:string)=>void;updateResults:()=>void}} dependencies */
 export function createFavorites({ appState, t, notify, updateResults }) {
   function sync() {
     const focused = document.activeElement;
-    const cards = [...document.querySelectorAll("#results .asset-card")];
+    const cards = [...all("#results .asset-card")];
     const index = cards.findIndex((card) => card.contains(focused));
     const removed =
-      index >= 0 && !appState.favorites.has(cards[index].dataset.resource);
+      index >= 0 &&
+      !appState.favorites.has(cards[index].dataset.resource || "");
     const candidates =
       index >= 0
         ? [...cards.slice(index + 1), ...cards.slice(0, index).reverse()].map(
             (card) => card.dataset.resource,
           )
         : [];
-    document.querySelectorAll("[data-save]").forEach((button) => {
-      const saved = appState.favorites.has(button.dataset.save);
+    all("[data-save]").forEach((button) => {
+      const saved = appState.favorites.has(button.dataset.save || "");
       button.classList.toggle("saved", saved);
       button.setAttribute("aria-pressed", String(saved));
     });
-    document.querySelectorAll("[data-favorite-count]").forEach((count) => {
+    all("[data-favorite-count]").forEach((count) => {
       count.textContent = String(appState.favorites.size);
       count.hidden = !appState.favorites.size;
     });
@@ -31,14 +35,13 @@ export function createFavorites({ appState, t, notify, updateResults }) {
       if (removed) {
         const target =
           candidates
-            .map((key) =>
-              document.querySelector(`#results [data-save="${key}"]`),
-            )
-            .find(Boolean) || document.querySelector(".market-empty h2");
+            .map((key) => maybe(`#results [data-save="${key}"]`))
+            .find(Boolean) || maybe(".market-empty h2");
         target?.focus({ preventScroll: true });
       }
     }
   }
+  /** @param {Set<string>} next */
   function persist(next) {
     try {
       localStorage.setItem(favoriteStorageKey, JSON.stringify([...next]));
@@ -53,6 +56,7 @@ export function createFavorites({ appState, t, notify, updateResults }) {
     }
     return true;
   }
+  /** @param {string} key */
   function toggle(key) {
     const next = new Set(appState.favorites);
     next.has(key) ? next.delete(key) : next.add(key);
@@ -60,6 +64,7 @@ export function createFavorites({ appState, t, notify, updateResults }) {
     appState.favorites = next;
     sync();
   }
+  /** @param {HTMLInputElement} input */
   async function importFile(input) {
     const file = input.files?.[0];
     input.value = "";
@@ -79,6 +84,7 @@ export function createFavorites({ appState, t, notify, updateResults }) {
     sync();
     notify(t("收藏已导入。", "Favorites imported."));
   }
+  /** @param {StorageEvent} event */
   function receive(event) {
     if (
       event.storageArea !== localStorage ||

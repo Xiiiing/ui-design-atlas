@@ -1,3 +1,5 @@
+// @ts-check
+import { element, maybe, all } from "./dom.js";
 import { escapeHTML as esc } from "../components.js";
 import { icon } from "../icons.js";
 import {
@@ -18,6 +20,7 @@ import { resourcePresentation, embeddedPreviewURL } from "../presentation.js";
 import { key } from "./resource-views.js";
 import { parse } from "./navigation.js";
 
+/** @param {import("./types").BaseDependencies & Pick<ReturnType<typeof import("./resource-views").createResourceViews>, "labelType"|"saveButton"|"tagLinks"|"resourceDetails"|"caseDirectory"|"related"|"language"> & {loadCode:import("./types").LoadCode;stopAllLive:()=>void;main:HTMLElement;shellTheme:()=>import("./types").Theme;render:()=>void}} dependencies */
 export function createViewer({
   appState,
   labelType,
@@ -42,14 +45,14 @@ export function createViewer({
     const head = `<div class="inspector-head"><div class="detail-eyebrow"><span>${labelType(r)}${r.motion ? " · " + t("动效", "Motion") : ""}</span>${saveButton(r)}</div><h2>${esc(l(r.name))}</h2><p>${esc(l(r.description))}</p></div>`;
     const prompt = `<section class="detail-section"><div class="section-heading"><h3>${t("当前提示词", "Current prompt")}</h3></div><p class="curator-label">${t("本站整理 · 对应当前演示", "Curated by Atlas · Matches this preview")}</p><select data-shell-control id="prompt-scope" aria-label="${t("提示词层级", "Prompt scope")}"><option value="current">${t("当前资源", "Current resource")}</option><option value="style">${t("只复用视觉风格", "Visual style only")}</option></select><pre class="inline-prompt full-prompt prompt-text">${esc(promptText(r))}</pre><button class="button primary" data-copy-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></section>`;
     replaceShellHTML(
-      document.querySelector("#inspector"),
+      element("#inspector"),
       `${head}<button class="button inspector-close" data-toggle-details>${t("收起说明", "Close details")}</button>${tagLinks(r, true)}<div class="inspector-content">${resourceDetails(r, prompt)}${caseDirectory()}${related(r)}</div>`,
     );
     {
-      const code = document.querySelector("#full-code");
+      const code = element("#full-code");
       code.hidden = appState.tab !== "code";
-      document.querySelector("#preview-panel").hidden = appState.tab === "code";
-      document.querySelectorAll("[data-full-tab]").forEach((el) => {
+      element("#preview-panel").hidden = appState.tab === "code";
+      all("[data-full-tab]").forEach((el) => {
         el.setAttribute(
           "aria-selected",
           String(el.dataset.tab === appState.tab),
@@ -61,7 +64,9 @@ export function createViewer({
     }
   }
 
+  /** @param {import("./types").Resource} r @returns {[string,string,number,number,number]|null} */
   function previewParameters(r) {
+    /** @type {[string,string,number,number,number]|null} */
     const config =
       r.id === "magicui-border-beam"
         ? ["duration", t("时长（秒）", "Duration (seconds)"), 1, 20, 8]
@@ -75,10 +80,11 @@ export function createViewer({
     return config;
   }
 
+  /** @param {import("./types").Resource} r @param {string} [scope] */
   function promptText(r, scope = r.type) {
     const text = resourcePrompt(r, appState.locale, scope),
       config = previewParameters(r);
-    const input = document.querySelector("[data-preview-setting]");
+    const input = maybe("[data-preview-setting]");
     return config &&
       appState.selected?.id === r.id &&
       input &&
@@ -96,22 +102,28 @@ export function createViewer({
       : text;
   }
 
+  /** @param {import("./types").Resource} r */
   function viewer(r) {
+    if (r.type === "case" && !r.pages?.length)
+      throw new Error("Case has no pages");
     appState.detailResource = r;
     appState.selected =
       r.type === "case"
         ? findResource(
-            r.pages.find((p) => p.key === appState.route.params.get("page"))
-              ?.id || r.pages[0].id,
+            r.pages?.find((p) => p.key === appState.route.params.get("page"))
+              ?.id ||
+              r.pages?.[0].id ||
+              "",
             "page",
-          )
+          ) || null
         : r;
     const c = r.type === "case" ? getCase(r.id) : getCase(r.caseId),
       chosen = appState.selected;
+    if (!chosen) throw new Error("Missing preview resource");
     const framing = resourcePresentation(chosen, "detail"),
       parameter = previewParameters(chosen);
     if (parameter && appState.previewValues.has(chosen.id))
-      parameter[4] = appState.previewValues.get(chosen.id);
+      parameter[4] = appState.previewValues.get(chosen.id) ?? parameter[4];
     return `<article class="resource-page"><div class="market-viewer full-viewer experience-viewer"><header class="market-viewer-toolbar"><div class="viewer-leading"><button class="icon-button" data-close-viewer aria-label="${t("返回资源市场", "Back to market")}">${icon("arrow-left")}</button><div class="viewer-title"><h1 tabindex="-1">${esc(l(r.type === "case" ? r.name : chosen.name))}</h1><small>${esc(resourceSource(chosen).name)}</small></div>${c && r.type !== "component" ? `<select data-shell-control id="preview-page" aria-label="${t("预览页面", "Preview page")}">${c.pages.map((p) => `<option value="${p.id}" ${p.id === chosen.id ? "selected" : ""}>${esc(l(p.name))}</option>`).join("")}</select>` : ""}</div><div class="viewer-tools"><button class="icon-button" data-share aria-label="${t("复制分享链接", "Copy share link")}">${icon("link")}</button><span data-shell-appearance></span>${language(true)}<button class="icon-button" data-close-viewer aria-label="${t("关闭预览", "Close preview")}">${icon("x")}</button></div></header>
   <div class="experience-actions"><div class="full-resource-tabs" role="tablist" aria-label="${t("资源内容", "Resource content")}"><button data-full-tab data-tab="notes" role="tab" aria-selected="${appState.tab !== "code"}" aria-controls="preview-panel">${t("预览", "Preview")}</button><button data-full-tab data-tab="code" role="tab" aria-selected="${appState.tab === "code"}" aria-controls="full-code">${t("代码", "Code")}</button></div><button class="button" data-toggle-details aria-controls="inspector" aria-expanded="false">${t("详情", "Details")}</button><button class="button" data-copy-resource-prompt>${icon("copy")}${t("复制提示词", "Copy prompt")}</button></div><div class="market-detail-layout"><div class="full-preview-column"><section class="market-preview-panel" id="preview-panel" data-layout="${framing.layout}" style="--stage-height:${framing.stageHeight}px"><div class="preview-toolbar"><span class="preview-label">${t("交互预览", "Live preview")}</span><div class="viewer-devices">${[
     ["0", "monitor", t("自动画布", "Automatic canvas")],
@@ -130,6 +142,7 @@ export function createViewer({
   <div class="market-preview-bottom"><div><button class="icon-button" data-neighbor="-1" aria-label="${t("上一个资源", "Previous resource")}">${icon("chevron-left")}</button><button class="icon-button" data-neighbor="1" aria-label="${t("下一个资源", "Next resource")}">${icon("chevron-right")}</button><span>${labelType(chosen)} · ${esc(resourceSource(chosen).license)}</span></div><button class="text-link" data-focus-prompt>${t("查看提示词", "View prompt")}${icon("arrow-up-right")}</button></div></section><div id="full-code" role="tabpanel" hidden></div></div><aside id="inspector" class="market-inspector" aria-label="${t("设计说明", "Design details")}"></aside></div></div></article>`;
   }
 
+  /** @param {import("./types").Resource} r */
   function showViewer(r) {
     stopAllLive();
     appState.tab =
@@ -137,14 +150,12 @@ export function createViewer({
     appState.width = 0;
     appState.fit = true;
     document.body.classList.add("is-experience");
-    document.querySelector("#footer").hidden = true;
+    element("#footer").hidden = true;
     replaceShellHTML(main, viewer(r));
     inspector();
     scalePreview();
-    appState.previewResizeObserver.observe(
-      document.querySelector("#preview-viewport"),
-    );
-    const frame = document.querySelector("#case-preview");
+    appState.previewResizeObserver?.observe(element("#preview-viewport"));
+    const frame = element("#case-preview");
     appState.viewerThemeTarget = appState.theme;
     beginPreviewLoad();
     frame.addEventListener("load", () => {
@@ -154,13 +165,13 @@ export function createViewer({
     frame.addEventListener("error", () => previewLoadState("error"));
     frame.addEventListener("load", () => {
       sendPreviewTheme();
-      const input = document.querySelector("[data-preview-setting]");
-      if (input && appState.previewValues.has(appState.selected?.id))
-        frame.contentWindow.postMessage(
+      const input = maybe("[data-preview-setting]");
+      if (input && appState.previewValues.has(appState.selected?.id || ""))
+        frame.contentWindow?.postMessage(
           {
             type: "atlas:preview-settings",
             settings: {
-              [input.dataset.previewSetting]: Number(
+              [input.dataset.previewSetting || "value"]: Number(
                 input.dataset.appliedValue,
               ),
             },
@@ -168,20 +179,21 @@ export function createViewer({
           location.origin,
         );
     });
-    document.querySelector(".viewer-title h1")?.focus({ preventScroll: true });
+    maybe(".viewer-title h1")?.focus({ preventScroll: true });
     document.title = l(r.name) + " · UI Design Atlas";
   }
 
+  /** @param {"ready"|"error"|"loading"} state */
   function previewLoadState(state) {
-    const status = document.querySelector(".viewer-load-state");
+    const status = maybe(".viewer-load-state");
     if (!status) return;
     clearTimeout(appState.previewLoadTimer);
     status.hidden = state === "ready";
-    status.querySelector("span").textContent =
+    element("span", status).textContent =
       state === "error"
         ? t("体验加载失败", "Experience could not be loaded")
         : t("正在加载体验…", "Loading experience…");
-    status.querySelector("button").hidden = state !== "error";
+    element("button", status).hidden = state !== "error";
   }
 
   function beginPreviewLoad() {
@@ -192,6 +204,7 @@ export function createViewer({
     );
   }
 
+  /** @param {string} id @param {string} type */
   function openResource(id, type, replace = false, details = false) {
     const r = findResource(id, type);
     if (!r) return;
@@ -207,9 +220,7 @@ export function createViewer({
           : document.activeElement?.closest(".asset-caption")
             ? ".asset-caption [data-open]"
             : "[data-open]",
-        items: [...document.querySelectorAll(".asset-card")].map(
-          (el) => el.dataset.resource,
-        ),
+        items: [...all(".asset-card")].map((el) => el.dataset.resource || ""),
       };
       history.replaceState(
         { ...history.state, browse: appState.originBrowse },
@@ -240,21 +251,17 @@ export function createViewer({
   }
 
   function syncDetailsPanel(focus = false) {
-    const viewer = document.querySelector(".experience-viewer");
+    const viewer = maybe(".experience-viewer");
     if (!viewer) return;
     const open =
       appState.route.params.get("panel") === "details" &&
       appState.tab !== "code";
     viewer.dataset.detailsOpen = String(open);
-    document.querySelector("#inspector").hidden = !open;
-    document.querySelector(".full-preview-column").inert =
-      open && innerWidth < 1024;
-    const toggle = viewer.querySelector(
-      ".experience-actions [data-toggle-details]",
-    );
+    element("#inspector").hidden = !open;
+    element(".full-preview-column").inert = open && innerWidth < 1024;
+    const toggle = element(".experience-actions [data-toggle-details]", viewer);
     toggle.setAttribute("aria-expanded", String(open));
-    if (focus)
-      (open ? viewer.querySelector(".inspector-close") : toggle).focus();
+    if (focus) (open ? element(".inspector-close", viewer) : toggle).focus();
     requestAnimationFrame(scalePreview);
   }
 
@@ -274,11 +281,13 @@ export function createViewer({
   }
 
   function scalePreview() {
-    const viewport = document.querySelector("#preview-viewport"),
-      frame = document.querySelector("#case-preview"),
-      canvas = document.querySelector("#preview-canvas");
+    const viewport = maybe("#preview-viewport"),
+      frame = maybe("#case-preview"),
+      canvas = maybe("#preview-canvas");
     if (
       !viewport ||
+      !frame ||
+      !canvas ||
       !appState.selected ||
       !viewport.clientWidth ||
       !viewport.clientHeight
@@ -312,34 +321,35 @@ export function createViewer({
   }
 
   function currentPrompt() {
+    if (!appState.selected) return "";
     return promptText(
       appState.selected,
       fieldValue("prompt-scope") === "style" ? "style" : appState.selected.type,
     );
   }
 
+  /** @param {string} id */
   function syncPage(id) {
     const p = findResource(id, "page");
     if (!p) return;
     appState.selected = p;
     beginPreviewLoad();
-    document.querySelector("#case-preview").src = embeddedPreviewURL(
+    element("#case-preview").src = embeddedPreviewURL(
       resourcePreview(p, appState.locale, appState.theme),
     );
     updateContext();
   }
 
   function updateContext() {
+    if (!appState.selected || !appState.detailResource) return;
     if (appState.detailResource.type !== "case")
       appState.detailResource = appState.selected;
-    document.querySelector(".viewer-title h1").textContent = l(
-      appState.detailResource.name,
-    );
-    document.querySelector("#case-preview").title = l(appState.selected.name);
+    element(".viewer-title h1").textContent = l(appState.detailResource.name);
+    element("#case-preview").title = l(appState.selected.name);
     document.title = l(appState.detailResource.name) + " · UI Design Atlas";
-    const select = document.querySelector("#preview-page");
+    const select = maybe("#preview-page");
     if (select) setFieldValue("preview-page", appState.selected.id);
-    document.querySelector("#standalone").href = resourcePreview(
+    element("#standalone").href = resourcePreview(
       appState.selected,
       appState.locale,
       appState.theme,
@@ -347,7 +357,7 @@ export function createViewer({
     const url =
       appState.detailResource.type === "case"
         ? href("case", appState.detailResource.id, {
-            page: appState.selected.key,
+            page: appState.selected.key || "",
             theme: appState.theme,
             ...(appState.tab === "code" ? { tab: "code" } : {}),
             ...(appState.route.params.get("panel") === "details"
@@ -364,19 +374,17 @@ export function createViewer({
     history.replaceState(history.state, "", url);
     appState.route = parse();
     inspector();
-    document
-      .querySelectorAll("[data-page-preview]")
-      .forEach((el) =>
-        el.setAttribute(
-          "aria-pressed",
-          String(el.dataset.pagePreview === appState.selected.id),
-        ),
-      );
+    all("[data-page-preview]").forEach((el) =>
+      el.setAttribute(
+        "aria-pressed",
+        String(el.dataset.pagePreview === appState.selected?.id),
+      ),
+    );
     scalePreview();
   }
 
   function sendPreviewTheme() {
-    document.querySelector("#case-preview")?.contentWindow.postMessage(
+    maybe("#case-preview")?.contentWindow?.postMessage(
       {
         type: "atlas:preview-config",
         locale: appState.locale,
@@ -386,8 +394,9 @@ export function createViewer({
     );
   }
 
+  /** @param {unknown} value */
   function acceptPreviewTheme(value) {
-    if (!["light", "dark"].includes(value)) return;
+    if (value !== "light" && value !== "dark") return;
     if (appState.viewerThemeTarget && value !== appState.viewerThemeTarget) {
       // A lazy case bridge can become ready after iframe load and miss earlier
       // commands. Its validated state message is our opportunity to send the
@@ -399,7 +408,7 @@ export function createViewer({
     // An initial acknowledgement must not turn a following theme into a URL override.
     if (appState.theme === value) return;
     appState.theme = value;
-    document.querySelector("[data-preview-theme]").innerHTML = icon(
+    element("[data-preview-theme]").innerHTML = icon(
       appState.theme === "dark" ? "sun" : "moon",
     );
     updateThemeURL();
@@ -414,7 +423,7 @@ export function createViewer({
       "",
       "#" + p.view + (p.id ? "/" + p.id : "") + "?" + p.params,
     );
-    document.querySelector("#standalone").href = resourcePreview(
+    element("#standalone").href = resourcePreview(
       appState.selected,
       appState.locale,
       appState.theme,

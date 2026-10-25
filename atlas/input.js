@@ -1,19 +1,25 @@
+// @ts-check
 const composing = new WeakSet();
+/** @param {{target:EventTarget|null,isComposing?:boolean,keyCode?:number}} event */
 export function isComposing(event) {
   return (
-    composing.has(event.target) ||
+    (event.target !== null && composing.has(event.target)) ||
     event.isComposing === true ||
     event.keyCode === 229
   );
 }
+/** @param {{target:EventTarget|null,isComposing?:boolean,keyCode?:number}} event */
 export function beginComposition(event) {
-  composing.add(event.target);
+  event.target && composing.add(event.target);
 }
+/** @param {{target:EventTarget|null,isComposing?:boolean,keyCode?:number}} event */
 export function endComposition(event) {
-  composing.delete(event.target);
+  event.target && composing.delete(event.target);
 }
 
+/** @param {()=>void} commit */
 export function createInputScheduler(commit) {
+  /** @type {ReturnType<typeof setTimeout>|undefined} */
   let timer;
   let pending = false;
   function cancel() {

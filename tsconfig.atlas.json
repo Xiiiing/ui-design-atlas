@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.shell.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "types": ["vite/client"]
+  },
+  "include": ["app.js", "atlas/**/*.js", "atlas/**/*.ts", "shell/**/*.tsx"]
+}

@@ -1,0 +1,30 @@
+{
+  "baselineCommit": "c38e29d",
+  "scenario": "Open component:folio-form with category=forms&q=folio, enter an email, then search folio form, FOLIO FORM, folio.",
+  "measurements": [
+    {
+      "label": "before",
+      "filterUpdates": 3,
+      "iframeDocumentRequests": 3,
+      "retainedInput": false
+    },
+    {
+      "label": "after",
+      "filterUpdates": 3,
+      "iframeDocumentRequests": 0,
+      "retainedInput": true
+    }
+  ],
+  "checks": {
+    "verify": "passed",
+    "unitTests": 7,
+    "productionPlaywrightTests": 90,
+    "isolatedDevelopmentTests": 1,
+    "updatedSearchRegressionTests": 3,
+    "favoriteViewportLanguageThemeCombinations": 8
+  },
+  "limitations": [
+    "IME composition and keyCode 229 were tested through browser events; no physical Chinese input method session was available.",
+    "Browser acceptance used Chromium. Browsers without moveBefore may reload iframe documents that must move; unchanged-position previews remain connected."
+  ]
+}

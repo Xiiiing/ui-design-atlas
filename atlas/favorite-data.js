@@ -1,7 +1,9 @@
+// @ts-check
 import { findResource } from "../catalog.js";
 
 export const favoriteStorageKey = "design-atlas-favorites";
 
+/** @param {unknown} value @returns {value is string} */
 export function validFavorite(value) {
   if (typeof value !== "string") return false;
   const parts = value.split(":");
@@ -12,6 +14,7 @@ export function validFavorite(value) {
   );
 }
 
+/** @param {string|null} text @returns {Set<string>} */
 export function readFavorites(text) {
   try {
     const values = JSON.parse(text || "[]");
@@ -21,6 +24,7 @@ export function readFavorites(text) {
   }
 }
 
+/** @param {string} text @param {Set<string>} current @returns {Set<string>} */
 export function importFavorites(text, current) {
   const data = JSON.parse(text);
   if (

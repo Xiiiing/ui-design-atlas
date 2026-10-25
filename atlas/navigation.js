@@ -1,3 +1,5 @@
+// @ts-check
+import { element, maybe, all } from "./dom.js";
 import { browseScroll, scrollBrowseTo } from "../shell/controls.tsx";
 
 export function parse() {
@@ -6,17 +8,22 @@ export function parse() {
   return { view: view || "discover", id, params: new URLSearchParams(q) };
 }
 
+/** @param {string} hash */
 export function parseHash(hash) {
   const [p, q = ""] = hash.replace(/^#/, "").split("?");
   return { view: p || "discover", params: new URLSearchParams(q) };
 }
 
+/** @param {string} view */
 export const sectionOf = (view) =>
   ["motion", "components", "blocks", "pages"].includes(view) ? "explore" : view;
 
+/** @param {Pick<import("./types").BaseDependencies,"appState"|"href"> & {render:()=>void}} dependencies */
 export function createNavigation({ appState, href, render }) {
+  /** @type {Map<string,import("./types").BrowseState>} */
   const sectionMemory = new Map();
 
+  /** @type {ReturnType<typeof setTimeout>|undefined} */
   let browseSaveTimer;
 
   let compactNavigation = false;
@@ -51,9 +58,7 @@ export function createNavigation({ appState, href, render }) {
 
   function syncNavigation() {
     compactNavigation = scrollY > (compactNavigation ? 48 : 96);
-    document
-      .querySelector("#topbar")
-      .classList.toggle("is-compact", compactNavigation);
+    element("#topbar").classList.toggle("is-compact", compactNavigation);
   }
 
   function navigationChanged() {
@@ -62,11 +67,12 @@ export function createNavigation({ appState, href, render }) {
       location.href + JSON.stringify(history.state)
     )
       return;
-    document.querySelector("#search-dialog").close();
+    element("#search-dialog").close();
     render();
     if (!history.state?.browse) scrollBrowseTo(0);
   }
 
+  /** @param {string} target */
   function activatePrimary(target) {
     if (!appState.selected && sectionOf(appState.route.view) === target) return;
     rememberSection();
@@ -87,9 +93,7 @@ export function createNavigation({ appState, href, render }) {
     render();
     scrollBrowseTo(browse.scroll);
     syncNavigation();
-    document
-      .querySelector(`[data-primary-view="${target}"]`)
-      ?.focus({ preventScroll: true });
+    maybe(`[data-primary-view="${target}"]`)?.focus({ preventScroll: true });
   }
   return {
     rememberSection,

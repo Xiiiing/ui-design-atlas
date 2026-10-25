@@ -56,6 +56,7 @@ test("Experience details, code and browser history restore the original comparis
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("#explore?lang=en&category=buttons");
   await page.locator("[name=q]").fill("shimmer");
+  await expect(page.locator(".asset-caption [data-open]")).toHaveCount(1);
   await page.locator(".asset-caption [data-open]").click();
   await expect(page.locator("#inspector")).toBeVisible();
   await expect(page).toHaveURL(/panel=details/);

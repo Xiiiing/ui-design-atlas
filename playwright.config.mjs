@@ -15,7 +15,7 @@ export default defineConfig({
   webServer: {
     command: "node scripts/serve.mjs --dist --base=/ui-design-atlas/",
     url: "http://127.0.0.1:4173/ui-design-atlas/",
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
   },
   reporter: "list",
 });

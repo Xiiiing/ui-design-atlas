@@ -6,6 +6,7 @@ test("IME composition does not update results or activate quick search", async (
   await page.goto("#components?lang=zh-CN");
   const before = await page.locator(".asset-card").count();
   const query = page.locator("[name=q]");
+  await query.fill("border"); // Cancel an already scheduled ordinary input update.
   await query.dispatchEvent("compositionstart");
   await query.fill("不存在");
   await page.waitForTimeout(220);
@@ -92,6 +93,10 @@ test("Unchanged previews retain their document, input and frame across search an
     await expect(page).toHaveURL(
       new RegExp("q=" + q.replaceAll(" ", "\\+"), "i"),
     );
+    await expect(card.locator('[data-resource-tag="style"]')).toHaveAttribute(
+      "href",
+      new RegExp("q=" + q.replaceAll(" ", "\\+"), "i"),
+    );
   }
   await card.locator("[data-save]").click();
   await expect(frame.locator("input[type=email]")).toHaveValue(
@@ -110,7 +115,6 @@ test("Unchanged previews retain their document, input and frame across search an
   await testInfo.attach("preview-retention.json", {
     body: JSON.stringify({
       filterUpdates: 3,
-      previousImplementationExpectedReloads: 3,
       documentReloads: docs.length - before,
       retainedDocument: true,
     }),

@@ -26,6 +26,7 @@ test("Market experience preserves filters, navigation context, prompt and source
   await page.goto("#explore?lang=en");
   await expect(page.locator("#results .card")).toHaveCount(24);
   await page.locator("[name=q]").fill("用户编辑");
+  await expect(page.locator("#results .card")).toHaveCount(1);
   await page.locator("[data-open]").last().click();
   await expect(page.locator(".experience-viewer")).toBeVisible();
   await expect(page.locator(".inspector-head h2")).toHaveText(
@@ -468,6 +469,7 @@ test("Market and experience layouts remain usable at all viewport sizes", async 
       await page.goto(`#explore?lang=${lang}`);
       await noOverflow(page);
       await page.locator("[name=q]").fill("用户编辑");
+      await expect(page.locator("#results .card")).toHaveCount(1);
       await page.locator("[data-open]").last().click();
       await expect(page.locator(".experience-viewer")).toBeVisible();
       await expect(page.locator("#inspector h2")).toBeVisible();

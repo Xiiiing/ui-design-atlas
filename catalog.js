@@ -421,6 +421,7 @@ function indexById(items) {
 const casesById = indexById(cases);
 const pagesById = indexById(pages);
 const componentsById = indexById(components);
+/** @param {string|undefined} id @returns {import("./atlas/types").Case|undefined} */
 export const getCase = (id) => casesById.get(id);
 export const getPage = (id) => pagesById.get(id);
 export const getComponent = (id) => componentsById.get(id);
@@ -475,6 +476,7 @@ export function previewURL(c, item, locale = "zh-CN", theme = "light") {
 
 // A resource's provenance and its implementation libraries are separate concepts.
 // Legacy objects and IDs remain exported above for existing links and downloads.
+/** @type {Record<string,import("./atlas/types").Source>} */
 export const sourceProjects = {
   original: {
     id: "original",
@@ -491,6 +493,7 @@ export const sourceProjects = {
   },
   ...marketSources,
 };
+/** @type {Record<string,import("./atlas/types").Library>} */
 export const libraries = {
   native: {
     id: "native",
@@ -528,6 +531,7 @@ const categoryFor = (kind) =>
     card: "cards",
     pricing: "cards",
   })[kind] || "cards";
+/** @type {import("./atlas/types").Resource[]} */
 export const resources = [
   ...marketResources,
   ...[...components, ...pages, ...cases].map((item) => {
@@ -595,6 +599,7 @@ for (const r of resources) {
   );
   if (r.motion) resourceCounts.motion++;
 }
+/** @param {string} id @param {string} [type] @returns {import("./atlas/types").Resource|undefined} */
 export const findResource = (id, type) =>
   type ? resourcesByType.get(type)?.get(id) : resourcesById.get(id);
 export const resourceSource = (r) => sourceProjects[r.sourceId];
@@ -627,30 +632,41 @@ const searchIndex = createSearchIndex(resources, (r) => ({
   context: [r.category, r.interactions, r.style, resourceSource(r)?.name],
 }));
 export const resourceSearch = (r) => searchIndex.get(r).text;
+/** @param {string} query @param {import("./atlas/types").Resource[]} [items] @returns {import("./atlas/types").Resource[]} */
 export const searchResources = (query, items = resources) =>
   rankSearch(items, query, searchIndex);
 
 // Editorial discovery modules reference existing resources; no duplicate records.
 export const discovery = discoveryContent;
+/** @param {string} id @returns {import("./atlas/types").Resource[]} */
 export function collectionResources(id) {
   const collection = discovery.collections.find((item) => item.id === id);
   if (!collection) return [];
   if (collection.resources)
-    return collection.resources.map((id) => findResource(id));
+    return collection.resources.map((id) => requireResource(id));
   return resources.filter(
     (r) =>
       (!collection.motion || r.motion) &&
       collection.categories.includes(r.category),
   );
 }
+/** @param {string} section @returns {import("./atlas/types").Resource[]} */
 export const discoveryResources = (section) =>
-  discovery[section].map((id) => findResource(id));
+  discovery[section].map((id) => requireResource(id));
 
+/** @returns {import("./atlas/types").Resource[]} */
 export function discoveryGallery() {
   const ordered = [
     ...discovery.featured,
     ...discovery.gallery,
     ...resources.map((r) => r.id),
   ];
-  return [...new Set(ordered)].map((id) => findResource(id));
+  return [...new Set(ordered)].map((id) => requireResource(id));
+}
+
+/** @param {string} id @returns {import("./atlas/types").Resource} */
+function requireResource(id) {
+  const resource = findResource(id);
+  if (!resource) throw new Error(`Unknown editorial resource: ${id}`);
+  return resource;
 }
