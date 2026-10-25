@@ -1,4 +1,8 @@
 import { test, expect } from "@playwright/test";
+import {
+  expectViewerContained,
+  expectCanvasContained,
+} from "./viewer-assertions.mjs";
 
 async function expectFittedCanvas(page, width, height) {
   await expect
@@ -13,27 +17,25 @@ async function expectFittedCanvas(page, width, height) {
               ?.dataset.device || 0,
           );
           const automatic =
-            !device && innerWidth < 1024 && !document.fullscreenElement;
+            !device &&
+            (innerWidth < 1024 ||
+              document.querySelector(".experience-viewer").dataset
+                .previewKind === "page");
           if (automatic) {
             width = viewport.clientWidth;
-            height = Math.max(480, Math.min(812, innerHeight));
+            height = viewport.clientHeight;
           }
           const component =
             document.querySelector(".experience-viewer").dataset.previewKind ===
             "component";
+          const inset = component && !device && !automatic ? 24 : 0;
           const scale = automatic
             ? 1
-            : document.fullscreenElement
-              ? Math.min(
-                  component ? 1 : Infinity,
-                  stage.width / width,
-                  stage.height / height,
-                )
-              : device
-                ? Math.min(1, stage.width / width)
-                : component
-                  ? Math.min(1, (stage.width - 48) / width)
-                  : stage.width / width;
+            : Math.min(
+                component || device ? 1 : Infinity,
+                (stage.width - inset * 2) / width,
+                (stage.height - inset * 2) / height,
+              );
           return Math.max(
             Math.abs(box.width - width * scale),
             Math.abs(box.height - height * scale),
@@ -49,6 +51,8 @@ async function expectFittedCanvas(page, width, height) {
       );
     })
     .toBeLessThanOrEqual(1);
+  await expectViewerContained(page);
+  await expectCanvasContained(page);
 }
 
 test("Wide experience preserves the original aspect ratio and keeps portrait devices usable", async ({
@@ -122,7 +126,11 @@ test("Wide experience preserves the original aspect ratio and keeps portrait dev
         : canvasWidth,
     );
     expect(native.height).toBe(
-      width < 1024 ? Math.max(480, Math.min(812, height)) : canvasHeight,
+      width < 1024
+        ? await page
+            .locator("#preview-viewport")
+            .evaluate((el) => el.clientHeight)
+        : canvasHeight,
     );
     expect(native.x).toBeGreaterThanOrEqual(0);
     expect(native.y).toBeGreaterThanOrEqual(0);
@@ -147,10 +155,12 @@ test("Desktop detail stays centered and readable in wide and short windows", asy
     const stage = await page.locator("#preview-viewport").boundingBox();
     const viewer = await page.locator(".experience-viewer").boundingBox();
     expect(viewer.width).toBeLessThanOrEqual(1280);
-    expect(frame.width).toBeGreaterThan(1200);
-    expect(frame.height).toBeGreaterThan(750);
+    expect(frame.width).toBeGreaterThan(300);
+    expect(frame.height).toBeGreaterThan(180);
+    expect(frame.width).toBeLessThanOrEqual(stage.width + 1);
+    expect(frame.height).toBeLessThanOrEqual(stage.height + 1);
     expect(Math.abs(frame.width - stage.width)).toBeLessThanOrEqual(1);
-    expect(Math.abs(stage.width / stage.height - 1.6)).toBeLessThan(0.01);
+    expect(Math.abs(frame.height - stage.height)).toBeLessThanOrEqual(1);
     const workspace = await page.locator(".workspace").boundingBox();
     expect(
       Math.abs(viewer.x - workspace.x - (workspace.width - viewer.width) / 2),

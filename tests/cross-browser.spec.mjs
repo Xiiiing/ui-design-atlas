@@ -89,3 +89,28 @@ test("A delayed source module cannot overwrite a newer navigation", async ({
   await expect(page.locator("#code-text")).toContainText("Orbit");
   await expect(page.locator("#code-text")).not.toContainText("Folio");
 });
+
+test("Viewer fit contains the canvas and controls within short desktop and phone windows", async ({
+  page,
+}) => {
+  const { expectViewerContained, expectCanvasContained } =
+    await import("./viewer-assertions.mjs");
+  for (const [width, height] of [
+    [1910, 873],
+    [1440, 600],
+    [375, 600],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await page.goto(
+      `./?contain=${width}#case/shadcn-admin?lang=en&page=notifications`,
+    );
+    await expect(page.locator(".viewer-load-state")).toBeHidden();
+    await expectViewerContained(page);
+    await expectCanvasContained(page);
+    await page.locator('[data-device="375"]').click();
+    await expectCanvasContained(page);
+    await expectViewerContained(page);
+    await page.locator('[data-device="0"]').click();
+    await expectCanvasContained(page);
+  }
+});

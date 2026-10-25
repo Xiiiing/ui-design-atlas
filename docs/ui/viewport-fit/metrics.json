@@ -1,0 +1,62 @@
+[
+  {
+    "viewportWidth": 1910,
+    "viewportHeight": 873,
+    "pageHeight": 873,
+    "frameWidth": 1254,
+    "nativeWidth": 1254,
+    "nativeHeight": 593,
+    "frameHeight": 593,
+    "stageWidth": 1254,
+    "stageHeight": 593,
+    "bottom": 860
+  },
+  {
+    "viewportWidth": 1440,
+    "viewportHeight": 655,
+    "pageHeight": 655,
+    "frameWidth": 1254,
+    "nativeWidth": 1254,
+    "nativeHeight": 375,
+    "frameHeight": 375,
+    "stageWidth": 1254,
+    "stageHeight": 375,
+    "bottom": 642
+  },
+  {
+    "viewportWidth": 1440,
+    "viewportHeight": 600,
+    "pageHeight": 600,
+    "frameWidth": 1254,
+    "nativeWidth": 1254,
+    "nativeHeight": 320,
+    "frameHeight": 320,
+    "stageWidth": 1254,
+    "stageHeight": 320,
+    "bottom": 587
+  },
+  {
+    "viewportWidth": 1273,
+    "viewportHeight": 582,
+    "pageHeight": 582,
+    "frameWidth": 1232,
+    "nativeWidth": 1232,
+    "nativeHeight": 302,
+    "frameHeight": 302,
+    "stageWidth": 1232,
+    "stageHeight": 302,
+    "bottom": 569
+  },
+  {
+    "viewportWidth": 1024,
+    "viewportHeight": 500,
+    "pageHeight": 500,
+    "frameWidth": 983,
+    "nativeWidth": 983,
+    "nativeHeight": 220,
+    "frameHeight": 220,
+    "stageWidth": 983,
+    "stageHeight": 220,
+    "bottom": 487
+  }
+]

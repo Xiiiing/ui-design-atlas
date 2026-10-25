@@ -1,5 +1,9 @@
 import { test, expect } from "@playwright/test";
 import { gzipSync } from "node:zlib";
+import {
+  expectViewerContained,
+  expectCanvasContained,
+} from "./viewer-assertions.mjs";
 
 test("Responsive acceptance records bilingual light/dark canvases and screenshots", async ({
   page,
@@ -20,6 +24,8 @@ test("Responsive acceptance records bilingual light/dark canvases and screenshot
           `./?audit=${width}-${lang}-${theme}#case/shadcn-admin?lang=${lang}&theme=${theme}`,
         );
         await expect(page.locator(".viewer-load-state")).toBeHidden();
+        await expectViewerContained(page);
+        await expectCanvasContained(page);
         const sample = await page.locator("#case-preview").evaluate((frame) => {
           const stage = document.querySelector("#preview-viewport"),
             box = frame.getBoundingClientRect();
@@ -35,15 +41,11 @@ test("Responsive acceptance records bilingual light/dark canvases and screenshot
           };
         });
         expect(sample.overflow).toBe(false);
-        if (width < 1024) {
-          expect(sample.nativeWidth).toBe(sample.stageWidth);
-          expect(sample.renderedWidth).toBe(sample.stageWidth);
-          expect(sample.stageHeight).toBeGreaterThanOrEqual(480);
-          expect(sample.pageHeight).toBeGreaterThan(height);
-        } else {
-          expect(sample.renderedWidth).toBeGreaterThan(1200);
-          expect(sample.renderedHeight).toBeGreaterThan(750);
-        }
+        expect(sample.nativeWidth).toBe(sample.stageWidth);
+        expect(sample.renderedWidth).toBe(sample.stageWidth);
+        expect(sample.nativeHeight).toBe(sample.stageHeight);
+        expect(sample.renderedHeight).toBe(sample.stageHeight);
+        expect(sample.pageHeight).toBeLessThanOrEqual(height + 1);
         metrics.push({ width, height, lang, theme, ...sample });
         await page.waitForTimeout(1600);
         await info.attach(`preview-${width}-${lang}-${theme}.png`, {

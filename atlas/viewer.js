@@ -317,57 +317,37 @@ export function createViewer({
       !frame ||
       !canvas ||
       !appState.selected ||
-      !viewport.clientWidth
+      !viewport.clientWidth ||
+      !viewport.clientHeight
     )
       return;
-    // Desktop pages grow with their authored canvas instead of squeezing the
-    // preview into the space left below several toolbars in a short window.
-    viewport.style.setProperty(
-      "--preview-aspect",
-      `${appState.selected.preview.width} / ${appState.selected.preview.height}`,
-    );
     const component = appState.selected.type === "component";
-    const fullscreen = Boolean(document.fullscreenElement);
-    const automatic = !appState.width && innerWidth < 1024 && !fullscreen;
+    const automatic =
+      !appState.width &&
+      (innerWidth < 1024 ||
+        (appState.selected.type === "page" && appState.fit));
     const desired = automatic
       ? viewport.clientWidth
       : appState.width || appState.selected.preview.width;
     const h = automatic
-      ? Math.max(480, Math.min(812, innerHeight))
+      ? viewport.clientHeight
       : appState.width === 375
         ? 812
         : appState.width === 768
           ? 1024
           : appState.selected.preview.height;
-    // Component demos retain their authored size. Pages still fill the canvas;
-    // applying that rule to a small control magnifies both its text and whitespace.
-    const componentCanvas = component && !automatic && !appState.width;
-    const availableWidth =
-      componentCanvas && !fullscreen
-        ? Math.max(1, viewport.clientWidth - 48)
-        : viewport.clientWidth;
+    // Layout reserves the viewer chrome first. Fit the entire authored canvas
+    // into the remaining space. Responsive pages and mobile auto mode use that
+    // space directly at scale 1; actual-size mode keeps the authored viewport.
+    const inset = component && !appState.width && !automatic ? 24 : 0;
     const scale =
-      automatic || !appState.fit
+      !appState.fit || automatic
         ? 1
-        : fullscreen
-          ? Math.min(
-              component ? 1 : Infinity,
-              viewport.clientWidth / desired,
-              viewport.clientHeight / h,
-            )
-          : appState.width
-            ? Math.min(1, viewport.clientWidth / desired)
-            : componentCanvas
-              ? Math.min(1, availableWidth / desired)
-              : viewport.clientWidth / desired;
-    if (!fullscreen)
-      viewport.style.height =
-        automatic || appState.width
-          ? Math.max(480, h * scale) + "px"
-          : componentCanvas
-            ? Math.max(360, h * scale + 48) + "px"
-            : "";
-    else viewport.style.height = "";
+        : Math.min(
+            component || appState.width ? 1 : Infinity,
+            Math.max(1, viewport.clientWidth - inset * 2) / desired,
+            Math.max(1, viewport.clientHeight - inset * 2) / h,
+          );
     canvas.style.width = desired * scale + "px";
     canvas.style.height = h * scale + "px";
     frame.style.width = desired + "px";

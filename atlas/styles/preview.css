@@ -165,8 +165,10 @@
   }
 }
 
-/* Responsive previews use readable mobile viewports; desktop canvases get their
-   own proportional height below, so browser zoom cannot flatten the preview. */
+/* The viewer fits the browser; only the demo, source and notes may scroll. */
+body.is-experience {
+  overflow: hidden;
+}
 .is-experience .workspace {
   height: 100dvh;
   min-height: 0;
@@ -193,6 +195,7 @@
 .resource-page {
   width: 100%;
   min-height: 0;
+  padding: 0;
   display: flex;
 }
 .experience-viewer.full-viewer {
@@ -229,7 +232,9 @@
 }
 .experience-viewer .market-detail-layout {
   position: relative;
+  flex: 1;
   display: grid;
+  grid-template-rows: minmax(0, 1fr);
   grid-template-columns: minmax(0, 1fr);
   align-items: stretch;
   overflow: hidden;
@@ -253,6 +258,9 @@
   height: 100dvh;
 }
 .experience-viewer .market-preview-viewport {
+  flex: 1;
+  min-height: 0;
+  aspect-ratio: auto;
   overflow: auto;
   justify-content: flex-start;
 }
@@ -286,31 +294,26 @@
 .experience-viewer .preview-parameters {
   flex-shrink: 0;
 }
-.is-experience .workspace {
-  height: auto;
-  min-height: 100dvh;
-}
-.is-experience #browse-scroll {
-  overflow: visible;
-}
-.is-experience #main {
-}
-.experience-viewer.full-viewer {
-  height: auto;
-}
-.experience-viewer .market-detail-layout {
-  flex: none;
-}
-.experience-viewer .market-preview-viewport {
-  flex: none;
-  aspect-ratio: var(--preview-aspect, 16 / 10);
-}
 .experience-viewer .market-inspector {
-  /* The preview determines the row height; long notes scroll independently. */
   contain: size;
 }
 .experience-viewer #full-code {
-  height: max(560px, 70dvh);
+  height: 100%;
+}
+.experience-viewer .market-viewer-toolbar {
+  min-height: 52px;
+  padding: 6px 12px;
+}
+.experience-viewer .full-resource-tabs button {
+  min-height: 40px;
+}
+.experience-viewer .preview-toolbar {
+  min-height: 44px;
+  padding: 6px 12px;
+}
+.experience-viewer .market-preview-bottom {
+  min-height: 44px;
+  padding: 3px 12px;
 }
 #preview-scale {
   min-width: 4ch;
@@ -322,10 +325,7 @@
 @media (min-width: 1024px) {
   .is-experience #main {
     max-width: 1280px;
-    padding: 24px 12px;
-  }
-  .experience-viewer[data-preview-kind="component"] .market-preview-viewport {
-    aspect-ratio: auto;
+    padding: 12px;
   }
   .experience-viewer[data-preview-kind="component"] #preview-canvas {
     border-radius: 10px;
@@ -334,12 +334,6 @@
   .experience-viewer[data-preview-kind="component"][data-details-open="true"]
     .market-detail-layout {
     grid-template-columns: minmax(0, 1fr) clamp(300px, 28vw, 360px);
-  }
-}
-@media (max-width: 1023px) {
-  .experience-viewer .market-preview-viewport {
-    min-height: 480px;
-    aspect-ratio: auto;
   }
 }
 .experience-viewer .market-preview-panel:fullscreen .market-preview-viewport {
