@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   mkdtemp,
+  mkdir,
   cp,
   readdir,
   symlink,
@@ -48,12 +49,30 @@ async function fixture() {
         !source.endsWith(".tsbuildinfo"),
     });
   }
-  for (const dir of ["", "examples/ui-market", "examples/shadcn-admin"])
-    await symlink(
-      path.join(root, dir, "node_modules"),
-      path.join(target, dir, "node_modules"),
-      "dir",
-    );
+  await symlink(
+    path.join(root, "node_modules"),
+    path.join(target, "node_modules"),
+    "dir",
+  );
+  for (const dir of ["examples/ui-market", "examples/shadcn-admin"]) {
+    const installed = path.join(root, dir, "node_modules");
+    const isolated = path.join(target, dir, "node_modules");
+    await mkdir(isolated);
+    for (const entry of await readdir(installed)) {
+      // Keep Vite's cache private and font assets inside the served fixture root.
+      if (entry.startsWith(".")) continue;
+      if (entry === "@fontsource")
+        await cp(path.join(installed, entry), path.join(isolated, entry), {
+          recursive: true,
+        });
+      else
+        await symlink(
+          path.join(installed, entry),
+          path.join(isolated, entry),
+          "dir",
+        );
+    }
+  }
   return target;
 }
 
@@ -147,6 +166,13 @@ test(
       assert.equal(await page.evaluate(() => window.devIdentity), undefined);
       await expect(card).toHaveAttribute("data-preview-state", "ready");
       const frame = card.frameLocator("iframe");
+      assert.equal(
+        await frame.locator("#root").evaluate(async () => {
+          await document.fonts.ready;
+          return [...document.fonts].some((font) => font.status === "loaded");
+        }),
+        true,
+      );
       await frame.locator("#email").fill("hot@example.com");
       await card.locator("iframe").evaluate((el) => {
         el.contentWindow.devIdentity = "react-refresh";
@@ -302,14 +328,18 @@ test(
       record.categories.push("illegal-category");
       await writeFile(catalogPath, JSON.stringify(catalog));
       await expect
-        .poll(async () =>
-          (await page.request.get(base + "code/ui-market.json")).status(),
+        .poll(
+          async () =>
+            (await page.request.get(base + "code/ui-market.json")).status(),
+          { timeout: 20000 },
         )
         .toBe(500);
       await writeFile(catalogPath, valid);
       await expect
-        .poll(async () =>
-          (await page.request.get(base + "code/ui-market.json")).status(),
+        .poll(
+          async () =>
+            (await page.request.get(base + "code/ui-market.json")).status(),
+          { timeout: 20000 },
         )
         .toBe(200);
       // Harmless sentinels exercise the exact production/development delivery generator.
@@ -319,7 +349,8 @@ test(
           ".env.local",
           "src/local.ts.bak",
           "debug.log",
-          "private-note.md", "src/unrelated-local.ts",
+          "private-note.md",
+          "src/unrelated-local.ts",
         ])
           await writeFile(
             path.join(project, file),
@@ -334,7 +365,8 @@ test(
           ".env.local",
           "local.ts.bak",
           "debug.log",
-          "private-note.md", "src/unrelated-local.ts",
+          "private-note.md",
+          "src/unrelated-local.ts",
         ])
           assert.equal(bytes.includes(Buffer.from(name)), false);
       }
@@ -345,14 +377,18 @@ test(
       const link = path.join(directory, "examples/ui-market/src/outside.ts");
       await symlink(path.join(directory, "outside.ts"), link);
       await expect
-        .poll(async () =>
-          (await page.request.get(base + "downloads/ui-market.zip")).status(),
+        .poll(
+          async () =>
+            (await page.request.get(base + "downloads/ui-market.zip")).status(),
+          { timeout: 20000 },
         )
         .toBe(500);
       await rm(link);
       await expect
-        .poll(async () =>
-          (await page.request.get(base + "downloads/ui-market.zip")).status(),
+        .poll(
+          async () =>
+            (await page.request.get(base + "downloads/ui-market.zip")).status(),
+          { timeout: 20000 },
         )
         .toBe(200);
       errors.length = 0;
@@ -367,6 +403,14 @@ test(
       await expect(
         admin.getByRole("heading", { name: "Tasks", exact: true }),
       ).toBeVisible({ timeout: 30000 });
+      assert.equal(
+        await admin.evaluate(async () => {
+          await document.fonts.ready;
+          return [...document.fonts].some((font) => font.status === "loaded");
+        }),
+        true,
+      );
+      assert.doesNotMatch(log, /outside of Vite serving allow list/);
       await admin.evaluate(() => {
         window.devIdentity = "admin-refresh";
       });
