@@ -146,6 +146,13 @@ export function catalogBrowserPlugin(root) {
   return {
     name: "atlas-catalog-summary",
     enforce: "pre",
+    handleHotUpdate(context) {
+      if (path.dirname(context.file) !== path.join(root, "content")) return;
+      for (const module of context.server.moduleGraph.getModulesByFile(
+        path.join(root, "content/resources.json"),
+      ) || [])
+        context.server.moduleGraph.invalidateModule(module);
+    },
     async load(id) {
       if (id.split("?")[0] !== path.join(root, "content/resources.json"))
         return;

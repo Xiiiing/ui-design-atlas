@@ -231,6 +231,135 @@ test(
         await readFile(path.join(directory, "components.js"), "utf8"),
       );
 
+      // Catalog edits flow through the shell, example names, detail and ZIP manifests.
+      const catalogPath = path.join(directory, "content/resources.json");
+      const catalog = JSON.parse(await readFile(catalogPath, "utf8"));
+      const record = catalog.find((r) => r.id === "magicui-border-beam");
+      record.name.en = "Catalog hot name";
+      await writeFile(catalogPath, JSON.stringify(catalog));
+      await page.goto(base + "#components?lang=en&q=Catalog%20hot%20name");
+      await expect(page.locator(".asset-caption [data-open]")).toHaveText(
+        "Catalog hot name",
+      );
+      await expect
+        .poll(
+          async () =>
+            (
+              await (
+                await page.request.get(
+                  base + "details/component-magicui-border-beam.json",
+                )
+              ).json()
+            ).name.en,
+        )
+        .toBe("Catalog hot name");
+      const index = async () =>
+        JSON.parse(
+          (await (await page.request.get(base + "code/ui-market.json")).json())
+            .files["atlas-catalog.json"],
+        );
+      await expect
+        .poll(
+          async () => (await index()).find((r) => r.id === record.id)?.name.en,
+        )
+        .toBe("Catalog hot name");
+      const clone = {
+        ...record,
+        id: "audit-catalog-added",
+        name: { en: "Catalog addition", "zh-CN": "目录新增" },
+      };
+      catalog.push(clone);
+      await writeFile(catalogPath, JSON.stringify(catalog));
+      await page.goto(base + "#components?lang=en&q=Catalog%20addition");
+      await expect(page.locator(".asset-card")).toHaveCount(1);
+      await expect
+        .poll(async () => (await index()).some((r) => r.id === clone.id))
+        .toBe(true);
+      assert.equal(
+        (
+          await page.request.get(
+            base + "downloads/resources/component-audit-catalog-added.zip",
+          )
+        ).status(),
+        200,
+      );
+      catalog.pop();
+      await writeFile(catalogPath, JSON.stringify(catalog));
+      await expect(page.locator(".market-empty")).toBeVisible();
+      await expect
+        .poll(async () => (await index()).some((r) => r.id === clone.id))
+        .toBe(false);
+      assert.equal(
+        (
+          await page.request.get(
+            base + "details/component-audit-catalog-added.json",
+          )
+        ).status(),
+        404,
+      );
+      assert.deepEqual(errors, []);
+      const valid = JSON.stringify(catalog);
+      record.categories.push("illegal-category");
+      await writeFile(catalogPath, JSON.stringify(catalog));
+      await expect
+        .poll(async () =>
+          (await page.request.get(base + "code/ui-market.json")).status(),
+        )
+        .toBe(500);
+      await writeFile(catalogPath, valid);
+      await expect
+        .poll(async () =>
+          (await page.request.get(base + "code/ui-market.json")).status(),
+        )
+        .toBe(200);
+      // Harmless sentinels exercise the exact production/development delivery generator.
+      for (const name of ["ui-market", "shadcn-admin"]) {
+        const project = path.join(directory, "examples", name);
+        for (const file of [
+          ".env.local",
+          "src/local.ts.bak",
+          "debug.log",
+          "private-note.md", "src/unrelated-local.ts",
+        ])
+          await writeFile(
+            path.join(project, file),
+            "ATLAS_PUBLIC_AUDIT_SENTINEL",
+          );
+        const zipResponse = await page.request.get(
+          base + `downloads/${name}.zip`,
+        );
+        assert.equal(zipResponse.status(), 200);
+        const bytes = await zipResponse.body();
+        for (const name of [
+          ".env.local",
+          "local.ts.bak",
+          "debug.log",
+          "private-note.md", "src/unrelated-local.ts",
+        ])
+          assert.equal(bytes.includes(Buffer.from(name)), false);
+      }
+      await writeFile(
+        path.join(directory, "outside.ts"),
+        "ATLAS_PUBLIC_OUTSIDE_SENTINEL",
+      );
+      const link = path.join(directory, "examples/ui-market/src/outside.ts");
+      await symlink(path.join(directory, "outside.ts"), link);
+      await expect
+        .poll(async () =>
+          (await page.request.get(base + "downloads/ui-market.zip")).status(),
+        )
+        .toBe(500);
+      await rm(link);
+      await expect
+        .poll(async () =>
+          (await page.request.get(base + "downloads/ui-market.zip")).status(),
+        )
+        .toBe(200);
+      errors.length = 0;
+      // Restore the live demo used below after catalog invalidation/recovery.
+      await page.goto(base + "#components?lang=en&q=Catalog%20hot%20name");
+      await expect(card).toHaveAttribute("data-preview-state", "ready");
+
       const admin = await browser.newPage();
       await admin.goto(
         base + "examples/shadcn-admin/index.html?lang=en#/tasks",

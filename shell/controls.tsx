@@ -9,7 +9,7 @@ import { flushSync } from "react-dom";
 import { Monitor, Moon, Sun, Menu } from "lucide-react";
 import { MarketSelect, MarketMenu } from "./primitives";
 import { lockPageScroll } from "./scroll-lock";
-import { SelectionGroup } from "../vendor/yingxu-ui/reference/react/SelectionGroup";
+import { SelectionGroup } from "./SelectionGroup";
 import "./theme.css";
 
 // React islands reuse the production controls without replacing the catalog,

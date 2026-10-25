@@ -1,9 +1,11 @@
 import "./check.mjs";
+import { scriptBudget } from "./script-budget.mjs";
 import { build } from "esbuild";
 import { mkdir, cp, rm } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { catalogEsbuildPlugin } from "./catalog-data.mjs";
 import { generateDelivery } from "./delivery.mjs";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const example = path.join(root, "examples/shadcn-admin");
@@ -61,17 +63,22 @@ await cp(path.join(root, "content"), path.join(out, "content"), {
 await cp(path.join(root, "assets"), path.join(out, "assets"), {
   recursive: true,
 });
-await build({
-  entryPoints: [path.join(root, "app.js")],
+const bundle = await build({
+  entryPoints: { "atlas-shell": path.join(root, "app.js") },
   bundle: true,
   format: "esm",
   target: "es2022",
   jsx: "automatic",
   minify: true,
-  outfile: path.join(out, "atlas-shell.js"),
+  outdir: out,
+  splitting: true,
+  metafile: true,
+  chunkNames: "atlas-[name]-[hash]",
   define: { "process.env.NODE_ENV": '"production"' },
   legalComments: "linked",
+  plugins: [catalogEsbuildPlugin(root)],
 });
+await scriptBudget(bundle.metafile, root, out);
 await cp(path.join(root, "vendor"), path.join(out, "vendor"), {
   recursive: true,
 });
