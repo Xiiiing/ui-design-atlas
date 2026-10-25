@@ -26,9 +26,19 @@ jobs:
           npm ci
           npm run setup:examples
       - name: Install browser for acceptance checks
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium firefox webkit
       - name: Verify sources, production flows and development updates
         run: npm run verify
+      - name: Preserve browser acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-acceptance
+          path: |
+            test-results/
+            playwright-report/
+            dist/script-budget.json
+          retention-days: 7
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

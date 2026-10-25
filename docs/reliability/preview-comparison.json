@@ -1,0 +1,32 @@
+{
+  "before": {
+    "mountedBefore": 2,
+    "mountedAfter": 2,
+    "retainedFrames": 0,
+    "newDocumentRequests": 2,
+    "phone": {
+      "stageWidth": 350,
+      "stageHeight": 500,
+      "nativeWidth": 375,
+      "nativeHeight": 812,
+      "renderedWidth": 230.91131591796875,
+      "renderedHeight": 500,
+      "transform": "scale(0.615764)"
+    }
+  },
+  "after": {
+    "mountedBefore": 2,
+    "mountedAfter": 2,
+    "retainedFrames": 2,
+    "newDocumentRequests": 0,
+    "phone": {
+      "stageWidth": 350,
+      "stageHeight": 812,
+      "nativeWidth": 350,
+      "nativeHeight": 812,
+      "renderedWidth": 350,
+      "renderedHeight": 812,
+      "transform": "scale(1)"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "tool": "esbuild static-import graph + node:zlib gzip (default)",
+  "startup": [
+    {
+      "file": "atlas-shell.js",
+      "bytes": 71599,
+      "gzip": 23926
+    },
+    {
+      "file": "atlas-chunk-KOST2MZS.js",
+      "bytes": 542506,
+      "gzip": 162290
+    },
+    {
+      "file": "atlas-chunk-GIV5B5TQ.js",
+      "bytes": 577,
+      "gzip": 361
+    }
+  ],
+  "startupGzip": 186577,
+  "budget": 190000
+}

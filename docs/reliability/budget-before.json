@@ -1,0 +1,6 @@
+{
+  "base": "782cee73a520932cff49878197592b5897569f51",
+  "bytes": 805815,
+  "gzip": 223001,
+  "tool": "esbuild 0.28.2 production options; node:zlib gzip defaults"
+}

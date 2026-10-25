@@ -1,0 +1,236 @@
+{
+  "startupGzip": 186577,
+  "main": [
+    {
+      "url": "/ui-design-atlas/atlas-shell.js",
+      "main": true,
+      "bytes": 71599,
+      "gzip": 23926
+    },
+    {
+      "url": "/ui-design-atlas/atlas-chunk-GIV5B5TQ.js",
+      "main": true,
+      "bytes": 577,
+      "gzip": 361
+    },
+    {
+      "url": "/ui-design-atlas/atlas-chunk-KOST2MZS.js",
+      "main": true,
+      "bytes": 542506,
+      "gzip": 162290
+    }
+  ],
+  "iframe": [
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/jsx-runtime-C40oxPSl.js",
+      "main": false,
+      "bytes": 1283,
+      "gzip": 698
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/react-Cdxb2Qku.js",
+      "main": false,
+      "bytes": 7871,
+      "gzip": 3003
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/scheduler-BcmhDw3o.js",
+      "main": false,
+      "bytes": 3561,
+      "gzip": 1562
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/react-dom-Bs_xv98U.js",
+      "main": false,
+      "bytes": 3892,
+      "gzip": 1408
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/MotionConfigContext-DgwNq-ZN.js",
+      "main": false,
+      "bytes": 323,
+      "gzip": 252
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/jsx-runtime-C40oxPSl.js",
+      "main": false,
+      "bytes": 1283,
+      "gzip": 698
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/scheduler-BcmhDw3o.js",
+      "main": false,
+      "bytes": 3561,
+      "gzip": 1562
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/MotionConfigContext-DgwNq-ZN.js",
+      "main": false,
+      "bytes": 323,
+      "gzip": 252
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/react-Cdxb2Qku.js",
+      "main": false,
+      "bytes": 7871,
+      "gzip": 3003
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/react-dom-Bs_xv98U.js",
+      "main": false,
+      "bytes": 3892,
+      "gzip": 1408
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/index-EZpFbjgH.js",
+      "main": false,
+      "bytes": 260452,
+      "gzip": 84940
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/index-EZpFbjgH.js",
+      "main": false,
+      "bytes": 260452,
+      "gzip": 84940
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/jsx-runtime-C40oxPSl.js",
+      "main": false,
+      "bytes": 1283,
+      "gzip": 698
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/scheduler-BcmhDw3o.js",
+      "main": false,
+      "bytes": 3561,
+      "gzip": 1562
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/MotionConfigContext-DgwNq-ZN.js",
+      "main": false,
+      "bytes": 323,
+      "gzip": 252
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/react-Cdxb2Qku.js",
+      "main": false,
+      "bytes": 7871,
+      "gzip": 3003
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/react-dom-Bs_xv98U.js",
+      "main": false,
+      "bytes": 3892,
+      "gzip": 1408
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/index-EZpFbjgH.js",
+      "main": false,
+      "bytes": 260452,
+      "gzip": 84940
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/border-beam-DYB_XNx1.js",
+      "main": false,
+      "bytes": 2146,
+      "gzip": 979
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/reduced-motion-2fDGfAC9.js",
+      "main": false,
+      "bytes": 271,
+      "gzip": 199
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/clsx-DB0hHKMi.js",
+      "main": false,
+      "bytes": 369,
+      "gzip": 233
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/resolve-elements-CmyjWxkn.js",
+      "main": false,
+      "bytes": 22239,
+      "gzip": 8491
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/utils-BoaXfs8y.js",
+      "main": false,
+      "bytes": 27236,
+      "gzip": 8537
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/button-HJ1eyuDt.js",
+      "main": false,
+      "bytes": 1664,
+      "gzip": 746
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/dist-Cxg1S2i2.js",
+      "main": false,
+      "bytes": 3801,
+      "gzip": 1705
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/react-Dx5xsgmC.js",
+      "main": false,
+      "bytes": 98505,
+      "gzip": 31485
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/label-CwpVb-oG.js",
+      "main": false,
+      "bytes": 2254,
+      "gzip": 837
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/dist-CQd-IK0r.js",
+      "main": false,
+      "bytes": 460,
+      "gzip": 331
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/dist-aApn7-jm.js",
+      "main": false,
+      "bytes": 740,
+      "gzip": 490
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/ripple-button-DRrYPSqE.js",
+      "main": false,
+      "bytes": 1537,
+      "gzip": 846
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/clsx-DB0hHKMi.js",
+      "main": false,
+      "bytes": 369,
+      "gzip": 233
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/utils-BoaXfs8y.js",
+      "main": false,
+      "bytes": 27236,
+      "gzip": 8537
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/particles-DJpyo-7J.js",
+      "main": false,
+      "bytes": 4197,
+      "gzip": 1832
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/clsx-DB0hHKMi.js",
+      "main": false,
+      "bytes": 369,
+      "gzip": 233
+    },
+    {
+      "url": "/ui-design-atlas/examples/ui-market/assets/utils-BoaXfs8y.js",
+      "main": false,
+      "bytes": 27236,
+      "gzip": 8537
+    }
+  ],
+  "iframeGzip": 349840
+}
