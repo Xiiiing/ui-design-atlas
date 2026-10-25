@@ -293,6 +293,12 @@ export function createViewer({
       !viewport.clientHeight
     )
       return;
+    // Desktop pages grow with their authored canvas instead of squeezing the
+    // preview into the space left below several toolbars in a short window.
+    viewport.style.setProperty(
+      "--preview-aspect",
+      `${appState.selected.preview.width} / ${appState.selected.preview.height}`,
+    );
     // Keep the authored viewport intact on desktop. On smaller screens, wide
     // resources use a portrait device so their responsive controls remain usable.
     // Base automatic device selection on the window, not the inspector's width.

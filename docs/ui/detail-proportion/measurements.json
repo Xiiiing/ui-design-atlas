@@ -1,0 +1,194 @@
+[
+  {
+    "width": 1910,
+    "height": 873,
+    "colorScheme": "light",
+    "frame": {
+      "x": 320.5,
+      "y": 277,
+      "width": 1254,
+      "height": 783.75
+    },
+    "stage": {
+      "x": 320.5,
+      "y": 277,
+      "width": 1254,
+      "height": 783.75
+    },
+    "viewer": {
+      "x": 319.5,
+      "y": 112,
+      "width": 1256,
+      "height": 1004.75
+    },
+    "horizontalOverflow": -15
+  },
+  {
+    "width": 1910,
+    "height": 873,
+    "colorScheme": "dark",
+    "frame": {
+      "x": 320.5,
+      "y": 277,
+      "width": 1254,
+      "height": 783.75
+    },
+    "stage": {
+      "x": 320.5,
+      "y": 277,
+      "width": 1254,
+      "height": 783.75
+    },
+    "viewer": {
+      "x": 319.5,
+      "y": 112,
+      "width": 1256,
+      "height": 1004.75
+    },
+    "horizontalOverflow": -15
+  },
+  {
+    "width": 1440,
+    "height": 655,
+    "colorScheme": "light",
+    "frame": {
+      "x": 85.5,
+      "y": 277,
+      "width": 1254,
+      "height": 783.75
+    },
+    "stage": {
+      "x": 85.5,
+      "y": 277,
+      "width": 1254,
+      "height": 783.75
+    },
+    "viewer": {
+      "x": 84.5,
+      "y": 112,
+      "width": 1256,
+      "height": 1004.75
+    },
+    "horizontalOverflow": -15
+  },
+  {
+    "width": 1440,
+    "height": 655,
+    "colorScheme": "dark",
+    "frame": {
+      "x": 85.5,
+      "y": 277,
+      "width": 1254,
+      "height": 783.75
+    },
+    "stage": {
+      "x": 85.5,
+      "y": 277,
+      "width": 1254,
+      "height": 783.75
+    },
+    "viewer": {
+      "x": 84.5,
+      "y": 112,
+      "width": 1256,
+      "height": 1004.75
+    },
+    "horizontalOverflow": -15
+  },
+  {
+    "width": 768,
+    "height": 1024,
+    "colorScheme": "light",
+    "frame": {
+      "x": 114,
+      "y": 256,
+      "width": 525,
+      "height": 700
+    },
+    "stage": {
+      "x": 13,
+      "y": 256,
+      "width": 727,
+      "height": 700
+    },
+    "viewer": {
+      "x": 12,
+      "y": 100,
+      "width": 729,
+      "height": 912
+    },
+    "horizontalOverflow": -15
+  },
+  {
+    "width": 768,
+    "height": 1024,
+    "colorScheme": "dark",
+    "frame": {
+      "x": 114,
+      "y": 256,
+      "width": 525,
+      "height": 700
+    },
+    "stage": {
+      "x": 13,
+      "y": 256,
+      "width": 727,
+      "height": 700
+    },
+    "viewer": {
+      "x": 12,
+      "y": 100,
+      "width": 729,
+      "height": 912
+    },
+    "horizontalOverflow": -15
+  },
+  {
+    "width": 375,
+    "height": 812,
+    "colorScheme": "light",
+    "frame": {
+      "x": 64.546875,
+      "y": 250,
+      "width": 230.91131591796875,
+      "height": 500
+    },
+    "stage": {
+      "x": 5,
+      "y": 250,
+      "width": 350,
+      "height": 500
+    },
+    "viewer": {
+      "x": 4,
+      "y": 92,
+      "width": 352,
+      "height": 716
+    },
+    "horizontalOverflow": -15
+  },
+  {
+    "width": 375,
+    "height": 812,
+    "colorScheme": "dark",
+    "frame": {
+      "x": 64.546875,
+      "y": 250,
+      "width": 230.91131591796875,
+      "height": 500
+    },
+    "stage": {
+      "x": 5,
+      "y": 250,
+      "width": 350,
+      "height": 500
+    },
+    "viewer": {
+      "x": 4,
+      "y": 92,
+      "width": 352,
+      "height": 716
+    },
+    "horizontalOverflow": -15
+  }
+]
