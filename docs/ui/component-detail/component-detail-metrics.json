@@ -1,9 +1,11 @@
 [
   {
-    "width": 350,
-    "height": 600,
+    "viewportWidth": 375,
+    "viewportHeight": 600,
     "lang": "en",
     "theme": "light",
+    "width": 350,
+    "height": 600,
     "nativeWidth": 350,
     "nativeHeight": 600,
     "stageWidth": 350,
@@ -13,10 +15,12 @@
     "overflow": false
   },
   {
-    "width": 350,
-    "height": 600,
+    "viewportWidth": 375,
+    "viewportHeight": 600,
     "lang": "zh-CN",
     "theme": "dark",
+    "width": 350,
+    "height": 600,
     "nativeWidth": 350,
     "nativeHeight": 600,
     "stageWidth": 350,
@@ -26,10 +30,12 @@
     "overflow": false
   },
   {
-    "width": 727,
-    "height": 700,
+    "viewportWidth": 768,
+    "viewportHeight": 700,
     "lang": "en",
     "theme": "light",
+    "width": 727,
+    "height": 700,
     "nativeWidth": 727,
     "nativeHeight": 700,
     "stageWidth": 727,
@@ -39,10 +45,12 @@
     "overflow": false
   },
   {
-    "width": 727,
-    "height": 700,
+    "viewportWidth": 768,
+    "viewportHeight": 700,
     "lang": "zh-CN",
     "theme": "dark",
+    "width": 727,
+    "height": 700,
     "nativeWidth": 727,
     "nativeHeight": 700,
     "stageWidth": 727,
@@ -52,10 +60,12 @@
     "overflow": false
   },
   {
-    "width": 640,
-    "height": 480,
+    "viewportWidth": 1440,
+    "viewportHeight": 655,
     "lang": "en",
     "theme": "light",
+    "width": 640,
+    "height": 480,
     "nativeWidth": 640,
     "nativeHeight": 480,
     "stageWidth": 1254,
@@ -65,10 +75,12 @@
     "overflow": false
   },
   {
-    "width": 640,
-    "height": 480,
+    "viewportWidth": 1440,
+    "viewportHeight": 655,
     "lang": "zh-CN",
     "theme": "dark",
+    "width": 640,
+    "height": 480,
     "nativeWidth": 640,
     "nativeHeight": 480,
     "stageWidth": 1254,
@@ -78,10 +90,12 @@
     "overflow": false
   },
   {
-    "width": 640,
-    "height": 480,
+    "viewportWidth": 1910,
+    "viewportHeight": 873,
     "lang": "en",
     "theme": "light",
+    "width": 640,
+    "height": 480,
     "nativeWidth": 640,
     "nativeHeight": 480,
     "stageWidth": 1254,
@@ -91,10 +105,12 @@
     "overflow": false
   },
   {
-    "width": 640,
-    "height": 480,
+    "viewportWidth": 1910,
+    "viewportHeight": 873,
     "lang": "zh-CN",
     "theme": "dark",
+    "width": 640,
+    "height": 480,
     "nativeWidth": 640,
     "nativeHeight": 480,
     "stageWidth": 1254,

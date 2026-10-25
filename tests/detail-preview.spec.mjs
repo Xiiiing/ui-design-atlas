@@ -154,7 +154,13 @@ test("Component detail screenshots cover narrow, wide and short windows in both 
         expect(sample.nativeWidth).toBe(sample.stageWidth);
         expect(sample.stageHeight).toBeGreaterThanOrEqual(480);
       }
-      samples.push({ width, height, lang, theme, ...sample });
+      samples.push({
+        viewportWidth: width,
+        viewportHeight: height,
+        lang,
+        theme,
+        ...sample,
+      });
       await info.attach(`detail-${width}-${lang}-${theme}.png`, {
         body: await page.screenshot({ fullPage: true }),
         contentType: "image/png",

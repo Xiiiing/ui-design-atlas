@@ -31,3 +31,5 @@
 [响应式尺寸记录](component-detail-metrics.json)。手机中文暗色效果：
 
 ![手机预览](after-card-375-dark.png)
+
+尺寸记录以 `viewportWidth` / `viewportHeight` 标记浏览器窗口，`width` / `height` 标记实际渲染的 iframe，避免字段覆盖混淆屏幕尺寸。审核时另在 Chromium、Firefox、WebKit 的 375/1024/1440/1910px 窗口中实际检查说明开关、输入及文档保留和全屏；均通过且没有页面异常。
