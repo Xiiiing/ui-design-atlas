@@ -40,3 +40,32 @@ test("Catalog searches preserve aliases, all-word matching, candidate filters an
   assert.deepEqual(searchResources("  "), resources);
   assert.deepEqual(searchResources("button"), searchResources("button"));
 });
+
+test("Legacy folio links find Morrow independently of descriptive copy", () => {
+  const morrow = resources.filter(
+    (r) => r.caseId === "folio" || r.id === "folio",
+  );
+  assert.equal(morrow.length, 12);
+  for (const r of morrow) {
+    assert.ok(r.aliases.includes("folio"), r.id);
+    const row = {
+      ...r,
+      description: { en: "Rewritten description", "zh-CN": "修改后的介绍" },
+    };
+    const index = createSearchIndex([row], (item) => ({
+      names: item.name,
+      aliases: item.aliases,
+      description: item.description,
+    }));
+    assert.deepEqual(rankSearch([row], "folio", index), [row]);
+  }
+  assert.deepEqual(
+    searchResources(
+      "folio",
+      resources.filter(
+        (r) => r.type === "component" && r.categories.includes("forms"),
+      ),
+    ).map((r) => r.id),
+    ["folio-form"],
+  );
+});

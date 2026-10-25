@@ -55,8 +55,8 @@ test("Market experience preserves filters, navigation context, prompt and source
     .locator("#inspector")
     .getByRole("button", { name: "Copy prompt", exact: true })
     .click();
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(
-    "Task table with search",
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+    resources.find((r) => r.id === "shadcn-admin-tasks").prompt.en,
   );
   await page
     .locator('#related a[href*="component/shadcn-admin-task-table"]')
@@ -586,7 +586,9 @@ test("Independent upstream resources load locally with source, prompts and reduc
   }
   await page.goto("#component/magicui-border-beam?lang=en");
   await expect(page.locator(".inspector-head h2")).toHaveText("Border Beam");
-  await expect(page.locator(".inline-prompt")).toContainText("8-second");
+  await expect(page.locator(".inline-prompt")).toContainText(
+    "default duration=8 seconds",
+  );
   await expect(page.locator(".provenance")).toContainText("Magic UI");
   await page.getByRole("tab", { name: "Code", exact: true }).click();
   await expect(page.locator("#code-text")).toContainText("BorderBeam");
