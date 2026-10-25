@@ -91,3 +91,7 @@
 验收浏览器安装使用 `npx playwright install --with-deps chromium firefox webkit`。`npm run verify` 执行严格检查、单元测试、一次生产构建、Chromium 全量流程、Firefox/WebKit 核心流程和隔离开发热更新测试；`npm test` 先构建，只有明确复用已知构建时才使用 `npm run test:built`。验收服务器由 Playwright 启动，不复用已有服务器。浏览器报告及截图保存在 `playwright-report/`，尺寸与请求证据随测试报告附加；CI 保存为 `atlas-acceptance` 产物。
 
 构建时按 esbuild 静态依赖图汇总主文档启动脚本的 gzip 体积，超过 190,000 字节会失败。动态源码模块与 iframe 请求分别记录，结果见 `dist/script-budget.json`。主站样式按基础、浏览、预览、导航和响应式区域组织于 `atlas/styles/`；上游归档样式继续独立保存。
+
+### 详情预览适配
+
+详情查看器默认完整留在当前窗口内。页面和案例在自动模式中使用预览容器的实际宽高、100% 比例重新排版；组件、区块及手动设备模拟按剩余宽高等比适应，小组件不放大。桌面关闭“适应画布”可按当前设备的原尺寸滚动查看。长演示内容、源码和说明在各自区域内滚动，外层页面无需下滑。高度不超过 480px 时收起站点导航，可用查看器左上角返回按钮回到资源列表。[适配规则与截图](docs/ui/viewport-fit/README.md)。

@@ -1,4 +1,8 @@
 import { test, expect } from "@playwright/test";
+import {
+  expectViewerContained,
+  expectCanvasContained,
+} from "./viewer-assertions.mjs";
 
 async function metrics(page) {
   return page.locator("#case-preview").evaluate((frame) => {
@@ -32,8 +36,13 @@ test("Component details keep the authored size and balanced canvas when notes to
     const initial = await metrics(page);
     expect(initial.width).toBe(640);
     expect(initial.height).toBe(480);
-    expect(initial.stageHeight).toBe(528);
-    expect(initial.verticalInset).toBe(24);
+    expect(initial.stageHeight).toBeGreaterThanOrEqual(initial.height + 48);
+    expect(initial.verticalInset).toBeCloseTo(
+      (initial.stageHeight - initial.height) / 2,
+      0,
+    );
+    await expectViewerContained(page);
+    await expectCanvasContained(page);
     await expect(page.locator("#preview-scale")).toHaveText("100%");
     await page.locator("#case-preview").evaluate((frame) => {
       window.originalFrame = frame;
@@ -54,7 +63,9 @@ test("Component details keep the authored size and balanced canvas when notes to
       await expect.poll(async () => (await metrics(page)).width).toBe(640);
       const current = await metrics(page);
       expect(current.height).toBe(480);
-      expect(current.stageHeight).toBe(528);
+      expect(current.stageHeight).toBe(initial.stageHeight);
+      await expectViewerContained(page);
+      await expectCanvasContained(page);
       expect(
         Math.abs(current.horizontalInset - (current.stageWidth - 640) / 2),
       ).toBeLessThanOrEqual(1);
@@ -115,8 +126,14 @@ test("Native component sizing survives devices, fullscreen, theme and real inter
   await page.locator("[data-preview-theme]").click();
   await expect(page).toHaveURL(/theme=dark/);
   await page.locator('[data-device="375"]').click();
-  await expect.poll(async () => (await metrics(page)).width).toBe(375);
-  await expect(page.locator("#preview-scale")).toHaveText("100%");
+  await expectCanvasContained(page);
+  const device = await metrics(page);
+  expect(device.nativeWidth).toBe(375);
+  expect(device.nativeHeight).toBe(812);
+  expect(device.width).toBeLessThanOrEqual(375);
+  await expect(page.locator("#preview-scale")).toHaveText(
+    `${Math.round((device.width / 375) * 100)}%`,
+  );
   await page.locator('[data-device="0"]').click();
   await expect.poll(async () => (await metrics(page)).width).toBe(640);
   await page.locator("[data-fit]").click();
@@ -143,16 +160,18 @@ test("Component detail screenshots cover narrow, wide and short windows in both 
       await page.emulateMedia({ colorScheme: theme });
       await page.goto(`#component/folio-card?lang=${lang}&theme=${theme}`);
       await expect(page.locator(".viewer-load-state")).toBeHidden();
+      await expectViewerContained(page);
+      await expectCanvasContained(page);
       const sample = await metrics(page);
       expect(sample.overflow).toBe(false);
       if (width >= 1024) {
-        expect(sample.width).toBe(640);
-        expect(sample.height).toBe(480);
-        expect(sample.stageHeight).toBe(528);
+        expect(sample.width).toBeLessThanOrEqual(640);
+        expect(sample.height).toBeLessThanOrEqual(480);
+        expect(sample.width / sample.height).toBeCloseTo(4 / 3, 2);
       } else {
         expect(sample.width).toBe(sample.stageWidth);
         expect(sample.nativeWidth).toBe(sample.stageWidth);
-        expect(sample.stageHeight).toBeGreaterThanOrEqual(480);
+        expect(sample.nativeHeight).toBe(sample.stageHeight);
       }
       samples.push({
         viewportWidth: width,

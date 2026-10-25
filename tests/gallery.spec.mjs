@@ -169,7 +169,7 @@ test("Original motion parameters affect the real preview, prompt and replay", as
   );
 });
 
-test("Page details preserve the authored canvas, support fullscreen and use a golden-ratio inspector split", async ({
+test("Page details use a responsive canvas, support fullscreen and use a golden-ratio inspector split", async ({
   page,
 }) => {
   await page.goto("#page/shadcn-admin-dashboard?lang=en&panel=details");
@@ -184,14 +184,18 @@ test("Page details preserve the authored canvas, support fullscreen and use a go
     await page
       .locator("#case-preview")
       .evaluate((f) => f.contentWindow.innerWidth),
-  ).toBe(1280);
+  ).toBe(
+    await page.locator("#preview-viewport").evaluate((el) => el.clientWidth),
+  );
   await page.locator("[data-fullscreen]").click();
   await expect(page.locator("#preview-panel:fullscreen")).toBeVisible();
   expect(
     await page
       .locator("#case-preview")
       .evaluate((f) => f.contentWindow.innerWidth),
-  ).toBe(1280);
+  ).toBe(
+    await page.locator("#preview-viewport").evaluate((el) => el.clientWidth),
+  );
   await page.evaluate(() => document.exitFullscreen());
   await page.locator('[data-device="768"]').click();
   await expect
@@ -204,5 +208,7 @@ test("Page details preserve the authored canvas, support fullscreen and use a go
     .poll(() =>
       page.locator("#case-preview").evaluate((f) => f.contentWindow.innerWidth),
     )
-    .toBe(1280);
+    .toBe(
+      await page.locator("#preview-viewport").evaluate((el) => el.clientWidth),
+    );
 });

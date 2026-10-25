@@ -1,0 +1,27 @@
+{
+  "viewportWidth": 1910,
+  "viewportHeight": 873,
+  "pageHeight": 1141,
+  "frame": {
+    "x": 320.5,
+    "y": 277,
+    "width": 1254,
+    "height": 783.75,
+    "top": 277,
+    "right": 1574.5,
+    "bottom": 1060.75,
+    "left": 320.5
+  },
+  "stage": {
+    "x": 320.5,
+    "y": 277,
+    "width": 1254,
+    "height": 783.75,
+    "top": 277,
+    "right": 1574.5,
+    "bottom": 1060.75,
+    "left": 320.5
+  },
+  "bottom": 1115.75,
+  "scale": "98%"
+}
