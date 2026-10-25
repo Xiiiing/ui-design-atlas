@@ -51,3 +51,21 @@ export async function expectCanvasContained(page) {
     )
     .toBeLessThanOrEqual(1);
 }
+
+export async function expectResponsiveCanvas(page) {
+  await expect
+    .poll(() =>
+      page.locator("#case-preview").evaluate((frame) => {
+        const stage = document.querySelector("#preview-viewport");
+        const rect = frame.getBoundingClientRect();
+        return Math.max(
+          Math.abs(rect.width - stage.clientWidth),
+          Math.abs(rect.height - stage.clientHeight),
+          Math.abs(frame.contentWindow.innerWidth - stage.clientWidth),
+          Math.abs(frame.contentWindow.innerHeight - stage.clientHeight),
+        );
+      }),
+    )
+    .toBeLessThanOrEqual(1);
+  await expectCanvasContained(page);
+}

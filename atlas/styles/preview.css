@@ -327,10 +327,6 @@ body.is-experience {
     max-width: 1280px;
     padding: 12px;
   }
-  .experience-viewer[data-preview-kind="component"] #preview-canvas {
-    border-radius: 10px;
-    box-shadow: 0 0 0 1px var(--line);
-  }
   .experience-viewer[data-preview-kind="component"][data-details-open="true"]
     .market-detail-layout {
     grid-template-columns: minmax(0, 1fr) clamp(300px, 28vw, 360px);
@@ -414,6 +410,81 @@ body.is-experience {
 }
 .viewer-load-state[hidden] {
   display: none;
+}
+
+/* Let the demo fill its responsive viewport, and keep controls together. */
+.experience-viewer .preview-toolbar {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.experience-viewer .preview-toolbar .preview-parameters {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-size: 12px;
+}
+.experience-viewer .preview-parameters label {
+  gap: 8px;
+}
+.experience-viewer .preview-parameters input {
+  width: 64px;
+  height: 32px;
+}
+.experience-viewer .inspector-head {
+  padding: 16px 16px 8px;
+}
+.experience-viewer .inspector-head h2 {
+  font-size: 18px;
+  line-height: 26px;
+  margin-bottom: 6px;
+}
+.experience-viewer .detail-eyebrow {
+  gap: 6px;
+}
+.experience-viewer .detail-eyebrow > span {
+  margin-right: auto;
+}
+.experience-viewer .detail-eyebrow .inspector-close {
+  margin: 0;
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+}
+.experience-viewer #inspector > .resource-tags {
+  padding: 0 16px 8px;
+}
+.experience-viewer .inspector-content {
+  padding: 0 16px 16px;
+}
+.experience-viewer .detail-section {
+  padding-top: 16px;
+}
+@media (min-width: 1200px) {
+  .experience-viewer.full-viewer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .experience-viewer > .market-viewer-toolbar {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .experience-viewer > .experience-actions {
+    grid-column: 2;
+    grid-row: 1;
+    padding-left: 8px;
+  }
+  .experience-viewer > .market-detail-layout {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+@media (max-width: 767px) {
+  .experience-viewer .preview-toolbar .preview-parameters {
+    order: 1;
+    flex-basis: 100%;
+    padding-top: 4px;
+  }
 }
 
 /* Keep the preview usable in phone landscape and short desktop windows. The

@@ -1,0 +1,35 @@
+[
+  {
+    "viewportWidth": 1440,
+    "viewportHeight": 655,
+    "stageHeight": 324,
+    "scale": 0.575,
+    "componentWidth": 201.24999999999997,
+    "componentHeight": 174.79999999999998,
+    "inputFontSize": 9.2,
+    "viewerTop": 76,
+    "pageHeight": 655
+  },
+  {
+    "viewportWidth": 1273,
+    "viewportHeight": 582,
+    "stageHeight": 251,
+    "scale": 0.42291669845581054,
+    "componentWidth": 148.0208444595337,
+    "componentHeight": 128.5666763305664,
+    "inputFontSize": 6.766667175292969,
+    "viewerTop": 76,
+    "pageHeight": 582
+  },
+  {
+    "viewportWidth": 1910,
+    "viewportHeight": 873,
+    "stageHeight": 542,
+    "scale": 1,
+    "componentWidth": 350,
+    "componentHeight": 304,
+    "inputFontSize": 16,
+    "viewerTop": 76,
+    "pageHeight": 873
+  }
+]

@@ -31,6 +31,9 @@
   width: 100%;
 }
 /* Archive framing only: preserve the actual component's typography and styles. */
+.demo-surface[data-detail="true"]:not([data-source="blocks"]) {
+  padding: 16px;
+}
 html[data-thumbnail="true"] .demo-surface:not([data-source="blocks"]) {
   padding: 16px;
 }

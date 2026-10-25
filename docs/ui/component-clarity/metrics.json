@@ -1,0 +1,38 @@
+[
+  {
+    "viewportWidth": 1440,
+    "viewportHeight": 655,
+    "stageHeight": 416,
+    "componentWidth": 350,
+    "componentHeight": 304,
+    "inputFontSize": 14,
+    "scale": 1,
+    "cardFits": true,
+    "combinedHeader": true,
+    "pageHeight": 655
+  },
+  {
+    "viewportWidth": 1273,
+    "viewportHeight": 582,
+    "stageHeight": 343,
+    "componentWidth": 350,
+    "componentHeight": 304,
+    "inputFontSize": 14,
+    "scale": 1,
+    "cardFits": true,
+    "combinedHeader": true,
+    "pageHeight": 582
+  },
+  {
+    "viewportWidth": 1910,
+    "viewportHeight": 873,
+    "stageHeight": 634,
+    "componentWidth": 350,
+    "componentHeight": 304,
+    "inputFontSize": 14,
+    "scale": 1,
+    "cardFits": true,
+    "combinedHeader": true,
+    "pageHeight": 873
+  }
+]

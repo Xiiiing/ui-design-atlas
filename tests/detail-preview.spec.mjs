@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import {
   expectViewerContained,
   expectCanvasContained,
+  expectResponsiveCanvas,
 } from "./viewer-assertions.mjs";
 
 async function metrics(page) {
@@ -23,7 +24,7 @@ async function metrics(page) {
   });
 }
 
-test("Component details keep the authored size and balanced canvas when notes toggle", async ({
+test("Component details use native pixels and retain their document when notes toggle", async ({
   page,
 }) => {
   let requests = 0;
@@ -34,13 +35,9 @@ test("Component details keep the authored size and balanced canvas when notes to
     await page.goto(`#component/${id}?lang=en`);
     await expect(page.locator(".viewer-load-state")).toBeHidden();
     const initial = await metrics(page);
-    expect(initial.width).toBe(640);
-    expect(initial.height).toBe(480);
-    expect(initial.stageHeight).toBeGreaterThanOrEqual(initial.height + 48);
-    expect(initial.verticalInset).toBeCloseTo(
-      (initial.stageHeight - initial.height) / 2,
-      0,
-    );
+    await expectResponsiveCanvas(page);
+    expect(initial.nativeWidth).toBe(initial.stageWidth);
+    expect(initial.nativeHeight).toBe(initial.stageHeight);
     await expectViewerContained(page);
     await expectCanvasContained(page);
     await expect(page.locator("#preview-scale")).toHaveText("100%");
@@ -60,15 +57,13 @@ test("Component details keep the authored size and balanced canvas when notes to
         "data-details-open",
         String(open),
       );
-      await expect.poll(async () => (await metrics(page)).width).toBe(640);
+      await expectResponsiveCanvas(page);
       const current = await metrics(page);
-      expect(current.height).toBe(480);
+      expect(current.height).toBe(current.stageHeight);
       expect(current.stageHeight).toBe(initial.stageHeight);
       await expectViewerContained(page);
       await expectCanvasContained(page);
-      expect(
-        Math.abs(current.horizontalInset - (current.stageWidth - 640) / 2),
-      ).toBeLessThanOrEqual(1);
+      expect(Math.abs(current.horizontalInset)).toBeLessThanOrEqual(1);
       expect(
         await page
           .locator("#case-preview")
@@ -110,7 +105,7 @@ test("Native component sizing survives devices, fullscreen, theme and real inter
   await expect(page.locator(".viewer-load-state")).toBeHidden();
   await page.locator("[data-fullscreen]").click();
   await expect(page.locator("#preview-panel:fullscreen")).toBeVisible();
-  await expect.poll(async () => (await metrics(page)).width).toBe(640);
+  await expectResponsiveCanvas(page);
   await page
     .frameLocator("#case-preview")
     .getByRole("button", { name: "Open dialog", exact: true })
@@ -135,7 +130,7 @@ test("Native component sizing survives devices, fullscreen, theme and real inter
     `${Math.round((device.width / 375) * 100)}%`,
   );
   await page.locator('[data-device="0"]').click();
-  await expect.poll(async () => (await metrics(page)).width).toBe(640);
+  await expectResponsiveCanvas(page);
   await page.locator("[data-fit]").click();
   await expect(page.locator("[data-fit]")).not.toHaveClass(/selected/);
   await page.locator("[data-fit]").click();
@@ -164,15 +159,10 @@ test("Component detail screenshots cover narrow, wide and short windows in both 
       await expectCanvasContained(page);
       const sample = await metrics(page);
       expect(sample.overflow).toBe(false);
-      if (width >= 1024) {
-        expect(sample.width).toBeLessThanOrEqual(640);
-        expect(sample.height).toBeLessThanOrEqual(480);
-        expect(sample.width / sample.height).toBeCloseTo(4 / 3, 2);
-      } else {
-        expect(sample.width).toBe(sample.stageWidth);
-        expect(sample.nativeWidth).toBe(sample.stageWidth);
-        expect(sample.nativeHeight).toBe(sample.stageHeight);
-      }
+      expect(sample.width).toBe(sample.stageWidth);
+      expect(sample.height).toBe(sample.stageHeight);
+      expect(sample.nativeWidth).toBe(sample.stageWidth);
+      expect(sample.nativeHeight).toBe(sample.stageHeight);
       samples.push({
         viewportWidth: width,
         viewportHeight: height,

@@ -130,10 +130,19 @@ export function createResourceViews({
             label: t(...interactions[value]),
           });
       }
+    const redundant = new Set(
+      [
+        ...tags.map((tag) => tag.label),
+        l(r.name),
+        labelType(r),
+        t("动效", "Motion"),
+        t("交互", "Interaction"),
+      ].map((label) => label.toLowerCase()),
+    );
     return `<div class="resource-tags" aria-label="${t("标签", "Tags")}">${tags.map((tag) => `<a href="${tagURL(tag.name, tag.value)}" data-resource-tag="${tag.name}" data-tag-value="${esc(tag.value)}">${esc(tag.label)}</a>`).join("")}${
       full
         ? [...new Set(l(r.tags) || [])]
-            .filter((label) => !tags.some((tag) => tag.label === label))
+            .filter((label) => !redundant.has(label.toLowerCase()))
             .map((label) => `<span>${esc(label)}</span>`)
             .join("")
         : ""
