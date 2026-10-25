@@ -312,10 +312,28 @@
 .experience-viewer #full-code {
   height: max(560px, 70dvh);
 }
+#preview-scale {
+  min-width: 4ch;
+  color: var(--muted-text);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
 @media (min-width: 1024px) {
   .is-experience #main {
     max-width: 1280px;
     padding: 24px 12px;
+  }
+  .experience-viewer[data-preview-kind="component"] .market-preview-viewport {
+    aspect-ratio: auto;
+  }
+  .experience-viewer[data-preview-kind="component"] #preview-canvas {
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px var(--line);
+  }
+  .experience-viewer[data-preview-kind="component"][data-details-open="true"]
+    .market-detail-layout {
+    grid-template-columns: minmax(0, 1fr) clamp(300px, 28vw, 360px);
   }
 }
 @media (max-width: 1023px) {

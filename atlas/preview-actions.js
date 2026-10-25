@@ -49,6 +49,7 @@ export function createPreviewActions({
     if (b.hasAttribute("data-fit")) {
       appState.fit = !appState.fit;
       b.setAttribute("aria-pressed", String(appState.fit));
+      b.classList.toggle("selected", appState.fit);
       scalePreview();
       return true;
     }

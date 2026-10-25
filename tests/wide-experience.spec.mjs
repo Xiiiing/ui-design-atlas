@@ -18,13 +18,22 @@ async function expectFittedCanvas(page, width, height) {
             width = viewport.clientWidth;
             height = Math.max(480, Math.min(812, innerHeight));
           }
+          const component =
+            document.querySelector(".experience-viewer").dataset.previewKind ===
+            "component";
           const scale = automatic
             ? 1
             : document.fullscreenElement
-              ? Math.min(stage.width / width, stage.height / height)
+              ? Math.min(
+                  component ? 1 : Infinity,
+                  stage.width / width,
+                  stage.height / height,
+                )
               : device
                 ? Math.min(1, stage.width / width)
-                : stage.width / width;
+                : component
+                  ? Math.min(1, (stage.width - 48) / width)
+                  : stage.width / width;
           return Math.max(
             Math.abs(box.width - width * scale),
             Math.abs(box.height - height * scale),
