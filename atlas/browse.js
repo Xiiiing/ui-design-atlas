@@ -288,7 +288,7 @@ export function createBrowse({ appState, t, card, href, l, observeCards }) {
         if (
           values.interaction &&
           values.interaction !== "all" &&
-          !r.interactions.includes(values.interaction)
+          !r.interactions.some(value => value === values.interaction)
         )
           return false;
         if (

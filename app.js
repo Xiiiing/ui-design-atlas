@@ -325,7 +325,9 @@ document.addEventListener("click", async (e) => {
     return liveCards.retry(b.closest(".asset-card"));
   if (b.dataset.cardPrompt) {
     const [type, id] = b.dataset.cardPrompt.split(":");
-    return copy(resourcePrompt(findResource(id, type), appState.locale));
+    const resource = findResource(id, type);
+    if (resource) return copy(resourcePrompt(resource, appState.locale));
+    return;
   }
   if (b.hasAttribute("data-retry-viewer")) {
     beginPreviewLoad();

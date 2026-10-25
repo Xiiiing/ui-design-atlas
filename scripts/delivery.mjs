@@ -4,6 +4,8 @@ import { createWriteStream } from "node:fs";
 import path from "node:path";
 import archiver from "archiver";
 import { upstream, resources } from "../catalog.js";
+import { deliveryFiles, originalFiles } from "./delivery-files.mjs";
+import { writeDetails } from "./catalog-data.mjs";
 import { resourceCode } from "./resource-code.mjs";
 
 export async function generateDelivery(root, out) {
@@ -12,18 +14,11 @@ export async function generateDelivery(root, out) {
   const marketOut = path.join(out, "examples/ui-market");
   await mkdir(path.join(out, "examples/shadcn-admin"), { recursive: true });
   await mkdir(marketOut, { recursive: true });
-  async function walk(dir, exclude = new Set()) {
-    const result = [];
-    for (const e of await readdir(dir, { withFileTypes: true })) {
-      if (exclude.has(e.name)) continue;
-      const full = path.join(dir, e.name);
-      if (e.isDirectory()) result.push(...(await walk(full, exclude)));
-      else result.push(full);
-    }
-    return result;
-  }
+  await writeDetails(root, out);
+  const exampleDelivery = await deliveryFiles(example);
+  const marketDelivery = await deliveryFiles(market);
   const files = {};
-  for (const file of await walk(path.join(example, "src"))) {
+  for (const file of exampleDelivery) {
     if (/\.(tsx?|css|json)$/.test(file))
       files[path.relative(example, file).split(path.sep).join("/")] =
         await readFile(file, "utf8");
@@ -107,10 +102,7 @@ export async function generateDelivery(root, out) {
     archive.on("error", reject);
   });
   archive.pipe(stream);
-  for (const file of await walk(
-    example,
-    new Set(["node_modules", "dist", ".git"]),
-  )) {
+  for (const file of exampleDelivery) {
     const relative = path.relative(example, file).split(path.sep).join("/");
     if (
       !/^(node_modules|dist|\.git)\//.test(relative) &&
@@ -126,10 +118,7 @@ export async function generateDelivery(root, out) {
   );
 
   const marketFiles = {};
-  for (const file of await walk(
-    market,
-    new Set(["node_modules", "dist", ".git"]),
-  )) {
+  for (const file of marketDelivery) {
     const rel = path.relative(market, file).split(path.sep).join("/");
     if (
       /\.(tsx?|css|json|md|html|svg)$/.test(rel) ||
@@ -138,6 +127,9 @@ export async function generateDelivery(root, out) {
     )
       marketFiles[rel] = await readFile(file, "utf8");
   }
+  marketFiles["atlas-catalog.json"] = JSON.stringify(
+    resources.map(({ id, name, sourceId }) => ({ id, name, sourceId })),
+  );
   await writeFile(
     path.join(out, "code/ui-market.json"),
     JSON.stringify({ files: marketFiles }),
@@ -175,14 +167,14 @@ export async function generateDelivery(root, out) {
     marketZip.on("error", reject);
   });
   marketZip.pipe(marketStream);
-  for (const file of await walk(
-    market,
-    new Set(["node_modules", "dist", ".git"]),
-  )) {
+  for (const file of marketDelivery) {
     const rel = path.relative(market, file).split(path.sep).join("/");
     if (!rel.endsWith(".tsbuildinfo"))
       marketZip.file(file, { name: "ui-market/" + rel });
   }
+  marketZip.append(marketFiles["atlas-catalog.json"], {
+    name: "ui-market/atlas-catalog.json",
+  });
   marketZip.append(marketNotices.join(""), {
     name: "ui-market/THIRD_PARTY_NOTICES.md",
   });
@@ -232,6 +224,62 @@ export async function generateDelivery(root, out) {
     );
     await zip.finalize();
     await finished;
+  }
+  const nativeFiles = await originalFiles(root);
+  for (const r of resources.filter((r) => r.sourceId === "original")) {
+    const slug = `${r.type}-${r.id}`;
+    const target =
+      r.type === "component"
+        ? `component-preview.html?id=${r.id}`
+        : `preview.html?style=${r.caseId || r.id}&page=${r.key || "home"}`;
+    const instructions = {
+      "zh-CN": [
+        "这是自包含静态文件包。解压后使用任意静态 HTTP 服务器打开 index.html；不需要 npm ci 或 React。语言和主题可通过入口中的 lang、theme 参数选择。",
+      ],
+      en: [
+        "This is a self-contained static project. Serve the extracted directory with any static HTTP server and open index.html; npm ci and React are not needed. Use lang and theme URL parameters to select language and appearance.",
+      ],
+    };
+    const files = {
+      ...nativeFiles,
+      "index.html": `<!doctype html><html><meta charset="utf-8"><title>Atlas preview</title><script>const p=new URLSearchParams(location.search);const u=new URL(${JSON.stringify(target)},location.href);u.searchParams.set('lang',p.get('lang')==='en'?'en':'zh-CN');u.searchParams.set('theme',p.get('theme')==='dark'?'dark':'light');location.replace(u);</script></html>`,
+      "ATLAS-REUSE.md":
+        instructions["zh-CN"][0] +
+        "\n\n" +
+        instructions.en[0] +
+        "\n\nSource: UI Design Atlas — https://github.com/Xiiiing/ui-design-atlas\nLicense label: Atlas original. Existing source and third-party terms remain unchanged.\n",
+    };
+    // The archive's footer returns to the local package entry, not a missing catalog.
+    files["preview.js"] = files["preview.js"].replace(
+      'href="./index.html#case/${style.id}"',
+      'href="./index.html"',
+    );
+    const manifest = {
+      resourceId: r.id,
+      project: "original",
+      entryFiles: ["index.html"],
+      files,
+      instructions,
+      install: "",
+    };
+    await writeFile(
+      path.join(out, `code/resources/${slug}.json`),
+      JSON.stringify(manifest),
+    );
+    const zip = archiver("zip", { zlib: { level: 6 } }),
+      stream = createWriteStream(
+        path.join(out, `downloads/resources/${slug}.zip`),
+      );
+    const done = new Promise((resolve, reject) => {
+      stream.on("close", resolve);
+      stream.on("error", reject);
+      zip.on("error", reject);
+    });
+    zip.pipe(stream);
+    for (const [name, content] of Object.entries(files))
+      zip.append(content, { name: `${slug}/${name}` });
+    await zip.finalize();
+    await done;
   }
   console.log(
     "Built resource source manifests and file-set ZIPs with dependency closure and reuse notes.",

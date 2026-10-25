@@ -1,4 +1,4 @@
-import entries from "./archive/resources.json";
+import entries from "atlas:resource-names";
 import { installBlockAdapter } from "./archive/block-adapter";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
