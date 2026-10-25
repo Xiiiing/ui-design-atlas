@@ -29,6 +29,7 @@ test("Marketplace selects preserve FormData, reset, dialog portals and focus", a
   await expect(page.locator("#filter-library")).toHaveText("All libraries");
   await expect(page.locator(".asset-card")).toHaveCount(24);
   await page.locator("[name=q]").fill("流光边框");
+  await expect(page.locator(".asset-caption [data-open]")).toHaveCount(1);
   await page.locator(".asset-caption [data-open]").click();
   await page.locator("#prompt-scope").click();
   const popover = page.locator(".atlas-select-content");
@@ -95,6 +96,7 @@ test("Resource type navigation keeps stable geometry and detail tabs support key
   expect(await geometry()).toEqual(before);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.locator("[name=q]").fill("流光边框");
+  await expect(page.locator(".asset-caption [data-open]")).toHaveCount(1);
   await page.locator(".asset-caption [data-open]").click();
   await page.getByRole("tab").first().focus();
   await page.keyboard.press("ArrowRight");

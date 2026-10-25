@@ -1,26 +1,27 @@
+// @ts-check
+import { element, maybe, all } from "./dom.js";
+import { isComposing } from "./input.js";
 import { showShellDialog } from "../shell/controls.tsx";
 import { searchResources, libraries } from "../catalog.js";
 import { key } from "./resource-views.js";
 import { icon } from "../icons.js";
 import { escapeHTML as esc } from "../components.js";
 
+/** @param {Omit<import("./types").BaseDependencies,"appState"> & {labelType:import("./types").Card}} dependencies */
 export function createSearch({ href, l, labelType, t }) {
   function openSearch() {
-    const d = document.querySelector("#search-dialog");
+    const d = element("#search-dialog");
     if (d.open) return;
     showShellDialog(d);
-    document.querySelector("#quick-search").value = "";
+    element("#quick-search").value = "";
     searchResults();
-    document.querySelector("#quick-search").focus();
+    element("#quick-search").focus();
   }
 
   function searchResults() {
-    const q = document
-      .querySelector("#quick-search")
-      .value.toLowerCase()
-      .trim();
+    const q = element("#quick-search").value.toLowerCase().trim();
     const items = searchResources(q).slice(0, 10);
-    document.querySelector("#search-results").innerHTML = items.length
+    element("#search-results").innerHTML = items.length
       ? items
           .map(
             (r) =>
@@ -30,29 +31,29 @@ export function createSearch({ href, l, labelType, t }) {
       : `<p>${t("没有匹配的资源", "No matching resources")}</p>`;
   }
 
+  /** @param {KeyboardEvent} e */
   function handleSearchKeys(e) {
+    if (isComposing(e) || !(e.target instanceof HTMLElement)) return;
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
       e.preventDefault();
       openSearch();
     }
     if (e.target.id === "quick-search" && e.key === "Enter") {
       e.preventDefault();
-      document.querySelector("#search-results a")?.click();
-      document.querySelector("#search-dialog").close();
+      maybe("#search-results a")?.click();
+      element("#search-dialog").close();
     }
     if (e.target.id === "quick-search" && e.key === "ArrowDown") {
       e.preventDefault();
-      document.querySelector("#search-results a")?.focus();
+      maybe("#search-results a")?.focus();
     }
-    if (
-      e.target.closest("#search-results a") &&
-      ["ArrowDown", "ArrowUp"].includes(e.key)
-    ) {
+    const focusedRow = e.target.closest("#search-results a");
+    if (focusedRow && ["ArrowDown", "ArrowUp"].includes(e.key)) {
       e.preventDefault();
-      const rows = [...document.querySelectorAll("#search-results a")],
-        i = rows.indexOf(e.target.closest("a")),
+      const rows = [...all("#search-results a")],
+        i = rows.findIndex((row) => row === focusedRow),
         n = i + (e.key === "ArrowDown" ? 1 : -1);
-      if (n < 0) document.querySelector("#quick-search").focus();
+      if (n < 0) element("#quick-search").focus();
       else rows[Math.min(n, rows.length - 1)]?.focus();
     }
   }

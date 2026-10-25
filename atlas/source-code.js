@@ -1,15 +1,26 @@
+// @ts-check
+import { element, maybe, all } from "./dom.js";
 import { replaceShellHTML } from "../shell/controls.tsx";
 import { componentDocument, escapeHTML as esc } from "../components.js";
 import { icon } from "../icons.js";
 import { libraries } from "../catalog.js";
 
+/** @param {Pick<import("./types").BaseDependencies,"appState"|"t"|"l"> & {external:(url:string,label:string)=>string}} dependencies */
 export function createSourceCode({ appState, t, l, external }) {
   let codeLoadSerial = 0;
 
+  /** @type {Map<string,Promise<import("./types").SourceManifest>>} */
   const previewCache = new Map();
+  if (import.meta.hot)
+    import.meta.hot.on("atlas:source-changed", () => {
+      previewCache.clear();
+      if (appState.selected && appState.tab === "code")
+        void loadCode(appState.selected);
+    });
 
+  /** @param {import("./types").Resource} r */
   async function loadCode(r, scope = "resource") {
-    const target = document.querySelector("#full-code");
+    const target = maybe("#full-code");
     if (!target) return;
     const request = ++codeLoadSerial;
     const language = appState.locale;
@@ -25,7 +36,10 @@ export function createSourceCode({ appState, t, l, external }) {
       `<p role="status">${t("正在读取源码…", "Loading source…")}</p>`,
     );
     try {
-      let files, manifest;
+      /** @type {Record<string,string>} */
+      let files;
+      /** @type {import("./types").SourceManifest|undefined} */
+      let manifest;
       const project =
         r.sourceId === "shadcn-admin" ? "shadcn-admin" : "ui-market";
       if (r.sourceId === "original") {
@@ -38,8 +52,8 @@ export function createSourceCode({ appState, t, l, external }) {
                 ),
               }
             : {};
-        for (const f of r.files) {
-          const res = await fetch("./" + f);
+        for (const f of r.files || []) {
+          const res = await fetch("./" + f + "?atlas-source");
           if (!res.ok) throw Error(f);
           files[f] = await res.text();
         }
@@ -53,7 +67,7 @@ export function createSourceCode({ appState, t, l, external }) {
             url,
             fetch(url)
               .then(async (res) => {
-                if (!res.ok) throw Error(res.status);
+                if (!res.ok) throw Error(String(res.status));
                 return res.json();
               })
               .catch((error) => {
@@ -62,6 +76,7 @@ export function createSourceCode({ appState, t, l, external }) {
               }),
           );
         manifest = await previewCache.get(url);
+        if (!manifest) throw new Error("Missing source manifest");
         files = manifest.files;
       }
       if (!active()) return;
@@ -89,12 +104,10 @@ export function createSourceCode({ appState, t, l, external }) {
       );
       for (const id of r.libraryIds) {
         const lib = libraries[id];
-        target
-          .querySelector(".detail-section")
-          .insertAdjacentHTML(
-            "afterbegin",
-            `<p class="dependency-note">${external(lib.docs, lib.name)} <code>${esc(r.libraryVersions?.[id] || lib.version)}</code></p>`,
-          );
+        element(".detail-section", target).insertAdjacentHTML(
+          "afterbegin",
+          `<p class="dependency-note">${external(lib.docs, lib.name)} <code>${esc(r.libraryVersions?.[id] || lib.version)}</code></p>`,
+        );
       }
       return true;
     } catch {

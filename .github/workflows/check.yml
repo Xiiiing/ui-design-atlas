@@ -16,11 +16,7 @@ jobs:
         run: |
           npm ci
           npm run setup:examples
-      - name: Validate sources, shell types and local previews
-        run: |
-          npm run check
-          npm run build
       - name: Install browser
         run: npx playwright install --with-deps chromium
-      - name: Verify market and shell interactions
-        run: npm test
+      - name: Verify sources, production flows and development updates
+        run: npm run verify

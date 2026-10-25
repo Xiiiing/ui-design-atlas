@@ -1,3 +1,6 @@
+// @ts-check
+import { element, maybe, all } from "./dom.js";
+import { reconcileResults } from "./results.js";
 import {
   resourceCounts,
   discoveryGallery,
@@ -15,15 +18,9 @@ import { escapeHTML as esc } from "../components.js";
 import { categories, interactions } from "../resource-tags.js";
 import { parse } from "./navigation.js";
 
-export function createBrowse({
-  appState,
-  t,
-  card,
-  href,
-  l,
-  stopAllLive,
-  observeCards,
-}) {
+/** @param {import("./types").BaseDependencies & {card:import("./types").Card;observeCards:()=>void}} dependencies */
+export function createBrowse({ appState, t, card, href, l, observeCards }) {
+  /** @type {Record<string,string>} */
   const viewIcons = {
     explore: "grid-2x2",
     motion: "play",
@@ -33,6 +30,7 @@ export function createBrowse({
     cases: "code-xml",
   };
 
+  /** @type {Record<string,[string,string]>} */
   const viewModes = {
     explore: ["全部", "All"],
     motion: ["动效", "Motion"],
@@ -42,7 +40,40 @@ export function createBrowse({
     cases: ["完整案例", "Systems"],
   };
 
+  /** @type {Record<string,string>} */
+  const modeTypes = {
+    components: "component",
+    blocks: "block",
+    pages: "page",
+    cases: "case",
+    motion: "motion",
+  };
+  function activeMode() {
+    return appState.route.view === "favorites"
+      ? Object.keys(modeTypes).find(
+          (mode) => modeTypes[mode] === appState.route.params.get("type"),
+        ) || "explore"
+      : appState.route.view === "discover"
+        ? "explore"
+        : appState.route.view;
+  }
+  /** @param {string} mode */
+  function modeURL(mode) {
+    const params = Object.fromEntries(appState.route.params);
+    if (appState.route.view !== "favorites") return href(mode, "", params);
+    if (modeTypes[mode]) params.type = modeTypes[mode];
+    else delete params.type;
+    return href("favorites", "", params);
+  }
+  /** @param {string} v */
   function typeCount(v) {
+    if (appState.route.view === "favorites")
+      return resources.filter(
+        (r) =>
+          appState.favorites.has(key(r)) &&
+          (v === "explore" ||
+            (v === "motion" ? r.motion : r.type === modeTypes[v])),
+      ).length;
     return v === "explore"
       ? resourceCounts.total
       : v === "motion"
@@ -74,8 +105,9 @@ export function createBrowse({
   <section class="discovery-section systems-section" ${recommendedCases.length ? "" : "hidden"}><div class="discovery-section-heading"><h2>${t("完整网站与系统", "Websites & systems")}</h2><a class="text-link" href="${href("cases")}">${t("查看全部", "View all")}${icon("arrow-right")}</a></div><div class="market-grid discovery-grid">${recommendedCases.map(card).join("")}</div></section>`;
   }
 
+  /** @param {import("./types").Resource[]} items */
   function resultGroups(items) {
-    const order = document.querySelector("#filters [name=q]")?.value.trim()
+    const order = maybe("#filters [name=q]")?.value.trim()
       ? [...new Set(items.map((r) => r.type))]
       : ["component", "block", "page", "case"];
     return order
@@ -88,6 +120,7 @@ export function createBrowse({
       .join("");
   }
 
+  /** @param {string} name @param {string} label @param {[string,string][]} entries */
   function selectFilter(name, label, entries) {
     return `<label class="filter-select"><span class="sr-only">${label}</span><select data-shell-control name="${name}" aria-label="${label}"><option value="all">${label}</option>${entries.map(([v, label]) => `<option value="${v}">${esc(label)}</option>`).join("")}</select>${icon("chevron-right")}</label>`;
   }
@@ -97,7 +130,7 @@ export function createBrowse({
       (c) => c.id === appState.route.params.get("collection"),
     );
     const favorite = appState.route.view === "favorites";
-    return `<section class="market-intro browse-intro"><div><h1>${favorite ? t("我的收藏", "Saved resources") : collection ? esc(l(collection.name)) : esc(l(discovery.title))}</h1><p>${esc(l(discovery.description))}</p></div>${favorite ? `<div class="button-row"><button class="button" data-export-favorites>${t("导出收藏", "Export saved")}</button><label class="button">${t("导入收藏", "Import saved")}<input type="file" hidden id="import-favorites" accept=".json"></label></div>` : ""}</section>`;
+    return `<section class="market-intro browse-intro"><div><h1>${favorite ? t("我的收藏", "Saved resources") : collection ? esc(l(collection.name)) : esc(l(discovery.title))}</h1><p>${esc(l(discovery.description))}</p></div>${favorite ? `<div class="button-row"><button class="button" data-export-favorites>${t("导出收藏", "Export saved")}</button><button type="button" class="button" data-import-favorites>${t("导入收藏", "Import saved")}</button><input type="file" hidden id="import-favorites" accept=".json"></div>` : ""}</section>`;
   }
 
   function listing() {
@@ -105,7 +138,6 @@ export function createBrowse({
   }
 
   function browseFilters() {
-    const isDiscovery = appState.route.view === "discover";
     const collection = discovery.collections.find(
       (c) => c.id === appState.route.params.get("collection"),
     );
@@ -121,13 +153,20 @@ export function createBrowse({
   )
     .map(
       ([v, labels]) =>
-        `<a href="${href(v, "", Object.fromEntries(appState.route.params))}" data-market-mode="${v}" class="${(isDiscovery ? "explore" : appState.route.view) === v ? "active" : ""}" ${(isDiscovery ? "explore" : appState.route.view) === v ? 'aria-current="page"' : ""}>${icon(viewIcons[v])}${t(...labels)}<span>${typeCount(v)}</span></a>`,
+        `<a href="${modeURL(v)}" data-market-mode="${v}" class="${activeMode() === v ? "active" : ""}" ${activeMode() === v ? 'aria-current="page"' : ""}>${icon(viewIcons[v])}${t(labels[0], labels[1])}<span>${typeCount(v)}</span></a>`,
     )
     .join(
       "",
     )}</nav><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(appState.route.params.get("q") || "")}"><button class="icon-button" type="submit" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label></div>
   ${collection ? `<input type="hidden" name="collection" value="${collection.id}">` : ""}<input type="hidden" name="category" value="${esc(appState.route.params.get("category") || "all")}">
-  <nav class="category-strip" data-shell-group data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${[["all", ["全部分类", "All categories"]], ...Object.entries(categories)].map(([id, labels]) => `<button type="button" data-category="${id}" aria-pressed="${(appState.route.params.get("category") || "all") === id}">${t(...labels)}<span>${id === "all" ? resourceCounts.total : resourceCounts.byCategory.get(id) || 0}</span></button>`).join("")}</nav>
+  <nav class="category-strip" data-shell-group data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${Object.entries(
+    { all: ["全部分类", "All categories"], ...categories },
+  )
+    .map(
+      ([id, labels]) =>
+        `<button type="button" data-category="${id}" aria-pressed="${(appState.route.params.get("category") || "all") === id}">${t(labels[0], labels[1])}<span>${id === "all" ? resourceCounts.total : resourceCounts.byCategory.get(id) || 0}</span></button>`,
+    )
+    .join("")}</nav>
   <div class="filter-options-row"><div class="active-filters" id="active-filters" aria-label="${t("已选条件", "Selected filters")}"></div><div class="catalog-facets">
   ${selectFilter(
     "library",
@@ -138,7 +177,10 @@ export function createBrowse({
   <div class="advanced-filters" id="advanced-filters">${selectFilter(
     "interaction",
     t("交互方式", "Interaction"),
-    Object.entries(interactions).map(([id, labels]) => [id, t(...labels)]),
+    Object.entries(interactions).map(([id, labels]) => [
+      id,
+      t(labels[0], labels[1]),
+    ]),
   )}${selectFilter("style", t("视觉风格", "Visual style"), [...new Map(resources.map((r) => [r.styleId, l(r.style)])).entries()])}${selectFilter(
     "source",
     t("全部来源", "All sources"),
@@ -153,10 +195,19 @@ export function createBrowse({
   </form>`;
   }
 
+  function formValues() {
+    return Object.fromEntries(
+      [...new FormData(element("#filters"))].map(([name, value]) => [
+        name,
+        String(value),
+      ]),
+    );
+  }
   function updateFilterChips() {
-    const form = document.querySelector("#filters");
+    const form = maybe("#filters");
     if (!form) return;
-    const values = Object.fromEntries(new FormData(form));
+    const values = formValues();
+    /** @type {Record<string,string>} */
     const labels = {
       q: t("搜索", "Search"),
       category: t("分类", "Category"),
@@ -168,14 +219,17 @@ export function createBrowse({
       collection: t("主题", "Collection"),
     };
     const chips = Object.entries(values).filter(([, v]) => v && v !== "all");
-    document.querySelector("#active-filters").innerHTML =
+    element("#active-filters").innerHTML =
       chips
         .map(([name, value]) => {
           const label =
             name === "collection"
               ? l(discovery.collections.find((c) => c.id === value)?.name)
               : name === "category"
-                ? t(...(categories[value] || [value, value]))
+                ? t(
+                    categories[value]?.[0] || value,
+                    categories[value]?.[1] || value,
+                  )
                 : name === "q"
                   ? value
                   : form.querySelector(`select[name="${name}"] option:checked`)
@@ -186,22 +240,19 @@ export function createBrowse({
       (chips.length
         ? `<button type="button" class="clear-filters" data-reset-filters>${t("清空条件", "Clear all")}</button>`
         : "");
-    document
-      .querySelectorAll("[data-category]")
-      .forEach((el) =>
-        el.setAttribute(
-          "aria-pressed",
-          String(el.dataset.category === values.category),
-        ),
-      );
+    all("[data-category]").forEach((el) =>
+      el.setAttribute(
+        "aria-pressed",
+        String(el.dataset.category === values.category),
+      ),
+    );
   }
 
   function filtered() {
-    const values = document.querySelector("#filters")
-      ? Object.fromEntries(new FormData(document.querySelector("#filters")))
+    const values = maybe("#filters")
+      ? formValues()
       : Object.fromEntries(appState.route.params);
-    const mode =
-      appState.route.view === "favorites" ? "explore" : appState.route.view;
+    const mode = activeMode();
     const collectionIds = values.collection
       ? new Set(collectionResources(values.collection).map((r) => r.id))
       : null;
@@ -263,16 +314,17 @@ export function createBrowse({
     );
   }
 
+  /** @param {number} count */
   function resultsSummary(count) {
     return `<div class="market-results-line"><span><strong>${count}</strong> ${t("个设计资源", "design resources")}</span><span><i class="status-dot"></i>${t("真实交互预览 · 提示词与源码", "LIVE PREVIEWS · PROMPTS & SOURCE")}</span></div>`;
   }
 
   function filterParameters() {
-    const params = Object.fromEntries(
-      new FormData(document.querySelector("#filters")),
-    );
+    const params = formValues();
     for (const k in params)
       if (!params[k] || params[k] === "all") delete params[k];
+    if (appState.route.view === "favorites" && modeTypes[activeMode()])
+      params.type = modeTypes[activeMode()];
     return params;
   }
 
@@ -281,11 +333,7 @@ export function createBrowse({
       location.hash = href("explore", "", filterParameters());
       return;
     }
-    if (!document.querySelector("#results")) return;
-    stopAllLive();
-    const items = filtered();
-    document.querySelector("#results").innerHTML =
-      `${resultsSummary(items.length)}${items.length ? `${resultGroups(items.slice(0, appState.limit))}${items.length > appState.limit ? `<button class="button load-more" data-more>${t("再看一些", "Explore more")} ${icon("arrow-down")}</button>` : ""}` : `<div class="market-empty">${icon("search")}<h2>${t("换个关键词试试", "Try another search")}</h2><p>${t("也可以清空筛选，看看其他界面。", "Clear the filters to discover more interfaces.")}</p><button class="button" data-reset-filters>${t("清空筛选", "Clear filters")}</button></div>`}`;
+    if (!maybe("#results")) return;
     if (updateURL) {
       history.replaceState(
         { ...history.state, limit: appState.limit },
@@ -294,11 +342,15 @@ export function createBrowse({
       );
       appState.route = parse();
     }
-    document.querySelectorAll("[data-market-mode]").forEach((el) => {
-      el.href = href(
-        el.dataset.marketMode,
-        "",
-        Object.fromEntries(appState.route.params),
+    const items = filtered();
+    reconcileResults(
+      element("#results"),
+      `${resultsSummary(items.length)}${items.length ? `${resultGroups(items.slice(0, appState.limit))}${items.length > appState.limit ? `<button class="button load-more" data-more>${t("再看一些", "Explore more")} ${icon("arrow-down")}</button>` : ""}` : `<div class="market-empty">${icon("search")}<h2 tabindex="-1">${t("换个关键词试试", "Try another search")}</h2><p>${t("也可以清空筛选，看看其他界面。", "Clear the filters to discover more interfaces.")}</p><button class="button" data-reset-filters>${t("清空筛选", "Clear filters")}</button></div>`}`,
+    );
+    all("[data-market-mode]").forEach((el) => {
+      el.href = modeURL(el.dataset.marketMode || "explore");
+      element("span", el).textContent = String(
+        typeCount(el.dataset.marketMode || "explore"),
       );
     });
     updateFilterChips();
@@ -306,9 +358,7 @@ export function createBrowse({
   }
 
   function restoreFilters() {
-    for (const el of document.querySelectorAll(
-      "#filters select, #filters input[name=category]",
-    ))
+    for (const el of all("#filters select, #filters input[name=category]"))
       el.value = appState.route.params.get(el.name) || "all";
     updateResults();
     observeCards();

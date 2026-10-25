@@ -1,3 +1,5 @@
+// @ts-check
+import { element, maybe, all } from "./dom.js";
 import { icon } from "../icons.js";
 import { replaceShellHTML } from "../shell/controls.tsx";
 import { escapeHTML as esc } from "../components.js";
@@ -13,8 +15,10 @@ import {
   sourceProjects,
 } from "../catalog.js";
 
+/** @param {import("./types").Resource} r */
 export const key = (r) => `${r.type}:${r.id}`;
 
+/** @type {Record<string,[string,string]>} */
 export const types = {
   component: ["组件", "Component"],
   block: ["区块", "Block"],
@@ -22,15 +26,13 @@ export const types = {
   case: ["完整案例", "System"],
 };
 
+/** @param {string} cover @param {import("./types").Theme} theme */
 export const coverURL = (cover, theme) =>
   theme === "dark" ? cover.replace(/\.png$/, "-dark.png") : cover;
 
-export function validFavorite(k) {
-  if (typeof k !== "string") return false;
-  const [type, id] = k.split(":");
-  return !!findResource(id, type);
-}
+export { validFavorite } from "./favorite-data.js";
 
+/** @param {import("./types").BaseDependencies & {syncNavigation:()=>void;shellTheme:()=>import("./types").Theme}} dependencies */
 export function createResourceViews({
   appState,
   t,
@@ -41,7 +43,7 @@ export function createResourceViews({
 }) {
   function header() {
     document.documentElement.lang = appState.locale;
-    document.querySelector("#sidebar").innerHTML = "";
+    element("#sidebar").innerHTML = "";
     const nav = [
       ["discover", "发现", "Discover", "grid-2x2"],
       ["explore", "探索资源", "Explore", "layers"],
@@ -56,39 +58,39 @@ export function createResourceViews({
               appState.route.view,
             ));
         const label = t(zh, en);
-        return `<a data-primary-view="${view}" href="${href(view)}" class="${active ? "active" : ""}" aria-label="${label}" title="${label}" ${active ? 'aria-current="page"' : ""}>${icon(glyph)}<span class="nav-label">${label}${view === "favorites" && appState.favorites.size ? ` <small>${appState.favorites.size}</small>` : ""}</span></a>`;
+        return `<a data-primary-view="${view}" href="${href(view)}" class="${active ? "active" : ""}" aria-label="${label}" title="${label}" ${active ? 'aria-current="page"' : ""}>${icon(glyph)}<span class="nav-label">${label}${view === "favorites" ? ` <small data-favorite-count${appState.favorites.size ? "" : " hidden"}>${appState.favorites.size}</small>` : ""}</span></a>`;
       })
       .join("");
     replaceShellHTML(
-      document.querySelector("#topbar"),
+      element("#topbar"),
       `<div class="market-header"><a class="brand" href="${href()}" aria-label="${t("UI 设计图鉴首页", "UI Design Atlas home")}"><img class="brand-mark brand-light" src="./logo.svg" width="32" height="32" alt=""><img class="brand-mark brand-dark" src="./logo-reverse.svg" width="32" height="32" alt=""><span class="brand-name">atlas<span class="brand-dot">.</span></span></a><nav class="market-navigation" data-shell-group data-shell-key="primary-navigation" data-shell-variant="underline" aria-label="${t("主导航", "Main navigation")}">${nav}</nav><div class="market-header-actions"><span data-shell-navigation></span><span data-shell-appearance></span><button class="icon-button" data-search aria-label="${t("搜索设计", "Search designs")}" title="${t("搜索设计", "Search designs")}">${icon("search")}</button>${language()}<a class="header-github" href="https://github.com/Xiiiing/ui-design-atlas" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><span class="nav-label">GitHub</span>${icon("github")}</a></div></div>`,
     );
     syncNavigation();
-    document.querySelector("#footer").innerHTML =
+    element("#footer").innerHTML =
       `<div class="market-footer"><a class="brand" href="${href()}" aria-label="${t("UI 设计图鉴首页", "UI Design Atlas home")}"><img class="brand-mark brand-light" src="./logo.svg" width="32" height="32" alt=""><img class="brand-mark brand-dark" src="./logo-reverse.svg" width="32" height="32" alt=""><span>atlas.</span></a><span>${t("找到喜欢的界面，把设计与代码一起带走。", "Find an interface. Take its ideas and code.")}</span><a href="${href("resources")}">${t("来源与许可", "Sources & licenses")}</a><a href="${href("guide")}">${t("使用指南", "How to reuse")}</a></div>`;
-    document.querySelector("#copy-title").textContent = t(
-      "复制内容",
-      "Copy content",
-    );
-    document.querySelector("#copy-help").textContent = t(
+    element("#copy-title").textContent = t("复制内容", "Copy content");
+    element("#copy-help").textContent = t(
       "请选择并复制下方内容。",
       "Select and copy the text below.",
     );
-    document.querySelector(".search-dialog-footer span").textContent = t(
+    element(".search-dialog-footer span").textContent = t(
       "↵ 打开 · Esc 关闭",
       "↵ Open · Esc Close",
     );
-    document.querySelector("#quick-search").placeholder = t(
+    element("#quick-search").placeholder = t(
       "搜索流光边框、表格、Fluent…",
       "Search a UI, effect or library…",
     );
   }
 
+  /** @type {import("./types").Card} */
   const labelType = (r) => t(...types[r.type]);
 
+  /** @param {string} url @param {string} label */
   const external = (url, label) =>
     `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)} ${icon("arrow-up-right")}</a>`;
 
+  /** @param {import("./types").Resource} r */
   function saveButton(r) {
     return `<button class="icon-button asset-save ${appState.favorites.has(key(r)) ? "saved" : ""}" data-save="${key(r)}" aria-pressed="${appState.favorites.has(key(r))}" aria-label="${t("收藏", "Save")} ${esc(l(r.name))}">${icon("bookmark")}</button>`;
   }
@@ -97,6 +99,7 @@ export function createResourceViews({
     return `<select data-shell-control data-locale id="${viewer ? "locale" : "site-locale"}" aria-label="${t("语言", "Language")}"><option value="zh-CN" ${appState.locale === "zh-CN" ? "selected" : ""}>中文</option><option value="en" ${appState.locale === "en" ? "selected" : ""}>English</option></select>`;
   }
 
+  /** @param {string} name @param {string} value */
   function tagURL(name, value) {
     const context = appState.originBrowse
       ? parseHash(appState.originBrowse.hash)
@@ -113,6 +116,7 @@ export function createResourceViews({
     );
   }
 
+  /** @param {import("./types").Resource} r */
   function tagLinks(r, full = false) {
     const tags = resourceTags(r, appState.locale);
     if (full)
@@ -136,12 +140,13 @@ export function createResourceViews({
     }</div>`;
   }
 
+  /** @param {import("./types").Resource} r */
   function card(r) {
     const framing = resourcePresentation(r),
       inline = framing.mode === "inline";
     const name =
       r.type === "page" && r.caseId
-        ? `${l(getCase(r.caseId).name).split(" · ")[0]} · ${l(r.name)}`
+        ? `${l(getCase(r.caseId)?.name || r.name).split(" · ")[0]} · ${l(r.name)}`
         : l(r.name);
     return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${framing.layout}" data-experience="${framing.mode}" data-cover-layout="${framing.layout}">
   <div class="asset-preview"><img data-cover="${esc(r.cover)}" src="${esc(coverURL(r.cover, shellTheme()))}" alt="${esc(name)}" loading="lazy" width="${framing.width}" height="${framing.height}">${inline ? `<div class="asset-live" data-live="${key(r)}"></div><div class="preview-state" role="status"><span>${t("正在加载体验…", "Loading experience…")}</span><button type="button" class="button" data-retry-preview hidden>${t("重试", "Retry")}</button></div>` : `<a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("打开体验", "Open experience")} ${esc(name)}"><span>${icon("arrow-up-right")}${t("打开体验", "Open experience")}</span></a>`}</div>
@@ -150,6 +155,7 @@ export function createResourceViews({
   <div class="asset-actions"><button class="icon-button" data-card-prompt="${key(r)}" aria-label="${t("复制提示词", "Copy prompt")}" title="${t("复制提示词", "Copy prompt")}">${icon("copy")}</button><a class="icon-button" data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}" aria-label="${t("查看详情", "Details")}" title="${t("查看详情", "Details")}">${icon("panel-right")}</a>${saveButton(r)}</div></div></article>`;
   }
 
+  /** @param {import("./types").Resource} r @param {string} promptHTML */
   function resourceDetails(r, promptHTML) {
     const c = r.caseId
       ? getCase(r.caseId)
@@ -167,6 +173,7 @@ export function createResourceViews({
     }</section>${promptHTML}${provenance(r)}`;
   }
 
+  /** @param {import("./types").Resource} r */
   function provenance(r) {
     const s = resourceSource(r);
     return `<section class="detail-section provenance"><h3>${t("来源与组件库", "Source & libraries")}</h3>${r.libraryIds
@@ -179,6 +186,7 @@ export function createResourceViews({
       )}<p><strong>${esc(s.name)}</strong> · ${esc(s.author)}</p><div class="credit-links">${external(r.originalUrl || s.docs || s.repo, t("原始示例", "Original example"))}${external(r.sourceUrl || s.repo, t("源码地址", "Source code"))}${s.licenseFile ? external(s.licenseFile, s.license) : `<span>${esc(s.license)}</span>`}</div>${s.commit ? `<p class="commit-credit">${t("固定源码版本", "Pinned source")} <code>${s.commit}</code></p>` : ""}<p class="curator-label">${s.original ? t("本站原创组合；使用所列组件库，不代表上游官方页面。提示词、样式和业务交互随资源源码交付。", "An original Atlas composition using the listed libraries, not an official upstream page. Prompts, styles and interactions are included with the resource source.") : t("保留上游视觉与实现；本站适配语言、本地数据和预览入口。设计解读与提示词由本站整理。", "Upstream visuals and implementation, adapted for language, local data and previews. Notes and prompts are curated by Atlas.")}</p></section>`;
   }
 
+  /** @param {import("./types").Resource} r */
   function related(r) {
     const c = r.type === "case" ? getCase(r.id) : getCase(r.caseId);
     const parts = c
@@ -197,7 +205,10 @@ export function createResourceViews({
               (x.category === r.category || x.sourceId === r.sourceId),
           )
           .slice(0, 6);
-    const pages = c?.pages.map((p) => findResource(p.id, "page")) || [];
+    const pages =
+      c?.pages
+        .map((p) => findResource(p.id, "page"))
+        .filter((r) => r !== undefined) || [];
     return `<section class="detail-section" id="related"><h3>${t(c ? "可复用组件" : "相关资源", c ? "Reusable components" : "Related resources")}</h3><div class="related-list">${parts
       .filter((x) => x.id !== r.id)
       .map(
@@ -206,15 +217,17 @@ export function createResourceViews({
       )
       .join(
         "",
-      )}</div>${pages.length ? `<h3>${t("所属系统与页面", "System & pages")}</h3><div class="related-list"><a href="${href("case", c.id)}" data-related="case:${c.id}">${esc(l(c.name))} ${icon("layout-template")}</a>${pages.map((x) => `<a href="${href(x.type, x.id)}" data-related="${key(x)}">${esc(l(x.name))}${icon("arrow-up-right")}</a>`).join("")}</div>` : ""}</section>`;
+      )}</div>${c && pages.length ? `<h3>${t("所属系统与页面", "System & pages")}</h3><div class="related-list"><a href="${href("case", c.id)}" data-related="case:${c.id}">${esc(l(c.name))} ${icon("layout-template")}</a>${pages.map((x) => `<a href="${href(x.type, x.id)}" data-related="${key(x)}">${esc(l(x.name))}${icon("arrow-up-right")}</a>`).join("")}</div>` : ""}</section>`;
   }
 
   function caseDirectory() {
-    if (appState.detailResource.type !== "case") return "";
-    return `<section class="detail-section case-directory"><h3>${t("案例页面", "System pages")}</h3><div class="case-page-grid">${appState.detailResource.pages
+    const detail = appState.detailResource;
+    if (detail?.type !== "case" || !detail.pages) return "";
+    return `<section class="detail-section case-directory"><h3>${t("案例页面", "System pages")}</h3><div class="case-page-grid">${detail.pages
       .map((p) => {
         const item = findResource(p.id, "page");
-        return `<button data-page-preview="${p.id}" aria-pressed="${p.id === appState.selected.id}"><img loading="lazy" src="${item.cover}" alt=""><span>${esc(l(p.name))}</span></button>`;
+        if (!item) return "";
+        return `<button data-page-preview="${p.id}" aria-pressed="${p.id === appState.selected?.id}"><img loading="lazy" src="${item.cover}" alt=""><span>${esc(l(p.name))}</span></button>`;
       })
       .join("")}</div></section>`;
   }

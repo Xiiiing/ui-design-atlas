@@ -2938,7 +2938,8 @@ dialog {
   }
 }
 
-/* The viewport sets the stage height; long demos scroll inside their iframe. */
+/* Compact screens fit the stage to the viewport; desktop canvases get their
+   own proportional height below, so browser zoom cannot flatten the preview. */
 .is-experience .workspace {
   height: 100dvh;
   min-height: 0;
@@ -3057,6 +3058,40 @@ dialog {
 .experience-viewer .market-preview-bottom,
 .experience-viewer .preview-parameters {
   flex-shrink: 0;
+}
+@media (min-width: 1024px) {
+  .is-experience .workspace {
+    height: auto;
+    min-height: 100dvh;
+  }
+  .is-experience #browse-scroll {
+    overflow: visible;
+  }
+  .is-experience #main {
+    max-width: 1280px;
+    padding: 24px 12px;
+  }
+  .experience-viewer.full-viewer {
+    height: auto;
+  }
+  .experience-viewer .market-detail-layout {
+    flex: none;
+  }
+  .experience-viewer .market-preview-viewport {
+    flex: none;
+    aspect-ratio: var(--preview-aspect, 16 / 10);
+  }
+  .experience-viewer .market-inspector {
+    /* The preview determines the row height; long notes scroll independently. */
+    contain: size;
+  }
+  .experience-viewer #full-code {
+    height: max(560px, 70dvh);
+  }
+}
+.experience-viewer .market-preview-panel:fullscreen .market-preview-viewport {
+  flex: 1;
+  aspect-ratio: auto;
 }
 @media (max-width: 1023px) {
   .experience-viewer[data-details-open="true"] .market-detail-layout {

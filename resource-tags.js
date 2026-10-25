@@ -1,3 +1,4 @@
+/** @type {Record<string,[string,string]>} */
 export const categories = {
   buttons: ["按钮", "Buttons"],
   text: ["文字", "Text"],
@@ -10,6 +11,7 @@ export const categories = {
   feedback: ["反馈", "Feedback"],
   layout: ["布局", "Layout"],
 };
+/** @type {Record<string,[string,string]>} */
 export const interactions = {
   hover: ["悬停", "Hover"],
   click: ["点击", "Click"],
@@ -17,6 +19,7 @@ export const interactions = {
   auto: ["自动播放", "Autoplay"],
   input: ["输入", "Input"],
 };
+/** @param {import("./atlas/types").Resource} resource @returns {{name:string;value:string;label:string}[]} */
 export function resourceTags(resource, lang = "zh-CN") {
   const index = lang === "en" ? 1 : 0;
   // Prefer the distinguishing action over generic click/autoplay metadata.

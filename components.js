@@ -19,7 +19,7 @@ export function componentMarkup(component, interactive = false) {
 
 // 导出片段包含全部主题与组件样式；交互行为单独在导出的文档中初始化。
 export async function componentDocument(component, language = 'zh-CN') {
-  const css = await fetch(new URL('./components.css', import.meta.url)).then(response => { if (!response.ok) throw new Error('无法读取组件样式'); return response.text(); });
+  const css = await fetch(new URL('./components.css?atlas-source', import.meta.url)).then(response => { if (!response.ok) throw new Error('无法读取组件样式'); return response.text(); });
   const html = `<!doctype html>\n<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${component.name}</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;box-sizing:border-box}*{box-sizing:border-box}${css}</style><body>${componentMarkup(component, true)}<script>document.querySelector('[data-open-dialog]')?.addEventListener('click', e=>document.getElementById(e.currentTarget.dataset.openDialog).showModal());document.querySelector('[data-demo-form]')?.addEventListener('submit',e=>{e.preventDefault();e.currentTarget.querySelector('.s-feedback').textContent='演示订阅成功，未发送真实邮件。';});document.querySelectorAll('[data-demo-action]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();let p=document.getElementById('demo-feedback');if(!p){p=document.createElement('p');p.id='demo-feedback';p.setAttribute('role','status');document.body.append(p);}p.textContent='已触发演示操作，可接入自己的业务逻辑。';}));<\/script></body></html>`;
   return language === 'en' ? translateLegacyString(html,language).replace('lang="zh-CN"','lang="en"') : html;
 }

@@ -18,7 +18,11 @@ async function expectFittedCanvas(page, width, height) {
             Math.abs(frame.contentWindow.innerHeight - height),
             viewport.scrollWidth - viewport.clientWidth,
             viewport.scrollHeight - viewport.clientHeight,
-            document.documentElement.scrollHeight - innerHeight,
+            // Desktop uses a proportional stage with normal page scrolling.
+            // Compact devices still fit the whole viewer into the viewport.
+            innerWidth < 1024
+              ? document.documentElement.scrollHeight - innerHeight
+              : 0,
           );
         },
         [width, height],
@@ -27,7 +31,7 @@ async function expectFittedCanvas(page, width, height) {
     .toBeLessThanOrEqual(1);
 }
 
-test("Wide experience maximizes the original aspect ratio and keeps portrait devices usable", async ({
+test("Wide experience preserves the original aspect ratio and keeps portrait devices usable", async ({
   page,
 }) => {
   for (const [width, height, canvasWidth, canvasHeight] of [
@@ -96,6 +100,38 @@ test("Wide experience maximizes the original aspect ratio and keeps portrait dev
     expect(native.y).toBeGreaterThanOrEqual(0);
     await page.locator("[data-fit]").click();
     await expectFittedCanvas(page, canvasWidth, canvasHeight);
+  }
+});
+
+test("Desktop detail stays centered and readable in wide and short windows", async ({
+  page,
+}) => {
+  for (const [width, height] of [
+    [1910, 873],
+    [1440, 655],
+    [2560, 1080],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await page.goto("#case/shadcn-admin?lang=zh-CN&theme=dark");
+    await expect(page.locator(".viewer-load-state")).toBeHidden();
+    await expectFittedCanvas(page, 1280, 800);
+    const frame = await page.locator("#case-preview").boundingBox();
+    const stage = await page.locator("#preview-viewport").boundingBox();
+    const viewer = await page.locator(".experience-viewer").boundingBox();
+    expect(viewer.width).toBeLessThanOrEqual(1280);
+    expect(frame.width).toBeGreaterThan(1200);
+    expect(frame.height).toBeGreaterThan(750);
+    expect(Math.abs(frame.width - stage.width)).toBeLessThanOrEqual(1);
+    expect(Math.abs(stage.width / stage.height - 1.6)).toBeLessThan(0.01);
+    const workspace = await page.locator(".workspace").boundingBox();
+    expect(
+      Math.abs(viewer.x - workspace.x - (workspace.width - viewer.width) / 2),
+    ).toBeLessThanOrEqual(1);
+    await page.locator("[data-focus-prompt]").click();
+    await expect(page.locator("#inspector")).toBeVisible();
+    await expect(page.locator(".prompt-text")).toBeVisible();
+    await page.locator(".inspector-close").click();
+    await expectFittedCanvas(page, 1280, 800);
   }
 });
 

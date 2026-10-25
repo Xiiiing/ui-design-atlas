@@ -58,6 +58,12 @@
 
 设计解读是本站的观察，提示词是本站的整理；它们与原作者的说明分别标注。演示中的表单和数据操作用于体验交互，不代表真实业务服务。
 
+## 本地开发
+
+使用 Node.js 24.12 或更新版本，执行 `npm ci`、`npm run setup:examples`，然后运行 `npm run dev`，打开 `http://127.0.0.1:4173/ui-design-atlas/`。主站和两个示例支持自动更新。
+
+完整验证使用 `npm run verify`；首次运行浏览器测试前执行 `npx playwright install chromium`。具体命令、热更新边界及架构见 [开发说明](docs/architecture.md)。
+
 ## 来源与许可
 
 开源资源保留各自的版权与许可，具体版本和原始出处可在资源详情中查看。更多说明见 [组件与区块来源](examples/ui-market/ATTRIBUTION.md)、[后台案例来源](examples/shadcn-admin/ATTRIBUTION.md)和 [图鉴界面参考](vendor/21st-market/ATTRIBUTION.md)。

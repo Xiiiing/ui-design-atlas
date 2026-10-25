@@ -3,20 +3,24 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "UI \u8bbe\u8ba1\u56fe\u9274\uff1a\u5b8c\u6574\u8bbe\u8ba1\u6848\u4f8b\u3001\u901a\u7528\u7ec4\u4ef6\u3001\u8bbe\u8ba1\u89c4\u5219\u4e0e\u5206\u5c42\u63d0\u793a\u8bcd\u3002",
+  "description": "UI 设计图鉴：完整设计案例、通用组件、设计规则与分层提示词。",
   "engines": {
     "node": ">=24.12.0"
   },
   "scripts": {
-    "dev": "node scripts/build.mjs && node scripts/serve.mjs --dist",
+    "dev": "node scripts/dev.mjs",
     "setup:examples": "npm ci --prefix examples/shadcn-admin && npm ci --prefix examples/ui-market",
-    "check": "node scripts/check.mjs && npm run check:shell && npm run typecheck --prefix examples/shadcn-admin && npm run typecheck --prefix examples/ui-market && npm run test:unit",
+    "check": "node scripts/check.mjs && npm run check:shell && npm run check:atlas && npm run typecheck --prefix examples/shadcn-admin && npm run typecheck --prefix examples/ui-market && npm run test:unit",
     "build": "node scripts/build.mjs",
     "preview": "node scripts/serve.mjs --dist",
-    "test": "playwright test",
+    "test": "npm run build && npm run test:built --",
     "capture:previews": "node scripts/build.mjs --capture-previews && node scripts/capture-previews.mjs",
     "check:shell": "tsc -p tsconfig.shell.json",
-    "test:unit": "node --test tests/unit/*.test.mjs"
+    "test:unit": "node --test tests/unit/*.test.mjs",
+    "check:atlas": "tsc -p tsconfig.atlas.json",
+    "test:built": "playwright test",
+    "test:dev": "node --test tests/dev.test.mjs",
+    "verify": "npm run check && npm run build && npm run test:built && npm run test:dev"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
@@ -25,7 +29,8 @@
     "archiver": "^7.0.1",
     "esbuild": "0.28.2",
     "prettier": "^3.8.3",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vite": "8.3.5"
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "2.2.1",

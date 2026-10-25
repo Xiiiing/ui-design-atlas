@@ -25,12 +25,10 @@ jobs:
         run: |
           npm ci
           npm run setup:examples
-      - name: Validate content and build all local previews
-        run: node scripts/build.mjs
       - name: Install browser for acceptance checks
         run: npx playwright install --with-deps chromium
-      - name: Verify marketplace, previews and reuse flows
-        run: npm test
+      - name: Verify sources, production flows and development updates
+        run: npm run verify
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
