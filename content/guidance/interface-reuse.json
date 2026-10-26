@@ -1,0 +1,14 @@
+{
+  "body": {
+    "zh-CN": "项目需求：{{requirements}}\n目标用户：{{audience}}\n技术约束：{{technology}}\n视觉方向：{{direction}}\n\n从所选参考中提炼排版、间距、层级、布局与反馈规则，再应用到我的需求。保留项目自己的内容与品牌；不把演示中的虚构数据或无后端操作当成真实业务能力。如果同时指定设计规范，以规范确定视觉，参考界面仅用于结构与交互。",
+    "en": "Project requirements: {{requirements}}\nAudience: {{audience}}\nTechnology constraints: {{technology}}\nVisual direction: {{direction}}\n\nExtract typography, spacing, hierarchy, layout and feedback rules from the selected reference and apply them to my requirements. Keep the project’s own content and brand. Do not treat demo data or frontend-only actions as real services. When a design specification is selected, it determines visuals and the interface reference informs structure and interaction."
+  },
+  "task": {
+    "zh-CN": "结合选定参考完成需求，明确迁移哪些布局与交互规则；不照搬不相关功能和品牌素材。",
+    "en": "Implement the requirements using the selected reference, explicitly naming the layout and interaction rules being transferred. Avoid unrelated features and copied brand material."
+  },
+  "usage": {
+    "zh-CN": "普通对话：复制本站整理的任务要求，并补充你的项目需求。编程助手：先提供项目上下文，再按文件说明使用；下载不会自动安装或执行。",
+    "en": "Chat: copy the Atlas task notes and add your project requirements. Coding assistant: provide project context, then follow the file instructions. Downloads do not install or execute anything."
+  }
+}

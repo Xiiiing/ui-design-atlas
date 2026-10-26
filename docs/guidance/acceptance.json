@@ -1,0 +1,97 @@
+{
+  "implementationCommit": "16abdf99f3eb4c5568fa3462b3db023c6cf8625f",
+  "baseCommit": "be75ffc3eb0cbbb9bd320e4c0ec0a47d1190b2cb",
+  "command": "npm run verify",
+  "unitTests": 21,
+  "browserTests": {
+    "startTime": "2026-10-26T09:15:27.851Z",
+    "duration": 272824.89300000004,
+    "expected": 171,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "engines": {
+    "chromium": 153,
+    "firefox": 9,
+    "webkit": 9
+  },
+  "developmentAcceptance": {
+    "tests": 1,
+    "passed": 1,
+    "isolatedCopy": true,
+    "scenarios": [
+      "shell and both React HMR",
+      "guidance modification/addition/deletion",
+      "raw detail and ZIP refresh",
+      "invalid catalog rejection and recovery",
+      "server shutdown and port release"
+    ]
+  },
+  "startup": {
+    "baselineGzip": 187706,
+    "gzip": 189530,
+    "budget": 190000,
+    "measurement": "esbuild static-import graph + node:zlib gzip (default)",
+    "staticScripts": [
+      {
+        "file": "atlas-shell.js",
+        "bytes": 79737,
+        "gzip": 26249
+      },
+      {
+        "file": "atlas-chunk-X3N2AOQW.js",
+        "bytes": 1776,
+        "gzip": 908
+      },
+      {
+        "file": "atlas-chunk-XRHUNESV.js",
+        "bytes": 235,
+        "gzip": 165
+      },
+      {
+        "file": "atlas-chunk-GH22Y4RI.js",
+        "bytes": 428863,
+        "gzip": 141029
+      },
+      {
+        "file": "atlas-chunk-GIV5B5TQ.js",
+        "bytes": 577,
+        "gzip": 361
+      },
+      {
+        "file": "atlas-chunk-K5CRYGZO.js",
+        "bytes": 392,
+        "gzip": 251
+      },
+      {
+        "file": "atlas-chunk-HTNEVUXT.js",
+        "bytes": 582,
+        "gzip": 373
+      },
+      {
+        "file": "atlas-chunk-CWQEFKBZ.js",
+        "bytes": 5962,
+        "gzip": 2293
+      },
+      {
+        "file": "atlas-chunk-MJ7FXPJV.js",
+        "bytes": 127,
+        "gzip": 131
+      },
+      {
+        "file": "atlas-chunk-XJRU4JZB.js",
+        "bytes": 105080,
+        "gzip": 17770
+      }
+    ]
+  },
+  "visual": {
+    "widths": [375, 768, 1440, 1910],
+    "languages": ["zh-CN", "en"],
+    "themes": ["light", "dark"],
+    "screenshots": ["desktop.png", "mobile.png", "composer.png"]
+  },
+  "aiGenerationOutcome": "unverified",
+  "manualWindowsIME": "not performed"
+}

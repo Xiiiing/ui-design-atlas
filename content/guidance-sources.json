@@ -1,0 +1,42 @@
+{
+  "ibelick": {
+    "repo": "ibelick/ui-skills",
+    "commit": "59193a75432e5f41c6980f53b9e6a7bd56919947",
+    "folder": "ibelick",
+    "license": "MIT",
+    "author": "Ibelick",
+    "files": {
+      "LICENSE": "c615621c4cc1676ccde194e7a01b6469ba477780251bd71e007fc473a49c2c2b",
+      "skills/baseline-ui/SKILL.md": "fea3322f36d58fdafafce2aef56e4556dd2ac7b20876b7dff7d8be7f25fa597f"
+    }
+  },
+  "emil": {
+    "repo": "emilkowalski/skills",
+    "commit": "2d228630ba1446365f614a108cb8252f1feda202",
+    "folder": "emilkowalski",
+    "license": "MIT",
+    "author": "Emil Kowalski",
+    "files": {
+      "LICENSE": "4ff5bdb7887ec1435c9cab0e8d1a7caee704d894d65c2a008ccc68b1cc2f260b",
+      "skills/break-ui/SKILL.md": "e7eec1d70ac56a04255e9c0dbe98084ea3d544cc04aaad34f32c95d6fa9dff5e",
+      "skills/break-ui/CATALOG.md": "7358efcc6bb48e35187be1c064cf60022dcb18c72c18fab58b606dfc5f421f15",
+      "skills/animation-performance/SKILL.md": "ceb9dd3fe912615830f725a0120ccf8d012d15a6218001a5cd6c15d38e39a957",
+      "skills/animate/RECIPES.md": "21ff63d84391db8d96ecdf9170095f55a42c836ccc36fd3269c4772bab031ba2",
+      "skills/animate/SKILL.md": "b8ede161270458e6ae2e45e8a1985373515d4c63de5568ddb0f9012d7634356c",
+      "skills/review-animations/SKILL.md": "6ff590d29e436766135aa3d137be1fac2a867165c7257fc315b189361f1873af",
+      "skills/review-animations/STANDARDS.md": "e7d3605034acda54ca13e43aec9e64d65b53de20f75b11b8d694e373012fbe07"
+    }
+  },
+  "voltagent": {
+    "repo": "VoltAgent/awesome-design-md",
+    "commit": "3b605329240ce735b510037cca322f1831fdd7f8",
+    "folder": "VoltAgent",
+    "license": "MIT",
+    "author": "VoltAgent",
+    "files": {
+      "LICENSE": "6d4bdc9a9cf30e7beb593475fdcdbf29f981ea6bd7923f202866145409f87b44",
+      "design-md/vercel/DESIGN.md": "d0951b93c2b4ce9840c715c9f9b3e58a386c6c58ae5cc0f804dec3b116b95bd8",
+      "design-md/linear.app/DESIGN.md": "30bd30e72c48a16e4bdbd010f2d1c85fab657c6fae3cc85389399aab10f9cb5f"
+    }
+  }
+}

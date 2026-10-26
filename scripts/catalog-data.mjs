@@ -1,6 +1,7 @@
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { resolveCasePages } from "../catalog-pages.js";
+import { readGuidance } from "./guidance-data.mjs";
 import taxonomy from "../content/taxonomy.json" with { type: "json" };
 const detailFields = new Set([
   "prompt",
@@ -154,6 +155,25 @@ export function catalogBrowserPlugin(root) {
         context.server.moduleGraph.invalidateModule(module);
     },
     async load(id) {
+      if (new URLSearchParams(id.split("?")[1] || "").has("registry")) {
+        const data = await readGuidance(root);
+        if (id.split("?")[0] === path.join(root, "content/guidance.json"))
+          return (
+            "export default " +
+            JSON.stringify(
+              data.guidance.map(({ id, name, related }) => ({
+                id,
+                name,
+                related,
+              })),
+            )
+          );
+        if (id.split("?")[0] === path.join(root, "content/tools.json"))
+          return (
+            "export default " +
+            JSON.stringify(data.tools.map(({ id }) => ({ id })))
+          );
+      }
       if (id.split("?")[0] !== path.join(root, "content/resources.json"))
         return;
       return JSON.stringify((await readCatalog(root)).map(summaryOf));
@@ -164,6 +184,31 @@ export function catalogEsbuildPlugin(root) {
   return {
     name: "atlas-catalog-summary",
     setup(build) {
+      build.onResolve(
+        { filter: /content\/(?:guidance|tools)\.json\?registry$/ },
+        (args) => ({
+          path: path.resolve(args.resolveDir, args.path.split("?")[0]),
+          namespace: "guidance-registry",
+        }),
+      );
+      build.onLoad(
+        { filter: /.*/, namespace: "guidance-registry" },
+        async (args) => {
+          const data = await readGuidance(root);
+          return {
+            contents: JSON.stringify(
+              args.path.endsWith("guidance.json")
+                ? data.guidance.map(({ id, name, related }) => ({
+                    id,
+                    name,
+                    related,
+                  }))
+                : data.tools.map(({ id }) => ({ id })),
+            ),
+            loader: "json",
+          };
+        },
+      );
       build.onLoad(
         { filter: /[/\\]content[/\\]resources\.json$/ },
         async () => ({

@@ -4,6 +4,7 @@ import {
   favoriteStorageKey,
   importFavorites,
   readFavorites,
+  validFavorite,
 } from "./favorite-data.js";
 
 /** @param {Pick<import("./types").BaseDependencies,"appState"|"t"> & {notify:(text:string)=>void;updateResults:()=>void}} dependencies */
@@ -36,7 +37,9 @@ export function createFavorites({ appState, t, notify, updateResults }) {
         const target =
           candidates
             .map((key) => maybe(`#results [data-save="${key}"]`))
-            .find(Boolean) || maybe(".market-empty h2");
+            .find(Boolean) ||
+          maybe("#results [data-save]") ||
+          maybe(".market-empty h2");
         target?.focus({ preventScroll: true });
       }
     }
@@ -58,6 +61,7 @@ export function createFavorites({ appState, t, notify, updateResults }) {
   }
   /** @param {string} key */
   function toggle(key) {
+    if (!validFavorite(key)) return;
     const next = new Set(appState.favorites);
     next.has(key) ? next.delete(key) : next.add(key);
     if (!persist(next)) return;

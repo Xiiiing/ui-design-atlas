@@ -1,0 +1,169 @@
+[
+  {
+    "id": "ant-design",
+    "name": {
+      "zh-CN": "Ant Design",
+      "en": "Ant Design"
+    },
+    "kind": "library",
+    "repo": "https://github.com/ant-design/ant-design",
+    "description": {
+      "zh-CN": "面向企业产品的 React 组件库与设计语言，适合表单、表格和复杂业务界面。",
+      "en": "A React component library and design language for enterprise products, forms and data-heavy interfaces."
+    },
+    "technologies": [
+      "React",
+      "TypeScript"
+    ],
+    "aliases": [
+      "antd",
+      "蚂蚁设计"
+    ]
+  },
+  {
+    "id": "arco-design",
+    "name": {
+      "zh-CN": "Arco Design",
+      "en": "Arco Design"
+    },
+    "kind": "library",
+    "repo": "https://github.com/arco-design/arco-design",
+    "description": {
+      "zh-CN": "React 组件库与设计系统，可查阅组件能力、主题配置和使用文档。",
+      "en": "A React component library and design system with component, theme and integration documentation."
+    },
+    "technologies": [
+      "React",
+      "TypeScript"
+    ],
+    "aliases": [
+      "Arco"
+    ]
+  },
+  {
+    "id": "element-plus",
+    "name": {
+      "zh-CN": "Element Plus",
+      "en": "Element Plus"
+    },
+    "kind": "library",
+    "repo": "https://github.com/element-plus/element-plus",
+    "description": {
+      "zh-CN": "Vue 3 组件库，适合业务表单、数据展示与后台应用。",
+      "en": "A Vue 3 component library for business forms, data display and administrative applications."
+    },
+    "technologies": [
+      "Vue 3",
+      "TypeScript"
+    ],
+    "aliases": [
+      "Element",
+      "饿了么"
+    ]
+  },
+  {
+    "id": "tdesign",
+    "name": {
+      "zh-CN": "TDesign",
+      "en": "TDesign"
+    },
+    "kind": "library",
+    "repo": "https://github.com/Tencent/tdesign",
+    "description": {
+      "zh-CN": "腾讯开源的企业级设计体系，具体框架实现和组件文档见上游项目。",
+      "en": "Tencent’s open-source enterprise design system; consult the upstream project for framework implementations and component documentation."
+    },
+    "technologies": [
+      "Design system"
+    ],
+    "aliases": [
+      "腾讯设计"
+    ]
+  },
+  {
+    "id": "awesome-design-md",
+    "name": {
+      "zh-CN": "Awesome DESIGN.md",
+      "en": "Awesome DESIGN.md"
+    },
+    "kind": "design",
+    "repo": "https://github.com/VoltAgent/awesome-design-md",
+    "description": {
+      "zh-CN": "第三方网站设计语言分析集合，可参考排版、色彩和布局规则；不是对应品牌的官方规范。",
+      "en": "A collection of third-party website design analyses covering typography, color and layout; not official specifications from those brands."
+    },
+    "technologies": [
+      "Markdown",
+      "DESIGN.md"
+    ],
+    "aliases": [
+      "设计规范",
+      "设计语言",
+      "VoltAgent"
+    ]
+  },
+  {
+    "id": "ui-skills",
+    "name": {
+      "zh-CN": "UI Skills",
+      "en": "UI Skills"
+    },
+    "kind": "skills",
+    "repo": "https://github.com/ibelick/ui-skills",
+    "description": {
+      "zh-CN": "面向设计工程的 Skill 集合与获取工具，首批收录 Baseline UI。",
+      "en": "Design engineering skills and discovery tools; the initial Atlas selection includes Baseline UI."
+    },
+    "technologies": [
+      "Agent Skills",
+      "Markdown"
+    ],
+    "aliases": [
+      "ibelick",
+      "设计工程"
+    ]
+  },
+  {
+    "id": "emil-skills",
+    "name": {
+      "zh-CN": "Skills for Designers and Engineers",
+      "en": "Skills for Designers and Engineers"
+    },
+    "kind": "skills",
+    "repo": "https://github.com/emilkowalski/skills",
+    "description": {
+      "zh-CN": "Emil Kowalski 整理的设计与工程 Skills，涵盖动效构建、审核、性能和边界数据测试。",
+      "en": "Emil Kowalski’s design and engineering skills, including animation construction, review, performance and worst-case data testing."
+    },
+    "technologies": [
+      "Agent Skills",
+      "Markdown"
+    ],
+    "aliases": [
+      "Emil Kowalski",
+      "动画",
+      "动效"
+    ]
+  },
+  {
+    "id": "developer-roadmap",
+    "name": {
+      "zh-CN": "Developer Roadmap",
+      "en": "Developer Roadmap"
+    },
+    "kind": "learning",
+    "repo": "https://github.com/nilbuild/developer-roadmap",
+    "description": {
+      "zh-CN": "列表中收藏的开发者路线图仓库，用于规划学习路径；具体内容与项目来源以仓库说明为准。",
+      "en": "The developer roadmap repository saved in the list, useful for planning learning paths; consult its README for content and project provenance."
+    },
+    "technologies": [
+      "Learning",
+      "Roadmap"
+    ],
+    "aliases": [
+      "学习路线",
+      "学习资料"
+    ]
+  }
+]

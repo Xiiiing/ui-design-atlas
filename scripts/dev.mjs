@@ -211,7 +211,7 @@ try {
               )
                 return next();
               const isDelivery =
-                /^(?:code\/|downloads\/|details\/)/.test(relative) ||
+                /^(?:code\/|downloads\/|details\/|guidance\/)/.test(relative) ||
                 /^examples\/(?:ui-market|shadcn-admin)\/THIRD_PARTY_NOTICES\.md$/.test(
                   relative,
                 );
@@ -254,7 +254,7 @@ try {
         handleHotUpdate(context) {
           if (
             !context.file.includes(`${path.sep}examples${path.sep}`) &&
-            /\.(?:[cm]?[jt]sx?|json|html)$/.test(context.file)
+            /\.(?:[cm]?[jt]sx?|json|html|md)$/.test(context.file)
           ) {
             context.server.ws.send({ type: "full-reload", path: "*" });
             return [];

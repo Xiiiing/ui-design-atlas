@@ -6,6 +6,7 @@ import archiver from "archiver";
 import { upstream, resources } from "../catalog.js";
 import { deliveryFiles, originalFiles } from "./delivery-files.mjs";
 import { writeDetails } from "./catalog-data.mjs";
+import { generateGuidance } from "./guidance-data.mjs";
 import { resourceCode } from "./resource-code.mjs";
 
 export async function generateDelivery(root, out) {
@@ -15,6 +16,7 @@ export async function generateDelivery(root, out) {
   await mkdir(path.join(out, "examples/shadcn-admin"), { recursive: true });
   await mkdir(marketOut, { recursive: true });
   await writeDetails(root, out);
+  await generateGuidance(root, out);
   const allowLists = JSON.parse(
     await readFile(path.join(root, "content/delivery-files.json"), "utf8"),
   );

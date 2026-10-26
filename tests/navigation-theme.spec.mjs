@@ -24,8 +24,13 @@ test("Navigation contracts without moving content, stays pinned and restores at 
       .poll(() => header.evaluate((el) => el.getBoundingClientRect().width))
       .toBeLessThanOrEqual(497);
     expect(await documentTop()).toBeCloseTo(before, 0);
-    await expect(page.locator(".market-navigation")).toBeVisible();
-    for (const link of await page.locator(".market-navigation a").all()) {
+    if (width <= 700) {
+      await expect(page.locator(".market-navigation")).toBeHidden();
+      await expect(page.locator(".mobile-nav-trigger")).toBeVisible();
+    } else await expect(page.locator(".market-navigation")).toBeVisible();
+    for (const link of width <= 700
+      ? []
+      : await page.locator(".market-navigation a").all()) {
       const box = await link.boundingBox();
       expect(box.width).toBeGreaterThanOrEqual(44);
       expect(box.x).toBeGreaterThanOrEqual(0);
@@ -42,8 +47,15 @@ test("Navigation contracts without moving content, stays pinned and restores at 
     ).toHaveAttribute("aria-selected", "true");
     await page.keyboard.press("Escape");
     await expect(page.locator("#site-locale")).toBeFocused();
-    await page.locator(".market-navigation a").first().focus();
-    await page.keyboard.press("Enter");
+    if (width <= 700) {
+      await page.locator(".mobile-nav-trigger").click();
+      await page
+        .getByRole("menuitem", { name: "Discover", exact: true })
+        .click();
+    } else {
+      await page.locator(".market-navigation a").first().focus();
+      await page.keyboard.press("Enter");
+    }
     await expect(page).toHaveURL(/#discover/);
     await expect(topbar).toHaveClass("is-compact");
     await expect
@@ -208,7 +220,8 @@ test("Touch users can operate compact navigation and dismiss the language picker
   await page.locator("#site-locale").tap();
   await page.touchscreen.tap(20, 500);
   await expect(page.locator(".language-content")).toHaveCount(0);
-  await page.locator('.market-navigation a[aria-label="Saved"]').tap();
+  await page.locator(".mobile-nav-trigger").tap();
+  await page.getByRole("menuitem", { name: "Saved", exact: true }).tap();
   await expect(page).toHaveURL(/#favorites/);
   await context.close();
 });

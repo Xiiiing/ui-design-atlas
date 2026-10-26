@@ -1,5 +1,6 @@
 // @ts-check
 import { findResource } from "../catalog.js";
+import { hasGuidance, hasTool } from "../guidance-registry.js";
 
 export const favoriteStorageKey = "design-atlas-favorites";
 
@@ -9,8 +10,12 @@ export function validFavorite(value) {
   const parts = value.split(":");
   return (
     parts.length === 2 &&
-    ["component", "block", "page", "case"].includes(parts[0]) &&
-    !!findResource(parts[1], parts[0])
+    (parts[0] === "guidance"
+      ? hasGuidance(parts[1])
+      : parts[0] === "tool"
+        ? hasTool(parts[1])
+        : ["component", "block", "page", "case"].includes(parts[0]) &&
+          !!findResource(parts[1], parts[0]))
   );
 }
 
@@ -30,9 +35,13 @@ export function importFavorites(text, current) {
   if (
     !data ||
     data.format !== "ui-design-atlas" ||
-    data.version !== 1 ||
+    ![1, 2].includes(data.version) ||
     !Array.isArray(data.favorites) ||
-    !data.favorites.every(validFavorite)
+    !data.favorites.every(
+      (/** @type {unknown} */ value) =>
+        validFavorite(value) &&
+        (data.version === 2 || !/^(guidance|tool):/.test(value)),
+    )
   ) {
     throw new Error("Invalid favorites backup");
   }

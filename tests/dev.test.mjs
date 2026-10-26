@@ -257,6 +257,106 @@ test(
         await readFile(path.join(directory, "components.js"), "utf8"),
       );
 
+      // Guidance metadata, bodies and downloads use the same fresh development catalog.
+      const guidancePage = await browser.newPage();
+      await guidancePage.goto(base + "#guidance?lang=en");
+      await expect(guidancePage.locator(".guidance-card")).toHaveCount(13);
+      const guidancePath = path.join(directory, "content/guidance.json");
+      const guidanceIndex = JSON.parse(await readFile(guidancePath, "utf8"));
+      guidanceIndex[0].name.en = "Guidance hot name";
+      await writeFile(guidancePath, JSON.stringify(guidanceIndex));
+      await expect(
+        guidancePage.locator(".guidance-card h2 a").first(),
+      ).toHaveText("Guidance hot name");
+      const bodyPath = path.join(
+        directory,
+        "content/guidance/visual-quality.json",
+      );
+      const body = JSON.parse(await readFile(bodyPath, "utf8"));
+      body.body.en = "Guidance body update marker";
+      await writeFile(bodyPath, JSON.stringify(body));
+      await guidancePage.locator(".guidance-card h2 a").first().click();
+      await expect(guidancePage.locator(".guidance-reading")).toContainText(
+        body.body.en,
+      );
+      await expect
+        .poll(
+          async () =>
+            (
+              await (
+                await guidancePage.request.get(
+                  base + "guidance/visual-quality.json",
+                )
+              ).json()
+            ).body.en,
+        )
+        .toBe(body.body.en);
+      const cloneGuidance = {
+        ...guidanceIndex[0],
+        id: "audit-guidance-added",
+        name: { "zh-CN": "指导新增", en: "Guidance addition" },
+      };
+      const addedPath = path.join(
+        directory,
+        "content/guidance/audit-guidance-added.json",
+      );
+      await writeFile(addedPath, JSON.stringify(body));
+      guidanceIndex.push(cloneGuidance);
+      await writeFile(guidancePath, JSON.stringify(guidanceIndex));
+      await guidancePage.goto(base + "#guidance?lang=en&q=Guidance%20addition");
+      await expect(guidancePage.locator(".guidance-card")).toHaveCount(1);
+      const guidanceZip = await guidancePage.request.get(
+        base + "downloads/guidance/audit-guidance-added.zip",
+      );
+      assert.equal(guidanceZip.status(), 200);
+      const zipContent = await guidanceZip.body();
+      assert.equal(
+        zipContent.includes(Buffer.from("audit-guidance-added/GUIDANCE.md")),
+        true,
+      );
+      guidanceIndex.pop();
+      await writeFile(guidancePath, JSON.stringify(guidanceIndex));
+      await rm(addedPath);
+      await expect(guidancePage.locator(".guidance-card")).toHaveCount(0);
+      await expect
+        .poll(async () =>
+          (
+            await guidancePage.request.get(
+              base + "guidance/audit-guidance-added.json",
+            )
+          ).status(),
+        )
+        .toBe(404);
+      const validGuidance = JSON.stringify(guidanceIndex);
+      guidanceIndex[0].kind = "invalid";
+      await writeFile(guidancePath, JSON.stringify(guidanceIndex));
+      await expect
+        .poll(async () =>
+          (
+            await guidancePage.request.get(
+              base + "guidance/visual-quality.json",
+            )
+          ).status(),
+        )
+        .toBe(500);
+      await writeFile(guidancePath, validGuidance);
+      await expect
+        .poll(async () =>
+          (
+            await guidancePage.request.get(
+              base + "guidance/visual-quality.json",
+            )
+          ).status(),
+        )
+        .toBe(200);
+      await guidancePage.goto(base + "#guidance?lang=en");
+      await expect(guidancePage.locator(".guidance-card")).toHaveCount(13);
+      await guidancePage.close();
+      // A deliberate invalid catalog can reject shell registry imports; wait for recovery.
+      await page.goto(base + "#components?lang=en&q=border%20beam");
+      await expect(card).toHaveAttribute("data-preview-state", "ready");
+      errors.length = 0;
+
       // Catalog edits flow through the shell, example names, detail and ZIP manifests.
       const catalogPath = path.join(directory, "content/resources.json");
       const catalog = JSON.parse(await readFile(catalogPath, "utf8"));

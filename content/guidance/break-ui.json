@@ -1,0 +1,14 @@
+{
+  "body": {
+    "zh-CN": "# Break UI\n\n用长文本、空数据、极端数字与不同语言测试界面边界，包含完整测试数据目录。\n\n下方原始文件保持上游语言与内容；中文任务要点为本站整理，不替代完整 Skill。",
+    "en": "# Break UI\n\nStress-test interfaces with long text, empty data, extreme numbers and different languages, with a supporting data catalog.\n\nOriginal files below retain the upstream language and contents. Atlas task notes do not replace the complete skill."
+  },
+  "task": {
+    "zh-CN": "用真实可能出现的边界数据测试布局和状态，记录复现与修复，覆盖长文本、空列表、多语言和极端数字。",
+    "en": "Test layout and states with realistic worst-case data, document reproduction and fixes, and cover long text, empty lists, languages and extreme numbers."
+  },
+  "usage": {
+    "zh-CN": "普通对话：复制本站整理的任务要求，并补充你的项目需求。编程助手：先提供项目上下文，再按文件说明使用；下载不会自动安装或执行。",
+    "en": "Chat: copy the Atlas task notes and add your project requirements. Coding assistant: provide project context, then follow the file instructions. Downloads do not install or execute anything."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "body": {
+    "zh-CN": "# Linear 设计分析\n\n第三方对 Linear 网站的设计分析：深色画布、低调面板、克制的紫蓝强调与清晰产品信息。\n\n色板和排版摘要为本站整理；完整分析来自 VoltAgent，不是品牌官方规范。",
+    "en": "# Linear design analysis\n\nA third-party analysis of Linear’s website: dark canvas, quiet panels, restrained lavender-blue accents and clear product information.\n\nPalette and typography summaries are Atlas notes. The full analysis is by VoltAgent, not an official brand specification."
+  },
+  "task": {
+    "zh-CN": "采用深色画布与克制面板，使用一致的字体层级和留白，紫蓝仅用于重点操作；根据需求重新组织信息。",
+    "en": "Use a dark canvas, quiet panels, consistent type hierarchy and spacing, reserving lavender-blue for emphasis. Organize information for the actual brief."
+  },
+  "usage": {
+    "zh-CN": "普通对话：复制本站整理的任务要求，并补充你的项目需求。编程助手：先提供项目上下文，再按文件说明使用；下载不会自动安装或执行。",
+    "en": "Chat: copy the Atlas task notes and add your project requirements. Coding assistant: provide project context, then follow the file instructions. Downloads do not install or execute anything."
+  }
+}

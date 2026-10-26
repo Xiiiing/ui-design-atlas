@@ -1,0 +1,422 @@
+[
+  {
+    "id": "visual-quality",
+    "kind": "prompt",
+    "name": {
+      "zh-CN": "视觉品质追加语",
+      "en": "Visual quality suffix"
+    },
+    "description": {
+      "zh-CN": "追加到需求末尾的品质与交付要求，适合品牌官网和作品集；不保证获奖级效果。",
+      "en": "Append quality and delivery requirements to a brief for a brand site or portfolio; award-level results are not guaranteed."
+    },
+    "purposes": [
+      "website",
+      "review"
+    ],
+    "related": [
+      "block:magicui-bento-grid"
+    ],
+    "aliases": [
+      "Awwwards",
+      "Webby Awards",
+      "FWA",
+      "高级网站",
+      "提示词"
+    ],
+    "checked": true,
+    "effect": "unverified"
+  },
+  {
+    "id": "marketing-website",
+    "kind": "prompt",
+    "name": {
+      "zh-CN": "完整营销网站生成",
+      "en": "Marketing website brief"
+    },
+    "description": {
+      "zh-CN": "从目标用户与内容出发组织网站，约束首屏、证据、行动路径和交付检查。",
+      "en": "Organize a website around its audience and content, with a clear hero, evidence, action path and delivery checks."
+    },
+    "purposes": [
+      "website",
+      "layout"
+    ],
+    "related": [
+      "block:magicui-bento-grid",
+      "case:folio"
+    ],
+    "aliases": [
+      "落地页",
+      "Landing page",
+      "品牌官网"
+    ],
+    "checked": true,
+    "effect": "unverified"
+  },
+  {
+    "id": "application-ui",
+    "kind": "prompt",
+    "name": {
+      "zh-CN": "后台界面生成",
+      "en": "Application interface brief"
+    },
+    "description": {
+      "zh-CN": "优先处理业务任务、数据密度、表单和完整状态，适合后台与工作台。",
+      "en": "Prioritize business tasks, data density, forms and complete states for admin applications and workspaces."
+    },
+    "purposes": [
+      "application",
+      "layout"
+    ],
+    "related": [
+      "case:shadcn-admin",
+      "component:folio-form"
+    ],
+    "aliases": [
+      "仪表盘",
+      "dashboard",
+      "表单",
+      "工作台"
+    ],
+    "checked": true,
+    "effect": "unverified"
+  },
+  {
+    "id": "interface-reuse",
+    "kind": "prompt",
+    "name": {
+      "zh-CN": "现有界面风格复用",
+      "en": "Reuse an interface direction"
+    },
+    "description": {
+      "zh-CN": "将参考界面的视觉或结构规律迁移到自己的需求，保留业务与来源边界。",
+      "en": "Transfer visual or structural rules from an interface reference while respecting the actual task and provenance."
+    },
+    "purposes": [
+      "website",
+      "application",
+      "layout"
+    ],
+    "related": [
+      "block:magicui-bento-grid",
+      "component:folio-form"
+    ],
+    "aliases": [
+      "复用",
+      "参考",
+      "风格提示词"
+    ],
+    "checked": true,
+    "effect": "unverified"
+  },
+  {
+    "id": "baseline-ui",
+    "kind": "skill",
+    "name": {
+      "zh-CN": "Baseline UI",
+      "en": "Baseline UI"
+    },
+    "description": {
+      "zh-CN": "快速检查排版、间距、层级与基础交互。原文对 Tailwind、React 动效和组件原语有明确技术偏好，使用前核对项目技术栈。",
+      "en": "A quick pass over typography, spacing, hierarchy and basic interaction. The original prescribes Tailwind, React motion and component primitives; check stack compatibility before applying."
+    },
+    "purposes": [
+      "layout",
+      "review"
+    ],
+    "related": [
+      "component:folio-form"
+    ],
+    "aliases": [
+      "baseline-ui",
+      "Skill",
+      "技能"
+    ],
+    "checked": true,
+    "effect": "unverified",
+    "upstream": {
+      "source": "ibelick",
+      "entry": "skills/baseline-ui/SKILL.md",
+      "files": [
+        "skills/baseline-ui/SKILL.md"
+      ]
+    },
+    "toolId": "ui-skills"
+  },
+  {
+    "id": "animate",
+    "kind": "skill",
+    "name": {
+      "zh-CN": "Animate",
+      "en": "Animate"
+    },
+    "description": {
+      "zh-CN": "按用途、工具、属性、缓动、时长与打断行为构建网页动效，包含配套实现配方。",
+      "en": "Build web motion by deciding purpose, tools, properties, easing, duration and interruption, with supporting recipes."
+    },
+    "purposes": [
+      "motion"
+    ],
+    "related": [
+      "block:magicui-bento-grid"
+    ],
+    "aliases": [
+      "animate",
+      "Skill",
+      "技能"
+    ],
+    "checked": true,
+    "effect": "unverified",
+    "upstream": {
+      "source": "emil",
+      "entry": "skills/animate/SKILL.md",
+      "files": [
+        "skills/animate/SKILL.md",
+        "skills/animate/RECIPES.md"
+      ]
+    },
+    "toolId": "emil-skills"
+  },
+  {
+    "id": "review-animations",
+    "kind": "skill",
+    "name": {
+      "zh-CN": "Review Animations",
+      "en": "Review Animations"
+    },
+    "description": {
+      "zh-CN": "审核现有动效的节奏、连续性、交互与可访问性，配套精确规则文件。",
+      "en": "Review existing motion for timing, continuity, interaction and accessibility, with a detailed standards file."
+    },
+    "purposes": [
+      "motion",
+      "review"
+    ],
+    "related": [
+      "block:magicui-bento-grid"
+    ],
+    "aliases": [
+      "review-animations",
+      "Skill",
+      "技能"
+    ],
+    "checked": true,
+    "effect": "unverified",
+    "upstream": {
+      "source": "emil",
+      "entry": "skills/review-animations/SKILL.md",
+      "files": [
+        "skills/review-animations/SKILL.md",
+        "skills/review-animations/STANDARDS.md"
+      ]
+    },
+    "toolId": "emil-skills"
+  },
+  {
+    "id": "animation-performance",
+    "kind": "skill",
+    "name": {
+      "zh-CN": "Animation Performance",
+      "en": "Animation Performance"
+    },
+    "description": {
+      "zh-CN": "定位动效掉帧、布局与绘制开销；与尺寸振荡等布局问题区分后再优化。",
+      "en": "Diagnose dropped frames and layout or paint costs; distinguish these from geometry feedback loops before optimizing."
+    },
+    "purposes": [
+      "motion",
+      "review"
+    ],
+    "related": [
+      "block:magicui-bento-grid"
+    ],
+    "aliases": [
+      "animation-performance",
+      "Skill",
+      "技能"
+    ],
+    "checked": true,
+    "effect": "unverified",
+    "upstream": {
+      "source": "emil",
+      "entry": "skills/animation-performance/SKILL.md",
+      "files": [
+        "skills/animation-performance/SKILL.md"
+      ]
+    },
+    "toolId": "emil-skills"
+  },
+  {
+    "id": "break-ui",
+    "kind": "skill",
+    "name": {
+      "zh-CN": "Break UI",
+      "en": "Break UI"
+    },
+    "description": {
+      "zh-CN": "用长文本、空数据、极端数字与不同语言测试界面边界，包含完整测试数据目录。",
+      "en": "Stress-test interfaces with long text, empty data, extreme numbers and different languages, with a supporting data catalog."
+    },
+    "purposes": [
+      "application",
+      "review"
+    ],
+    "related": [
+      "case:shadcn-admin",
+      "component:folio-form"
+    ],
+    "aliases": [
+      "break-ui",
+      "Skill",
+      "技能"
+    ],
+    "checked": true,
+    "effect": "unverified",
+    "upstream": {
+      "source": "emil",
+      "entry": "skills/break-ui/SKILL.md",
+      "files": [
+        "skills/break-ui/SKILL.md",
+        "skills/break-ui/CATALOG.md"
+      ]
+    },
+    "toolId": "emil-skills"
+  },
+  {
+    "id": "linear-design",
+    "kind": "design",
+    "name": {
+      "zh-CN": "Linear 设计分析",
+      "en": "Linear design analysis"
+    },
+    "description": {
+      "zh-CN": "第三方对 Linear 网站的设计分析：深色画布、低调面板、克制的紫蓝强调与清晰产品信息。",
+      "en": "A third-party analysis of Linear’s website: dark canvas, quiet panels, restrained lavender-blue accents and clear product information."
+    },
+    "purposes": [
+      "website",
+      "layout"
+    ],
+    "related": [
+      "block:magicui-bento-grid"
+    ],
+    "aliases": [
+      "Linear",
+      "DESIGN.md",
+      "设计规范"
+    ],
+    "checked": true,
+    "effect": "unverified",
+    "palette": [
+      "#010102",
+      "#0f1011",
+      "#f7f8f8",
+      "#5e6ad2"
+    ],
+    "typography": {
+      "zh-CN": "清晰的无衬线层级与轻微负字距；使用可获得且有许可的字体。",
+      "en": "Clear sans-serif hierarchy with restrained negative tracking; use available, appropriately licensed fonts."
+    },
+    "upstream": {
+      "source": "voltagent",
+      "entry": "design-md/linear.app/DESIGN.md",
+      "files": [
+        "design-md/linear.app/DESIGN.md"
+      ]
+    },
+    "toolId": "awesome-design-md"
+  },
+  {
+    "id": "vercel-design",
+    "kind": "design",
+    "name": {
+      "zh-CN": "Vercel 设计分析",
+      "en": "Vercel design analysis"
+    },
+    "description": {
+      "zh-CN": "第三方对 Vercel 设计语言的分析：黑白基础、精确边界、技术型排版与局部色彩。",
+      "en": "A third-party analysis of Vercel’s design language: a monochrome base, precise boundaries, technical typography and localized color."
+    },
+    "purposes": [
+      "website",
+      "layout"
+    ],
+    "related": [
+      "block:magicui-bento-grid"
+    ],
+    "aliases": [
+      "Vercel",
+      "DESIGN.md",
+      "设计规范"
+    ],
+    "checked": true,
+    "effect": "unverified",
+    "palette": [
+      "#ffffff",
+      "#171717",
+      "#888888",
+      "#0070f3"
+    ],
+    "typography": {
+      "zh-CN": "几何无衬线标题与等宽辅助信息；字体按项目现有资源选择。",
+      "en": "Geometric sans-serif headings and monospace supporting text; choose fonts from the project’s available assets."
+    },
+    "upstream": {
+      "source": "voltagent",
+      "entry": "design-md/vercel/DESIGN.md",
+      "files": [
+        "design-md/vercel/DESIGN.md"
+      ]
+    },
+    "toolId": "awesome-design-md"
+  },
+  {
+    "id": "visual-review",
+    "kind": "checklist",
+    "name": {
+      "zh-CN": "视觉与内容质量",
+      "en": "Visual and content quality"
+    },
+    "description": {
+      "zh-CN": "将可执行的检查项复制到交付要求中，并记录实际验证范围。",
+      "en": "Copy actionable checks into delivery requirements and record the actual validation scope."
+    },
+    "purposes": [
+      "review",
+      "layout"
+    ],
+    "related": [
+      "block:magicui-bento-grid",
+      "component:folio-form",
+      "case:shadcn-admin"
+    ],
+    "aliases": [],
+    "checked": true,
+    "effect": "unverified"
+  },
+  {
+    "id": "responsive-review",
+    "kind": "checklist",
+    "name": {
+      "zh-CN": "响应式与交互验收",
+      "en": "Responsive and interaction acceptance"
+    },
+    "description": {
+      "zh-CN": "将可执行的检查项复制到交付要求中，并记录实际验证范围。",
+      "en": "Copy actionable checks into delivery requirements and record the actual validation scope."
+    },
+    "purposes": [
+      "review",
+      "layout"
+    ],
+    "related": [
+      "block:magicui-bento-grid",
+      "component:folio-form",
+      "case:shadcn-admin"
+    ],
+    "aliases": [],
+    "checked": true,
+    "effect": "unverified"
+  }
+]

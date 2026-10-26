@@ -1,0 +1,30 @@
+{
+  "body": {
+    "zh-CN": "# 响应式与交互验收\n\n逐项检查并记录结果。勾选仅表示当前浏览器中的个人进度，不代表真实 AI 效果验证。",
+    "en": "# Responsive and interaction acceptance\n\nInspect and record each result. Checked items represent local personal progress, not a verified AI outcome."
+  },
+  "task": {
+    "zh-CN": "按以下清单验收，并报告实际结果与未验证项。",
+    "en": "Use the checklist below and report actual results and unverified items."
+  },
+  "usage": {
+    "zh-CN": "普通对话：复制本站整理的任务要求，并补充你的项目需求。编程助手：先提供项目上下文，再按文件说明使用；下载不会自动安装或执行。",
+    "en": "Chat: copy the Atlas task notes and add your project requirements. Coding assistant: provide project context, then follow the file instructions. Downloads do not install or execute anything."
+  },
+  "checks": {
+    "zh-CN": [
+      "检查 375、768、1440 与 1910px，包含矮窗口及 110% 页面缩放。",
+      "使用键盘完成主要操作，确认焦点可见、顺序合理且弹层可关闭。",
+      "检查长文本、多语言、空数据、加载、成功和错误状态。",
+      "验证滚动区域、全屏退出和设备切换，保留输入与已有状态。",
+      "在实际运行环境观察控制台、请求与布局，不能仅凭构建通过宣称验收完成。"
+    ],
+    "en": [
+      "Check 375, 768, 1440 and 1910px, including short windows and 110% page zoom.",
+      "Complete primary actions by keyboard and verify visible focus, order and dismissible overlays.",
+      "Check long text, languages, empty data, loading, success and error states.",
+      "Verify scroll areas, fullscreen exit and device changes while retaining inputs and existing state.",
+      "Observe console, requests and layout in the running environment; a successful build alone is not acceptance."
+    ]
+  }
+}

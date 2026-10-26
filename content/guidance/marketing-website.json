@@ -1,0 +1,14 @@
+{
+  "body": {
+    "zh-CN": "项目需求：{{requirements}}\n目标用户：{{audience}}\n技术约束：{{technology}}\n视觉方向：{{direction}}\n\n先确定信息结构与主要行动，再完成具有一致设计语言的营销网站。使用真实且相关的文案，区分核心内容与装饰。建立清晰的标题、价值说明、证据和行动路径；仅添加有用途的动效。验证移动端阅读、键盘操作、表单状态和页面加载。",
+    "en": "Project requirements: {{requirements}}\nAudience: {{audience}}\nTechnology constraints: {{technology}}\nVisual direction: {{direction}}\n\nDefine the information structure and primary action, then build a marketing website with a coherent design language. Use relevant content and distinguish core information from decoration. Provide clear headings, value, evidence and calls to action. Add motion only when it serves a purpose. Verify mobile reading, keyboard access, form states and loading."
+  },
+  "task": {
+    "zh-CN": "完成营销网站的信息结构与实现，重点解释价值、展示证据并提供清晰行动路径。不要编造客户、奖项或业务数据；缺失素材使用明确占位。",
+    "en": "Build the marketing site’s structure and implementation around value, evidence and a clear action path. Do not invent customers, awards or business metrics; mark missing material as placeholders."
+  },
+  "usage": {
+    "zh-CN": "普通对话：复制本站整理的任务要求，并补充你的项目需求。编程助手：先提供项目上下文，再按文件说明使用；下载不会自动安装或执行。",
+    "en": "Chat: copy the Atlas task notes and add your project requirements. Coding assistant: provide project context, then follow the file instructions. Downloads do not install or execute anything."
+  }
+}

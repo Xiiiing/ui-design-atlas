@@ -21,8 +21,16 @@ import taxonomy from "../content/taxonomy.json" with { type: "json" };
 import { filterResources, facetCounts, selections } from "./filter-model.js";
 import { parse } from "./navigation.js";
 
-/** @param {import("./types").BaseDependencies & {card:import("./types").Card;observeCards:()=>void}} dependencies */
-export function createBrowse({ appState, t, card, href, l, observeCards }) {
+/** @param {import("./types").BaseDependencies & {card:import("./types").Card;observeCards:()=>void;extraSaved:(values:Record<string,string>,domain:string)=>{count:number;html:string;counts:Record<string,number>}}} dependencies */
+export function createBrowse({
+  appState,
+  t,
+  card,
+  href,
+  l,
+  observeCards,
+  extraSaved,
+}) {
   /** @type {Record<string,string>} */
   const viewIcons = {
     explore: "grid-2x2",
@@ -122,6 +130,54 @@ export function createBrowse({ appState, t, card, href, l, observeCards }) {
     const selected = selections(appState.route.params.get(name));
     return `<fieldset class="facet-group" data-facet="${name}"><legend>${label}</legend>${entries.map(([v, label]) => `<label><input type="checkbox" name="${name}" value="${v}" ${selected.includes(v) ? "checked" : ""}>${esc(label)} <span data-facet-count></span></label>`).join("")}</fieldset>`;
   }
+  function savedDomain() {
+    const value = appState.route.params.get("domain");
+    return value === "guidance" || value === "tool" || value === "ui"
+      ? value
+      : [
+            "type",
+            "category",
+            "library",
+            "visual",
+            "technology",
+            "project",
+            "motion",
+            "interaction",
+            "source",
+            "style",
+            "audience",
+            "collection",
+          ].some((key) => {
+            const value = appState.route.params.get(key);
+            return value && value !== "all";
+          })
+        ? "ui"
+        : "all";
+  }
+  function savedContentOnly() {
+    return (
+      appState.route.view === "favorites" &&
+      (["guidance", "tool"].includes(savedDomain()) ||
+        (savedDomain() === "all" &&
+          [...appState.favorites].some((key) => /^(guidance|tool):/.test(key))))
+    );
+  }
+  function savedDomains() {
+    if (appState.route.view !== "favorites") return "";
+    return `<nav class="saved-domains" aria-label="${t("收藏范围", "Saved content scope")}">${Object.entries(
+      {
+        all: ["全部内容", "All content"],
+        ui: ["界面", "Interfaces"],
+        guidance: ["设计指导", "Guidance"],
+        tool: ["资源导航", "Directory"],
+      },
+    )
+      .map(
+        ([domain, labels]) =>
+          `<a data-saved-domain="${domain}" class="${savedDomain() === domain ? "active" : ""}" href="${href("favorites", "", { ...(domain !== "all" ? { domain } : {}), ...(appState.route.params.get("q") ? { q: appState.route.params.get("q") || "" } : {}) })}">${t(labels[0], labels[1])} <span></span></a>`,
+      )
+      .join("")}</nav>`;
+  }
   function browseIntro() {
     const collection = discovery.collections.find(
       (c) => c.id === appState.route.params.get("collection"),
@@ -131,7 +187,7 @@ export function createBrowse({ appState, t, card, href, l, observeCards }) {
   }
 
   function listing() {
-    return `${browseIntro()}<section class="market-collection" id="collection">${browseFilters()}<div id="results" class="browse-results" aria-live="polite"></div></section>`;
+    return `${browseIntro()}${savedDomains()}<section class="market-collection" id="collection">${browseFilters()}<div id="results" class="browse-results" aria-live="polite"></div></section>`;
   }
 
   function browseFilters() {
@@ -149,7 +205,8 @@ export function createBrowse({ appState, t, card, href, l, observeCards }) {
       "source",
       "audience",
     ].some((k) => appState.route.params.has(k)));
-    return `<form id="filters" class="market-filters" data-expanded="${expanded}">
+    const contentOnly = savedContentOnly();
+    return `<form id="filters" class="market-filters${contentOnly ? " content-only-filters" : ""}" data-expanded="${expanded}">${appState.route.view === "favorites" ? `<input type="hidden" name="domain" value="${savedDomain()}">` : ""}
   <div class="catalog-toolbar">  <nav class="market-tabs" data-shell-group data-shell-key="market-types" aria-label="${t("资源类型", "Resource types")}">${Object.entries(
     viewModes,
   )
@@ -159,7 +216,7 @@ export function createBrowse({ appState, t, card, href, l, observeCards }) {
     )
     .join(
       "",
-    )}</nav><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(appState.route.params.get("q") || "")}"><button class="icon-button" type="submit" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label></div>
+    )}</nav><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${appState.route.view === "favorites" ? t("搜索收藏", "Search saved") : t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(appState.route.params.get("q") || "")}"><button class="icon-button" type="submit" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label></div>
   ${collection ? `<input type="hidden" name="collection" value="${collection.id}">` : ""}<input type="hidden" name="category" value="${esc(appState.route.params.get("category") || "all")}">
   <nav class="category-strip" data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${Object.entries(
     { all: ["全部分类", "All categories"], ...categories },
@@ -346,7 +403,7 @@ export function createBrowse({ appState, t, card, href, l, observeCards }) {
 
   /** @param {number} count */
   function resultsSummary(count) {
-    return `<div class="market-results-line"><span><strong>${count}</strong> ${t("个设计资源", "design resources")}</span><span><i class="status-dot"></i>${t("真实交互预览 · 提示词与源码", "LIVE PREVIEWS · PROMPTS & SOURCE")}</span></div>`;
+    return `<div class="market-results-line"><span><strong>${count}</strong> ${appState.route.view === "favorites" ? t("项收藏", "saved items") : t("个设计资源", "design resources")}</span><span><i class="status-dot"></i>${appState.route.view === "favorites" ? t("界面 · 指导 · 资源", "INTERFACES · GUIDANCE · RESOURCES") : t("真实交互预览 · 提示词与源码", "LIVE PREVIEWS · PROMPTS & SOURCE")}</span></div>`;
   }
 
   function filterParameters() {
@@ -372,10 +429,23 @@ export function createBrowse({ appState, t, card, href, l, observeCards }) {
       );
       appState.route = parse();
     }
-    const items = filtered();
+    maybe("#filters")?.classList.toggle(
+      "content-only-filters",
+      savedContentOnly(),
+    );
+    const domain = appState.route.view === "favorites" ? savedDomain() : "ui";
+    const items = domain === "tool" || domain === "guidance" ? [] : filtered();
+    const extra =
+      appState.route.view === "favorites"
+        ? extraSaved(currentValues(), domain)
+        : { count: 0, html: "", counts: {} };
+    for (const link of all("[data-saved-domain]"))
+      element("span", link).textContent = String(
+        extra.counts[link.dataset.savedDomain || "all"] || 0,
+      );
     reconcileResults(
       element("#results"),
-      `${resultsSummary(items.length)}${items.length ? `${resultGroups(items.slice(0, appState.limit))}${items.length > appState.limit ? `<button class="button load-more" data-more>${t("再看一些", "Explore more")} ${icon("arrow-down")}</button>` : ""}` : `<div class="market-empty">${icon("search")}<h2 tabindex="-1">${t("换个关键词试试", "Try another search")}</h2><p>${t("也可以清空筛选，看看其他界面。", "Clear the filters to discover more interfaces.")}</p><button class="button" data-reset-filters>${t("清空筛选", "Clear filters")}</button></div>`}`,
+      `${resultsSummary(items.length + extra.count)}${items.length + extra.count ? `${resultGroups(items.slice(0, appState.limit))}${extra.html}${items.length > appState.limit ? `<button class="button load-more" data-more>${t("再看一些", "Explore more")} ${icon("arrow-down")}</button>` : ""}` : `<div class="market-empty">${icon("search")}<h2 tabindex="-1">${t("换个关键词试试", "Try another search")}</h2><p>${t("也可以清空筛选，看看其他界面。", "Clear the filters to discover more interfaces.")}</p><button class="button" data-reset-filters>${t("清空筛选", "Clear filters")}</button></div>`}`,
     );
     updateFilterChips();
     updateFacetCounts();

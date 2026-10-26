@@ -1,0 +1,14 @@
+{
+  "body": {
+    "zh-CN": "# Baseline UI\n\n快速检查排版、间距、层级与基础交互。原文对 Tailwind、React 动效和组件原语有明确技术偏好，使用前核对项目技术栈。\n\n下方原始文件保持上游语言与内容；中文任务要点为本站整理，不替代完整 Skill。",
+    "en": "# Baseline UI\n\nA quick pass over typography, spacing, hierarchy and basic interaction. The original prescribes Tailwind, React motion and component primitives; check stack compatibility before applying.\n\nOriginal files below retain the upstream language and contents. Atlas task notes do not replace the complete skill."
+  },
+  "task": {
+    "zh-CN": "检查间距、字体层级与交互一致性，优先沿用项目既有组件和约束。",
+    "en": "Review spacing, type hierarchy and interaction consistency using the project’s existing components and constraints."
+  },
+  "usage": {
+    "zh-CN": "普通对话：复制本站整理的任务要求，并补充你的项目需求。编程助手：先提供项目上下文，再按文件说明使用；下载不会自动安装或执行。",
+    "en": "Chat: copy the Atlas task notes and add your project requirements. Coding assistant: provide project context, then follow the file instructions. Downloads do not install or execute anything."
+  }
+}

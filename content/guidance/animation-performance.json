@@ -1,0 +1,14 @@
+{
+  "body": {
+    "zh-CN": "# Animation Performance\n\n定位动效掉帧、布局与绘制开销；与尺寸振荡等布局问题区分后再优化。\n\n下方原始文件保持上游语言与内容；中文任务要点为本站整理，不替代完整 Skill。",
+    "en": "# Animation Performance\n\nDiagnose dropped frames and layout or paint costs; distinguish these from geometry feedback loops before optimizing.\n\nOriginal files below retain the upstream language and contents. Atlas task notes do not replace the complete skill."
+  },
+  "task": {
+    "zh-CN": "先测量并复现掉帧或振荡，检查布局、绘制、合成与逐帧渲染，再验证改动前后的同一操作。",
+    "en": "Measure and reproduce dropped frames or oscillation, inspect layout, paint, compositing and per-frame rendering, and compare the same interaction before and after."
+  },
+  "usage": {
+    "zh-CN": "普通对话：复制本站整理的任务要求，并补充你的项目需求。编程助手：先提供项目上下文，再按文件说明使用；下载不会自动安装或执行。",
+    "en": "Chat: copy the Atlas task notes and add your project requirements. Coding assistant: provide project context, then follow the file instructions. Downloads do not install or execute anything."
+  }
+}

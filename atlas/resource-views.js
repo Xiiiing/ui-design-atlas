@@ -4,6 +4,7 @@ import { icon } from "../icons.js";
 import { replaceShellHTML } from "../shell/controls.tsx";
 import { escapeHTML as esc } from "./html.js";
 import { parseHash } from "./navigation.js";
+import { guidanceForResource } from "../guidance-registry.js";
 import { resourceTags, interactions } from "../resource-tags.js";
 import { resourcePresentation } from "../presentation.js";
 import {
@@ -48,11 +49,14 @@ export function createResourceViews({
       ["discover", "发现", "Discover", "grid-2x2"],
       ["explore", "探索资源", "Explore", "layers"],
       ["cases", "完整案例", "Systems", "layout-template"],
+      ["guidance", "设计指导", "Guidance", "layers"],
+      ["tools", "资源导航", "Directory", "code-xml"],
       ["favorites", "我的收藏", "Saved", "bookmark"],
     ]
       .map(([view, zh, en, glyph]) => {
         const active =
           appState.route.view === view ||
+          (view === "guidance" && appState.route.view === "compose") ||
           (view === "explore" &&
             ["motion", "components", "blocks", "pages"].includes(
               appState.route.view,
@@ -78,8 +82,8 @@ export function createResourceViews({
       "↵ Open · Esc Close",
     );
     element("#quick-search").placeholder = t(
-      "搜索流光边框、表格、Fluent…",
-      "Search a UI, effect or library…",
+      "搜索界面、提示词、Skill…",
+      "Search interfaces, prompts or skills…",
     );
   }
 
@@ -173,7 +177,11 @@ export function createResourceViews({
         : null;
     const principle = r.principle || c?.principle;
     const rules = r.rules || c?.rules;
-    return `<section class="detail-section"><h3>${t("适用场景", "Use cases")}</h3><p>${esc(l(r.useCases || c?.scene || r.description))}</p></section><section class="detail-section"><h3>${t("设计解读 · 本站整理", "Design notes · Atlas interpretation")}</h3><p>${esc(l(principle) || l(r.description))}</p>${
+    const linked = guidanceForResource(key(r));
+    const linkedHTML = linked.length
+      ? `<section class="detail-section related-guidance"><h3>${t("相关设计指导", "Related guidance")}</h3>${linked.map((g) => `<a class="text-link" href="${href("guidance", g.id)}">${esc(l(g.name))}${icon("arrow-up-right")}</a>`).join("")}<a class="button" href="${href("compose", "", { reference: key(r) })}">${t("加入提示词组合", "Use in a prompt")}</a></section>`
+      : "";
+    return `${linkedHTML}<section class="detail-section"><h3>${t("适用场景", "Use cases")}</h3><p>${esc(l(r.useCases || c?.scene || r.description))}</p></section><section class="detail-section"><h3>${t("设计解读 · 本站整理", "Design notes · Atlas interpretation")}</h3><p>${esc(l(principle) || l(r.description))}</p>${
       rules
         ? `<ul>${l(rules)
             .map((x) => `<li>${esc(x)}</li>`)

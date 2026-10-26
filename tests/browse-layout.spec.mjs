@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { activatePrimary } from "./navigation.mjs";
 
 async function positions(page) {
   await expect(page.locator("[data-selection-marker]").first()).toBeVisible();
@@ -29,10 +30,10 @@ for (const lang of ["zh-CN", "en"]) {
       const before = await positions(page);
       expect(before.overflow).toBe(false);
       if (width >= 768) {
-        await page.locator('.market-navigation a[href*="#explore"]').click();
+        await activatePrimary(page, "explore");
         await expect(page).toHaveURL(/#explore/);
         expect(await positions(page)).toEqual(before);
-        await page.locator('.market-navigation a[href*="#discover"]').click();
+        await activatePrimary(page, "discover");
         await expect(page).toHaveURL(/#discover/);
         expect(await positions(page)).toEqual(before);
       }
