@@ -1,18 +1,14 @@
 import { test, expect } from "@playwright/test";
 import { discovery, collectionResources, resources } from "../catalog.js";
 
-test("Discovery offers curated resources, counted categories, themes and complete systems", async ({
+test("Discovery offers curated resources, themes and complete systems", async ({
   page,
 }) => {
   await page.goto("./");
-  await expect(page.locator("#filters")).toBeVisible();
-  await expect(page.locator("#filters")).toHaveCount(1);
+  await expect(page.locator("#discovery-search")).toBeVisible();
+  await expect(page.locator("#filters")).toHaveCount(0);
   await expect(page.locator(".featured-section .asset-card")).toHaveCount(8);
   await expect(page.locator(".systems-section .asset-card")).toHaveCount(3);
-  for (const id of discovery.categories)
-    await expect(page.locator(`[data-category="${id}"]`)).toContainText(
-      String(resources.filter((r) => r.categories.includes(id)).length),
-    );
   await page.locator('.collection-card[href*="micro-interactions"]').click();
   await expect(page.locator("#results .asset-card")).toHaveCount(
     collectionResources("micro-interactions").length,
@@ -21,9 +17,9 @@ test("Discovery offers curated resources, counted categories, themes and complet
   await page.locator("[data-remove-filter=collection]").click();
   await expect(page.locator("#results .asset-card")).toHaveCount(24);
   await page.goto("#discover?lang=en");
-  await page.locator("#filters [name=q]").fill("Fluent");
+  await page.locator("#discovery-search [name=q]").fill("Fluent");
   await page
-    .locator("#filters")
+    .locator("#discovery-search")
     .getByRole("button", { name: "Search", exact: true })
     .click();
   await expect(page.locator("#results .asset-card")).toHaveCount(4);
@@ -175,45 +171,30 @@ test("Touch discovery cards show their actual UI and retain readable captions", 
   expect(bounds.descriptionTop).toBeGreaterThanOrEqual(bounds.captionBottom);
 });
 
-test("The library puts a continuous, framed resource wall directly below its browsing controls", async ({
+test("The library has equal framed columns and restores loaded results after detail", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("#discover?lang=en");
-  await expect(page.locator(".library-browser .asset-card")).toHaveCount(24);
-  const geometry = await page.evaluate(() => {
-    const hero = document.querySelector(".browse-intro h1"),
-      search = document.querySelector(".market-search"),
-      types = document.querySelector(".market-tabs"),
-      grid = document.querySelector(".featured-section .market-grid"),
-      first = grid.querySelector(".asset-preview"),
-      secondRow = grid.querySelectorAll(".asset-preview")[4];
-    return {
-      fontSize: getComputedStyle(hero).fontSize,
-      searchTop: search.getBoundingClientRect().top,
-      typesTop: types.getBoundingClientRect().top,
-      imageTop: first.getBoundingClientRect().top,
-      imageBottom: secondRow.getBoundingClientRect().bottom,
-      ratio: first.clientWidth / first.clientHeight,
+  await page.goto("#explore?lang=en");
+  await expect(page.locator("#results .asset-card")).toHaveCount(24);
+  const geometry = await page
+    .locator(".comparison-grid")
+    .first()
+    .evaluate((grid) => ({
       columns: getComputedStyle(grid).gridTemplateColumns.split(" ").length,
       gap: getComputedStyle(grid).columnGap,
-    };
-  });
-  expect(geometry.fontSize).toBe("42px");
-  expect(Math.abs(geometry.searchTop - geometry.typesTop)).toBeLessThan(5);
-  expect(geometry.imageTop).toBeLessThan(460);
-  expect(geometry.ratio).toBeGreaterThan(0.5);
+      widths: [...grid.querySelectorAll(".asset-preview")].map((el) =>
+        Math.round(el.getBoundingClientRect().width),
+      ),
+    }));
   expect(geometry.columns).toBe(3);
-  expect(geometry.gap).toBe("12px");
-  await page.locator("[data-discovery-more]").click();
-  await expect(page.locator(".library-browser .asset-card")).toHaveCount(48);
-  await page
-    .locator(".library-continuation .asset-caption [data-open]")
-    .last()
-    .click();
+  expect(geometry.gap).toBe("24px");
+  expect(new Set(geometry.widths).size).toBe(1);
+  await page.locator("[data-more]").click();
+  await expect(page.locator("#results .asset-card")).toHaveCount(48);
+  await page.locator("#results .asset-caption [data-open]").last().click();
   await expect(page.locator(".experience-viewer")).toBeVisible();
   await page.goBack();
-  await expect(page.locator(".library-browser .asset-card")).toHaveCount(48);
+  await expect(page.locator("#results .asset-card")).toHaveCount(48);
 });
 
 test("Live cards and wide experience follow the shell while fixed-height demos fit their frame", async ({
@@ -283,10 +264,9 @@ test("Responsive cards keep structured tags outside previews and loading does no
         count: el.querySelectorAll(".resource-tags a").length,
       }));
     expect(box.tags).toBeGreaterThanOrEqual(box.preview);
-    expect(box.count).toBeLessThanOrEqual(3);
+    expect(box.count).toBeLessThanOrEqual(2);
   }
-  await page.locator("[data-discovery-more]").click();
-  await page.locator("[data-discovery-more]").click();
+  await expect(page.locator("[data-discovery-more]")).toHaveCount(0);
   const keys = await page
     .locator(".asset-card")
     .evaluateAll((els) => els.map((el) => el.dataset.resource));

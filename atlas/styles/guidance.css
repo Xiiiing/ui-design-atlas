@@ -419,14 +419,8 @@
   color: var(--muted-text);
   margin: 12px 0;
 }
-/* Six primary destinations use the existing menu below laptop widths. */
+/* Content grids become a reading column on narrower screens. */
 @media (max-width: 1100px) {
-  #topbar:not(.is-compact) .market-navigation {
-    display: none;
-  }
-  #topbar:not(.is-compact) [data-shell-mounted="navigation"] {
-    display: inline-flex;
-  }
   .guidance-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -490,14 +484,6 @@
     white-space: normal;
   }
 }
-@media (max-width: 700px) {
-  #topbar.is-compact .market-navigation {
-    display: none;
-  }
-  #topbar.is-compact [data-shell-mounted="navigation"] {
-    display: inline-flex;
-  }
-}
 
 .guidance-card {
   border: 1px solid var(--line);
@@ -506,14 +492,5 @@
 .guidance-card-heading .asset-save {
   position: static;
   opacity: 1;
-  flex-shrink: 0;
-}
-#topbar.is-compact .header-github {
-  display: none;
-}
-#topbar.is-compact .market-navigation a {
-  flex: 0 0 44px;
-}
-#topbar.is-compact .market-header-actions {
   flex-shrink: 0;
 }

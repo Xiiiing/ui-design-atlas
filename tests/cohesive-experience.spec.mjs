@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { activatePrimary } from "./navigation.mjs";
+import { activatePrimary, copyCardPrompt } from "./navigation.mjs";
 import { resources, resourcePrompt } from "../catalog.js";
 
 test("Original pages and components follow the shell, retain local overrides and keep themed links", async ({
@@ -297,7 +297,10 @@ test("Every added resource copies its own prompt in the selected language", asyn
       await page.goto(
         `#explore?lang=${lang}&q=${encodeURIComponent(r.name[lang])}`,
       );
-      await page.locator(`[data-card-prompt="${r.type}:${r.id}"]`).click();
+      await copyCardPrompt(
+        page,
+        page.locator(`[data-resource="${r.type}:${r.id}"]`),
+      );
       await expect
         .poll(() => page.evaluate(() => navigator.clipboard.readText()))
         .toBe(resourcePrompt(r, lang));

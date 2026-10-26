@@ -1,53 +1,68 @@
-/* Keep a constant header slot while its inner navigation contracts on scroll. */
+/* One stable navigation bar at every scroll position. */
 #topbar {
-  height: 64px;
-  background: transparent;
-  pointer-events: none;
+  height: 72px;
+  position: sticky;
+  top: 0;
+  background: var(--canvas);
+  border-bottom: 1px solid transparent;
+}
+#topbar.is-compact .market-header {
+  box-shadow: 0 1px 0 var(--line);
 }
 #topbar .market-header {
   position: fixed;
   top: 0;
   left: 50%;
-  width: 100%;
   transform: translateX(-50%);
-  pointer-events: auto;
-  height: 64px;
-  min-height: 64px;
+  width: 100%;
   background: var(--canvas);
-  border: 1px solid transparent;
-  transition:
-    max-width 240ms ease,
-    padding 240ms ease,
-    gap 240ms ease,
-    border-radius 240ms ease,
-    transform 240ms ease,
-    box-shadow 240ms ease;
+  height: 72px;
+  min-height: 72px;
+  gap: 40px;
+  padding: 8px 32px;
 }
-.market-header .nav-label,
-.market-header .brand-name {
-  display: inline-block;
-  max-width: 150px;
-  opacity: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  transition:
-    max-width 200ms ease,
-    opacity 160ms ease;
+.market-navigation {
+  gap: 24px;
 }
-.market-header .market-navigation a .nav-label {
+.market-header .nav-label {
   font-size: 14px;
+  white-space: nowrap;
 }
 .market-header .market-navigation a > svg {
   display: none;
+}
+.market-navigation a.active {
+  color: var(--action);
+}
+.market-navigation.selection-group {
+  --selection-fill: var(--action);
 }
 .market-header-actions [data-shell-mounted="select"] {
   width: 44px;
 }
 .market-header .appearance-trigger,
-.market-header .language-trigger {
+.market-header .language-trigger,
+.market-header .saved-shortcut,
+.market-header-actions > [data-search] {
   width: 44px;
   height: 44px;
   padding: 0;
+}
+.market-header .saved-shortcut {
+  display: inline-flex;
+  position: relative;
+}
+.saved-shortcut small {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 12px;
+  color: var(--action);
+  background: var(--canvas);
+}
+.saved-shortcut.active {
+  color: var(--action);
+  background: var(--surface);
 }
 .language-trigger {
   justify-content: center;
@@ -56,101 +71,63 @@
 }
 .language-content {
   min-width: 188px;
-  padding: 6px;
+  padding: 8px;
   border-radius: 12px;
   box-shadow: var(--shadow-md);
 }
 .language-heading {
-  padding: 6px 10px 8px;
+  padding: 8px;
   color: var(--muted-text);
-  font-size: 11px;
-  letter-spacing: 0.03em;
+  font-size: 12px;
 }
 .language-content .atlas-select-item {
   min-height: 44px;
-  border-radius: 7px;
-  padding: 10px;
+  border-radius: 8px;
+  padding: 8px;
 }
 .language-content .atlas-select-item[data-state="checked"] {
   background: var(--surface);
 }
-#topbar.is-compact .market-header {
-  max-width: 496px;
-  height: 56px;
-  min-height: 56px;
-  padding: 5px 12px;
-  gap: 12px;
-  border-color: var(--line);
-  border-radius: 18px;
-  transform: translate(-50%, 8px);
-  background: hsl(var(--background) / 0.96);
-  box-shadow: var(--shadow-md);
-  backdrop-filter: blur(12px);
-}
-#topbar.is-compact .nav-label,
-#topbar.is-compact .brand-name {
-  max-width: 0;
-  opacity: 0;
-}
-#topbar.is-compact .brand,
-#topbar.is-compact .market-navigation a,
-#topbar.is-compact .header-github {
-  gap: 0;
-}
-#topbar.is-compact .market-navigation {
-  display: flex;
-  gap: 2px;
-}
-#topbar.is-compact .market-navigation a {
-  width: 44px;
-  justify-content: center;
-}
-#topbar.is-compact .market-navigation a > svg {
-  display: block;
-}
-#topbar.is-compact .market-header-actions {
-  gap: 0;
-}
-#topbar.is-compact .market-header-actions > a {
-  width: 44px;
-  justify-content: center;
-}
-#topbar.is-compact [data-shell-mounted="navigation"] {
-  display: none;
-}
-@media (min-width: 600px) and (max-width: 900px) {
-  #topbar:not(.is-compact) .market-header {
+@media (max-width: 1100px) {
+  #topbar .market-header {
+    gap: 24px;
+  }
+  .market-header .header-github {
+    display: none;
+  }
+  .market-navigation {
     gap: 16px;
-    padding-inline: 20px;
   }
-  #topbar:not(.is-compact) .market-navigation {
-    gap: 14px;
+}
+@media (max-width: 900px) {
+  #topbar .market-header {
+    padding-inline: 24px;
+    gap: 16px;
   }
-  #topbar:not(.is-compact) .header-github {
+  #topbar [data-shell-mounted="selection"]:has(.market-navigation) {
+    display: none;
+  }
+  #topbar [data-shell-mounted="navigation"] {
+    display: inline-block;
+  }
+  #topbar .market-navigation {
     display: none;
   }
 }
 @media (max-width: 599px) {
-  #topbar.is-compact .market-header {
-    max-width: calc(100% - 24px);
-    padding-inline: 8px;
-    gap: 4px;
+  #topbar,
+  #topbar .market-header {
+    height: 64px;
+    min-height: 64px;
   }
-  #topbar.is-compact .brand {
+  #topbar .market-header {
+    padding-inline: 16px;
+    gap: 8px;
+  }
+  .market-header .brand-name {
     display: none;
   }
-  #topbar.is-compact .market-header-actions [data-search] {
-    display: inline-flex;
-    width: 44px;
-  }
-  #topbar.is-compact .market-navigation {
+  .market-header-actions {
     gap: 0;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  #topbar .market-header,
-  .market-header .nav-label,
-  .market-header .brand-name {
-    transition: none;
   }
 }

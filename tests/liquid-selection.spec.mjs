@@ -1,3 +1,4 @@
+import { openFilters } from "./navigation.mjs";
 import { test, expect } from "@playwright/test";
 
 async function aligned(page, group, selected) {
@@ -31,6 +32,7 @@ test("Purpose multi-select preserves geometry, independent pressed states and ke
   page,
 }) => {
   await page.goto("#motion?lang=en");
+  await openFilters(page);
   const top = () =>
     page
       .locator(".market-results-line")
@@ -65,7 +67,7 @@ test("Purpose multi-select preserves geometry, independent pressed states and ke
 test("Type selection retains its moving marker, link dimensions and focus through navigation and history", async ({
   page,
 }) => {
-  await page.goto("#discover?lang=en");
+  await page.goto("#explore?lang=en");
   const group = "[data-shell-key=market-types] [data-selection-group]";
   await aligned(page, group, ".active");
   await page.locator(`${group} [data-selection-marker]`).evaluate((el) => {
@@ -99,6 +101,7 @@ test("Type selection retains its moving marker, link dimensions and focus throug
         .evaluate((el) => el === window.originalMarker),
     ).toBe(true);
   }
+  await openFilters(page);
   await page.locator("[data-category=buttons]").click();
   await page.locator("[data-market-mode=motion]").click();
   await expect(page.locator(".asset-card")).toHaveCount(2);
@@ -118,7 +121,8 @@ test("Type selection retains its moving marker, link dimensions and focus throug
   await expect(page.locator(".asset-card")).toHaveCount(2);
   await aligned(page, group, ".active");
   await aligned(page, ".category-strip", "[aria-pressed=true]");
-  await page.goto("#discover?lang=en");
+  await page.goto("#explore?lang=en");
+  await openFilters(page);
   await page.locator("[data-category=buttons]").click();
   await aligned(page, ".category-strip", "[data-category=buttons]");
 });
@@ -131,6 +135,7 @@ test("Selection tracks scrolled controls, language, resizing and reduced motion"
     for (const width of [1440, 768, 375]) {
       await page.setViewportSize({ width, height: 1000 });
       await page.goto(`./?acceptance=${width}-${lang}#motion?lang=${lang}`);
+      await openFilters(page);
       await page.evaluate(() => document.fonts.ready);
       await aligned(page, ".category-strip", "[aria-pressed=true]");
       await page.locator("[data-category=feedback]").click();
@@ -138,6 +143,7 @@ test("Selection tracks scrolled controls, language, resizing and reduced motion"
         "aria-pressed",
         "true",
       );
+      await openFilters(page);
       await page.locator("[data-category=buttons]").click();
       await expect(
         page.locator(".category-strip [aria-pressed=true]"),

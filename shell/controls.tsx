@@ -6,7 +6,7 @@ import {
 } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
-import { Monitor, Moon, Sun, Menu } from "lucide-react";
+import { Monitor, Moon, Sun, Menu, Ellipsis } from "lucide-react";
 import { MarketSelect, MarketMenu } from "./primitives";
 import { lockPageScroll } from "./scroll-lock";
 import { SelectionGroup } from "./SelectionGroup";
@@ -99,6 +99,21 @@ function MobileNavigation({ source }: { source: HTMLElement }) {
         onSelect: () => {
           a.click();
         },
+      }))}
+    />
+  );
+}
+function CardMenu({ actions }: { actions: HTMLElement[] }) {
+  return (
+    <MarketMenu
+      ariaLabel={
+        document.documentElement.lang === "en" ? "More actions" : "更多操作"
+      }
+      label={<Ellipsis size={18} aria-hidden="true" />}
+      triggerClassName="card-menu-trigger"
+      items={actions.map((action) => ({
+        label: action.getAttribute("aria-label"),
+        onSelect: () => action.click(),
       }))}
     />
   );
@@ -294,6 +309,18 @@ export function refreshShellControls() {
           <Appearance english={document.documentElement.lang === "en"} />,
         ),
       );
+    }
+    for (const el of document.querySelectorAll<HTMLElement>(
+      "[data-shell-card-menu]",
+    )) {
+      if (el.closest("[data-shell-mounted]")) continue;
+      const actions = Array.from(
+        el.parentElement!.querySelectorAll<HTMLElement>(
+          "[data-card-actions] > *",
+        ),
+      );
+      const { root } = island(el, "card-menu");
+      flushSync(() => root.render(<CardMenu actions={actions} />));
     }
     for (const el of document.querySelectorAll<HTMLElement>(
       "[data-shell-navigation]",

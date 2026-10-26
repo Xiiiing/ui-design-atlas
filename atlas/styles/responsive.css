@@ -13,25 +13,9 @@
 .detail-section li {
   line-height: var(--atlas-reading-leading);
 }
-@media (min-width: 1024px) {
-  .library-page .market-intro {
-    max-width: var(--atlas-major);
-    margin-bottom: 32px;
-  }
-  .catalog-toolbar {
-    display: grid;
-    grid-template-columns: minmax(0, 1.618fr) minmax(0, 1fr);
-    gap: 24px;
-  }
-  .catalog-toolbar .market-search {
-    width: 100%;
-    max-width: none;
-  }
-}
-
 /* Browse facets: primary purpose strip and expandable multi-select groups. */
 .advanced-filters {
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   align-items: start;
 }
 .facet-group {
@@ -50,11 +34,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 14px;
+  min-height: 32px;
   cursor: pointer;
 }
 .facet-group input {
-  accent-color: var(--accent);
+  accent-color: var(--action);
 }
 .facet-group [data-facet-count] {
   margin-left: auto;

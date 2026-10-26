@@ -1,11 +1,14 @@
 /* Interactive resource gallery. Information and actions never cover the demo. */
 .library-page .market-grid {
   container-type: inline-size;
-  --preview-unit: calc((100cqw - 24px) / 3);
+  --preview-unit: calc((100cqw - 48px) / 3);
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: start;
 }
 .library-page .asset-card[data-layout="wide"] {
+  grid-column: auto;
+}
+.library-page .featured-section .asset-card:first-child {
   grid-column: span 2;
 }
 .library-page .asset-card .asset-preview {
@@ -18,8 +21,8 @@
   object-fit: contain;
 }
 .library-page .asset-card[data-cover-layout="wide"] .asset-preview > img {
-  object-fit: cover;
-  object-position: top;
+  object-fit: contain;
+  object-position: center;
 }
 .asset-live iframe {
   width: 100%;
@@ -64,11 +67,12 @@
 }
 .library-page .asset-description {
   opacity: 1;
-  min-height: 20px;
-  height: 20px;
-  line-height: 20px;
-  margin: 4px 2px 6px;
-  -webkit-line-clamp: 1;
+  min-height: 48px;
+  height: 48px;
+  line-height: 24px;
+  font-size: 14px;
+  margin: 8px 0;
+  -webkit-line-clamp: 2;
 }
 .resource-tags {
   display: flex;
@@ -79,7 +83,7 @@
 .resource-tags > span {
   display: inline-flex;
   align-items: center;
-  font-size: 11px;
+  font-size: 12px;
   min-height: 28px;
   padding: 4px 8px;
   border: 1px solid var(--line);
@@ -107,7 +111,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  height: 36px;
+  height: 44px;
 }
 .asset-footer .resource-tags a {
   min-height: 24px;
@@ -120,6 +124,7 @@
   flex-shrink: 0;
 }
 .asset-actions .icon-button,
+.asset-actions .atlas-menu-trigger,
 .asset-actions .asset-save {
   position: static;
   opacity: 1;
@@ -141,7 +146,7 @@
 }
 @media (max-width: 1199px) {
   .library-page .market-grid {
-    --preview-unit: calc((100cqw - 12px) / 2);
+    --preview-unit: calc((100cqw - 24px) / 2);
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -150,13 +155,15 @@
     --preview-unit: 100cqw;
     grid-template-columns: minmax(0, 1fr);
   }
-  .library-page .asset-card[data-layout="wide"] {
+  .library-page .asset-card[data-layout="wide"],
+  .library-page .featured-section .asset-card:first-child {
     grid-column: auto;
   }
   .asset-footer {
-    height: 44px;
+    height: 56px;
   }
   .asset-actions .icon-button,
+  .asset-actions .atlas-menu-trigger,
   .asset-actions .asset-save {
     width: 44px;
     height: 44px;
@@ -324,7 +331,7 @@ body.is-experience {
 #preview-scale {
   min-width: 4ch;
   color: var(--muted-text);
-  font-size: 11px;
+  font-size: 12px;
   font-variant-numeric: tabular-nums;
   text-align: center;
 }
@@ -376,7 +383,7 @@ body.is-experience {
   }
   .experience-viewer .market-preview-bottom {
     padding: 6px;
-    font-size: 11px;
+    font-size: 12px;
   }
 }
 .experience-viewer {

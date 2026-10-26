@@ -16,14 +16,24 @@ export function createClipboard({ t }) {
     toastTimer = setTimeout(() => el.classList.remove("visible"), 2500);
   }
 
-  /** @param {string} text */
-  async function copy(text) {
+  /** @param {string} text @param {HTMLElement|null} [returnFocus] */
+  async function copy(text, returnFocus) {
     try {
       await navigator.clipboard.writeText(text);
       notify(t("已复制，可以带走复用了。", "Copied. Ready to reuse."));
     } catch {
       element("#fallback-text").value = text;
-      showShellDialog(element("#copy-fallback"));
+      const dialog = element("#copy-fallback");
+      if (returnFocus)
+        dialog.addEventListener(
+          "close",
+          () => {
+            if (returnFocus.isConnected)
+              returnFocus.focus({ preventScroll: true });
+          },
+          { once: true },
+        );
+      showShellDialog(dialog);
       element("#fallback-text").select();
     }
   }

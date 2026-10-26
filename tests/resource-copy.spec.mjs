@@ -1,3 +1,4 @@
+import { copyCardPrompt } from "./navigation.mjs";
 import { test, expect } from "@playwright/test";
 import resources from "../content/resources.json" with { type: "json" };
 
@@ -63,7 +64,10 @@ for (const lang of ["zh-CN", "en"]) {
     }
     await page.goto(`#cases?lang=${lang}`);
     for (const r of resources.filter((r) => r.type === "case")) {
-      await page.locator(`[data-card-prompt="case:${r.id}"]`).click();
+      await copyCardPrompt(
+        page,
+        page.locator(`[data-resource="case:${r.id}"]`),
+      );
       await expect
         .poll(() => page.evaluate(() => navigator.clipboard.readText()))
         .toBe(r.prompt[lang]);
@@ -108,12 +112,10 @@ test("Morrow prompt dimensions match responsive CSS at actual browser widths", a
   for (const width of [1440, 1280, 768, 375]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("preview.html?style=folio&page=home&lang=en&theme=light");
-    const measured = await page
-      .locator(".folio-hero h1")
-      .evaluate((n) => ({
-        heading: getComputedStyle(n).fontSize,
-        body: getComputedStyle(document.body).fontSize,
-      }));
+    const measured = await page.locator(".folio-hero h1").evaluate((n) => ({
+      heading: getComputedStyle(n).fontSize,
+      body: getComputedStyle(document.body).fontSize,
+    }));
     for (const lang of ["zh-CN", "en"]) {
       expect(r.prompt[lang]).toContain(measured.heading);
       expect(r.prompt[lang]).toContain(measured.body);
@@ -126,12 +128,10 @@ test("Morrow prompt dimensions match responsive CSS at actual browser widths", a
     "46px",
     "44px",
   ]);
-  await test
-    .info()
-    .attach("responsive-type-measurements", {
-      body: JSON.stringify(measurements, null, 2),
-      contentType: "application/json",
-    });
+  await test.info().attach("responsive-type-measurements", {
+    body: JSON.stringify(measurements, null, 2),
+    contentType: "application/json",
+  });
 });
 
 test("Original button prompts stay within the component and use its delivered dimensions", async ({

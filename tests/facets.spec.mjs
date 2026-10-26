@@ -85,7 +85,7 @@ test("Search retains global relevance across resource types and empty Enter keep
   );
 });
 
-test("Discovery appends preserve visible frames, documents and input without document requests", async ({
+test("Library appends preserve visible frames, documents and input without document requests", async ({
   page,
 }, info) => {
   let requests = 0;
@@ -93,16 +93,16 @@ test("Discovery appends preserve visible frames, documents and input without doc
     if (req.isNavigationRequest() && req.frame() !== page.mainFrame())
       requests++;
   });
-  await page.goto("#discover?lang=en");
-  await expect(page.locator(".featured-section iframe").first()).toBeVisible();
+  await page.goto("#explore?lang=en");
+  await expect(page.locator(".resource-group iframe").first()).toBeVisible();
   await expect
     .poll(() =>
-      page.locator(".featured-section [data-preview-state=ready]").count(),
+      page.locator(".resource-group [data-preview-state=ready]").count(),
     )
     .toBeGreaterThan(0);
   const before = await page.evaluate(() => {
     window.retained = [
-      ...document.querySelectorAll(".featured-section iframe"),
+      ...document.querySelectorAll(".resource-group iframe"),
     ].filter((f) => f.closest("[data-preview-state=ready]"));
     window.docs = window.retained.map((f) => f.contentDocument);
     for (const doc of window.docs) {
@@ -115,8 +115,8 @@ test("Discovery appends preserve visible frames, documents and input without doc
   });
   const baseline = requests;
   // Programmatic activation keeps the old cards visible, isolating append from intentional visibility recycling.
-  await page.locator("[data-discovery-more]").evaluate((b) => b.click());
-  await expect(page.locator(".library-browser .asset-card")).toHaveCount(48);
+  await page.locator("[data-more]").evaluate((b) => b.click());
+  await expect(page.locator("#results .asset-card")).toHaveCount(48);
   await page.waitForTimeout(250);
   expect(
     await page.evaluate(() =>
@@ -135,7 +135,7 @@ test("Discovery appends preserve visible frames, documents and input without doc
   await info.attach("discovery-retention.json", {
     body: JSON.stringify({
       mountedBefore: before,
-      mountedAfter: await page.locator(".featured-section iframe").count(),
+      mountedAfter: await page.locator(".resource-group iframe").count(),
       addedDocumentRequests: requests - baseline,
     }),
     contentType: "application/json",
