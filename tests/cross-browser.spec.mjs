@@ -195,3 +195,17 @@ test("Fullscreen and its API fallback fill the screen and restore keyboard focus
     await expect(page).toHaveURL(/component\/magicui-border-beam/);
   }
 });
+
+test("Details open and close without shifting or resizing the demo", async ({
+  page,
+}) => {
+  const { expectStableDetailToggle } = await import("./detail-stability.mjs");
+  for (const width of [1440, 375]) {
+    await page.setViewportSize({ width, height: 655 });
+    await page.goto(`./?notes=${width}#component/magicui-border-beam?lang=en`);
+    await expect(page.locator(".viewer-load-state")).toBeHidden();
+    await expectStableDetailToggle(page);
+    await page.locator('[data-device="768"]').click();
+    await expectStableDetailToggle(page);
+  }
+});

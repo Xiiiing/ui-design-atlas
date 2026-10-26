@@ -27,9 +27,6 @@
     width: 100%;
     max-width: none;
   }
-  .experience-viewer[data-details-open="true"] .market-detail-layout {
-    grid-template-columns: minmax(0, 1.618fr) minmax(320px, 1fr);
-  }
 }
 
 /* Browse facets: primary purpose strip and expandable multi-select groups. */

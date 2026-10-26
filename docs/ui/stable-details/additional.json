@@ -1,0 +1,59 @@
+[
+  {
+    "width": 1024,
+    "height": 600,
+    "resource": "component/magicui-border-beam",
+    "resizes": 0,
+    "positions": [
+      {
+        "x": 5,
+        "y": 138,
+        "width": 1014,
+        "height": 457,
+        "top": 138,
+        "right": 1019,
+        "bottom": 595,
+        "left": 5
+      }
+    ],
+    "sameDocument": true
+  },
+  {
+    "width": 375,
+    "height": 600,
+    "resource": "component/magicui-border-beam",
+    "resizes": 0,
+    "positions": [
+      {
+        "x": 5,
+        "y": 248,
+        "width": 365,
+        "height": 347,
+        "top": 248,
+        "right": 370,
+        "bottom": 595,
+        "left": 5
+      }
+    ],
+    "sameDocument": true
+  },
+  {
+    "width": 1440,
+    "height": 655,
+    "resource": "case/shadcn-admin",
+    "resizes": 0,
+    "positions": [
+      {
+        "x": 5,
+        "y": 138,
+        "width": 1430,
+        "height": 512,
+        "top": 138,
+        "right": 1435,
+        "bottom": 650,
+        "left": 5
+      }
+    ],
+    "sameDocument": true
+  }
+]

@@ -239,9 +239,6 @@ body.is-experience {
   align-items: stretch;
   overflow: hidden;
 }
-.experience-viewer[data-details-open="true"] .market-detail-layout {
-  grid-template-columns: minmax(0, 1fr) 360px;
-}
 .experience-viewer .full-preview-column {
   display: flex;
   min-height: 0;
@@ -271,10 +268,19 @@ body.is-experience {
   margin: auto;
 }
 .experience-viewer .market-inspector {
+  /* Notes overlay the stage so opening them never resizes the iframe or
+     changes the demo's responsive layout, scroll position or scale. */
+  position: absolute;
+  inset: var(--preview-tools-height, 44px) 0 0 auto;
+  z-index: 3;
+  width: clamp(300px, 28vw, 360px);
   min-height: 0;
   height: auto;
   max-height: none;
   overflow: auto;
+  overscroll-behavior: contain;
+  background: var(--panel);
+  box-shadow: -8px 0 24px #0002;
 }
 .experience-viewer .market-inspector[hidden],
 .experience-viewer #preview-panel[hidden],
@@ -327,24 +333,16 @@ body.is-experience {
     max-width: 1760px;
     padding: 4px;
   }
-  .experience-viewer[data-preview-kind="component"][data-details-open="true"]
-    .market-detail-layout {
-    grid-template-columns: minmax(0, 1fr) clamp(300px, 28vw, 360px);
-  }
 }
 .experience-viewer .market-preview-panel:fullscreen .market-preview-viewport {
   flex: 1;
   aspect-ratio: auto;
 }
 @media (max-width: 1023px) {
-  .experience-viewer[data-details-open="true"] .market-detail-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .experience-viewer[data-details-open="true"] .market-inspector {
-    position: absolute;
+  .experience-viewer .market-inspector {
     inset: 0;
-    z-index: 3;
-    background: var(--panel);
+    width: 100%;
+    box-shadow: none;
   }
 }
 @media (max-width: 599px) {
