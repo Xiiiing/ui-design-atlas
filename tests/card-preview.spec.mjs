@@ -16,7 +16,7 @@ async function geometry(card) {
 function separate(g) {
   expect(g.caption.top).toBeGreaterThanOrEqual(g.preview.bottom);
   expect(g.description.top).toBeGreaterThanOrEqual(g.caption.bottom);
-  expect(g.description.height).toBeLessThanOrEqual(48);
+  expect(g.description.height).toBeLessThanOrEqual(24);
   if (g.badge) {
     expect(g.badge.top).toBeGreaterThanOrEqual(g.preview.top);
     expect(g.badge.bottom).toBeLessThan(g.preview.bottom);

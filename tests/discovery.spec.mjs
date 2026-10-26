@@ -186,8 +186,8 @@ test("The library has equal framed columns and restores loaded results after det
         Math.round(el.getBoundingClientRect().width),
       ),
     }));
-  expect(geometry.columns).toBe(3);
-  expect(geometry.gap).toBe("24px");
+  expect(geometry.columns).toBe(4);
+  expect(geometry.gap).toBe("16px");
   expect(new Set(geometry.widths).size).toBe(1);
   await page.locator("[data-more]").click();
   await expect(page.locator("#results .asset-card")).toHaveCount(48);

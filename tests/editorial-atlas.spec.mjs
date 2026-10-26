@@ -74,6 +74,14 @@ for (const width of [1440, 1024, 768, 390]) {
       for (const route of ["discover", "explore"]) {
         await page.goto(`#${route}?lang=${lang}`);
         await page.evaluate(() => document.fonts.ready);
+        if (route === "discover") {
+          // Keep the first screen about resources, with a short search header.
+          const intro = await page.locator(".discovery-intro").boundingBox();
+          expect(intro.height).toBeLessThanOrEqual(150);
+          await expect(page.locator(".discovery-intro p")).toHaveCount(0);
+          const first = await page.locator(".featured-section .asset-card").first().boundingBox();
+          expect(first.y).toBeLessThan(340);
+        }
         const header = page.locator(".market-header");
         const before = await header.boundingBox();
         await page.evaluate(() => scrollTo(0, 500));

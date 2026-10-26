@@ -6,7 +6,7 @@ test("Editorial previews share a unit, with only the lead spanning columns", asy
   page,
 }) => {
   for (const lang of ["en", "zh-CN"])
-    for (const width of [2560, 1440, 768, 375]) {
+    for (const width of [2560, 1440, 1024, 768, 375]) {
       await page.setViewportSize({ width, height: 1000 });
       await page.goto(`#discover?lang=${lang}`);
       const sizes = await page
@@ -49,7 +49,7 @@ test("Editorial previews share a unit, with only the lead spanning columns", asy
                 : sizes.unit),
           ),
         ).toBeLessThan(1);
-        expect(card.metadata).toBeLessThanOrEqual(192);
+        expect(card.metadata).toBeLessThanOrEqual(104);
         expect(card.footer).toBeLessThanOrEqual(1);
       }
       expect(new Set(sizes.cards.map((c) => c.metadata)).size).toBe(1);

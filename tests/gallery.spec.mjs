@@ -26,7 +26,8 @@ test("Gallery uses native document scrolling, compact previews and equal columns
   page,
 }) => {
   for (const [width, columns] of [
-    [1440, 3],
+    [1440, 4],
+    [1024, 3],
     [768, 2],
     [375, 1],
   ]) {
