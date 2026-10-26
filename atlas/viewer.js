@@ -290,7 +290,6 @@ export function createViewer({
     const toggle = element(".experience-actions [data-toggle-details]", viewer);
     toggle.setAttribute("aria-expanded", String(open));
     if (focus) (open ? element(".inspector-close", viewer) : toggle).focus();
-    requestAnimationFrame(scalePreview);
   }
 
   function toggleDetails(
@@ -321,6 +320,12 @@ export function createViewer({
       !viewport.clientHeight
     )
       return;
+    // Keep the notes below the actual toolbar, including wrapped parameter
+    // rows. Measuring the toolbar never depends on whether notes are open.
+    const layout = element(".market-detail-layout"),
+      toolsHeight = element(".preview-toolbar").offsetHeight + "px";
+    if (layout.style.getPropertyValue("--preview-tools-height") !== toolsHeight)
+      layout.style.setProperty("--preview-tools-height", toolsHeight);
     const automatic = !appState.width && (innerWidth < 1024 || appState.fit);
     const desired = automatic
       ? viewport.clientWidth

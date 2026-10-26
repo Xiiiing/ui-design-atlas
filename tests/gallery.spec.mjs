@@ -169,7 +169,7 @@ test("Original motion parameters affect the real preview, prompt and replay", as
   );
 });
 
-test("Page details use a responsive canvas, support fullscreen and use a golden-ratio inspector split", async ({
+test("Page details overlay a stable responsive canvas and support fullscreen", async ({
   page,
 }) => {
   await page.goto("#page/shadcn-admin-dashboard?lang=en&panel=details");
@@ -179,7 +179,17 @@ test("Page details use a responsive canvas, support fullscreen and use a golden-
   ).toBeVisible();
   const inspector = await page.locator("#inspector").boundingBox();
   const preview = await page.locator(".full-preview-column").boundingBox();
-  expect(preview.width / inspector.width).toBeCloseTo(1.618, 2);
+  const layout = await page.locator(".market-detail-layout").boundingBox();
+  expect(preview.width).toBe(layout.width);
+  expect(inspector.width).toBeGreaterThanOrEqual(300);
+  expect(inspector.width).toBeLessThanOrEqual(360);
+  expect(inspector.x).toBeGreaterThan(preview.x);
+  expect(inspector.x + inspector.width).toBe(preview.x + preview.width);
+  const frame = await page.locator("#case-preview").boundingBox();
+  await page.locator(".inspector-close").click();
+  expect(await page.locator("#case-preview").boundingBox()).toEqual(frame);
+  await page.locator(".experience-actions [data-toggle-details]").click();
+  expect(await page.locator("#case-preview").boundingBox()).toEqual(frame);
   expect(
     await page
       .locator("#case-preview")
