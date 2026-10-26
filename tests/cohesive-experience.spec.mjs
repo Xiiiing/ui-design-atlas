@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { activatePrimary } from "./navigation.mjs";
 import { resources, resourcePrompt } from "../catalog.js";
 
 test("Original pages and components follow the shell, retain local overrides and keep themed links", async ({
@@ -50,13 +51,13 @@ test("Primary navigation keeps current scroll and restores each section and hist
   await expect(page.locator("#topbar")).toHaveClass("is-compact");
   const start = await page.evaluate(() => scrollY);
   const count = await page.locator(".asset-card").count();
-  await page.locator("[data-primary-view=explore]").click();
+  await activatePrimary(page, "explore");
   expect(await page.evaluate(() => scrollY)).toBe(start);
-  await page.locator("[data-primary-view=discover]").click();
+  await activatePrimary(page, "discover");
   await expect(page).toHaveURL(/#discover/);
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(start);
   await page.evaluate(() => scrollTo(0, 420));
-  await page.locator("[data-primary-view=explore]").click();
+  await activatePrimary(page, "explore");
   await expect(page.locator(".asset-card")).toHaveCount(count);
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(start);
   await expect(page.locator("#topbar")).toHaveClass("is-compact");
@@ -69,8 +70,8 @@ test("Primary navigation keeps current scroll and restores each section and hist
   await expect(
     page.locator(".asset-caption [data-open]").first(),
   ).toBeFocused();
-  await page.locator("[data-primary-view=discover]").click();
-  await page.locator("[data-primary-view=explore]").click();
+  await activatePrimary(page, "discover");
+  await activatePrimary(page, "explore");
   await expect(page.locator("[data-primary-view=explore]")).toBeFocused();
 });
 
@@ -193,13 +194,13 @@ test("Mobile navigation restores combined filters and original compositions rema
   await page.evaluate(() => scrollTo(0, 550));
   await expect(page.locator("#topbar")).toHaveClass("is-compact");
   const before = await page.evaluate(() => scrollY);
-  await page.locator("[data-primary-view=discover]").click();
-  await page.locator("[data-primary-view=explore]").click();
+  await activatePrimary(page, "discover");
+  await activatePrimary(page, "explore");
   await expect(page).toHaveURL(
     /#components\?lang=zh-CN&source=original&style=neutral/,
   );
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(before);
-  await page.locator("[data-primary-view=explore]").click();
+  await activatePrimary(page, "explore");
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(before);
   await page.goto("#explore?lang=en&source=original&q=Local%20file");
   await expect(

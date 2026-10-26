@@ -97,7 +97,7 @@ function MobileNavigation({ source }: { source: HTMLElement }) {
         label: a.getAttribute("aria-label") || a.textContent,
         selected: a.classList.contains("active"),
         onSelect: () => {
-          location.hash = a.hash;
+          a.click();
         },
       }))}
     />

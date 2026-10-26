@@ -220,3 +220,38 @@ test("Bento's scaled notification animation has no insertion discontinuity", asy
   expectSmoothBentoAnimation(await recordBentoAnimation(page));
   expectSmoothBentoAnimation(await recordBentoAnimation(page, true), true);
 });
+
+test("Guidance reading, mixed saved state and composer work across engines", async ({
+  page,
+}) => {
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.goto("#guidance?lang=en&kind=skill");
+  await expect(page.locator(".guidance-card")).toHaveCount(5);
+  await page.locator("#content-filters [name=q]").fill("Baseline UI");
+  await expect(page.locator(".guidance-card")).toHaveCount(1);
+  await page.locator(".guidance-card h2 a").click();
+  await expect(page.locator("h1")).toHaveText("Baseline UI");
+  await page.locator('[data-save="guidance:baseline-ui"]').click();
+  await expect(page.locator("[data-favorite-count]")).toHaveText("1");
+  await page.goto("#favorites?lang=en&domain=guidance");
+  await expect(page.locator(".asset-card")).toHaveCount(1);
+  await page.locator("[data-save]").focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".market-empty h2")).toBeFocused();
+  await page.goto("#compose?lang=en&skill=animation-performance");
+  await page
+    .locator("[name=requirements]")
+    .fill("Build a bilingual knowledge library.");
+  await page.locator("[name=mode]").selectOption("agent");
+  await page.locator("[data-generate-prompt]").click();
+  await expect(page.locator("[name=output]")).toHaveValue(
+    /animation-performance\/SKILL.md/,
+  );
+  await expect(page.locator("[data-agent-files] a[download]")).toBeVisible();
+  await page.reload();
+  await expect(page.locator("[name=requirements]")).toHaveValue(
+    "Build a bilingual knowledge library.",
+  );
+  expect(errors).toEqual([]);
+});

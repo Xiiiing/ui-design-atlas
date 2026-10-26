@@ -41,7 +41,6 @@ import { createPreviewActions } from "./atlas/preview-actions.js";
 import { createSourceActions } from "./atlas/source-actions.js";
 import { createViewer } from "./atlas/viewer.js";
 import { createBrowse } from "./atlas/browse.js";
-import { createSearch } from "./atlas/search.js";
 
 /** @type {import("./atlas/types").AppState} */
 const appState = {
@@ -65,6 +64,40 @@ const appState = {
   previewResizeObserver: null,
 };
 const main = element("#main");
+/** @type {Promise<ReturnType<typeof import("./atlas/guidance-views.js").createGuidanceViews>>|undefined} */
+let guidanceController;
+/** @type {Awaited<typeof guidanceController>} */
+let guidanceUI;
+let guidanceSerial = 0;
+/** @type {typeof import("./atlas/saved-content.js").savedContent|undefined} */
+let savedContent;
+/** @type {Promise<void>|undefined} */
+let savedLoad;
+function renderGuidance() {
+  const serial = ++guidanceSerial;
+  replaceShellHTML(main, `<p role="status">${t("正在加载…", "Loading…")}</p>`);
+  guidanceController ||= import("./atlas/guidance-views.js")
+    .then(({ createGuidanceViews }) =>
+      createGuidanceViews({ appState, t, l, href, copy, download, notify }),
+    )
+    .catch((error) => {
+      guidanceController = undefined;
+      throw error;
+    });
+  void guidanceController
+    .then(async (controller) => {
+      if (serial !== guidanceSerial) return;
+      guidanceUI = controller;
+      await controller.mount(main);
+    })
+    .catch(() => {
+      if (serial === guidanceSerial)
+        replaceShellHTML(
+          main,
+          `<div class="market-empty"><h1>${t("内容工具加载失败", "Content tools could not be loaded")}</h1><button class="button" data-retry-guidance-module>${t("重试", "Retry")}</button></div>`,
+        );
+    });
+}
 
 try {
   appState.locale =
@@ -108,6 +141,9 @@ window.addEventListener(
 );
 
 function render() {
+  guidanceSerial++;
+  guidanceUI?.dispose();
+  main.classList.remove("has-guidance");
   listInput.cancel();
   stopAllLive();
   clearTimeout(appState.previewLoadTimer);
@@ -145,12 +181,43 @@ function render() {
     );
     return;
   }
+  if (["guidance", "tools", "compose"].includes(appState.route.view)) {
+    renderGuidance();
+    return;
+  }
   if (appState.route.view === "resources") {
     replaceShellHTML(main, sourcePage());
     return;
   }
   if (appState.route.view === "guide") {
     replaceShellHTML(main, guidePage());
+    return;
+  }
+  if (appState.route.view === "favorites" && !savedContent) {
+    const serial = ++guidanceSerial;
+    replaceShellHTML(
+      main,
+      `<p role="status">${t("正在读取收藏…", "Loading saved content…")}</p>`,
+    );
+    savedLoad ||= import("./atlas/saved-content.js")
+      .then((module) => {
+        savedContent = module.savedContent;
+      })
+      .catch((error) => {
+        savedLoad = undefined;
+        throw error;
+      });
+    void savedLoad
+      .then(() => {
+        if (serial === guidanceSerial) render();
+      })
+      .catch(() => {
+        if (serial === guidanceSerial)
+          replaceShellHTML(
+            main,
+            `<div class="market-empty"><h1>${t("收藏工具加载失败", "Saved content could not be loaded")}</h1><button class="button" data-retry-saved>${t("重试", "Retry")}</button></div>`,
+          );
+      });
     return;
   }
   appState.originBrowse = null;
@@ -288,7 +355,20 @@ const {
 });
 
 const { discoveryPage, listing, filtered, updateResults, restoreFilters } =
-  createBrowse({ appState, t, card, href, l, observeCards });
+  createBrowse({
+    appState,
+    t,
+    card,
+    href,
+    l,
+    observeCards,
+    extraSaved: (values, domain) =>
+      savedContent?.({ appState, t, l, href }, values, domain) || {
+        count: 0,
+        html: "",
+        counts: {},
+      },
+  });
 
 const handleNavigationClick = createNavigationActions({
   activatePrimary,
@@ -320,12 +400,46 @@ const handleSourceAction = createSourceActions({
 });
 const favoriteActions = createFavorites({ appState, t, notify, updateResults });
 
-const { openSearch, searchResults, handleSearchKeys } = createSearch({
-  href,
-  l,
-  labelType,
-  t,
-});
+/** @type {ReturnType<typeof import("./atlas/search.js").createSearch>|undefined} */
+let searchController;
+/** @type {Promise<NonNullable<typeof searchController>>|undefined} */
+let searchLoad;
+function ensureSearch() {
+  searchLoad ||= import("./atlas/search.js")
+    .then(
+      ({ createSearch }) =>
+        (searchController = createSearch({ href, l, labelType, t })),
+    )
+    .catch((error) => {
+      searchLoad = undefined;
+      throw error;
+    });
+  return searchLoad;
+}
+function openSearch() {
+  void ensureSearch()
+    .then((controller) => controller.openSearch())
+    .catch(() =>
+      notify(
+        t("搜索工具读取失败，请重试。", "Search could not be loaded. Retry."),
+      ),
+    );
+}
+function searchResults() {
+  searchController?.searchResults();
+}
+/** @param {KeyboardEvent} event */
+function handleSearchKeys(event) {
+  if (searchController) return searchController.handleSearchKeys(event);
+  if (
+    !isComposing(event) &&
+    (event.metaKey || event.ctrlKey) &&
+    event.key.toLowerCase() === "k"
+  ) {
+    event.preventDefault();
+    openSearch();
+  }
+}
 
 const listInput = createInputScheduler(() => updateResults(true));
 const handleFilterAction = createFilterActions({
@@ -364,10 +478,15 @@ document.addEventListener("submit", (e) => {
 });
 document.addEventListener("click", async (e) => {
   if (!(e.target instanceof Element)) return;
-  if (e.target.closest("a, [data-open], [data-related]")) listInput.flush();
+  if (e.target.closest("a, [data-open], [data-related]")) {
+    listInput.flush();
+    guidanceUI?.flush();
+  }
   if (handleNavigationClick(e)) return;
   const b = e.target.closest("button");
   if (!b) return;
+  if (b.hasAttribute("data-retry-guidance-module")) return renderGuidance();
+  if (b.hasAttribute("data-retry-saved")) return render();
   if ((await handlePreviewAction(b)) || (await handleSourceAction(b))) return;
   if (b.hasAttribute("data-retry-preview"))
     return liveCards.retry(b.closest(".asset-card"));
@@ -504,7 +623,7 @@ document.addEventListener("click", async (e) => {
       JSON.stringify(
         {
           format: "ui-design-atlas",
-          version: 1,
+          version: 2,
           favorites: [...appState.favorites],
         },
         null,

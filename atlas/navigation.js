@@ -14,6 +14,9 @@ const views = [
   "cases",
   "resources",
   "guide",
+  "guidance",
+  "tools",
+  "compose",
   "component",
   "block",
   "page",
@@ -52,10 +55,16 @@ export function createNavigation({ appState, href, render }) {
   function rememberSection(defer = false) {
     if (
       !appState.route ||
+      appState.route.id ||
       appState.selected ||
-      !["discover", "explore", "cases", "favorites"].includes(
-        sectionOf(appState.route.view),
-      )
+      ![
+        "discover",
+        "explore",
+        "cases",
+        "favorites",
+        "guidance",
+        "tools",
+      ].includes(sectionOf(appState.route.view))
     )
       return;
     const browse = {
@@ -95,7 +104,12 @@ export function createNavigation({ appState, href, render }) {
 
   /** @param {string} target */
   function activatePrimary(target) {
-    if (!appState.selected && sectionOf(appState.route.view) === target) return;
+    if (
+      !appState.selected &&
+      !appState.route.id &&
+      sectionOf(appState.route.view) === target
+    )
+      return;
     rememberSection();
     const previous = sectionMemory.get(target);
     // Main navigation restores the section, not a previous detail-entry focus.

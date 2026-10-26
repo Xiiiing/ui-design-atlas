@@ -68,7 +68,10 @@ export type View =
   | "pages"
   | "cases"
   | "resources"
-  | "guide";
+  | "guide"
+  | "guidance"
+  | "tools"
+  | "compose";
 export interface Route {
   view: View;
   id?: string;

@@ -174,9 +174,26 @@ export async function readGuidance(root) {
         author: source.author,
         license: source.license,
       };
-    } else
-      files["GUIDANCE.md"] =
-        detail.body["zh-CN"] + "\n\n---\n\n" + detail.body.en;
+    } else {
+      files["GUIDANCE.md"] = ["zh-CN", "en"]
+        .map(
+          (lang) =>
+            detail.body[lang] +
+            (detail.original
+              ? "\n\n## " +
+                (lang === "en" ? "Original wording" : "用户原句") +
+                "\n\n" +
+                detail.original[lang]
+              : "") +
+            (detail.checks
+              ? "\n\n" +
+                detail.checks[lang].map((text) => "- " + text).join("\n")
+              : "") +
+            "\n\n" +
+            detail.usage[lang],
+        )
+        .join("\n\n---\n\n");
+    }
     detail.files = files;
     details[item.id] = detail;
   }
@@ -206,7 +223,7 @@ export async function generateGuidance(root, out) {
       zip.append(text, { name: item.id + "/" + name });
     const source = detail.source;
     zip.append(
-      `# ${item.name["zh-CN"]} / ${item.name.en}\n\n${detail.usage["zh-CN"]}\n\n${detail.usage.en}\n\n${source ? `Source: https://github.com/${source.repo}/tree/${source.commit}\nAuthor: ${source.author}\nLicense: ${source.license}\nOriginal entry: ${detail.entry}\n\nKeep all supporting files beside the entry. Ask your coding assistant to read the entry explicitly; copying it into an ordinary chat does not install a skill.\n` : "Atlas editorial content. Existing project terms apply. No new license is granted by this package.\n"}\nContent checked; AI generation outcome unverified.\n`,
+      `# ${item.name["zh-CN"]} / ${item.name.en}\n\n${detail.usage["zh-CN"]}\n\n${detail.usage.en}\n\n${source ? `Source: https://github.com/${source.repo}/tree/${source.commit}\nAuthor: ${source.author}\nLicense: ${source.license}\nOriginal entry: ${detail.entry}\n\nKeep all supporting files beside the entry. Ask your coding assistant to read the entry explicitly; copying it into an ordinary chat does not install a skill.\n` : "Atlas editorial content. Existing project terms apply. No new license is granted by this package.\n"}\n${item.checked ? "Content checked" : "Content not checked"}; AI generation outcome unverified.\n`,
       { name: item.id + "/ATLAS-REUSE.md" },
     );
     await zip.finalize();

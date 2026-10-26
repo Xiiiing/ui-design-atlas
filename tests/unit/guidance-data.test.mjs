@@ -28,6 +28,11 @@ test("Guidance catalog validates independent kinds, real references and complete
   assert.equal(d.tools.length, 8);
   assert.equal(d.guidance.filter((g) => g.kind === "skill").length, 5);
   assert.equal(d.details.animate.files["RECIPES.md"].includes("#"), true);
+  assert(
+    d.details["responsive-review"].files["GUIDANCE.md"].includes(
+      d.details["responsive-review"].checks.en[0],
+    ),
+  );
   assert.equal(
     d.details["review-animations"].files["STANDARDS.md"].includes("#"),
     true,
