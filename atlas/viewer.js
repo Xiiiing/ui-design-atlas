@@ -327,23 +327,29 @@ export function createViewer({
     if (layout.style.getPropertyValue("--preview-tools-height") !== toolsHeight)
       layout.style.setProperty("--preview-tools-height", toolsHeight);
     const automatic = !appState.width && (innerWidth < 1024 || appState.fit);
-    const desired = automatic
-      ? viewport.clientWidth
-      : appState.width || appState.selected.preview.width;
-    // Device presets constrain width. Give their document the visible height,
-    // so short windows scroll inside the demo instead of shrinking all controls.
+    const desired = appState.width || appState.selected.preview.width;
+    // Browser zoom produces fractional content boxes. Percentage constraints
+    // fit those boxes exactly; writing rounded clientWidth/clientHeight back
+    // can alternately add/remove classic scrollbars on every observer callback.
+    canvas.style.width = automatic
+      ? "100%"
+      : appState.fit
+        ? `min(100%, ${desired}px)`
+        : desired + "px";
+    canvas.style.height =
+      automatic || appState.width
+        ? "100%"
+        : appState.selected.preview.height + "px";
     const scale =
       automatic || !appState.fit
         ? 1
-        : Math.min(1, viewport.clientWidth / desired);
-    const h =
-      automatic || appState.width
-        ? viewport.clientHeight / scale
-        : appState.selected.preview.height;
-    canvas.style.width = desired * scale + "px";
-    canvas.style.height = h * scale + "px";
-    frame.style.width = desired + "px";
-    frame.style.height = h + "px";
+        : Math.min(1, parseFloat(getComputedStyle(canvas).width) / desired);
+    frame.style.width = automatic ? "100%" : desired + "px";
+    frame.style.height = automatic
+      ? "100%"
+      : appState.width
+        ? 100 / scale + "%"
+        : appState.selected.preview.height + "px";
     frame.style.transform = `scale(${scale})`;
     element("#preview-scale").textContent = `${Math.round(scale * 100)}%`;
   }
