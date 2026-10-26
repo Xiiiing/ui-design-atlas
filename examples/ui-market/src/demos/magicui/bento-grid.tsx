@@ -1,6 +1,8 @@
 // Upstream source and modifications: see ATTRIBUTION.md and upstream/magicui/.
 import { CalendarIcon, FileTextIcon } from "@radix-ui/react-icons"
 import { BellIcon, Share2Icon } from "lucide-react"
+import { motion } from "motion/react"
+import { useState } from "react"
 
 import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
@@ -75,8 +77,17 @@ const features = [
     href: "#",
     cta: "Learn more",
     className: "col-span-3 lg:col-span-2",
-    background: (
-      <AnimatedListDemo className="absolute top-4 right-2 h-[300px] w-full scale-75 border-none [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] transition-all duration-300 ease-out group-hover:scale-90" />
+    background: (hovered: boolean) => (
+      // Keep scaling in the same projection tree as the list's layout motion.
+      // A CSS-scaled ancestor makes inserted rows jump before they animate.
+      <motion.div
+        initial={false}
+        animate={{ scale: hovered ? 0.9 : 0.75 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        className="absolute top-4 right-2 h-[300px] w-full [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)]"
+      >
+        <AnimatedListDemo className="h-full border-none" />
+      </motion.div>
     ),
   },
   {
@@ -107,11 +118,29 @@ const features = [
   },
 ]
 
+function FeatureCard({ feature }: { feature: (typeof features)[number] }) {
+  const [hovered, setHovered] = useState(false)
+  return (
+    <BentoCard
+      {...feature}
+      background={
+        typeof feature.background === "function"
+          ? feature.background(hovered)
+          : feature.background
+      }
+      onMouseEnter={() => {
+        if (matchMedia("(hover: hover)").matches) setHovered(true)
+      }}
+      onMouseLeave={() => setHovered(false)}
+    />
+  )
+}
+
 export default function BentoDemo() {
   return (
     <BentoGrid>
       {features.map((feature, idx) => (
-        <BentoCard key={idx} {...feature} />
+        <FeatureCard key={idx} feature={feature} />
       ))}
     </BentoGrid>
   )

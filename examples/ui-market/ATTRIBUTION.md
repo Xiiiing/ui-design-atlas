@@ -41,3 +41,8 @@ Word Rotate, Shine Border and Meteors use the existing Magic UI commit
 `efe76fc5755eca1142dd4f74c1d6f0ace2887e3c`. Unmodified originals and hashes are in
 `upstream/magicui/components` and `sources.lock.json`. Atlas supplies bilingual demo
 wrappers, pause controls, reduced-motion handling and the required animation CSS.
+
+The Bento Grid demo's notification backdrop uses Motion-managed 75%/90% scaling,
+so its AnimatedList layout projections share the same scale coordinates. This
+removes the insertion jump caused by a CSS-scaled ancestor; source notification
+items, timing, card hover behavior and the other backgrounds are retained.

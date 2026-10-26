@@ -209,3 +209,14 @@ test("Details open and close without shifting or resizing the demo", async ({
     await expectStableDetailToggle(page);
   }
 });
+
+test("Bento's scaled notification animation has no insertion discontinuity", async ({
+  page,
+}) => {
+  const { recordBentoAnimation, expectSmoothBentoAnimation } =
+    await import("./bento-animation.mjs");
+  await page.clock.install();
+  await page.goto("#block/magicui-bento-grid?lang=zh-CN&theme=dark");
+  expectSmoothBentoAnimation(await recordBentoAnimation(page));
+  expectSmoothBentoAnimation(await recordBentoAnimation(page, true), true);
+});
