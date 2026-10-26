@@ -4,6 +4,8 @@
   margin: 32px 0;
 }
 .library-page .market-intro h1 {
+  font-size: var(--text-page);
+  line-height: var(--leading-page);
   margin: 12px 0;
 }
 .library-page .market-intro p {
@@ -120,7 +122,14 @@
   margin-top: 16px;
 }
 .browse-results .market-results-line {
-  padding: 0 0 16px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0;
+  line-height: 32px;
+}
+.browse-results .resource-group:first-of-type > h2 {
+  padding-right: 144px;
 }
 .browse-results .market-results-line > span:last-child {
   display: none;

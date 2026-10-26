@@ -113,7 +113,13 @@ function CardMenu({ actions }: { actions: HTMLElement[] }) {
       triggerClassName="card-menu-trigger"
       items={actions.map((action) => ({
         label: action.getAttribute("aria-label"),
-        onSelect: () => action.click(),
+        onSelect: () => {
+          action
+            .closest(".asset-actions")
+            ?.querySelector<HTMLElement>(".card-menu-trigger")
+            ?.focus({ preventScroll: true });
+          action.click();
+        },
       }))}
     />
   );

@@ -219,7 +219,7 @@ body.is-experience {
 }
 .experience-viewer .viewer-title h1 {
   margin: 0;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.4;
   white-space: nowrap;
   overflow: hidden;
@@ -424,8 +424,10 @@ body.is-experience {
 }
 .experience-viewer .preview-toolbar .preview-parameters {
   border: 0;
+  border-left: 1px solid var(--line);
   background: transparent;
-  padding: 0;
+  padding: 0 0 0 16px;
+  margin-left: 8px;
   font-size: 12px;
 }
 .experience-viewer .preview-parameters label {
@@ -436,12 +438,12 @@ body.is-experience {
   height: 32px;
 }
 .experience-viewer .inspector-head {
-  padding: 16px 16px 8px;
+  padding: 24px 24px 16px;
 }
 .experience-viewer .inspector-head h2 {
-  font-size: 18px;
-  line-height: 26px;
-  margin-bottom: 6px;
+  font-size: 22px;
+  line-height: 30px;
+  margin-bottom: 12px;
 }
 .experience-viewer .detail-eyebrow {
   gap: 6px;
@@ -456,13 +458,13 @@ body.is-experience {
   height: 32px;
 }
 .experience-viewer #inspector > .resource-tags {
-  padding: 0 16px 8px;
+  padding: 0 24px 16px;
 }
 .experience-viewer .inspector-content {
-  padding: 0 16px 16px;
+  padding: 0 24px 24px;
 }
 .experience-viewer .detail-section {
-  padding-top: 16px;
+  padding-top: 24px;
 }
 @media (min-width: 1024px) {
   .experience-viewer.full-viewer {
@@ -598,4 +600,49 @@ body.is-experience {
 }
 html:has(body.is-experience) {
   scrollbar-gutter: auto;
+}
+
+/* Reading controls never participate in the preview canvas geometry. */
+.experience-viewer .detail-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+.experience-viewer .inspector-head > p,
+.experience-viewer .detail-section p,
+.experience-viewer .detail-section li {
+  font-size: 14px;
+  line-height: 1.75;
+}
+.prompt-disclosure {
+  margin: 16px 0;
+  border-block: 1px solid var(--line);
+}
+.prompt-disclosure summary,
+.provenance summary {
+  cursor: pointer;
+  padding: 12px 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+.prompt-disclosure summary::marker,
+.provenance summary::marker {
+  color: var(--action);
+}
+.provenance-content {
+  padding-top: 8px;
+}
+.experience-viewer .preview-actions {
+  padding-left: 8px;
+  border-left: 1px solid var(--line);
+}
+.experience-viewer .full-resource-tabs button[aria-selected="true"] {
+  color: var(--action);
+  border-color: var(--action);
+}
+@media (max-width: 767px) {
+  .experience-viewer .preview-toolbar .preview-parameters {
+    border-left: 0;
+    margin-left: 0;
+    padding-left: 0;
+  }
 }

@@ -35,7 +35,7 @@
   color: var(--action);
 }
 .market-navigation.selection-group {
-  --selection-fill: var(--action);
+  --selection-stroke: var(--action);
 }
 .market-header-actions [data-shell-mounted="select"] {
   width: 44px;

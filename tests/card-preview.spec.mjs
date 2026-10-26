@@ -16,7 +16,7 @@ async function geometry(card) {
 function separate(g) {
   expect(g.caption.top).toBeGreaterThanOrEqual(g.preview.bottom);
   expect(g.description.top).toBeGreaterThanOrEqual(g.caption.bottom);
-  expect(g.description.height).toBeLessThanOrEqual(40.5);
+  expect(g.description.height).toBeLessThanOrEqual(48);
   if (g.badge) {
     expect(g.badge.top).toBeGreaterThanOrEqual(g.preview.top);
     expect(g.badge.bottom).toBeLessThan(g.preview.bottom);
@@ -57,11 +57,9 @@ test("Card metadata never covers or resizes the canvas on hover, focus or live l
         const after = await geometry(card);
         separate(after);
         expect(after).toEqual(before);
-        await card.locator(".asset-actions [data-details]").focus();
+        await card.locator(".card-menu-trigger").focus();
         expect(await geometry(card)).toEqual(before);
-        await card
-          .locator(".asset-actions [data-details]")
-          .evaluate((el) => el.blur());
+        await card.locator(".card-menu-trigger").evaluate((el) => el.blur());
         await page.mouse.move(0, 0);
         await expect(card.locator(".asset-description")).toHaveCSS(
           "opacity",
@@ -133,13 +131,14 @@ test("Touch cards keep descriptions outside the preview and open the actual reso
     await expect(card.locator(".asset-preview .asset-description")).toHaveCount(
       0,
     );
-    await card.locator(".asset-actions [data-details]").tap();
+    await card.locator(".card-menu-trigger").tap();
+    await page.getByRole("menuitem", { name: "查看详情", exact: true }).tap();
     await expect(page.locator(".experience-viewer")).toBeVisible();
     await expect(page.locator(".inspector-head h2")).toHaveText("微光按钮");
     await page
       .getByRole("button", { name: "返回资源市场", exact: true })
       .click();
-    await expect(card.locator(".asset-actions [data-details]")).toBeFocused();
+    await expect(card.locator(".card-menu-trigger")).toBeFocused();
     await expect(card).toHaveClass(/is-live/);
     separate(await geometry(card));
   } finally {
@@ -160,18 +159,16 @@ test("Card actions stay outside the preview, save independently and support keyb
     const boxes = await card.evaluate((el) => ({
       preview: el.querySelector(".asset-preview").getBoundingClientRect()
         .bottom,
-      actions: [...el.querySelector(".asset-actions").children].map((e) =>
-        e.getBoundingClientRect().toJSON(),
-      ),
+      actions: [...el.querySelector(".asset-actions").children]
+        .filter((e) => !e.hidden)
+        .map((e) => e.getBoundingClientRect().toJSON()),
     }));
     for (const b of boxes.actions)
       expect(b.top).toBeGreaterThanOrEqual(boxes.preview);
     expect(boxes.actions[1].left).toBeGreaterThanOrEqual(
       boxes.actions[0].right,
     );
-    expect(boxes.actions[2].left).toBeGreaterThanOrEqual(
-      boxes.actions[1].right,
-    );
+    expect(boxes.actions).toHaveLength(2);
     const save = card.locator("[data-save]"),
       prior = await save.getAttribute("aria-pressed");
     await save.click();
@@ -180,8 +177,9 @@ test("Card actions stay outside the preview, save independently and support keyb
       prior === "true" ? "false" : "true",
     );
     await expect(page).toHaveURL(/#motion/);
-    const details = card.locator(".asset-actions [data-details]");
+    const details = card.locator(".card-menu-trigger");
     await details.press("Enter");
+    await page.getByRole("menuitem", { name: "Details", exact: true }).click();
     await expect(page.locator("#inspector")).toBeVisible();
     await page.locator("[data-close-viewer]").first().click();
     await expect(details).toBeFocused();

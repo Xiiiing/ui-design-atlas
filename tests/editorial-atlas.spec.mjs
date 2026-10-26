@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-import { resources } from "../catalog.js";
 
 for (const lang of ["en", "zh-CN"]) {
   test(`Editorial discovery leads into the library and preserves legacy filters (${lang})`, async ({
@@ -52,6 +51,14 @@ test("Collapsed facets retain visible conditions; card menu works with keyboard 
   await expect(trigger).toBeFocused();
   await page.locator("[data-remove-filter=category]").click();
   await expect(page.locator(".asset-card")).toHaveCount(24);
+  const links = await page
+    .locator(".asset-card a")
+    .evaluateAll((els) => els.map((a) => a.href));
+  expect(
+    links.every((url) =>
+      url.startsWith("http://127.0.0.1:4173/ui-design-atlas/#"),
+    ),
+  ).toBe(true);
 });
 
 for (const width of [1440, 1024, 768, 390]) {
@@ -97,3 +104,105 @@ for (const width of [1440, 1024, 768, 390]) {
     }
   });
 }
+
+test("Detail reading disclosures keep the preview stable and prompt shortcut opens the text", async ({
+  page,
+}) => {
+  await page.goto("#component/magicui-border-beam?lang=en&panel=details");
+  await expect(page.locator(".viewer-load-state")).toBeHidden();
+  await expect(page.locator(".prompt-text")).not.toContainText(
+    "Loading details",
+  );
+  const frame = page.locator("#case-preview");
+  const geometry = await frame.boundingBox();
+  await expect(page.locator(".prompt-disclosure")).not.toHaveAttribute("open");
+  await page.locator(".prompt-disclosure summary").focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".prompt-text")).toBeVisible();
+  expect(await frame.boundingBox()).toEqual(geometry);
+  await page.locator(".prompt-disclosure summary").click();
+  await page.locator("[data-focus-prompt]").click();
+  await expect(page.locator(".prompt-text")).toBeVisible();
+  await page.locator(".provenance summary").click();
+  await expect(page.locator(".provenance-content")).toBeVisible();
+  expect(await frame.boundingBox()).toEqual(geometry);
+});
+
+for (const width of [1440, 1024, 768, 390]) {
+  test(`Content tools share the editorial scale and fit at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 1000 });
+    for (const lang of ["en", "zh-CN"]) {
+      await page.emulateMedia({
+        colorScheme: lang === "en" ? "dark" : "light",
+      });
+      for (const route of [
+        "guidance",
+        "tools",
+        "compose",
+        "favorites",
+        "resources",
+        "guide",
+      ]) {
+        await page.goto(`#${route}?lang=${lang}`);
+        await expect(page.locator("#main h1")).toBeVisible();
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth,
+          ),
+        ).toBe(true);
+        expect(
+          await page
+            .locator("#main h1")
+            .evaluate((el) => parseFloat(getComputedStyle(el).fontSize)),
+        ).toBe(width < 768 ? 30 : 40);
+        if (route === "compose") {
+          await expect(page.locator(".composer-group")).toHaveCount(3);
+          const input = await page.locator(".composer-inputs").boundingBox();
+          const output = await page.locator(".composer-output").boundingBox();
+          if (width > 900)
+            expect(output.x).toBeGreaterThan(input.x + input.width);
+          else expect(output.y).toBeGreaterThan(input.y + input.height);
+        }
+      }
+    }
+  });
+}
+
+test("Touch card menus and independent saved shortcut remain operable", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+  });
+  const page = await context.newPage();
+  await page.goto(
+    "http://127.0.0.1:4173/ui-design-atlas/#components?lang=en&category=buttons",
+  );
+  const card = page.locator(".asset-card").first();
+  await card.locator(".card-menu-trigger").tap();
+  await page.getByRole("menuitem", { name: "Details", exact: true }).tap();
+  await expect(page.locator("#inspector")).toBeVisible();
+  await page.locator("[data-close-viewer]").first().tap();
+  await expect(card.locator(".card-menu-trigger")).toBeFocused();
+  await card.locator("[data-save]").tap();
+  await page.locator(".saved-shortcut").tap();
+  await expect(page).toHaveURL(/#favorites/);
+  await expect(page.locator(".asset-card")).toHaveCount(1);
+  await context.close();
+});
+
+test("Systems share the library's navigation memory", async ({ page }) => {
+  await page.goto("#cases?lang=en");
+  await page.locator('[data-primary-view="guidance"]').click();
+  await expect(page.locator(".guidance-card").first()).toBeVisible();
+  await page.locator('[data-primary-view="explore"]').click();
+  await expect(page).toHaveURL(/#cases/);
+  await expect(page.locator('[data-market-mode="cases"]')).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+});

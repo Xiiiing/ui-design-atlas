@@ -148,7 +148,7 @@ test("Shell appearance cycles, persists across tabs and synchronizes archived pr
   await expect(other.locator("html")).toHaveAttribute("data-theme", "dark");
   await other.close();
   await page
-    .locator('[data-open="component:magicui-shimmer-button"]')
+    .locator('.asset-caption [data-open="component:magicui-shimmer-button"]')
     .last()
     .click();
   await expect(

@@ -56,7 +56,8 @@ function reconcileChildren(target, source, resources, cleanup) {
       // Retain the preview document, but keep native new-tab tag links current.
       const links = retained.querySelectorAll("a");
       next.querySelectorAll("a").forEach((link, index) => {
-        if (links[index]) links[index].href = link.href;
+        if (links[index])
+          links[index].setAttribute("href", link.getAttribute("href") || "");
       });
     }
     if (container) reconcileChildren(node, next, resources, cleanup);

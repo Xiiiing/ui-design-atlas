@@ -181,26 +181,26 @@ export function createResourceViews({
     const linkedHTML = linked.length
       ? `<section class="detail-section related-guidance"><h3>${t("相关设计指导", "Related guidance")}</h3>${linked.map((g) => `<a class="text-link" href="${href("guidance", g.id)}">${esc(l(g.name))}${icon("arrow-up-right")}</a>`).join("")}<a class="button" href="${href("compose", "", { reference: key(r) })}">${t("加入提示词组合", "Use in a prompt")}</a></section>`
       : "";
-    return `${linkedHTML}<section class="detail-section"><h3>${t("适用场景", "Use cases")}</h3><p>${esc(l(r.useCases || c?.scene || r.description))}</p></section><section class="detail-section"><h3>${t("设计解读 · 本站整理", "Design notes · Atlas interpretation")}</h3><p>${esc(l(principle) || l(r.description))}</p>${
+    return `<section class="detail-section"><h3>${t("适用场景", "Use cases")}</h3><p>${esc(l(r.useCases || c?.scene || r.description))}</p></section><section class="detail-section"><h3>${t("设计解读 · 本站整理", "Design notes · Atlas interpretation")}</h3><p>${esc(l(principle) || l(r.description))}</p>${
       rules
         ? `<ul>${l(rules)
             .map((x) => `<li>${esc(x)}</li>`)
             .join("")}</ul>`
         : ""
-    }</section>${promptHTML}${provenance(r)}`;
+    }</section>${promptHTML}${provenance(r)}${linkedHTML}`;
   }
 
   /** @param {import("./types").Resource} r */
   function provenance(r) {
     const s = resourceSource(r);
-    return `<section class="detail-section provenance"><h3>${t("来源与组件库", "Source & libraries")}</h3>${r.libraryIds
+    return `<details class="detail-section provenance"><summary>${t("来源与组件库", "Source & libraries")}</summary><div class="provenance-content">${r.libraryIds
       .map((id) => {
         const lib = libraries[id];
         return `<div class="library-credit"><strong>${esc(lib.name)}</strong><code>${esc(r.libraryVersions?.[id] || lib.version)}</code>${external(lib.docs, t("官方文档", "Official docs"))}</div>`;
       })
       .join(
         "",
-      )}<p><strong>${esc(s.name)}</strong> · ${esc(s.author)}</p><div class="credit-links">${external(r.originalUrl || s.docs || s.repo, t("原始示例", "Original example"))}${external(r.sourceUrl || s.repo, t("源码地址", "Source code"))}${s.licenseFile ? external(s.licenseFile, s.license) : `<span>${esc(s.license)}</span>`}</div>${s.commit ? `<p class="commit-credit">${t("固定源码版本", "Pinned source")} <code>${s.commit}</code></p>` : ""}<p class="curator-label">${s.original ? t("本站原创组合；使用所列组件库，不代表上游官方页面。提示词、样式和业务交互随资源源码交付。", "An original Atlas composition using the listed libraries, not an official upstream page. Prompts, styles and interactions are included with the resource source.") : t("保留上游视觉与实现；本站适配语言、本地数据和预览入口。设计解读与提示词由本站整理。", "Upstream visuals and implementation, adapted for language, local data and previews. Notes and prompts are curated by Atlas.")}</p></section>`;
+      )}<p><strong>${esc(s.name)}</strong> · ${esc(s.author)}</p><div class="credit-links">${external(r.originalUrl || s.docs || s.repo, t("原始示例", "Original example"))}${external(r.sourceUrl || s.repo, t("源码地址", "Source code"))}${s.licenseFile ? external(s.licenseFile, s.license) : `<span>${esc(s.license)}</span>`}</div>${s.commit ? `<p class="commit-credit">${t("固定源码版本", "Pinned source")} <code>${s.commit}</code></p>` : ""}<p class="curator-label">${s.original ? t("本站原创组合；使用所列组件库，不代表上游官方页面。提示词、样式和业务交互随资源源码交付。", "An original Atlas composition using the listed libraries, not an official upstream page. Prompts, styles and interactions are included with the resource source.") : t("保留上游视觉与实现；本站适配语言、本地数据和预览入口。设计解读与提示词由本站整理。", "Upstream visuals and implementation, adapted for language, local data and previews. Notes and prompts are curated by Atlas.")}</p></div></details>`;
   }
 
   /** @param {import("./types").Resource} r */

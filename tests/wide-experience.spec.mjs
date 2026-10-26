@@ -189,12 +189,13 @@ test("Details entry, code deep link and back restore filters, load count and exa
   page,
 }) => {
   await page.goto("#components?lang=en&style=motion-neutral");
-  const entry = page.locator(".asset-actions [data-details]").last();
+  const entry = page.locator(".card-menu-trigger").last();
   await entry.scrollIntoViewIfNeeded();
   const hash = await page.evaluate(() => location.hash),
     scroll = await page.evaluate(() => scrollY),
     count = await page.locator(".asset-card").count();
   await entry.click();
+  await page.getByRole("menuitem", { name: "Details", exact: true }).click();
   await expect(page).toHaveURL(/panel=details/);
   await expect(page.locator("#inspector")).toBeVisible();
   await page.locator("[data-tab=code]").click();

@@ -40,7 +40,9 @@ export function parseHash(hash) {
 
 /** @param {string} view */
 export const sectionOf = (view) =>
-  ["motion", "components", "blocks", "pages"].includes(view) ? "explore" : view;
+  ["motion", "components", "blocks", "pages", "cases"].includes(view)
+    ? "explore"
+    : view;
 
 /** @param {Pick<import("./types").BaseDependencies,"appState"|"href"> & {render:()=>void}} dependencies */
 export function createNavigation({ appState, href, render }) {

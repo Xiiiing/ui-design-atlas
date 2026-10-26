@@ -9,6 +9,7 @@ import {
 } from "./atlas/input.js";
 import { createFavorites } from "./atlas/favorites.js";
 import { readFavorites } from "./atlas/favorite-data.js";
+import { facetValues } from "./atlas/filter-model.js";
 import { createFilterActions } from "./atlas/filter-actions.js";
 import { reconcileResults } from "./atlas/results.js";
 import { loadResourceDetails } from "./atlas/resource-data.js";
@@ -156,7 +157,9 @@ function render() {
     appState.route.view === "discover" &&
     [...appState.route.params].some(
       ([name, value]) =>
-        !["lang", "theme"].includes(name) && value && value !== "all",
+        ["q", "collection", ...Object.keys(facetValues)].includes(name) &&
+        value &&
+        value !== "all",
     )
   ) {
     history.replaceState(
@@ -521,7 +524,7 @@ document.addEventListener("click", async (e) => {
   const b = e.target.closest("button");
   if (!b) return;
   if (b.hasAttribute("data-retry-guidance-module")) return renderGuidance();
-  if (b.hasAttribute("data-retry-info")) return render();
+  if (b.hasAttribute("data-retry-info")) return location.reload();
   if (b.hasAttribute("data-retry-saved")) return render();
   if ((await handlePreviewAction(b)) || (await handleSourceAction(b))) return;
   if (b.hasAttribute("data-retry-preview"))
@@ -582,6 +585,7 @@ document.addEventListener("click", async (e) => {
   }
   if (b.hasAttribute("data-focus-prompt")) {
     toggleDetails(true);
+    maybe(".prompt-disclosure")?.setAttribute("open", "");
     maybe("#prompt-scope")?.focus();
     maybe("#prompt-scope")?.scrollIntoView({ block: "center" });
     return;
