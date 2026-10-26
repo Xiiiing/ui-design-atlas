@@ -1,0 +1,14 @@
+{
+  "body": {
+    "zh-CN": "# Vercel 设计分析\n\n第三方对 Vercel 设计语言的分析：黑白基础、精确边界、技术型排版与局部色彩。\n\n色板和排版摘要为本站整理；完整分析来自 VoltAgent，不是品牌官方规范。",
+    "en": "# Vercel design analysis\n\nA third-party analysis of Vercel’s design language: a monochrome base, precise boundaries, technical typography and localized color.\n\nPalette and typography summaries are Atlas notes. The full analysis is by VoltAgent, not an official brand specification."
+  },
+  "task": {
+    "zh-CN": "采用黑白基础、精确网格与细边界，以清晰排版组织内容，色彩仅用于有限重点；保持自身品牌和可读性。",
+    "en": "Use a monochrome base, precise grids and subtle boundaries with clear typography. Reserve color for focused emphasis and preserve the project’s own brand and readability."
+  },
+  "usage": {
+    "zh-CN": "普通对话：复制本站整理的任务要求，并补充你的项目需求。编程助手：先提供项目上下文，再按文件说明使用；下载不会自动安装或执行。",
+    "en": "Chat: copy the Atlas task notes and add your project requirements. Coding assistant: provide project context, then follow the file instructions. Downloads do not install or execute anything."
+  }
+}

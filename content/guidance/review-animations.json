@@ -1,0 +1,14 @@
+{
+  "body": {
+    "zh-CN": "# Review Animations\n\n审核现有动效的节奏、连续性、交互与可访问性，配套精确规则文件。\n\n下方原始文件保持上游语言与内容；中文任务要点为本站整理，不替代完整 Skill。",
+    "en": "# Review Animations\n\nReview existing motion for timing, continuity, interaction and accessibility, with a detailed standards file.\n\nOriginal files below retain the upstream language and contents. Atlas task notes do not replace the complete skill."
+  },
+  "task": {
+    "zh-CN": "审核现有动效，定位具体代码与可见问题，按影响排序提出修复；只有实际检查过的结果才能宣称通过。",
+    "en": "Review existing motion, locate concrete code and visible issues, and prioritize fixes by impact. Claim success only for checks actually performed."
+  },
+  "usage": {
+    "zh-CN": "普通对话：复制本站整理的任务要求，并补充你的项目需求。编程助手：先提供项目上下文，再按文件说明使用；下载不会自动安装或执行。",
+    "en": "Chat: copy the Atlas task notes and add your project requirements. Coding assistant: provide project context, then follow the file instructions. Downloads do not install or execute anything."
+  }
+}

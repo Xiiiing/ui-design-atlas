@@ -1,0 +1,18 @@
+{
+  "body": {
+    "zh-CN": "以 Awwwards、Webby Awards、FWA 优秀作品的视觉完成度为参考，结合本项目的用户、内容和品牌建立一致的设计方向。重点打磨字体与排版、留白、视觉层级、色彩、动效和微交互，同时保证可读性、可访问性、响应式与性能。完成后检查桌面和手机效果，优先修复最影响体验的三个问题，并说明修改结果。若无法实际运行或查看页面，请明确列出尚未验证的部分。",
+    "en": "Use the visual finish of strong Awwwards, Webby Awards and FWA work as a reference. Establish a coherent direction based on this project’s users, content and brand. Refine typography, spacing, hierarchy, color, motion and micro-interactions while preserving readability, accessibility, responsiveness and performance. Inspect desktop and mobile results, fix the three most consequential issues first and explain the changes. Clearly identify anything you could not run or inspect."
+  },
+  "task": {
+    "zh-CN": "以 Awwwards、Webby Awards、FWA 优秀作品的视觉完成度为参考，结合本项目的用户、内容和品牌建立一致的设计方向。重点打磨字体与排版、留白、视觉层级、色彩、动效和微交互，同时保证可读性、可访问性、响应式与性能。完成后检查桌面和手机效果，优先修复最影响体验的三个问题，并说明修改结果。若无法实际运行或查看页面，请明确列出尚未验证的部分。",
+    "en": "Use the visual finish of strong Awwwards, Webby Awards and FWA work as a reference. Establish a coherent direction based on this project’s users, content and brand. Refine typography, spacing, hierarchy, color, motion and micro-interactions while preserving readability, accessibility, responsiveness and performance. Inspect desktop and mobile results, fix the three most consequential issues first and explain the changes. Clearly identify anything you could not run or inspect."
+  },
+  "usage": {
+    "zh-CN": "普通对话：复制本站整理的任务要求，并补充你的项目需求。编程助手：先提供项目上下文，再按文件说明使用；下载不会自动安装或执行。",
+    "en": "Chat: copy the Atlas task notes and add your project requirements. Coding assistant: provide project context, then follow the file instructions. Downloads do not install or execute anything."
+  },
+  "original": {
+    "zh-CN": "以 Awwwards、Webby Awards、FWA 获奖级网站为品质标准，完成后从排版、留白、视觉层级、色彩、动效、微交互、响应式和原创性上自检并持续优化，直到没有明显可提升之处。",
+    "en": "Use Awwwards, Webby Awards and FWA award-winning websites as the quality bar. Inspect and keep refining typography, spacing, hierarchy, color, motion, micro-interactions, responsiveness and originality until no obvious improvements remain."
+  }
+}

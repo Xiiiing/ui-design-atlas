@@ -1,0 +1,14 @@
+{
+  "body": {
+    "zh-CN": "项目需求：{{requirements}}\n目标用户：{{audience}}\n技术约束：{{technology}}\n视觉方向：{{direction}}\n\n围绕主要业务任务组织导航、工作区和操作路径。沿用项目已有组件与技术，建立统一的字号、间距和状态。表格与表单应覆盖加载、空数据、错误、成功与禁用状态。优先保证信息可读、键盘可达和窄屏可用，最后打磨适度的反馈动效。",
+    "en": "Project requirements: {{requirements}}\nAudience: {{audience}}\nTechnology constraints: {{technology}}\nVisual direction: {{direction}}\n\nOrganize navigation, workspaces and actions around the main business tasks. Reuse the existing stack and components with consistent typography, spacing and states. Cover loading, empty, error, success and disabled states for tables and forms. Prioritize readability, keyboard access and narrow screens before refining feedback motion."
+  },
+  "task": {
+    "zh-CN": "实现面向任务的后台界面，复用已有组件；补齐表格、表单与主要操作的状态和键盘流程。不要为了装饰降低信息密度或可读性。",
+    "en": "Implement a task-oriented application using existing components. Cover table, form and action states and keyboard flows. Preserve useful density and readability."
+  },
+  "usage": {
+    "zh-CN": "普通对话：复制本站整理的任务要求，并补充你的项目需求。编程助手：先提供项目上下文，再按文件说明使用；下载不会自动安装或执行。",
+    "en": "Chat: copy the Atlas task notes and add your project requirements. Coding assistant: provide project context, then follow the file instructions. Downloads do not install or execute anything."
+  }
+}

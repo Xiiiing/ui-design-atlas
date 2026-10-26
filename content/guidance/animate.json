@@ -1,0 +1,14 @@
+{
+  "body": {
+    "zh-CN": "# Animate\n\n按用途、工具、属性、缓动、时长与打断行为构建网页动效，包含配套实现配方。\n\n下方原始文件保持上游语言与内容；中文任务要点为本站整理，不替代完整 Skill。",
+    "en": "# Animate\n\nBuild web motion by deciding purpose, tools, properties, easing, duration and interruption, with supporting recipes.\n\nOriginal files below retain the upstream language and contents. Atlas task notes do not replace the complete skill."
+  },
+  "task": {
+    "zh-CN": "先说明动效的用途，再选择属性、曲线与时长，处理进入、退出、打断和减少动态效果偏好。",
+    "en": "Explain the purpose of motion, then choose properties, easing and duration and cover entry, exit, interruption and reduced motion."
+  },
+  "usage": {
+    "zh-CN": "普通对话：复制本站整理的任务要求，并补充你的项目需求。编程助手：先提供项目上下文，再按文件说明使用；下载不会自动安装或执行。",
+    "en": "Chat: copy the Atlas task notes and add your project requirements. Coding assistant: provide project context, then follow the file instructions. Downloads do not install or execute anything."
+  }
+}
