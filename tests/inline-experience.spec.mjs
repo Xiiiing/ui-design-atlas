@@ -43,6 +43,7 @@ test("Inline forms accept input on touch devices without opening a viewer", asyn
     "http://127.0.0.1:4173/ui-design-atlas/#components?lang=en&q=folio&category=forms",
   );
   const card = page.locator('[data-resource="component:folio-form"]');
+  await card.scrollIntoViewIfNeeded();
   await expect(card).toHaveAttribute("data-preview-state", "ready");
   const form = card.frameLocator("iframe");
   await form.locator("input[type=email]").fill("demo@example.com");

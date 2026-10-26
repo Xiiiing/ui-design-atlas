@@ -100,6 +100,7 @@ export function createBrowse({
     const heading = (number, title, destination, label) =>
       `<div class="discovery-section-heading"><h2><span class="section-number">${number}</span>${title}</h2><a class="text-link" href="${destination}">${label}${icon("arrow-up-right")}</a></div>`;
     return `<section class="discovery-intro"><h1>${t("好界面，值得细看。", "Interfaces, up close.")}</h1><form id="discovery-search" class="discovery-search"><div class="market-search">${icon("search")}<input id="discovery-query" name="q" type="search" aria-label="${t("搜索 UI", "Search UI")}" placeholder="${t("按钮、动效、登录页面…", "Buttons, motion, sign-in pages…")}"><button type="submit" class="icon-button" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></div></form></section>
+    <nav class="discovery-categories" aria-label="${t("按用途找资源", "Find resources by purpose")}">${["buttons", "cards", "forms", "navigation", "data", "auth", "backgrounds"].map((id) => `<a href="${href("explore", "", { category: id })}">${t(...categories[id])}</a>`).join("")}<a class="all-categories" href="${href("explore")}">${t("全部分类", "All categories")}${icon("arrow-right")}</a></nav>
     <section class="featured-section discovery-section">${heading("01", t("精选界面", "Selected interfaces"), href("explore"), t("查看全部", "View all"))}<div class="market-grid discovery-grid">${items.map(card).join("")}</div></section>
     <section class="discovery-section collection-section">${heading("02", t("沿着主题探索", "Follow a theme"), href("explore"), t("探索资源", "Explore resources"))}<div class="discovery-collections">${discovery.collections
       .map((c) => {
@@ -223,18 +224,19 @@ export function createBrowse({
     .join(
       "",
     )}</nav><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${appState.route.view === "favorites" ? t("搜索收藏", "Search saved") : t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(appState.route.params.get("q") || "")}"><button class="icon-button" type="submit" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label><div class="catalog-facets">
-  <button type="button" class="button advanced-filters-toggle" data-advanced-filters aria-controls="advanced-filters" aria-expanded="${expanded}">${icon("sliders-horizontal")}${t("筛选", "Filters")}</button></div></div>
+  <button type="button" class="button advanced-filters-toggle" data-advanced-filters aria-controls="advanced-filters" aria-expanded="${expanded}">${icon("sliders-horizontal")}${t("更多筛选", "More filters")}</button></div></div>
   ${collection ? `<input type="hidden" name="collection" value="${collection.id}">` : ""}<input type="hidden" name="category" value="${esc(appState.route.params.get("category") || "all")}">
 
-  <div class="filter-options-row"><div class="active-filters" id="active-filters" aria-label="${t("已选条件", "Selected filters")}"></div></div>
-  <div class="advanced-filters" id="advanced-filters"><fieldset class="category-facet"><legend>${t("用途分类", "Categories")}</legend>  <nav class="category-strip" data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${Object.entries(
+  <fieldset class="category-facet"><legend>${t("用途分类", "Categories")}</legend>  <nav class="category-strip" data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${Object.entries(
     { all: ["全部分类", "All categories"], ...categories },
   )
     .map(
       ([id, labels]) =>
         `<button type="button" data-category="${id}" aria-pressed="${id === "all" ? !selections(appState.route.params.get("category")).length : selections(appState.route.params.get("category")).includes(id)}">${t(labels[0], labels[1])}<span>${id === "all" ? resourceCounts.total : resourceCounts.byCategory.get(id) || 0}</span></button>`,
     )
-    .join("")}</nav></fieldset>${selectFilter(
+    .join("")}</nav></fieldset>
+  <div class="filter-options-row"><div class="active-filters" id="active-filters" aria-label="${t("已选条件", "Selected filters")}"></div></div>
+  <div class="advanced-filters" id="advanced-filters">${selectFilter(
     "library",
     t("组件库", "Libraries"),
     Object.values(libraries).map((x) => [x.id, x.name]),

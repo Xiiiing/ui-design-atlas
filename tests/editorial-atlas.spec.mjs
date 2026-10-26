@@ -15,6 +15,18 @@ for (const lang of ["en", "zh-CN"]) {
     await expect(page.locator("#results .asset-card")).toHaveCount(4);
     await page.goBack();
     await expect(page.locator("#discovery-search")).toBeVisible();
+    const buttons = page.locator('.discovery-categories a[href*="category=buttons"]');
+    await buttons.focus();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/#explore.*category=buttons/);
+    await expect(page.locator("#advanced-filters")).toBeHidden();
+    await expect(page.locator("[data-category=buttons]")).toHaveAttribute("aria-pressed", "true");
+    await page.locator("[data-category=forms]").click();
+    await page.reload();
+    await expect(page.locator("[data-category=buttons]")).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator("[data-category=forms]")).toHaveAttribute("aria-pressed", "true");
+    await page.locator("[data-category=all]").click();
+    await expect(page.locator("[data-remove-filter=category]")).toHaveCount(0);
     await page.goto(`#discover?lang=${lang}&category=buttons&library=magicui`);
     await expect(page).toHaveURL(/#explore.*category=buttons.*library=magicui/);
     await expect(page.locator("[data-remove-filter=category]")).toBeVisible();
@@ -28,11 +40,13 @@ test("Collapsed facets retain visible conditions; card menu works with keyboard 
 }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("#explore?lang=en");
-  await expect(page.locator(".category-strip")).toBeHidden();
+  await expect(page.locator(".category-strip")).toBeVisible();
+  await expect(page.locator("#advanced-filters")).toBeHidden();
   await page.locator("[data-advanced-filters]").click();
   await page.locator("[data-category=buttons]").click();
   await page.locator("[data-advanced-filters]").click();
-  await expect(page.locator(".category-strip")).toBeHidden();
+  await expect(page.locator(".category-strip")).toBeVisible();
+  await expect(page.locator("#advanced-filters")).toBeHidden();
   await expect(page.locator("[data-remove-filter=category]")).toBeVisible();
   const card = page.locator(".asset-card").first();
   const trigger = card.locator(".card-menu-trigger");
@@ -79,8 +93,9 @@ for (const width of [1440, 1024, 768, 390]) {
           const intro = await page.locator(".discovery-intro").boundingBox();
           expect(intro.height).toBeLessThanOrEqual(150);
           await expect(page.locator(".discovery-intro p")).toHaveCount(0);
-          const first = await page.locator(".featured-section .asset-card").first().boundingBox();
-          expect(first.y).toBeLessThan(340);
+          const preview = await page.locator(".featured-section .asset-preview").first().boundingBox();
+          // Category shortcuts may wrap, but the first preview stays fully in view.
+          expect(preview.y + preview.height).toBeLessThan(900);
         }
         const header = page.locator(".market-header");
         const before = await header.boundingBox();
@@ -188,8 +203,11 @@ test("Touch card menus and independent saved shortcut remain operable", async ({
   });
   const page = await context.newPage();
   await page.goto(
-    "http://127.0.0.1:4173/ui-design-atlas/#components?lang=en&category=buttons",
+    "http://127.0.0.1:4173/ui-design-atlas/#discover?lang=en",
   );
+  await page.locator('.discovery-categories a[href*="category=buttons"]').tap();
+  await expect(page).toHaveURL(/#explore.*category=buttons/);
+  await expect(page.locator("#advanced-filters")).toBeHidden();
   const card = page.locator(".asset-card").first();
   await card.locator(".card-menu-trigger").tap();
   await page.getByRole("menuitem", { name: "Details", exact: true }).tap();
