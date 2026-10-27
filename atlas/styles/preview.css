@@ -6,7 +6,7 @@
   align-items: start;
 }
 .library-page .asset-card[data-layout="wide"] {
-  grid-column: auto;
+  grid-column: span 2;
 }
 .library-page .asset-card .asset-preview {
   width: 100%;

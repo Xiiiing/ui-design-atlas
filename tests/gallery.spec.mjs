@@ -22,7 +22,7 @@ const choose = async (page, id, name) => {
   await page.getByRole("option", { name, exact: true }).click();
 };
 
-test("Gallery uses native document scrolling, compact previews and equal columns", async ({
+test("Gallery uses native scrolling and responsive tracks for mixed card widths", async ({
   page,
 }) => {
   for (const [width, columns] of [

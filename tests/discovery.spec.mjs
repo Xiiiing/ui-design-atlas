@@ -164,7 +164,7 @@ test("Touch library cards show their actual UI and retain readable captions", as
   expect(bounds.descriptionTop).toBeGreaterThanOrEqual(bounds.captionBottom);
 });
 
-test("The library has equal framed columns and restores loaded results after detail", async ({
+test("The library mixes framed card widths and restores loaded results after detail", async ({
   page,
 }) => {
   await page.goto("#explore?lang=en");
@@ -181,7 +181,7 @@ test("The library has equal framed columns and restores loaded results after det
     }));
   expect(geometry.columns).toBe(4);
   expect(geometry.gap).toBe("16px");
-  expect(new Set(geometry.widths).size).toBe(1);
+  expect(new Set(geometry.widths).size).toBe(2);
   await page.locator("[data-more]").click();
   await expect(page.locator("#results .asset-card")).toHaveCount(48);
   await page.locator("#results .asset-caption [data-open]").last().click();
