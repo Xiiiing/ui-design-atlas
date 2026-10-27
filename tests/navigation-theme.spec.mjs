@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 const appearance = (page) => page.locator("#topbar .appearance-trigger");
 const frameTheme = (frame) => frame.locator("html");
 
-test("Navigation contracts without moving content, stays pinned and restores at the top", async ({
+test("Navigation stays readable and pinned without moving content", async ({
   page,
 }) => {
   for (const width of [2560, 1440, 768, 375]) {
@@ -18,17 +18,18 @@ test("Navigation contracts without moving content, stays pinned and restores at 
     const documentTop = () =>
       card.evaluate((el) => el.getBoundingClientRect().top + scrollY);
     const before = await documentTop();
+    const headerWidth = (await header.boundingBox()).width;
     await page.evaluate(() => scrollTo(0, 600));
     await expect(topbar).toHaveClass("is-compact");
     await expect
       .poll(() => header.evaluate((el) => el.getBoundingClientRect().width))
-      .toBeLessThanOrEqual(497);
+      .toBe(headerWidth);
     expect(await documentTop()).toBeCloseTo(before, 0);
-    if (width <= 700) {
+    if (width <= 900) {
       await expect(page.locator(".market-navigation")).toBeHidden();
       await expect(page.locator(".mobile-nav-trigger")).toBeVisible();
     } else await expect(page.locator(".market-navigation")).toBeVisible();
-    for (const link of width <= 700
+    for (const link of width <= 900
       ? []
       : await page.locator(".market-navigation a").all()) {
       const box = await link.boundingBox();
@@ -37,26 +38,26 @@ test("Navigation contracts without moving content, stays pinned and restores at 
       expect(box.x + box.width).toBeLessThan(width);
     }
     await page.evaluate(() => scrollTo(0, 1200));
-    await expect.poll(async () => (await header.boundingBox()).y).toBe(8);
+    await expect.poll(async () => (await header.boundingBox()).y).toBe(0);
     const beforeMenuScroll = await page.evaluate(() => scrollY);
     await page.locator("#site-locale").click();
-    await expect.poll(async () => (await header.boundingBox()).y).toBe(8);
+    await expect.poll(async () => (await header.boundingBox()).y).toBe(0);
     expect(await page.evaluate(() => scrollY)).toBe(beforeMenuScroll);
     await expect(
       page.getByRole("option", { name: "English", exact: true }),
     ).toHaveAttribute("aria-selected", "true");
     await page.keyboard.press("Escape");
     await expect(page.locator("#site-locale")).toBeFocused();
-    if (width <= 700) {
+    if (width <= 900) {
       await page.locator(".mobile-nav-trigger").click();
       await page
-        .getByRole("menuitem", { name: "Discover", exact: true })
+        .getByRole("menuitem", { name: "Library", exact: true })
         .click();
     } else {
       await page.locator(".market-navigation a").first().focus();
       await page.keyboard.press("Enter");
     }
-    await expect(page).toHaveURL(/#discover/);
+    await expect(page).toHaveURL(/#explore/);
     await expect(topbar).toHaveClass("is-compact");
     await expect
       .poll(() => page.evaluate(() => scrollY))
@@ -220,8 +221,7 @@ test("Touch users can operate compact navigation and dismiss the language picker
   await page.locator("#site-locale").tap();
   await page.touchscreen.tap(20, 500);
   await expect(page.locator(".language-content")).toHaveCount(0);
-  await page.locator(".mobile-nav-trigger").tap();
-  await page.getByRole("menuitem", { name: "Saved", exact: true }).tap();
+  await page.locator(".saved-shortcut").tap();
   await expect(page).toHaveURL(/#favorites/);
   await context.close();
 });

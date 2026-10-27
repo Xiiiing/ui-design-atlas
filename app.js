@@ -25,8 +25,6 @@ import {
   resourcePreview,
   resourcePrompt,
   resources,
-  discoveryGallery,
-  discoveryResources,
   getCase,
 } from "./catalog.js";
 import { createLiveCards } from "./live-cards.js";
@@ -124,7 +122,7 @@ const l = (v) =>
     : v;
 
 /** @type {import("./atlas/types").Href} */
-const href = (view = "discover", id = "", params = {}) =>
+const href = (view = "explore", id = "", params = {}) =>
   "#" +
   view +
   (id ? "/" + id : "") +
@@ -154,6 +152,14 @@ function render() {
   replaceShellHTML(d, "");
   appState.selected = null;
   appState.route = parse();
+  if (appState.route.view === "discover") {
+    history.replaceState(
+      history.state,
+      "",
+      "#explore?" + appState.route.params,
+    );
+    appState.route = parse();
+  }
   const routeLocale = appState.route.params.get("lang");
   const routeTheme = appState.route.params.get("theme");
   if (routeLocale === "zh-CN" || routeLocale === "en")
@@ -185,12 +191,29 @@ function render() {
     renderGuidance();
     return;
   }
-  if (appState.route.view === "resources") {
-    replaceShellHTML(main, sourcePage());
-    return;
-  }
-  if (appState.route.view === "guide") {
-    replaceShellHTML(main, guidePage());
+  if (["resources", "guide"].includes(appState.route.view)) {
+    const serial = ++guidanceSerial;
+    const view = appState.route.view;
+    replaceShellHTML(
+      main,
+      `<p role="status">${t("正在加载…", "Loading…")}</p>`,
+    );
+    void import("./atlas/info-views.js")
+      .then(({ createInfoViews }) => {
+        if (serial !== guidanceSerial) return;
+        const views = createInfoViews({ t, external });
+        replaceShellHTML(
+          main,
+          view === "resources" ? views.sourcePage() : views.guidePage(),
+        );
+      })
+      .catch(() => {
+        if (serial === guidanceSerial)
+          replaceShellHTML(
+            main,
+            `<div class="market-empty"><p>${t("内容加载失败，请重试。", "Content could not be loaded. Please retry.")}</p><button class="button" data-retry-info>${t("重试", "Retry")}</button></div>`,
+          );
+      });
     return;
   }
   if (appState.route.view === "favorites" && !savedContent) {
@@ -222,10 +245,7 @@ function render() {
   }
   appState.originBrowse = null;
   appState.limit = history.state?.browse?.limit || history.state?.limit || 24;
-  replaceShellHTML(
-    main,
-    appState.route.view === "discover" ? discoveryPage() : listing(),
-  );
+  replaceShellHTML(main, listing());
   restoreFilters();
   const b = history.state?.browse;
   if (b)
@@ -272,8 +292,6 @@ const {
   resourceDetails,
   related,
   caseDirectory,
-  sourcePage,
-  guidePage,
 } = createResourceViews({ appState, t, href, syncNavigation, l, shellTheme });
 
 /** @type {Promise<ReturnType<typeof import("./atlas/source-code.js").createSourceCode>>|undefined} */
@@ -354,7 +372,7 @@ const {
   render,
 });
 
-const { discoveryPage, listing, filtered, updateResults, restoreFilters } =
+const { listing, filtered, updateResults, restoreFilters } =
   createBrowse({
     appState,
     t,
@@ -459,8 +477,7 @@ document.addEventListener("compositionend", (event) => {
   if (!(event.target instanceof HTMLInputElement)) return;
   endComposition(event);
   if (
-    event.target.matches("#filters [name=q]") &&
-    appState.route.view !== "discover"
+    event.target.matches("#filters [name=q]")
   ) {
     appState.limit = 24;
     listInput.schedule();
@@ -486,6 +503,7 @@ document.addEventListener("click", async (e) => {
   const b = e.target.closest("button");
   if (!b) return;
   if (b.hasAttribute("data-retry-guidance-module")) return renderGuidance();
+  if (b.hasAttribute("data-retry-info")) return location.reload();
   if (b.hasAttribute("data-retry-saved")) return render();
   if ((await handlePreviewAction(b)) || (await handleSourceAction(b))) return;
   if (b.hasAttribute("data-retry-preview"))
@@ -497,6 +515,7 @@ document.addEventListener("click", async (e) => {
       try {
         return copy(
           resourcePrompt(await loadResourceDetails(resource), appState.locale),
+          b.closest(".asset-card")?.querySelector(".card-menu-trigger"),
         );
       } catch {
         notify(
@@ -545,6 +564,7 @@ document.addEventListener("click", async (e) => {
   }
   if (b.hasAttribute("data-focus-prompt")) {
     toggleDetails(true);
+    maybe(".prompt-disclosure")?.setAttribute("open", "");
     maybe("#prompt-scope")?.focus();
     maybe("#prompt-scope")?.scrollIntoView({ block: "center" });
     return;
@@ -585,36 +605,6 @@ document.addEventListener("click", async (e) => {
     const r =
       list[(i + Number(b.dataset.neighbor) + list.length) % list.length];
     if (r) openResource(r.id, r.type, true);
-    return;
-  }
-  if (b.hasAttribute("data-discovery-more")) {
-    appState.limit += 24;
-    const browse = { ...history.state?.browse, limit: appState.limit };
-    history.replaceState(
-      {
-        ...history.state,
-        limit: appState.limit,
-        ...(history.state?.browse ? { browse } : {}),
-      },
-      "",
-      location.href,
-    );
-    reconcileResults(
-      element(".library-continuation"),
-      discoveryGallery().slice(8, appState.limit).map(card).join(""),
-    );
-    const visible = discoveryGallery().slice(0, appState.limit);
-    const cases = discoveryResources("cases").filter(
-      (r) => !visible.some((item) => key(item) === key(r)),
-    );
-    const section = element(".systems-section");
-    section.hidden = !cases.length;
-    reconcileResults(
-      element(".discovery-grid", section),
-      cases.map(card).join(""),
-    );
-    if (appState.limit >= resources.length) b.remove();
-    observeCards();
     return;
   }
   if (handleFilterAction(b)) return;
@@ -660,8 +650,7 @@ document.addEventListener("input", (e) => {
 
   if (isComposing(e)) return;
   if (
-    e.target.matches("#filters [name=q]") &&
-    appState.route.view !== "discover"
+    e.target.matches("#filters [name=q]")
   ) {
     appState.limit = 24;
     listInput.schedule();

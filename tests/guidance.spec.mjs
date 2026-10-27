@@ -26,13 +26,20 @@ test("Guidance filters use URL/history, honor composition and cancel input befor
   await expect(page.locator(".guidance-card")).not.toHaveCount(13);
   await q.fill("");
   await expect(page.locator(".guidance-card")).toHaveCount(13);
-  await form.locator("[name=kind]").selectOption("skill");
+  await form
+    .locator('[data-content-filter="kind"][data-value="skill"]')
+    .click();
   await expect(page.locator(".guidance-card")).toHaveCount(5);
-  await form.locator("[name=purpose]").selectOption("motion");
+  await form
+    .locator('[data-content-filter="purpose"][data-value="motion"]')
+    .click();
   await expect(page.locator(".guidance-card")).toHaveCount(3);
   await expect(page).toHaveURL(/kind=skill.*purpose=motion/);
   await page.reload();
   await expect(page.locator(".guidance-card")).toHaveCount(3);
+  await expect(
+    form.locator('[data-content-filter="kind"][data-value="prompt"]'),
+  ).toBeDisabled();
   await page.goBack();
   await expect(page.locator(".guidance-card")).toHaveCount(5);
   await form.locator("[name=q]").fill("a-query-that-does-not-match");
@@ -247,3 +254,49 @@ test("Guidance and interfaces link both ways and hand selected references to the
     "block:magicui-bento-grid",
   );
 });
+
+for (const [route, title, kind, total, filtered] of [
+  ["guidance", "Design guidance", "skill", 13, 5],
+  ["tools", "Resource directory", "library", 8, 4],
+]) {
+  test(`${route} exposes compact filters with keyboard, touch and empty-result recovery`, async ({
+    page,
+  }) => {
+    await page.goto(`#${route}?lang=en`);
+    await expect(page.locator(".content-intro h1")).toHaveText(title);
+    await expect(
+      page.locator(".content-intro p, .content-intro .guidance-eyebrow"),
+    ).toHaveCount(0);
+    const type = page.locator(
+      `[data-content-filter="kind"][data-value="${kind}"]`,
+    );
+    await type.focus();
+    await page.keyboard.press("Space");
+    await expect(type).toHaveAttribute("aria-pressed", "true");
+    await expect(type).toBeFocused();
+    await expect(page.locator(".guidance-card")).toHaveCount(filtered);
+    await expect(page).toHaveURL(new RegExp(`kind=${kind}`));
+    const query = page.locator("#content-filters [name=q]");
+    await query.fill("no-matching-content-123");
+    await expect(page.locator(".market-empty")).toBeVisible();
+    await expect(type).toBeEnabled();
+    await expect(type.locator("[data-filter-count]")).toHaveText("0");
+    await page.locator('[data-content-filter="kind"][data-value=""]').click();
+    await query.fill("");
+    await expect(page.locator(".guidance-card")).toHaveCount(total);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await type.click();
+    await expect(page.locator(".guidance-card")).toHaveCount(filtered);
+    expect((await type.boundingBox()).height).toBeGreaterThanOrEqual(44);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    await page.locator(".guidance-card h2 a").first().click();
+    await expect(page.locator(".guidance-reader")).toBeVisible();
+    await page.locator(`.guidance-reader > a[href^="#${route}?"]`).click();
+    await expect(type).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator(".guidance-card")).toHaveCount(filtered);
+  });
+}

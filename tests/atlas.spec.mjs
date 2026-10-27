@@ -27,7 +27,7 @@ test("Market experience preserves filters, navigation context, prompt and source
   await expect(page.locator("#results .card")).toHaveCount(24);
   await page.locator("[name=q]").fill("用户编辑");
   await expect(page.locator("#results .card")).toHaveCount(1);
-  await page.locator("[data-open]").last().click();
+  await page.locator(".asset-caption [data-open]").last().click();
   await expect(page.locator(".experience-viewer")).toBeVisible();
   await expect(page.locator(".inspector-head h2")).toHaveText(
     "User editor dialog",
@@ -466,7 +466,7 @@ test("Market and experience layouts remain usable at all viewport sizes", async 
       await noOverflow(page);
       await page.locator("[name=q]").fill("用户编辑");
       await expect(page.locator("#results .card")).toHaveCount(1);
-      await page.locator("[data-open]").last().click();
+      await page.locator(".asset-caption [data-open]").last().click();
       await expect(page.locator(".experience-viewer")).toBeVisible();
       await expect(page.locator("#inspector h2")).toBeVisible();
       await noOverflow(page);
@@ -539,7 +539,7 @@ test("Responsive page canvases, browser history, keyboard search and preview lim
   await page
     .locator(".asset-card")
     .nth(30)
-    .locator("[data-open]")
+    .locator(".asset-caption [data-open]")
     .last()
     .click();
   await expect(page.locator(".experience-viewer")).toBeVisible();
@@ -634,7 +634,10 @@ test("Library examples use real Ant Design and Fluent UI with working validation
   await page.goto("#explore?lang=en");
   await page.locator("[name=q]").fill("微软");
   await expect(page.locator(".asset-card")).toHaveCount(4);
-  await page.locator('[data-open="component:fluent-dialog"]').last().click();
+  await page
+    .locator('.asset-caption [data-open="component:fluent-dialog"]')
+    .last()
+    .click();
   const demo = page.frameLocator("#case-preview");
   await demo.getByRole("button", { name: "Open dialog", exact: true }).click();
   await expect(demo.getByRole("dialog")).toBeVisible();
@@ -760,7 +763,10 @@ test("Original shadcn blocks validate local forms and preserve native dashboard 
   await page.goto("#blocks?lang=en");
   await page.locator("[name=q]").fill("registration");
   await page.locator("[name=q]").fill("signup");
-  await page.locator('[data-open="block:shadcn-signup-01"]').last().click();
+  await page
+    .locator('.asset-caption [data-open="block:shadcn-signup-01"]')
+    .last()
+    .click();
   await expect(page.locator(".experience-viewer")).toBeVisible();
   await page.locator("[data-tab=code]").click();
   await expect(page.locator("#code-text")).toContainText("SignupForm");

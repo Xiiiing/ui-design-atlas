@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { activatePrimary } from "./navigation.mjs";
+import { activatePrimary, copyCardPrompt } from "./navigation.mjs";
 import { resources, resourcePrompt } from "../catalog.js";
 
 test("Original pages and components follow the shell, retain local overrides and keep themed links", async ({
@@ -53,9 +53,17 @@ test("Primary navigation keeps current scroll and restores each section and hist
   const count = await page.locator(".asset-card").count();
   await activatePrimary(page, "explore");
   expect(await page.evaluate(() => scrollY)).toBe(start);
-  await activatePrimary(page, "discover");
-  await expect(page).toHaveURL(/#discover/);
-  await expect.poll(() => page.evaluate(() => scrollY)).toBe(start);
+  await activatePrimary(page, "guidance");
+  await expect(page).toHaveURL(/#guidance/);
+  await expect(page.locator(".guidance-card").first()).toBeVisible();
+  // Compact content can be shorter than the previous page: native scrolling clamps to its end.
+  const guidanceEnd = await page.evaluate(
+    () => document.documentElement.scrollHeight - innerHeight,
+  );
+  expect(guidanceEnd).toBeGreaterThan(420);
+  await expect
+    .poll(() => page.evaluate(() => scrollY))
+    .toBe(Math.min(start, guidanceEnd));
   await page.evaluate(() => scrollTo(0, 420));
   await activatePrimary(page, "explore");
   await expect(page.locator(".asset-card")).toHaveCount(count);
@@ -70,7 +78,7 @@ test("Primary navigation keeps current scroll and restores each section and hist
   await expect(
     page.locator(".asset-caption [data-open]").first(),
   ).toBeFocused();
-  await activatePrimary(page, "discover");
+  await activatePrimary(page, "guidance");
   await activatePrimary(page, "explore");
   await expect(page.locator("[data-primary-view=explore]")).toBeFocused();
 });
@@ -194,7 +202,7 @@ test("Mobile navigation restores combined filters and original compositions rema
   await page.evaluate(() => scrollTo(0, 550));
   await expect(page.locator("#topbar")).toHaveClass("is-compact");
   const before = await page.evaluate(() => scrollY);
-  await activatePrimary(page, "discover");
+  await activatePrimary(page, "guidance");
   await activatePrimary(page, "explore");
   await expect(page).toHaveURL(
     /#components\?lang=zh-CN&source=original&style=neutral/,
@@ -297,7 +305,10 @@ test("Every added resource copies its own prompt in the selected language", asyn
       await page.goto(
         `#explore?lang=${lang}&q=${encodeURIComponent(r.name[lang])}`,
       );
-      await page.locator(`[data-card-prompt="${r.type}:${r.id}"]`).click();
+      await copyCardPrompt(
+        page,
+        page.locator(`[data-resource="${r.type}:${r.id}"]`),
+      );
       await expect
         .poll(() => page.evaluate(() => navigator.clipboard.readText()))
         .toBe(resourcePrompt(r, lang));

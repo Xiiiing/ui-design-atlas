@@ -4,11 +4,8 @@ import { reconcileResults } from "./results.js";
 import {
   sourceProjects,
   resourceCounts,
-  discoveryGallery,
-  discoveryResources,
   resources,
   discovery,
-  collectionResources,
   libraries,
   searchResources,
   resourceSource,
@@ -64,9 +61,7 @@ export function createBrowse({
       ? Object.keys(modeTypes).find(
           (mode) => modeTypes[mode] === appState.route.params.get("type"),
         ) || "explore"
-      : appState.route.view === "discover"
-        ? "explore"
-        : appState.route.view;
+      : appState.route.view;
   }
   /** @param {string} mode */
   function modeURL(mode) {
@@ -91,23 +86,6 @@ export function createBrowse({
     return maybe("#filters")
       ? formValues()
       : Object.fromEntries(appState.route.params);
-  }
-
-  function discoveryPage() {
-    const items = discoveryGallery().slice(0, appState.limit);
-    const recommendedCases = discoveryResources("cases").filter(
-      (r) => !items.some((item) => key(item) === key(r)),
-    );
-    return `${browseIntro()}
-  <section class="library-browser" aria-label="${t("浏览资源", "Browse resources")}">${browseFilters()}
-  <div class="browse-results">${resultsSummary(resources.length)}<section class="featured-section resource-group"><h2>${t("精选 UI", "Featured UI")}</h2><div class="market-grid discovery-grid">${items.slice(0, 8).map(card).join("")}</div></section><div class="market-grid discovery-grid library-continuation">${items.slice(8).map(card).join("")}</div></div>${items.length < resources.length ? `<button class="button load-more" data-discovery-more>${t("继续浏览", "Keep exploring")}${icon("arrow-down")}</button>` : ""}</section>
-  <section class="discovery-section collection-section"><div class="discovery-section-heading"><h2>${t("主题合集", "Collections")}</h2></div><div class="discovery-collections">${discovery.collections
-    .map((c) => {
-      const parts = collectionResources(c.id);
-      return `<a class="collection-card" href="${href("explore", "", { collection: c.id })}"><div class="collection-cover"><img loading="lazy" src="${parts[0].cover}" alt=""><img loading="lazy" src="${parts[1].cover}" alt=""></div><h3>${esc(l(c.name))}${icon("arrow-up-right")}</h3><p>${esc(l(c.description))}</p><span>${parts.length} ${t("项资源", "resources")}</span></a>`;
-    })
-    .join("")}</div></section>
-  <section class="discovery-section systems-section" ${recommendedCases.length ? "" : "hidden"}><div class="discovery-section-heading"><h2>${t("完整网站与系统", "Websites & systems")}</h2><a class="text-link" href="${href("cases")}">${t("查看全部", "View all")}${icon("arrow-right")}</a></div><div class="market-grid discovery-grid">${recommendedCases.map(card).join("")}</div></section>`;
   }
 
   /** @param {import("./types").Resource[]} items */
@@ -183,7 +161,7 @@ export function createBrowse({
       (c) => c.id === appState.route.params.get("collection"),
     );
     const favorite = appState.route.view === "favorites";
-    return `<section class="market-intro browse-intro"><div><h1>${favorite ? t("我的收藏", "Saved resources") : collection ? esc(l(collection.name)) : esc(l(discovery.title))}</h1><p>${esc(l(discovery.description))}</p></div>${favorite ? `<div class="button-row"><button class="button" data-export-favorites>${t("导出收藏", "Export saved")}</button><button type="button" class="button" data-import-favorites>${t("导入收藏", "Import saved")}</button><input type="file" hidden id="import-favorites" accept=".json"></div>` : ""}</section>`;
+    return `<section class="market-intro browse-intro"><div><h1>${favorite ? t("我的收藏", "Saved resources") : collection ? esc(l(collection.name)) : t("界面资源库", "Interface library")}</h1></div>${favorite ? `<div class="button-row"><button class="button" data-export-favorites>${t("导出收藏", "Export saved")}</button><button type="button" class="button" data-import-favorites>${t("导入收藏", "Import saved")}</button><input type="file" hidden id="import-favorites" accept=".json"></div>` : ""}</section>`;
   }
 
   function listing() {
@@ -216,19 +194,20 @@ export function createBrowse({
     )
     .join(
       "",
-    )}</nav><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${appState.route.view === "favorites" ? t("搜索收藏", "Search saved") : t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(appState.route.params.get("q") || "")}"><button class="icon-button" type="submit" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label></div>
+    )}</nav><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${appState.route.view === "favorites" ? t("搜索收藏", "Search saved") : t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(appState.route.params.get("q") || "")}"><button class="icon-button" type="submit" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label><div class="catalog-facets">
+  <button type="button" class="button advanced-filters-toggle" data-advanced-filters aria-controls="advanced-filters" aria-expanded="${expanded}">${icon("sliders-horizontal")}${t("更多筛选", "More filters")}</button></div></div>
   ${collection ? `<input type="hidden" name="collection" value="${collection.id}">` : ""}<input type="hidden" name="category" value="${esc(appState.route.params.get("category") || "all")}">
-  <nav class="category-strip" data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${Object.entries(
+
+  <fieldset class="category-facet"><legend class="sr-only">${t("用途分类", "Categories")}</legend>  <nav class="category-strip" data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${Object.entries(
     { all: ["全部分类", "All categories"], ...categories },
   )
     .map(
       ([id, labels]) =>
         `<button type="button" data-category="${id}" aria-pressed="${id === "all" ? !selections(appState.route.params.get("category")).length : selections(appState.route.params.get("category")).includes(id)}">${t(labels[0], labels[1])}<span>${id === "all" ? resourceCounts.total : resourceCounts.byCategory.get(id) || 0}</span></button>`,
     )
-    .join("")}</nav>
-  <div class="filter-options-row"><div class="active-filters" id="active-filters" aria-label="${t("已选条件", "Selected filters")}"></div><div class="catalog-facets">
-  <button type="button" class="button advanced-filters-toggle" data-advanced-filters aria-controls="advanced-filters" aria-expanded="${expanded}">${icon("sliders-horizontal")}${t("更多筛选", "Filters")}</button></div></div>
-  <div class="advanced-filters" id="advanced-filters">${selectFilter(
+    .join("")}</nav></fieldset>
+  <div class="filter-options-row"><div class="active-filters" id="active-filters" aria-label="${t("已选条件", "Selected filters")}"></div></div>
+  <div class="advanced-filters" id="advanced-filters"><fieldset class="facet-group collection-shortcuts"><legend>${t("主题合集", "Collections")}</legend>${discovery.collections.map((c) => `<a class="text-link" href="${href("explore", "", { collection: c.id })}">${esc(l(c.name))}${icon("arrow-up-right")}</a>`).join("")}</fieldset>${selectFilter(
     "library",
     t("组件库", "Libraries"),
     Object.values(libraries).map((x) => [x.id, x.name]),
@@ -306,7 +285,7 @@ export function createBrowse({
       .flatMap(([name, value]) =>
         (name === "q" ? [value] : selections(value)).map((v) => [name, v]),
       )
-      .filter(([, v]) => v && v !== "all");
+      .filter(([name, v]) => name !== "domain" && v && v !== "all");
     element("#active-filters").innerHTML =
       chips
         .map(([name, value]) => {
@@ -416,10 +395,6 @@ export function createBrowse({
   }
 
   function updateResults(updateURL = false) {
-    if (appState.route.view === "discover" && updateURL) {
-      location.hash = href("explore", "", filterParameters());
-      return;
-    }
     if (!maybe("#results")) return;
     if (updateURL) {
       history.replaceState(
@@ -459,5 +434,5 @@ export function createBrowse({
     updateFacetCounts();
     observeCards();
   }
-  return { discoveryPage, listing, filtered, updateResults, restoreFilters };
+  return { listing, filtered, updateResults, restoreFilters };
 }

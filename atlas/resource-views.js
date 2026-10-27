@@ -46,19 +46,16 @@ export function createResourceViews({
     document.documentElement.lang = appState.locale;
     element("#sidebar").innerHTML = "";
     const nav = [
-      ["discover", "发现", "Discover", "grid-2x2"],
-      ["explore", "探索资源", "Explore", "layers"],
-      ["cases", "完整案例", "Systems", "layout-template"],
+      ["explore", "资源库", "Library", "layers"],
       ["guidance", "设计指导", "Guidance", "layers"],
       ["tools", "资源导航", "Directory", "code-xml"],
-      ["favorites", "我的收藏", "Saved", "bookmark"],
     ]
       .map(([view, zh, en, glyph]) => {
         const active =
           appState.route.view === view ||
           (view === "guidance" && appState.route.view === "compose") ||
           (view === "explore" &&
-            ["motion", "components", "blocks", "pages"].includes(
+            ["motion", "components", "blocks", "pages", "cases"].includes(
               appState.route.view,
             ));
         const label = t(zh, en);
@@ -67,7 +64,7 @@ export function createResourceViews({
       .join("");
     replaceShellHTML(
       element("#topbar"),
-      `<div class="market-header"><a class="brand" href="${href()}" aria-label="${t("UI 设计图鉴首页", "UI Design Atlas home")}"><img class="brand-mark brand-light" src="./logo.svg" width="32" height="32" alt=""><img class="brand-mark brand-dark" src="./logo-reverse.svg" width="32" height="32" alt=""><span class="brand-name">atlas<span class="brand-dot">.</span></span></a><nav class="market-navigation" data-shell-group data-shell-key="primary-navigation" data-shell-variant="underline" aria-label="${t("主导航", "Main navigation")}">${nav}</nav><div class="market-header-actions"><span data-shell-navigation></span><span data-shell-appearance></span><button class="icon-button" data-search aria-label="${t("搜索设计", "Search designs")}" title="${t("搜索设计", "Search designs")}">${icon("search")}</button>${language()}<a class="header-github" href="https://github.com/Xiiiing/ui-design-atlas" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><span class="nav-label">GitHub</span>${icon("github")}</a></div></div>`,
+      `<div class="market-header"><a class="brand" href="${href()}" aria-label="${t("UI 设计图鉴首页", "UI Design Atlas home")}"><img class="brand-mark brand-light" src="./logo.svg" width="32" height="32" alt=""><img class="brand-mark brand-dark" src="./logo-reverse.svg" width="32" height="32" alt=""><span class="brand-name">atlas<span class="brand-dot">.</span></span></a><nav class="market-navigation" data-shell-group data-shell-key="primary-navigation" data-shell-variant="underline" aria-label="${t("主导航", "Main navigation")}">${nav}</nav><div class="market-header-actions"><a class="saved-shortcut icon-button ${appState.route.view === "favorites" ? "active" : ""}" data-primary-view="favorites" href="${href("favorites")}" aria-label="${t("我的收藏", "Saved")}" title="${t("我的收藏", "Saved")}" ${appState.route.view === "favorites" ? 'aria-current="page"' : ""}>${icon("bookmark")}<small data-favorite-count${appState.favorites.size ? "" : " hidden"}>${appState.favorites.size}</small></a><span data-shell-navigation></span><span data-shell-appearance></span><button class="icon-button" data-search aria-label="${t("搜索设计", "Search designs")}" title="${t("搜索设计", "Search designs")}">${icon("search")}</button>${language()}<a class="header-github" href="https://github.com/Xiiiing/ui-design-atlas" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><span class="nav-label">GitHub</span>${icon("github")}</a></div></div>`,
     );
     syncNavigation();
     element("#footer").innerHTML =
@@ -122,7 +119,9 @@ export function createResourceViews({
 
   /** @param {import("./types").Resource} r */
   function tagLinks(r, full = false) {
-    const tags = resourceTags(r, appState.locale);
+    const tags = resourceTags(r, appState.locale)
+      .filter((tag) => full || tag.name !== "interaction")
+      .slice(0, full ? undefined : 2);
     if (full)
       for (const value of r.interactions) {
         if (
@@ -165,7 +164,7 @@ export function createResourceViews({
   <div class="asset-preview"><img data-cover="${esc(r.cover)}" src="${esc(coverURL(r.cover, shellTheme()))}" alt="${esc(name)}" loading="lazy" width="${framing.width}" height="${framing.height}">${inline ? `<div class="asset-live" data-live="${key(r)}"></div><div class="preview-state" role="status"><span>${t("正在加载体验…", "Loading experience…")}</span><button type="button" class="button" data-retry-preview hidden>${t("重试", "Retry")}</button></div>` : `<a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("打开体验", "Open experience")} ${esc(name)}"><span>${icon("arrow-up-right")}${t("打开体验", "Open experience")}</span></a>`}</div>
   <div class="asset-caption"><a data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}">${esc(name)}</a><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" title="${esc(libraries[id].name)}">${esc(libraries[id].name)}</span>`).join("")}</span></div>
   <p class="asset-description" id="description-${r.id}" title="${esc(l(r.description))}">${esc(l(r.description))}</p><div class="asset-footer">${tagLinks(r)}
-  <div class="asset-actions"><button class="icon-button" data-card-prompt="${key(r)}" aria-label="${t("复制提示词", "Copy prompt")}" title="${t("复制提示词", "Copy prompt")}">${icon("copy")}</button><a class="icon-button" data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}" aria-label="${t("查看详情", "Details")}" title="${t("查看详情", "Details")}">${icon("panel-right")}</a>${saveButton(r)}</div></div></article>`;
+  <div class="asset-actions">${saveButton(r)}<span data-shell-card-menu></span><span hidden data-card-actions><button class="icon-button" data-card-prompt="${key(r)}" aria-label="${t("复制提示词", "Copy prompt")}" title="${t("复制提示词", "Copy prompt")}">${icon("copy")}</button><a class="icon-button" data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}" aria-label="${t("查看详情", "Details")}" title="${t("查看详情", "Details")}">${icon("panel-right")}</a></span></div></div></article>`;
   }
 
   /** @param {import("./types").Resource} r @param {string} promptHTML */
@@ -181,26 +180,26 @@ export function createResourceViews({
     const linkedHTML = linked.length
       ? `<section class="detail-section related-guidance"><h3>${t("相关设计指导", "Related guidance")}</h3>${linked.map((g) => `<a class="text-link" href="${href("guidance", g.id)}">${esc(l(g.name))}${icon("arrow-up-right")}</a>`).join("")}<a class="button" href="${href("compose", "", { reference: key(r) })}">${t("加入提示词组合", "Use in a prompt")}</a></section>`
       : "";
-    return `${linkedHTML}<section class="detail-section"><h3>${t("适用场景", "Use cases")}</h3><p>${esc(l(r.useCases || c?.scene || r.description))}</p></section><section class="detail-section"><h3>${t("设计解读 · 本站整理", "Design notes · Atlas interpretation")}</h3><p>${esc(l(principle) || l(r.description))}</p>${
+    return `<section class="detail-section"><h3>${t("适用场景", "Use cases")}</h3><p>${esc(l(r.useCases || c?.scene || r.description))}</p></section><section class="detail-section"><h3>${t("设计解读 · 本站整理", "Design notes · Atlas interpretation")}</h3><p>${esc(l(principle) || l(r.description))}</p>${
       rules
         ? `<ul>${l(rules)
             .map((x) => `<li>${esc(x)}</li>`)
             .join("")}</ul>`
         : ""
-    }</section>${promptHTML}${provenance(r)}`;
+    }</section>${promptHTML}${provenance(r)}${linkedHTML}`;
   }
 
   /** @param {import("./types").Resource} r */
   function provenance(r) {
     const s = resourceSource(r);
-    return `<section class="detail-section provenance"><h3>${t("来源与组件库", "Source & libraries")}</h3>${r.libraryIds
+    return `<details class="detail-section provenance"><summary>${t("来源与组件库", "Source & libraries")}</summary><div class="provenance-content">${r.libraryIds
       .map((id) => {
         const lib = libraries[id];
         return `<div class="library-credit"><strong>${esc(lib.name)}</strong><code>${esc(r.libraryVersions?.[id] || lib.version)}</code>${external(lib.docs, t("官方文档", "Official docs"))}</div>`;
       })
       .join(
         "",
-      )}<p><strong>${esc(s.name)}</strong> · ${esc(s.author)}</p><div class="credit-links">${external(r.originalUrl || s.docs || s.repo, t("原始示例", "Original example"))}${external(r.sourceUrl || s.repo, t("源码地址", "Source code"))}${s.licenseFile ? external(s.licenseFile, s.license) : `<span>${esc(s.license)}</span>`}</div>${s.commit ? `<p class="commit-credit">${t("固定源码版本", "Pinned source")} <code>${s.commit}</code></p>` : ""}<p class="curator-label">${s.original ? t("本站原创组合；使用所列组件库，不代表上游官方页面。提示词、样式和业务交互随资源源码交付。", "An original Atlas composition using the listed libraries, not an official upstream page. Prompts, styles and interactions are included with the resource source.") : t("保留上游视觉与实现；本站适配语言、本地数据和预览入口。设计解读与提示词由本站整理。", "Upstream visuals and implementation, adapted for language, local data and previews. Notes and prompts are curated by Atlas.")}</p></section>`;
+      )}<p><strong>${esc(s.name)}</strong> · ${esc(s.author)}</p><div class="credit-links">${external(r.originalUrl || s.docs || s.repo, t("原始示例", "Original example"))}${external(r.sourceUrl || s.repo, t("源码地址", "Source code"))}${s.licenseFile ? external(s.licenseFile, s.license) : `<span>${esc(s.license)}</span>`}</div>${s.commit ? `<p class="commit-credit">${t("固定源码版本", "Pinned source")} <code>${s.commit}</code></p>` : ""}<p class="curator-label">${s.original ? t("本站原创组合；使用所列组件库，不代表上游官方页面。提示词、样式和业务交互随资源源码交付。", "An original Atlas composition using the listed libraries, not an official upstream page. Prompts, styles and interactions are included with the resource source.") : t("保留上游视觉与实现；本站适配语言、本地数据和预览入口。设计解读与提示词由本站整理。", "Upstream visuals and implementation, adapted for language, local data and previews. Notes and prompts are curated by Atlas.")}</p></div></details>`;
   }
 
   /** @param {import("./types").Resource} r */
@@ -249,22 +248,6 @@ export function createResourceViews({
       .join("")}</div></section>`;
   }
 
-  function sourcePage() {
-    return `<section class="market-intro"><div><h1>${t("每个界面，都有出处。", "Every interface has a source.")}</h1><p>${t("实现来源、实际组件库与本站整理内容分别标注。", "Implementation sources, libraries and Atlas interpretations are credited separately.")}</p></div></section><div class="source-grid">${Object.values(
-      sourceProjects,
-    )
-      .map(
-        (s) =>
-          `<section class="source-card"><h2>${esc(s.name)}</h2><p>${esc(s.author)} · ${esc(s.license)}</p>${external(s.repo, "GitHub")}${s.commit ? `<p><code>${s.commit}</code></p>` : ""}${s.licenseFile ? external(s.licenseFile, t("许可证", "License")) : ""}</section>`,
-      )
-      .join(
-        "",
-      )}</div><section class="source-card"><h2>${t("图鉴界面设计基线", "Atlas shell design baseline")}</h2><p>${t("21st：资源优先的浏览层级、中性明暗表面、轻量边界与统一字级。固定源码提交 b96d84d，图鉴按静态资源市场需求适配。", "21st: preview-first discovery, neutral light/dark surfaces, quiet borders and a shared type scale. Adapted from pinned source b96d84d for this static resource marketplace.")}</p>${external("./vendor/21st-market/ATTRIBUTION.md", t("来源与适配说明", "Source & adaptations"))}</section><section class="source-card"><h2>${t("展示逻辑参考", "Browsing references")}</h2><p>${external("https://21st.dev/community/components", "21st.dev")} · ${external("https://coss.com/origin/button", "Origin UI")} · ${external("https://blocks.so/tables", "Blocks.so")} · ${external("https://reactbits.dev/", "React Bits")}</p><p>${t("借鉴资源分类与预览交互。本站未再分发 React Bits 组件。", "References for discovery and preview interactions. React Bits components are not redistributed.")}</p>${external("./vendor/shadcn-ui/ATTRIBUTION.md", "shadcn/ui · MIT")} · ${external("./vendor/lucide/LICENSE", "Lucide · ISC")} · ${external("./vendor/inter/LICENSE", "Inter · OFL")} · ${external("./vendor/geist/LICENSE", "Geist · OFL")}</section>`;
-  }
-
-  function guidePage() {
-    return `<section class="market-intro"><div><h1>${t("从一个 UI，开始你的项目。", "From a UI to your project.")}</h1></div></section><div class="source-card guide-copy"><h2>1. ${t("搜索并体验", "Find and try")}</h2><p>${t("按名称、用途或组件库搜索，选择动效、组件、区块或完整案例。小组件可直接操作；大资源打开宽屏体验，返回后继续原来的浏览位置。", "Search by name, purpose or library. Try compact components in their cards; open larger resources in the wide experience. Return to resume browsing.")}</p><h2>2. ${t("读说明，复制提示词", "Read and copy a prompt")}</h2><p>${t("右侧说明与当前预览同步。复制当前资源提示词，或选择只复用视觉风格，替换成自己的业务需求。", "The notes follow the current preview. Copy its prompt, or the visual style only, and substitute your business requirements.")}</p><h2>3. ${t("带走实际代码", "Take the actual code")}</h2><p>${t("在体验页选择「详情」或「代码」。资源页提供实际入口、实现、依赖与来源说明；完整案例可切换页面继续体验。下载 ZIP 后运行以下命令。", "Choose Details or Code in the experience page for implementation, dependencies and provenance. Switch pages within a complete system. Extract the ZIP and run the commands below.")}</p><pre>npm ci\nnpm run dev\n\n# Build\nnpm run build</pre><h2>4. ${t("收藏并备份", "Save and back up")}</h2><p>${t("收藏保存在当前浏览器，可导出或导入 JSON。原有案例与组件收藏继续有效。", "Favorites stay in this browser and can be exported or imported as JSON. Existing favorites still work.")}</p></div>`;
-  }
   return {
     header,
     labelType,
@@ -277,7 +260,5 @@ export function createResourceViews({
     resourceDetails,
     related,
     caseDirectory,
-    sourcePage,
-    guidePage,
   };
 }

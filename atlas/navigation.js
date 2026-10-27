@@ -30,9 +30,9 @@ export function parse() {
 /** @param {string} hash @returns {import('./types').Route} */
 export function parseHash(hash) {
   const [path, query = ""] = hash.replace(/^#/, "").split("?");
-  const [candidate = "discover", id] = path.split("/");
+  const [candidate = "explore", id] = path.split("/");
   return {
-    view: isView(candidate) ? candidate : "discover",
+    view: isView(candidate) ? candidate : "explore",
     id,
     params: new URLSearchParams(query),
   };
@@ -40,7 +40,9 @@ export function parseHash(hash) {
 
 /** @param {string} view */
 export const sectionOf = (view) =>
-  ["motion", "components", "blocks", "pages"].includes(view) ? "explore" : view;
+  ["motion", "components", "blocks", "pages", "cases"].includes(view)
+    ? "explore"
+    : view;
 
 /** @param {Pick<import("./types").BaseDependencies,"appState"|"href"> & {render:()=>void}} dependencies */
 export function createNavigation({ appState, href, render }) {
@@ -58,7 +60,6 @@ export function createNavigation({ appState, href, render }) {
       appState.route.id ||
       appState.selected ||
       ![
-        "discover",
         "explore",
         "cases",
         "favorites",

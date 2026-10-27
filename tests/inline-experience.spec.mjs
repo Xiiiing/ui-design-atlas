@@ -1,3 +1,4 @@
+import { copyCardPrompt } from "./navigation.mjs";
 import { test, expect } from "@playwright/test";
 import { findResource, resourcePrompt } from "../catalog.js";
 
@@ -18,7 +19,7 @@ test("Visible cards operate directly and expose prompt, details and filter tags"
     .click();
   await expect(card.frameLocator("iframe").locator("#feedback")).toBeVisible();
   expect(page.url()).toBe(url);
-  await card.locator("[data-card-prompt]").click();
+  await copyCardPrompt(page, card);
   await expect
     .poll(() => page.evaluate(() => navigator.clipboard.readText()))
     .toBe(resourcePrompt(findResource("folio-button"), "en"));
@@ -42,6 +43,7 @@ test("Inline forms accept input on touch devices without opening a viewer", asyn
     "http://127.0.0.1:4173/ui-design-atlas/#components?lang=en&q=folio&category=forms",
   );
   const card = page.locator('[data-resource="component:folio-form"]');
+  await card.scrollIntoViewIfNeeded();
   await expect(card).toHaveAttribute("data-preview-state", "ready");
   const form = card.frameLocator("iframe");
   await form.locator("input[type=email]").fill("demo@example.com");
@@ -139,14 +141,14 @@ test("Card copy fallback preserves the exact selected resource and language with
     const card = page.locator('[data-resource="component:folio-button"]');
     await card.scrollIntoViewIfNeeded();
     const before = await card.boundingBox();
-    await card.locator("[data-card-prompt]").click();
+    await copyCardPrompt(page, card);
     await expect(page.locator("#copy-fallback")).toBeVisible();
     await expect(page.locator("#fallback-text")).toHaveValue(
       resourcePrompt(findResource("folio-button"), lang),
     );
     expect(await card.boundingBox()).toEqual(before);
     await page.locator("#fallback-close").click();
-    await expect(card.locator("[data-card-prompt]")).toBeFocused();
+    await expect(card.locator(".card-menu-trigger")).toBeFocused();
     expect(await card.boundingBox()).toEqual(before);
   }
 });
@@ -157,13 +159,13 @@ test("Tag URLs combine filters, survive reload and history, and remove one condi
 }) => {
   await page.goto("#components?lang=en&category=buttons&source=original");
   const tag = page.locator(
-    '[data-resource="component:folio-button"] [data-resource-tag=interaction]',
+    '[data-resource="component:folio-button"] [data-resource-tag=style]',
   );
   const url = await tag.getAttribute("href");
   expect(url).toContain("source=original");
   expect(url).toContain("category=buttons");
   await tag.click();
-  await expect(page).toHaveURL(/interaction=click/);
+  await expect(page).toHaveURL(/style=folio/);
   await page.reload();
   const other = await context.newPage();
   await other.goto(page.url());
@@ -171,8 +173,8 @@ test("Tag URLs combine filters, survive reload and history, and remove one condi
     await page.locator(".asset-card").count(),
   );
   await other.close();
-  await page.locator("[data-remove-filter=interaction]").click();
-  await expect(page).not.toHaveURL(/interaction=/);
+  await page.locator("[data-remove-filter=style]").click();
+  await expect(page).not.toHaveURL(/style=/);
   await expect(page).toHaveURL(/source=original/);
   await page.goBack();
   // Removing a chip updates the current search; Back returns the prior card-tag navigation.

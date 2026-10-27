@@ -2,15 +2,15 @@ import { test, expect } from "@playwright/test";
 import { findResource, resources } from "../catalog.js";
 import { experienceMode } from "../presentation.js";
 
-test("Preview cells share one square unit and keep compact information outside it", async ({
+test("Library previews share equal columns and compact metadata", async ({
   page,
 }) => {
   for (const lang of ["en", "zh-CN"])
-    for (const width of [2560, 1440, 768, 375]) {
+    for (const width of [2560, 1440, 1024, 768, 375]) {
       await page.setViewportSize({ width, height: 1000 });
       await page.goto(`#discover?lang=${lang}`);
       const sizes = await page
-        .locator(".featured-section .market-grid")
+        .locator(".market-grid").first()
         .evaluate((grid) => {
           const css = getComputedStyle(grid),
             columns = css.gridTemplateColumns.split(" ").length;
@@ -21,7 +21,7 @@ test("Preview cells share one square unit and keep compact information outside i
             columns,
             unit,
             gap: parseFloat(css.columnGap),
-            cards: [...grid.children].map((card) => {
+            cards: [...grid.children].map((card, index) => {
               const rect = card.getBoundingClientRect(),
                 preview = card
                   .querySelector(".asset-preview")
@@ -30,7 +30,7 @@ test("Preview cells share one square unit and keep compact information outside i
                 .querySelector(".asset-footer")
                 .getBoundingClientRect();
               return {
-                wide: card.dataset.layout === "wide",
+                wide: false,
                 w: preview.width,
                 h: preview.height,
                 metadata: rect.height - preview.height,
@@ -49,18 +49,26 @@ test("Preview cells share one square unit and keep compact information outside i
                 : sizes.unit),
           ),
         ).toBeLessThan(1);
-        expect(card.metadata).toBeLessThanOrEqual(105);
+        expect(card.metadata).toBeLessThanOrEqual(104);
         expect(card.footer).toBeLessThanOrEqual(1);
       }
       expect(new Set(sizes.cards.map((c) => c.metadata)).size).toBe(1);
-      const first = page.locator(".featured-section .asset-card").first();
-      await expect(first.locator("[data-card-prompt]")).toHaveAccessibleName(
-        lang === "en" ? "Copy prompt" : "复制提示词",
-      );
+      const first = page.locator(".asset-card").first();
+      await first.locator(".card-menu-trigger").click();
       await expect(
-        first.locator(".asset-actions [data-details]"),
-      ).toHaveAccessibleName(lang === "en" ? "Details" : "查看详情");
-      await expect(first.locator("[data-resource-tag]")).toHaveCount(3);
+        page.getByRole("menuitem", {
+          name: lang === "en" ? "Copy prompt" : "复制提示词",
+          exact: true,
+        }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole("menuitem", {
+          name: lang === "en" ? "Details" : "查看详情",
+          exact: true,
+        }),
+      ).toBeVisible();
+      await page.keyboard.press("Escape");
+      await expect(first.locator("[data-resource-tag]")).toHaveCount(2);
     }
 });
 

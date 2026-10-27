@@ -22,11 +22,12 @@ const choose = async (page, id, name) => {
   await page.getByRole("option", { name, exact: true }).click();
 };
 
-test("Gallery uses native document scrolling, compact previews and wide spans", async ({
+test("Gallery uses native document scrolling, compact previews and equal columns", async ({
   page,
 }) => {
   for (const [width, columns] of [
-    [1440, 3],
+    [1440, 4],
+    [1024, 3],
     [768, 2],
     [375, 1],
   ]) {
@@ -65,6 +66,7 @@ test("Filter chips remove individual conditions and collapsed filters retain the
   page,
 }) => {
   await page.goto("#explore?lang=en");
+  await page.locator("[data-advanced-filters]").click();
   await page.locator("[data-category=feedback]").click();
   await choose(page, "#filter-library", "Fluent UI React v9");
   await choose(page, "#filter-source", "Open source");
