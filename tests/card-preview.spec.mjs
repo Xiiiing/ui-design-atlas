@@ -81,11 +81,7 @@ test("Revealing metadata keeps adjacent rows fixed and wide block covers intact"
   for (const route of ["#discover?lang=en", "#blocks?lang=en"]) {
     await page.goto(route);
     await page.evaluate(() => document.fonts.ready);
-    const cards = page.locator(
-      route.includes("discover")
-        ? ".featured-section .asset-card"
-        : ".asset-card",
-    );
+    const cards = page.locator(".asset-card");
     const positions = () =>
       cards.evaluateAll((es) =>
         es.map((el) => {

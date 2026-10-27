@@ -51,13 +51,13 @@ test("Navigation stays readable and pinned without moving content", async ({
     if (width <= 900) {
       await page.locator(".mobile-nav-trigger").click();
       await page
-        .getByRole("menuitem", { name: "Discover", exact: true })
+        .getByRole("menuitem", { name: "Library", exact: true })
         .click();
     } else {
       await page.locator(".market-navigation a").first().focus();
       await page.keyboard.press("Enter");
     }
-    await expect(page).toHaveURL(/#discover/);
+    await expect(page).toHaveURL(/#explore/);
     await expect(topbar).toHaveClass("is-compact");
     await expect
       .poll(() => page.evaluate(() => scrollY))

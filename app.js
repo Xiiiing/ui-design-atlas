@@ -9,7 +9,6 @@ import {
 } from "./atlas/input.js";
 import { createFavorites } from "./atlas/favorites.js";
 import { readFavorites } from "./atlas/favorite-data.js";
-import { facetValues } from "./atlas/filter-model.js";
 import { createFilterActions } from "./atlas/filter-actions.js";
 import { reconcileResults } from "./atlas/results.js";
 import { loadResourceDetails } from "./atlas/resource-data.js";
@@ -123,7 +122,7 @@ const l = (v) =>
     : v;
 
 /** @type {import("./atlas/types").Href} */
-const href = (view = "discover", id = "", params = {}) =>
+const href = (view = "explore", id = "", params = {}) =>
   "#" +
   view +
   (id ? "/" + id : "") +
@@ -153,15 +152,7 @@ function render() {
   replaceShellHTML(d, "");
   appState.selected = null;
   appState.route = parse();
-  if (
-    appState.route.view === "discover" &&
-    [...appState.route.params].some(
-      ([name, value]) =>
-        ["q", "collection", ...Object.keys(facetValues)].includes(name) &&
-        value &&
-        value !== "all",
-    )
-  ) {
+  if (appState.route.view === "discover") {
     history.replaceState(
       history.state,
       "",
@@ -169,7 +160,6 @@ function render() {
     );
     appState.route = parse();
   }
-  main.classList.toggle("discovery-page", appState.route.view === "discover");
   const routeLocale = appState.route.params.get("lang");
   const routeTheme = appState.route.params.get("theme");
   if (routeLocale === "zh-CN" || routeLocale === "en")
@@ -255,10 +245,7 @@ function render() {
   }
   appState.originBrowse = null;
   appState.limit = history.state?.browse?.limit || history.state?.limit || 24;
-  replaceShellHTML(
-    main,
-    appState.route.view === "discover" ? discoveryPage() : listing(),
-  );
+  replaceShellHTML(main, listing());
   restoreFilters();
   const b = history.state?.browse;
   if (b)
@@ -385,7 +372,7 @@ const {
   render,
 });
 
-const { discoveryPage, listing, filtered, updateResults, restoreFilters } =
+const { listing, filtered, updateResults, restoreFilters } =
   createBrowse({
     appState,
     t,
@@ -490,8 +477,7 @@ document.addEventListener("compositionend", (event) => {
   if (!(event.target instanceof HTMLInputElement)) return;
   endComposition(event);
   if (
-    event.target.matches("#filters [name=q]") &&
-    appState.route.view !== "discover"
+    event.target.matches("#filters [name=q]")
   ) {
     appState.limit = 24;
     listInput.schedule();
@@ -501,13 +487,6 @@ document.addEventListener("compositionend", (event) => {
 
 document.addEventListener("submit", (e) => {
   if (!(e.target instanceof HTMLFormElement)) return;
-  if (e.target.id === "discovery-search") {
-    e.preventDefault();
-    if (isComposing({ target: element("#discovery-query") })) return;
-    const q = String(new FormData(e.target).get("q") || "").trim();
-    location.hash = href("explore", "", q ? { q } : {});
-    return;
-  }
   if (e.target.id !== "filters") return;
   e.preventDefault();
   if (isComposing({ target: element("#filters [name=q]") })) return;
@@ -671,8 +650,7 @@ document.addEventListener("input", (e) => {
 
   if (isComposing(e)) return;
   if (
-    e.target.matches("#filters [name=q]") &&
-    appState.route.view !== "discover"
+    e.target.matches("#filters [name=q]")
   ) {
     appState.limit = 24;
     listInput.schedule();

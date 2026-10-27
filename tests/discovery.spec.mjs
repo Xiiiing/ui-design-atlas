@@ -1,32 +1,25 @@
 import { test, expect } from "@playwright/test";
-import { discovery, collectionResources, resources } from "../catalog.js";
+import { collectionResources, resources } from "../catalog.js";
 
-test("Discovery offers curated resources, themes and complete systems", async ({
-  page,
-}) => {
+test("The root opens the library, with collections in more filters and cases in type navigation", async ({ page }) => {
   await page.goto("./");
-  await expect(page.locator("#discovery-search")).toBeVisible();
-  await expect(page.locator("#filters")).toHaveCount(0);
-  await expect(page.locator(".featured-section .asset-card")).toHaveCount(8);
-  await expect(page.locator(".systems-section .asset-card")).toHaveCount(3);
-  await page.locator('.collection-card[href*="micro-interactions"]').click();
-  await expect(page.locator("#results .asset-card")).toHaveCount(
-    collectionResources("micro-interactions").length,
-  );
+  await expect(page.locator("#filters")).toBeVisible();
+  await expect(page.locator("#results .asset-card")).toHaveCount(24);
+  await expect(page.locator("[data-market-mode=cases]")).toBeVisible();
+  await page.locator("[data-advanced-filters]").click();
+  await page.locator('.collection-shortcuts a[href*="micro-interactions"]').click();
+  await expect(page.locator("#results .asset-card")).toHaveCount(collectionResources("micro-interactions").length);
   await expect(page.locator("[data-remove-filter=collection]")).toBeVisible();
   await page.locator("[data-remove-filter=collection]").click();
   await expect(page.locator("#results .asset-card")).toHaveCount(24);
   await page.goto("#discover?lang=en");
-  await page.locator("#discovery-search [name=q]").fill("Fluent");
-  await page
-    .locator("#discovery-search")
-    .getByRole("button", { name: "Search", exact: true })
-    .click();
+  await expect(page).toHaveURL(/#explore/);
+  await page.locator('#filters [name=q]').fill("Fluent");
   await expect(page.locator("#results .asset-card")).toHaveCount(4);
   await expect(page).toHaveURL(/#explore.*q=Fluent/);
 });
 
-test("Search compares like resources in distinct groups and discovery restores after wide experience", async ({
+test("Search compares like resources in distinct groups and library restores after wide experience", async ({
   page,
 }) => {
   await page.goto("#explore?lang=en");
@@ -35,14 +28,14 @@ test("Search compares like resources in distinct groups and discovery restores a
   ).toBeVisible();
   await page.goto("#discover?lang=en");
   await page
-    .locator(".featured-section .asset-caption [data-open]")
+    .locator("#results .asset-caption [data-open]")
     .first()
     .click();
   await expect(page.locator(".experience-viewer")).toBeVisible();
   await expect(page.locator("#main")).not.toHaveClass(/library-page/);
   await page.goBack();
   await expect(page.locator(".experience-viewer")).not.toBeVisible();
-  await expect(page.locator(".featured-section .asset-card")).toHaveCount(8);
+  await expect(page.locator("#results .asset-card")).toHaveCount(24);
 });
 
 test("Experience details, code and browser history restore the original comparison", async ({
@@ -127,13 +120,13 @@ test("Canonical links preserve explicit details state and the default stays wide
 }) => {
   await page.goto("#discover?lang=en");
   await page
-    .locator(".featured-section .asset-caption [data-open]")
+    .locator("#results .asset-caption [data-open]")
     .first()
     .click();
   const canonical = page.url();
   await expect(page.locator("#inspector")).toBeVisible();
   await page.goBack();
-  await expect(page.locator(".featured-section")).toBeVisible();
+  await expect(page.locator("#results")).toBeVisible();
   await page.goto(canonical);
   await expect(page.locator("#inspector")).toBeVisible();
   await page.goto(canonical.replace("&panel=details", ""));
@@ -141,12 +134,12 @@ test("Canonical links preserve explicit details state and the default stays wide
   await expect(page.locator(".resource-page")).toBeVisible();
 });
 
-test("Touch discovery cards show their actual UI and retain readable captions", async ({
+test("Touch library cards show their actual UI and retain readable captions", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 375, height: 1000 });
   await page.goto("#discover?lang=en");
-  const card = page.locator(".featured-section .asset-card").first();
+  const card = page.locator('#results .asset-card[data-experience="canvas"]').first();
   await expect(card.locator(".asset-caption")).toBeVisible();
   await expect(card.locator(".asset-description")).toBeVisible();
   expect(
@@ -201,7 +194,7 @@ test("Live cards and wide experience follow the shell while fixed-height demos f
   page,
 }) => {
   await page.emulateMedia({ colorScheme: "light" });
-  await page.goto("#discover?lang=en");
+  await page.goto("#motion?lang=en&category=backgrounds");
   const particles = page.locator(
     '[data-resource="component:magicui-particles"]',
   );
@@ -255,7 +248,7 @@ test("Responsive cards keep structured tags outside previews and loading does no
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("#discover?lang=en");
     const box = await page
-      .locator(".featured-section .asset-card")
+      .locator("#results .asset-card")
       .first()
       .evaluate((el) => ({
         preview: el.querySelector(".asset-preview").getBoundingClientRect()

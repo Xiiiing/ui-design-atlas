@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { findResource, resources } from "../catalog.js";
 import { experienceMode } from "../presentation.js";
 
-test("Editorial previews share a unit, with only the lead spanning columns", async ({
+test("Library previews share equal columns and compact metadata", async ({
   page,
 }) => {
   for (const lang of ["en", "zh-CN"])
@@ -10,7 +10,7 @@ test("Editorial previews share a unit, with only the lead spanning columns", asy
       await page.setViewportSize({ width, height: 1000 });
       await page.goto(`#discover?lang=${lang}`);
       const sizes = await page
-        .locator(".featured-section .market-grid")
+        .locator(".market-grid").first()
         .evaluate((grid) => {
           const css = getComputedStyle(grid),
             columns = css.gridTemplateColumns.split(" ").length;
@@ -30,7 +30,7 @@ test("Editorial previews share a unit, with only the lead spanning columns", asy
                 .querySelector(".asset-footer")
                 .getBoundingClientRect();
               return {
-                wide: index === 0,
+                wide: false,
                 w: preview.width,
                 h: preview.height,
                 metadata: rect.height - preview.height,
@@ -53,7 +53,7 @@ test("Editorial previews share a unit, with only the lead spanning columns", asy
         expect(card.footer).toBeLessThanOrEqual(1);
       }
       expect(new Set(sizes.cards.map((c) => c.metadata)).size).toBe(1);
-      const first = page.locator(".featured-section .asset-card").first();
+      const first = page.locator(".asset-card").first();
       await first.locator(".card-menu-trigger").click();
       await expect(
         page.getByRole("menuitem", {

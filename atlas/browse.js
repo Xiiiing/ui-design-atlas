@@ -4,11 +4,8 @@ import { reconcileResults } from "./results.js";
 import {
   sourceProjects,
   resourceCounts,
-  discoveryGallery,
-  discoveryResources,
   resources,
   discovery,
-  collectionResources,
   libraries,
   searchResources,
   resourceSource,
@@ -64,9 +61,7 @@ export function createBrowse({
       ? Object.keys(modeTypes).find(
           (mode) => modeTypes[mode] === appState.route.params.get("type"),
         ) || "explore"
-      : appState.route.view === "discover"
-        ? "explore"
-        : appState.route.view;
+      : appState.route.view;
   }
   /** @param {string} mode */
   function modeURL(mode) {
@@ -91,30 +86,6 @@ export function createBrowse({
     return maybe("#filters")
       ? formValues()
       : Object.fromEntries(appState.route.params);
-  }
-
-  function discoveryPage() {
-    const items = discoveryGallery().slice(0, 8);
-    const systems = discoveryResources("cases");
-    /** @param {string} number @param {string} title @param {string} destination @param {string} label */
-    const heading = (number, title, destination, label) =>
-      `<div class="discovery-section-heading"><h2><span class="section-number">${number}</span>${title}</h2><a class="text-link" href="${destination}">${label}${icon("arrow-up-right")}</a></div>`;
-    return `<section class="discovery-intro"><h1>${t("好界面，值得细看。", "Interfaces, up close.")}</h1><form id="discovery-search" class="discovery-search"><div class="market-search">${icon("search")}<input id="discovery-query" name="q" type="search" aria-label="${t("搜索 UI", "Search UI")}" placeholder="${t("按钮、动效、登录页面…", "Buttons, motion, sign-in pages…")}"><button type="submit" class="icon-button" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></div></form></section>
-    <nav class="discovery-categories" aria-label="${t("按用途找资源", "Find resources by purpose")}">${["buttons", "cards", "forms", "navigation", "data", "auth", "backgrounds"].map((id) => `<a href="${href("explore", "", { category: id })}">${t(...categories[id])}</a>`).join("")}<a class="all-categories" href="${href("explore")}">${t("全部分类", "All categories")}${icon("arrow-right")}</a></nav>
-    <section class="featured-section discovery-section">${heading("01", t("精选界面", "Selected interfaces"), href("explore"), t("查看全部", "View all"))}<div class="market-grid discovery-grid">${items.map(card).join("")}</div></section>
-    <section class="discovery-section collection-section">${heading("02", t("沿着主题探索", "Follow a theme"), href("explore"), t("探索资源", "Explore resources"))}<div class="discovery-collections">${discovery.collections
-      .map((c) => {
-        const parts = collectionResources(c.id);
-        return `<a class="collection-card" href="${href("explore", "", { collection: c.id })}"><div class="collection-cover">${parts
-          .slice(0, 2)
-          .map((r) => `<img loading="lazy" src="${r.cover}" alt="">`)
-          .join(
-            "",
-          )}</div><h3>${esc(l(c.name))}${icon("arrow-up-right")}</h3><p>${esc(l(c.description))}</p><span>${parts.length} ${t("项资源", "resources")}</span></a>`;
-      })
-      .join("")}</div></section>
-    <section class="discovery-section systems-section">${heading("03", t("完整网站与系统", "Websites & systems"), href("cases"), t("查看全部", "View all"))}<div class="market-grid discovery-grid">${systems.map(card).join("")}</div></section>
-    <section class="discovery-section guidance-entry"><div><span class="guidance-eyebrow">ATLAS / ${t("设计方法", "DESIGN PRACTICE")}</span><h2>${t("从喜欢，到知道怎么做。", "From inspiration to intention.")}</h2><p>${t("把观察到的好设计，变成可复用的方法、规范与项目要求。", "Turn the design you admire into reusable methods, guidelines and project briefs.")}</p></div><div class="button-row"><a class="button primary" href="${href("guidance")}">${t("阅读设计指导", "Explore guidance")}${icon("arrow-up-right")}</a><a class="button" href="${href("compose")}">${t("组合提示词", "Compose a prompt")}</a></div></section>`;
   }
 
   /** @param {import("./types").Resource[]} items */
@@ -190,7 +161,7 @@ export function createBrowse({
       (c) => c.id === appState.route.params.get("collection"),
     );
     const favorite = appState.route.view === "favorites";
-    return `<section class="market-intro browse-intro"><div><span class="guidance-eyebrow">ATLAS / ${favorite ? "SAVED" : "LIBRARY"}</span><h1>${favorite ? t("我的收藏", "Saved resources") : collection ? esc(l(collection.name)) : t("界面资源库", "Interface library")}</h1><p>${esc(l(discovery.description))}</p></div>${favorite ? `<div class="button-row"><button class="button" data-export-favorites>${t("导出收藏", "Export saved")}</button><button type="button" class="button" data-import-favorites>${t("导入收藏", "Import saved")}</button><input type="file" hidden id="import-favorites" accept=".json"></div>` : ""}</section>`;
+    return `<section class="market-intro browse-intro"><div><h1>${favorite ? t("我的收藏", "Saved resources") : collection ? esc(l(collection.name)) : t("界面资源库", "Interface library")}</h1></div>${favorite ? `<div class="button-row"><button class="button" data-export-favorites>${t("导出收藏", "Export saved")}</button><button type="button" class="button" data-import-favorites>${t("导入收藏", "Import saved")}</button><input type="file" hidden id="import-favorites" accept=".json"></div>` : ""}</section>`;
   }
 
   function listing() {
@@ -227,7 +198,7 @@ export function createBrowse({
   <button type="button" class="button advanced-filters-toggle" data-advanced-filters aria-controls="advanced-filters" aria-expanded="${expanded}">${icon("sliders-horizontal")}${t("更多筛选", "More filters")}</button></div></div>
   ${collection ? `<input type="hidden" name="collection" value="${collection.id}">` : ""}<input type="hidden" name="category" value="${esc(appState.route.params.get("category") || "all")}">
 
-  <fieldset class="category-facet"><legend>${t("用途分类", "Categories")}</legend>  <nav class="category-strip" data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${Object.entries(
+  <fieldset class="category-facet"><legend class="sr-only">${t("用途分类", "Categories")}</legend>  <nav class="category-strip" data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${Object.entries(
     { all: ["全部分类", "All categories"], ...categories },
   )
     .map(
@@ -236,7 +207,7 @@ export function createBrowse({
     )
     .join("")}</nav></fieldset>
   <div class="filter-options-row"><div class="active-filters" id="active-filters" aria-label="${t("已选条件", "Selected filters")}"></div></div>
-  <div class="advanced-filters" id="advanced-filters">${selectFilter(
+  <div class="advanced-filters" id="advanced-filters"><fieldset class="facet-group collection-shortcuts"><legend>${t("主题合集", "Collections")}</legend>${discovery.collections.map((c) => `<a class="text-link" href="${href("explore", "", { collection: c.id })}">${esc(l(c.name))}${icon("arrow-up-right")}</a>`).join("")}</fieldset>${selectFilter(
     "library",
     t("组件库", "Libraries"),
     Object.values(libraries).map((x) => [x.id, x.name]),
@@ -424,10 +395,6 @@ export function createBrowse({
   }
 
   function updateResults(updateURL = false) {
-    if (appState.route.view === "discover" && updateURL) {
-      location.hash = href("explore", "", filterParameters());
-      return;
-    }
     if (!maybe("#results")) return;
     if (updateURL) {
       history.replaceState(
@@ -467,5 +434,5 @@ export function createBrowse({
     updateFacetCounts();
     observeCards();
   }
-  return { discoveryPage, listing, filtered, updateResults, restoreFilters };
+  return { listing, filtered, updateResults, restoreFilters };
 }

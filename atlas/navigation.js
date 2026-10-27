@@ -30,9 +30,9 @@ export function parse() {
 /** @param {string} hash @returns {import('./types').Route} */
 export function parseHash(hash) {
   const [path, query = ""] = hash.replace(/^#/, "").split("?");
-  const [candidate = "discover", id] = path.split("/");
+  const [candidate = "explore", id] = path.split("/");
   return {
-    view: isView(candidate) ? candidate : "discover",
+    view: isView(candidate) ? candidate : "explore",
     id,
     params: new URLSearchParams(query),
   };
@@ -60,7 +60,6 @@ export function createNavigation({ appState, href, render }) {
       appState.route.id ||
       appState.selected ||
       ![
-        "discover",
         "explore",
         "cases",
         "favorites",

@@ -8,7 +8,7 @@ const base =
 const output = new URL("../docs/ui/editorial-atlas/", import.meta.url);
 await mkdir(output, { recursive: true });
 const routes = [
-  ["home", "discover", ".featured-section"],
+  ["home", "", ".asset-card"],
   ["library", "explore", ".asset-card"],
   [
     "detail",

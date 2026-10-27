@@ -1,24 +1,17 @@
-/* Editorial page hierarchy shared by the library and discovery. */
-.library-page .market-intro,
-.guidance-intro {
-  margin: 32px 0;
+/* Direct library browsing: a quiet heading, segmented types and purpose pills. */
+.library-page .browse-intro {
+  margin: 8px 0 24px;
 }
 .library-page .market-intro h1 {
   font-size: var(--text-page);
   line-height: var(--leading-page);
-  margin: 12px 0;
-}
-.library-page .market-intro p {
-  font-size: 16px;
-  line-height: 1.75;
-  max-width: 64ch;
+  margin: 0;
 }
 .catalog-toolbar {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 16px 0;
-  border-block: 1px solid var(--line);
+  padding: 0;
 }
 .catalog-toolbar > [data-shell-mounted="selection"] {
   min-width: 0;
@@ -26,25 +19,26 @@
 }
 .catalog-toolbar .market-tabs {
   gap: 4px;
-  padding: 0;
+  padding: 4px;
   margin: 0;
   border: 0;
-  background: transparent;
+  background: var(--surface);
+  border-radius: 12px;
   white-space: nowrap;
-  --selection-fill: var(--surface-strong);
+  --selection-fill: var(--ink);
   --selection-stroke: transparent;
   --selection-radius: 8px;
 }
 .catalog-toolbar .market-tabs a {
   padding: 8px 12px;
-  min-height: 44px;
+  min-height: 36px;
   border: 0;
   border-radius: 8px;
   font-size: 14px;
   flex-shrink: 0;
 }
 .catalog-toolbar .market-tabs a.active {
-  color: var(--action);
+  color: var(--panel);
   background: transparent;
 }
 .catalog-toolbar .market-tabs a > svg {
@@ -54,7 +48,8 @@
   font-size: 12px;
   background: none;
   padding: 0;
-  color: var(--muted-text);
+  color: inherit;
+  opacity: 0.65;
   min-width: 2ch;
   text-align: center;
 }
@@ -63,7 +58,12 @@
   min-width: 160px;
   margin-left: auto;
   margin-right: 0;
-  background: var(--panel);
+  background: var(--surface);
+  border-color: transparent;
+  min-height: 44px;
+}
+.catalog-toolbar .market-search input {
+  height: 42px;
 }
 .catalog-facets {
   flex-shrink: 0;
@@ -84,14 +84,9 @@
 }
 .category-facet {
   border: 0;
-  padding: 0 0 16px;
+  padding: 0;
   margin: 16px 0 0;
-  border-bottom: 1px solid var(--line);
   min-width: 0;
-}
-.category-facet legend {
-  font-weight: 600;
-  margin-bottom: 8px;
 }
 .category-facet .category-strip {
   flex-wrap: wrap;
@@ -100,25 +95,37 @@
   gap: 8px;
 }
 .category-facet .category-strip button {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--panel);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--surface);
   min-height: 36px;
   font-size: 14px;
 }
 .category-facet .category-strip button[aria-pressed="true"] {
-  color: var(--action);
-  border-color: var(--action);
-  background: var(--panel);
+  color: var(--panel);
+  background: var(--ink);
+}
+.category-facet .category-strip button:not(:disabled):hover {
+  box-shadow: inset 0 0 0 1px var(--line-strong);
 }
 .category-strip button > span {
   display: inline-block;
   min-width: 2ch;
   text-align: right;
   font-variant-numeric: tabular-nums;
-  margin-left: 8px;
+  margin-left: 0;
   font-size: 12px;
-  color: var(--muted-text);
+  color: inherit;
+  opacity: 0.65;
+}
+.collection-shortcuts .text-link {
+  justify-content: space-between;
+  font-size: 14px;
+  padding-block: 4px;
 }
 .browse-results {
   position: relative;
@@ -185,103 +192,6 @@
   margin-right: 6px;
   color: var(--line-strong);
 }
-.discovery-intro {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 32px;
-  align-items: center;
-  padding: 16px 0 24px;
-  border-bottom: 1px solid var(--line);
-}
-.discovery-intro h1 {
-  font-size: var(--text-page);
-  line-height: 1.2;
-  letter-spacing: -0.035em;
-  margin: 0;
-}
-.discovery-search {
-  width: 100%;
-}
-.discovery-search .market-search {
-  max-width: none;
-  background: var(--panel);
-  min-height: 48px;
-}
-.discovery-search input {
-  height: 46px;
-  font-size: 16px;
-}
-.discovery-categories {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding-top: 16px;
-}
-.discovery-categories a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 36px;
-  padding: 6px 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--control-radius);
-  background: var(--panel);
-  font-size: 14px;
-}
-.discovery-categories a:hover,
-.discovery-categories a:focus-visible {
-  color: var(--action);
-  border-color: var(--action);
-}
-.discovery-categories .all-categories {
-  border-color: transparent;
-  background: transparent;
-  color: var(--action);
-}
-.discovery-categories svg {
-  width: 14px;
-  height: 14px;
-}
-.discovery-section-heading {
-  gap: 16px;
-  margin-bottom: 16px;
-}
-.discovery-section-heading h2 {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-}
-.section-number {
-  color: var(--action);
-  font-size: 12px;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.06em;
-}
-.discovery-section-heading .text-link {
-  font-size: 14px;
-  flex-shrink: 0;
-}
-.guidance-entry {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 32px;
-  padding: 40px 0;
-  border-block: 1px solid var(--line);
-}
-.guidance-entry h2 {
-  margin: 12px 0;
-  font-size: 24px;
-}
-.guidance-entry p {
-  font-size: 16px;
-  color: var(--muted-text);
-}
-.guidance-entry .button-row {
-  flex-shrink: 0;
-}
 .code-scope-heading {
   display: flex;
   align-items: baseline;
@@ -318,10 +228,6 @@
     margin-left: 0;
     max-width: none;
   }
-  .guidance-entry {
-    align-items: start;
-    flex-direction: column;
-  }
 }
 @media (max-width: 767px) {
   :root {
@@ -329,35 +235,20 @@
     --leading-page: 38px;
     --section-space: 48px;
   }
-  .library-page .market-intro {
-    margin: 24px 0 32px;
+  .library-page .browse-intro {
+    margin: 8px 0 24px;
   }
-  .discovery-intro {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
-    padding: 8px 0 24px;
+  .catalog-toolbar .market-tabs a {
+    min-height: 44px;
   }
-  .discovery-section-heading h2 {
-    font-size: 22px;
-    gap: 8px;
+  .catalog-toolbar .market-search input {
+    height: 44px;
   }
   .category-facet .category-strip button {
     min-height: 44px;
   }
-  .discovery-categories a {
-    min-height: 44px;
-  }
-  .discovery-search input {
-    font-size: 14px;
-  }
-  .guidance-entry {
-    padding: 32px 0;
-  }
 }
 
-.featured-section.discovery-section {
-  margin-top: 24px;
-}
 .asset-actions [data-shell-mounted="card-menu"] {
   display: flex;
 }

@@ -53,8 +53,8 @@ test("Primary navigation keeps current scroll and restores each section and hist
   const count = await page.locator(".asset-card").count();
   await activatePrimary(page, "explore");
   expect(await page.evaluate(() => scrollY)).toBe(start);
-  await activatePrimary(page, "discover");
-  await expect(page).toHaveURL(/#discover/);
+  await activatePrimary(page, "guidance");
+  await expect(page).toHaveURL(/#guidance/);
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(start);
   await page.evaluate(() => scrollTo(0, 420));
   await activatePrimary(page, "explore");
@@ -70,7 +70,7 @@ test("Primary navigation keeps current scroll and restores each section and hist
   await expect(
     page.locator(".asset-caption [data-open]").first(),
   ).toBeFocused();
-  await activatePrimary(page, "discover");
+  await activatePrimary(page, "guidance");
   await activatePrimary(page, "explore");
   await expect(page.locator("[data-primary-view=explore]")).toBeFocused();
 });
@@ -194,7 +194,7 @@ test("Mobile navigation restores combined filters and original compositions rema
   await page.evaluate(() => scrollTo(0, 550));
   await expect(page.locator("#topbar")).toHaveClass("is-compact");
   const before = await page.evaluate(() => scrollY);
-  await activatePrimary(page, "discover");
+  await activatePrimary(page, "guidance");
   await activatePrimary(page, "explore");
   await expect(page).toHaveURL(
     /#components\?lang=zh-CN&source=original&style=neutral/,

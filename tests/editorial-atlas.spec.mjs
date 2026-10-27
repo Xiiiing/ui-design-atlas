@@ -1,23 +1,21 @@
 import { test, expect } from "@playwright/test";
 
 for (const lang of ["en", "zh-CN"]) {
-  test(`Editorial discovery leads into the library and preserves legacy filters (${lang})`, async ({
+  test(`Library home replaces discovery and preserves legacy filters (${lang})`, async ({
     page,
   }) => {
     await page.goto(`#discover?lang=${lang}`);
-    await expect(page.locator(".market-navigation a")).toHaveCount(4);
-    await expect(page.locator("#filters")).toHaveCount(0);
-    await expect(page.locator(".featured-section .asset-card")).toHaveCount(8);
-    await expect(page.locator("[data-discovery-more]")).toHaveCount(0);
-    await page.locator("#discovery-query").fill("Fluent");
-    await page.locator("#discovery-query").press("Enter");
-    await expect(page).toHaveURL(/#explore.*q=Fluent/);
+    await expect(page).toHaveURL(/#explore/);
+    await expect(page.locator(".market-navigation a")).toHaveCount(3);
+    await expect(page.locator('[data-primary-view="discover"]')).toHaveCount(0);
+    await expect(page.locator("#filters")).toBeVisible();
+    await expect(page.locator(".browse-intro p, .browse-intro .guidance-eyebrow")).toHaveCount(0);
+    await page.locator('#filters [name=q]').fill("Fluent");
     await expect(page.locator("#results .asset-card")).toHaveCount(4);
-    await page.goBack();
-    await expect(page.locator("#discovery-search")).toBeVisible();
-    const buttons = page.locator('.discovery-categories a[href*="category=buttons"]');
-    await buttons.focus();
-    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/#explore.*q=Fluent/);
+    await page.goto(`#explore?lang=${lang}`);
+    await page.locator('[data-category=buttons]').focus();
+    await page.keyboard.press("Space");
     await expect(page).toHaveURL(/#explore.*category=buttons/);
     await expect(page.locator("#advanced-filters")).toBeHidden();
     await expect(page.locator("[data-category=buttons]")).toHaveAttribute("aria-pressed", "true");
@@ -88,15 +86,10 @@ for (const width of [1440, 1024, 768, 390]) {
       for (const route of ["discover", "explore"]) {
         await page.goto(`#${route}?lang=${lang}`);
         await page.evaluate(() => document.fonts.ready);
-        if (route === "discover") {
-          // Keep the first screen about resources, with a short search header.
-          const intro = await page.locator(".discovery-intro").boundingBox();
-          expect(intro.height).toBeLessThanOrEqual(150);
-          await expect(page.locator(".discovery-intro p")).toHaveCount(0);
-          const preview = await page.locator(".featured-section .asset-preview").first().boundingBox();
-          // Category shortcuts may wrap, but the first preview stays fully in view.
-          expect(preview.y + preview.height).toBeLessThan(900);
-        }
+        await expect(page.locator("#filters")).toBeVisible();
+        await expect(page.locator(".discovery-intro, .featured-section")).toHaveCount(0);
+        const intro = await page.locator(".browse-intro").boundingBox();
+        expect(intro.height).toBeLessThanOrEqual(60);
         const header = page.locator(".market-header");
         const before = await header.boundingBox();
         await page.evaluate(() => scrollTo(0, 500));
@@ -205,7 +198,7 @@ test("Touch card menus and independent saved shortcut remain operable", async ({
   await page.goto(
     "http://127.0.0.1:4173/ui-design-atlas/#discover?lang=en",
   );
-  await page.locator('.discovery-categories a[href*="category=buttons"]').tap();
+  await page.locator('[data-category=buttons]').tap();
   await expect(page).toHaveURL(/#explore.*category=buttons/);
   await expect(page.locator("#advanced-filters")).toBeHidden();
   const card = page.locator(".asset-card").first();

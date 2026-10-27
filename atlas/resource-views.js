@@ -46,7 +46,6 @@ export function createResourceViews({
     document.documentElement.lang = appState.locale;
     element("#sidebar").innerHTML = "";
     const nav = [
-      ["discover", "发现", "Discover", "grid-2x2"],
       ["explore", "资源库", "Library", "layers"],
       ["guidance", "设计指导", "Guidance", "layers"],
       ["tools", "资源导航", "Directory", "code-xml"],
