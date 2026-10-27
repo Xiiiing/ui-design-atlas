@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { findResource, resources } from "../catalog.js";
 import { experienceMode } from "../presentation.js";
 
-test("Library previews share equal columns and compact metadata", async ({
+test("Library mixes compact and double-width previews with consistent metadata", async ({
   page,
 }) => {
   for (const lang of ["en", "zh-CN"])
@@ -10,7 +10,8 @@ test("Library previews share equal columns and compact metadata", async ({
       await page.setViewportSize({ width, height: 1000 });
       await page.goto(`#discover?lang=${lang}`);
       const sizes = await page
-        .locator(".market-grid").first()
+        .locator(".market-grid")
+        .first()
         .evaluate((grid) => {
           const css = getComputedStyle(grid),
             columns = css.gridTemplateColumns.split(" ").length;
@@ -30,7 +31,7 @@ test("Library previews share equal columns and compact metadata", async ({
                 .querySelector(".asset-footer")
                 .getBoundingClientRect();
               return {
-                wide: false,
+                wide: card.getAttribute("data-layout") === "wide",
                 w: preview.width,
                 h: preview.height,
                 metadata: rect.height - preview.height,
@@ -39,6 +40,8 @@ test("Library previews share equal columns and compact metadata", async ({
             }),
           };
         });
+      expect(sizes.cards.some((c) => c.wide)).toBe(true);
+      expect(sizes.cards.some((c) => !c.wide)).toBe(true);
       for (const card of sizes.cards) {
         expect(Math.abs(card.h - sizes.unit)).toBeLessThan(1);
         expect(

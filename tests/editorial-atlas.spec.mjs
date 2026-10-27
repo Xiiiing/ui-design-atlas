@@ -114,7 +114,7 @@ for (const width of [1440, 1024, 768, 390]) {
             .evaluateAll((els) =>
               els.map((el) => Math.round(el.getBoundingClientRect().width)),
             );
-          expect(new Set(widths).size).toBe(1);
+          expect(new Set(widths).size).toBe(width > 599 ? 2 : 1);
         }
       }
     }
