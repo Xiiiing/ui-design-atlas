@@ -1,5 +1,5 @@
 {
-  "buildHash": "1f9a6c5674b40d54b9c0862f37241fab7cc04e8c94315ed2ec9a2bf9abc8d382",
+  "buildHash": "819229fc7ced24f44eeb4d2bb9001c03c92167144f258bcb7233bada707ebaa0",
   "buildFiles": [
     "app.js",
     "atlas-chunk-C4UUZVKO.js",
@@ -21,8 +21,8 @@
     "atlas-composer-view-2G5L6ODA.js",
     "atlas-composer-view-JMUP3NEF.css",
     "atlas-guidance-markdown-DYKZDQ3B.js",
-    "atlas-guidance-views-Q5VCGOND.js",
     "atlas-guidance-views-VWP43KPQ.css",
+    "atlas-guidance-views-WPNK2VTS.js",
     "atlas-info-views-2UEBF4KQ.js",
     "atlas-saved-content-5YR6L5T3.js",
     "atlas-search-6PCDOPN3.css",
@@ -997,6 +997,13 @@
       "scrollWidth": 1295
     },
     {
+      "name": "directory",
+      "factor": 1.1,
+      "dpr": 1.100000023841858,
+      "width": 1309,
+      "scrollWidth": 1295
+    },
+    {
       "name": "home",
       "factor": 1.25,
       "dpr": 1.25,
@@ -1026,6 +1033,13 @@
     },
     {
       "name": "composer",
+      "factor": 1.25,
+      "dpr": 1.25,
+      "width": 1152,
+      "scrollWidth": 1140
+    },
+    {
+      "name": "directory",
       "factor": 1.25,
       "dpr": 1.25,
       "width": 1152,

@@ -27,25 +27,36 @@
 .guidance-intro > .button {
   white-space: nowrap;
 }
-.guidance-filters {
-  display: flex;
+.content-intro {
+  margin: 8px 0 24px;
   gap: 16px;
-  align-items: end;
-  padding: 16px 0;
-  border-block: 1px solid var(--line);
-  margin-bottom: 20px;
 }
-.guidance-filters label {
-  display: grid;
+.content-intro h1 {
+  margin: 0;
+  line-height: var(--leading-page);
+}
+.guidance-filters {
+  margin: 0;
+}
+.content-types button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
-  font-size: 12px;
+  background: transparent;
   color: var(--muted-text);
+  font-weight: 500;
 }
-.guidance-filters label:first-child {
-  flex: 1;
+.catalog-toolbar .content-types button.active {
+  background: var(--ink);
 }
-.guidance-filters input,
-.guidance-filters select,
+.content-types button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+.content-types button:not(:disabled):not(.active):hover {
+  color: var(--ink);
+}
 .composer-field input,
 .composer-field select,
 .composer-field textarea,
@@ -60,24 +71,23 @@
   width: 100%;
   color: var(--ink);
 }
-.guidance-filters select {
-  min-width: 150px;
-}
 .guidance-result-count {
   font-size: 12px;
   color: var(--muted-text);
-  margin-bottom: 20px;
+  margin: 24px 0 16px;
 }
 .guidance-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
 }
 .guidance-card {
-  padding: 24px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
   min-width: 0;
   background: var(--panel);
 }
@@ -103,8 +113,12 @@
   letter-spacing: -0.025em;
 }
 .guidance-card p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   font-size: 14px;
-  line-height: 1.75;
+  line-height: 1.6;
   color: var(--muted-text);
 }
 .guidance-card h2 a::after {
@@ -113,7 +127,7 @@
 }
 .guidance-card-footer {
   margin-top: auto;
-  padding-top: 16px;
+  padding-top: 8px;
   border-top: 1px solid var(--line);
   display: flex;
   gap: 12px;
@@ -150,6 +164,9 @@
   font-size: 16px;
   margin: 20px auto 64px;
   overflow-wrap: anywhere;
+}
+.guidance-reader .guidance-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .guidance-reader > header {
   margin: 32px 0;
@@ -426,7 +443,12 @@
   margin: 12px 0;
 }
 /* Content grids become a reading column on narrower screens. */
-@media (max-width: 1100px) {
+@media (max-width: 1199px) {
+  .guidance-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 899px) {
   .guidance-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -438,25 +460,10 @@
     gap: 24px;
     margin-top: 8px;
   }
-  .guidance-filters {
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .guidance-filters label:first-child {
-    flex-basis: 100%;
-  }
-  .guidance-filters label {
-    flex: 1;
-  }
-  .guidance-filters select {
-    min-width: 0;
-  }
-  .guidance-grid {
+  .guidance-grid,
+  .guidance-reader .guidance-grid {
     grid-template-columns: 1fr;
     gap: 16px;
-  }
-  .guidance-card {
-    padding: 20px;
   }
   .guidance-reader {
     margin-top: 8px;
@@ -485,10 +492,6 @@
   }
 }
 
-.guidance-card {
-  border: 1px solid var(--line);
-  border-radius: 12px;
-}
 .guidance-card-heading .asset-save {
   position: static;
   opacity: 1;
@@ -533,5 +536,9 @@
     align-items: start;
     flex-direction: column;
     gap: 24px;
+  }
+  .content-intro {
+    margin: 8px 0 24px;
+    gap: 16px;
   }
 }

@@ -9,6 +9,7 @@ import {
   findTool,
 } from "../guidance-catalog.js";
 import { resources } from "../catalog.js";
+import { icon } from "../icons.js";
 import { searchContent, contentEntries } from "./content-search.js";
 import { contentCard } from "./content-cards.js";
 import { escapeHTML as esc } from "./html.js";
@@ -55,31 +56,25 @@ export function createGuidanceViews(deps) {
   };
   const empty = () =>
     `<div class="market-empty"><h2 tabindex="-1">${t("没有匹配的内容", "No matching content")}</h2><p>${t("换个关键词，或清空筛选。", "Try another query or clear the filters.")}</p></div>`;
+  /** @param {string} name @param {Record<string,string[]>} labels */
+  function filterButtons(name, labels) {
+    const value = appState.route.params.get(name) || "";
+    return `<input type="hidden" name="${name}" value="${esc(value)}">${Object.entries(
+      labels,
+    )
+      .map(
+        ([id, label]) =>
+          `<button type="button" data-content-filter="${name}" data-value="${id}" aria-pressed="${value === id}" class="${value === id ? "active" : ""}">${t(label[0], label[1])}<span data-filter-count></span></button>`,
+      )
+      .join("")}`;
+  }
   function list() {
     if (!root) return;
     const tool = appState.route.view === "tools",
       p = appState.route.params;
     replaceShellHTML(
       root,
-      `<section class="guidance-intro"><div><span class="guidance-eyebrow">ATLAS / ${tool ? "DIRECTORY" : "GUIDANCE"}</span><h1>${tool ? t("资源导航", "Resource directory") : t("让想法成为更好的界面", "Turn ideas into better interfaces")}</h1><p>${tool ? t("按用途找到组件库、设计规范、Skills 与学习资料。", "Find libraries, design specifications, skills and learning resources by purpose.") : t("收藏可复用的提示词、方法与规范，再组合成适合你的项目要求。", "Save reusable prompts, methods and specifications, then combine them into a brief for your project.")}</p></div><a class="button primary" href="${href("compose")}">${t("组合提示词", "Compose a prompt")} ↗</a></section><form id="content-filters" class="guidance-filters"><label>${t("搜索", "Search")}<input type="search" name="q" value="${esc(p.get("q") || "")}" placeholder="${t("搜索提示词、动效、排版…", "Search prompts, motion, typography…")}"></label><label>${t("类型", "Type")}<select name="kind"><option value="">${t("全部类型", "All types")}</option>${Object.entries(
-        tool ? toolKinds : guidanceKinds,
-      )
-        .map(
-          ([value, labels]) =>
-            `<option value="${value}" ${p.get("kind") === value ? "selected" : ""}>${t(labels[0], labels[1])}</option>`,
-        )
-        .join("")}</select></label>${
-        tool
-          ? ""
-          : `<label>${t("用途", "Purpose")}<select name="purpose"><option value="">${t("全部用途", "All purposes")}</option>${Object.entries(
-              purposes,
-            )
-              .map(
-                ([value, labels]) =>
-                  `<option value="${value}" ${p.get("purpose") === value ? "selected" : ""}>${t(labels[0], labels[1])}</option>`,
-              )
-              .join("")}</select></label>`
-      }<button type="submit" class="button">${t("搜索", "Search")}</button></form><p class="guidance-result-count" role="status"></p><div class="guidance-grid" data-content-results></div>`,
+      `<section class="guidance-intro content-intro"><h1>${tool ? t("资源导航", "Resource directory") : t("设计指导", "Design guidance")}</h1><a class="button primary" href="${href("compose")}">${t("组合提示词", "Compose a prompt")} ↗</a></section><form id="content-filters" class="guidance-filters"><div class="catalog-toolbar"><div class="market-tabs content-types" role="group" aria-label="${t("类型", "Type")}">${filterButtons("kind", { "": ["全部类型", "All types"], ...(tool ? toolKinds : guidanceKinds) })}</div><label class="market-search">${icon("search")}<input type="search" name="q" aria-label="${t("搜索", "Search")}" value="${esc(p.get("q") || "")}" placeholder="${tool ? t("搜索组件库、规范、资料…", "Search libraries, specs, resources…") : t("搜索提示词、动效、排版…", "Search prompts, motion, typography…")}"><button type="submit" class="icon-button" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label></div>${tool ? "" : `<fieldset class="category-facet"><legend class="sr-only">${t("用途", "Purpose")}</legend><div class="category-strip">${filterButtons("purpose", { "": ["全部用途", "All purposes"], ...purposes })}</div></fieldset>`}</form><p class="guidance-result-count" role="status"></p><div class="guidance-grid" data-content-results></div>`,
     );
     updateList(false);
   }
@@ -142,38 +137,27 @@ export function createGuidanceViews(deps) {
       );
     const count = root.querySelector(".guidance-result-count");
     if (count) count.textContent = items.length + " " + t("项内容", "items");
-    for (const name of ["kind", "purpose"]) {
-      const field = form.querySelector(`[name=${name}]`);
-      if (!(field instanceof HTMLSelectElement)) continue;
-      for (const option of [...field.options]) {
-        const n = pool.filter(
-          (r) =>
-            matches(r, name) &&
-            (!option.value ||
-              (name === "kind" &&
-                "kind" in r.item &&
-                r.item.kind === option.value) ||
-              (name === "purpose" &&
-                "purposes" in r.item &&
-                r.item.purposes.includes(
-                  /** @type {import('./guidance-types').Purpose} */ (
-                    option.value
-                  ),
-                ))),
-        ).length;
-        option.disabled = !!option.value && !n && !option.selected;
-        const labels =
-          name === "kind" ? (tool ? toolKinds : guidanceKinds) : purposes;
-        const label = option.value
-          ? /** @type {Record<string,string[]>} */ (labels)[option.value]
-          : null;
-        option.textContent =
-          (label
-            ? t(label[0], label[1])
-            : name === "kind"
-              ? t("全部类型", "All types")
-              : t("全部用途", "All purposes")) + ` (${n})`;
-      }
+    for (const button of form.querySelectorAll("[data-content-filter]")) {
+      if (!(button instanceof HTMLButtonElement)) continue;
+      const name = button.dataset.contentFilter || "",
+        value = button.dataset.value || "",
+        selected = (params.get(name) || "") === value;
+      const n = pool.filter(
+        (r) =>
+          matches(r, name) &&
+          (!value ||
+            (name === "kind" && "kind" in r.item && r.item.kind === value) ||
+            (name === "purpose" &&
+              "purposes" in r.item &&
+              r.item.purposes.includes(
+                /** @type {import('./guidance-types').Purpose} */ (value),
+              ))),
+      ).length;
+      button.disabled = !!value && !n && !selected;
+      button.setAttribute("aria-pressed", String(selected));
+      button.classList.toggle("active", selected);
+      const count = button.querySelector("[data-filter-count]");
+      if (count) count.textContent = String(n);
     }
     if (tool) lastTools = location.hash;
     else lastGuidance = location.hash;
@@ -326,13 +310,6 @@ export function createGuidanceViews(deps) {
       "change",
       (e) => {
         if (
-          e.target instanceof HTMLSelectElement &&
-          e.target.closest("#content-filters")
-        ) {
-          scheduler.cancel();
-          updateList(true, true);
-        }
-        if (
           e.target instanceof HTMLInputElement &&
           e.target.hasAttribute("data-check-progress") &&
           chosen &&
@@ -384,6 +361,17 @@ export function createGuidanceViews(deps) {
         if (e.target.closest("a")) scheduler.flush();
         const b = e.target.closest("button");
         if (!b) return;
+        if (b.hasAttribute("data-content-filter")) {
+          const name = b.dataset.contentFilter;
+          if (name !== "kind" && name !== "purpose") return;
+          const field = root?.querySelector(`#content-filters [name=${name}]`);
+          if (field instanceof HTMLInputElement) {
+            field.value = b.dataset.value || "";
+            scheduler.cancel();
+            updateList(true, true);
+          }
+          return;
+        }
         if (b.hasAttribute("data-guidance-retry")) {
           const item = findGuidance(appState.route.id || "");
           if (item) void guidanceDetail(item);

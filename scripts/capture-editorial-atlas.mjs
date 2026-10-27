@@ -59,9 +59,14 @@ try {
           ).toBeLessThanOrEqual(metrics.width);
           samples.push({ name, width, lang, colorScheme, ...metrics });
           if (
-            ["home", "library", "detail", "guidance", "composer"].includes(
-              name,
-            ) &&
+            [
+              "home",
+              "library",
+              "detail",
+              "guidance",
+              "composer",
+              "directory",
+            ].includes(name) &&
             ((lang === "zh-CN" && colorScheme === "light" && width === 1440) ||
               (lang === "en" && colorScheme === "dark" && width === 390))
           ) {
@@ -95,7 +100,7 @@ try {
   for (const factor of [1.1, 1.25]) {
     await page.goto(base);
     await native.setZoom(factor, page);
-    for (const [name, route, ready] of routes.slice(0, 5)) {
+    for (const [name, route, ready] of routes.slice(0, 6)) {
       await visit(page, route, "zh-CN", ready);
       const measurements = await page.evaluate(() => ({
         dpr: devicePixelRatio,
@@ -144,5 +149,5 @@ await writeFile(
   ) + "\n",
 );
 console.log(
-  `Saved ${samples.length} viewport checks, ${zoomSamples.length} native zoom checks and ten screenshots.`,
+  `Saved ${samples.length} viewport checks, ${zoomSamples.length} native zoom checks and twelve screenshots.`,
 );

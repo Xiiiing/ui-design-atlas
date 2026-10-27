@@ -55,7 +55,15 @@ test("Primary navigation keeps current scroll and restores each section and hist
   expect(await page.evaluate(() => scrollY)).toBe(start);
   await activatePrimary(page, "guidance");
   await expect(page).toHaveURL(/#guidance/);
-  await expect.poll(() => page.evaluate(() => scrollY)).toBe(start);
+  await expect(page.locator(".guidance-card").first()).toBeVisible();
+  // Compact content can be shorter than the previous page: native scrolling clamps to its end.
+  const guidanceEnd = await page.evaluate(
+    () => document.documentElement.scrollHeight - innerHeight,
+  );
+  expect(guidanceEnd).toBeGreaterThan(420);
+  await expect
+    .poll(() => page.evaluate(() => scrollY))
+    .toBe(Math.min(start, guidanceEnd));
   await page.evaluate(() => scrollTo(0, 420));
   await activatePrimary(page, "explore");
   await expect(page.locator(".asset-card")).toHaveCount(count);

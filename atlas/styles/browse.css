@@ -29,7 +29,7 @@
   --selection-stroke: transparent;
   --selection-radius: 8px;
 }
-.catalog-toolbar .market-tabs a {
+.catalog-toolbar .market-tabs :is(a, button) {
   padding: 8px 12px;
   min-height: 36px;
   border: 0;
@@ -37,14 +37,14 @@
   font-size: 14px;
   flex-shrink: 0;
 }
-.catalog-toolbar .market-tabs a.active {
+.catalog-toolbar .market-tabs :is(a, button).active {
   color: var(--panel);
   background: transparent;
 }
-.catalog-toolbar .market-tabs a > svg {
+.catalog-toolbar .market-tabs :is(a, button) > svg {
   display: none;
 }
-.catalog-toolbar .market-tabs a > span {
+.catalog-toolbar .market-tabs :is(a, button) > span {
   font-size: 12px;
   background: none;
   padding: 0;
@@ -238,7 +238,7 @@
   .library-page .browse-intro {
     margin: 8px 0 24px;
   }
-  .catalog-toolbar .market-tabs a {
+  .catalog-toolbar .market-tabs :is(a, button) {
     min-height: 44px;
   }
   .catalog-toolbar .market-search input {
