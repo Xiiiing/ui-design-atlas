@@ -194,7 +194,7 @@ function selection(source: HTMLElement): ReactNode {
           : a.name === "tabindex"
             ? "tabIndex"
             : a.name,
-        a.value,
+        a.name === "disabled" ? true : a.value,
       ]),
     );
     return createElement(node.tagName.toLowerCase(), {

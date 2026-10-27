@@ -37,6 +37,9 @@ test("Guidance filters use URL/history, honor composition and cancel input befor
   await expect(page).toHaveURL(/kind=skill.*purpose=motion/);
   await page.reload();
   await expect(page.locator(".guidance-card")).toHaveCount(3);
+  await expect(
+    form.locator('[data-content-filter="kind"][data-value="prompt"]'),
+  ).toBeDisabled();
   await page.goBack();
   await expect(page.locator(".guidance-card")).toHaveCount(5);
   await form.locator("[name=q]").fill("a-query-that-does-not-match");

@@ -59,9 +59,7 @@ export function createGuidanceViews(deps) {
   /** @param {string} name @param {Record<string,string[]>} labels */
   function filterButtons(name, labels) {
     const value = appState.route.params.get(name) || "";
-    return `<input type="hidden" name="${name}" value="${esc(value)}">${Object.entries(
-      labels,
-    )
+    return `${Object.entries(labels)
       .map(
         ([id, label]) =>
           `<button type="button" data-content-filter="${name}" data-value="${id}" aria-pressed="${value === id}" class="${value === id ? "active" : ""}">${t(label[0], label[1])}<span data-filter-count></span></button>`,
@@ -74,7 +72,7 @@ export function createGuidanceViews(deps) {
       p = appState.route.params;
     replaceShellHTML(
       root,
-      `<section class="guidance-intro content-intro"><h1>${tool ? t("资源导航", "Resource directory") : t("设计指导", "Design guidance")}</h1><a class="button primary" href="${href("compose")}">${t("组合提示词", "Compose a prompt")} ↗</a></section><form id="content-filters" class="guidance-filters"><div class="catalog-toolbar"><div class="market-tabs content-types" role="group" aria-label="${t("类型", "Type")}">${filterButtons("kind", { "": ["全部类型", "All types"], ...(tool ? toolKinds : guidanceKinds) })}</div><label class="market-search">${icon("search")}<input type="search" name="q" aria-label="${t("搜索", "Search")}" value="${esc(p.get("q") || "")}" placeholder="${tool ? t("搜索组件库、规范、资料…", "Search libraries, specs, resources…") : t("搜索提示词、动效、排版…", "Search prompts, motion, typography…")}"><button type="submit" class="icon-button" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label></div>${tool ? "" : `<fieldset class="category-facet"><legend class="sr-only">${t("用途", "Purpose")}</legend><div class="category-strip">${filterButtons("purpose", { "": ["全部用途", "All purposes"], ...purposes })}</div></fieldset>`}</form><p class="guidance-result-count" role="status"></p><div class="guidance-grid" data-content-results></div>`,
+      `<section class="guidance-intro content-intro"><h1>${tool ? t("资源导航", "Resource directory") : t("设计指导", "Design guidance")}</h1><a class="button primary" href="${href("compose")}">${t("组合提示词", "Compose a prompt")} ↗</a></section><form id="content-filters" class="guidance-filters"><input type="hidden" name="kind" value="${esc(p.get("kind") || "")}">${tool ? "" : `<input type="hidden" name="purpose" value="${esc(p.get("purpose") || "")}">`}<div class="catalog-toolbar"><div class="market-tabs content-types" data-shell-group data-shell-key="content-types-${tool ? "tools" : "guidance"}" role="group" aria-label="${t("类型", "Type")}">${filterButtons("kind", { "": ["全部类型", "All types"], ...(tool ? toolKinds : guidanceKinds) })}</div><label class="market-search">${icon("search")}<input type="search" name="q" aria-label="${t("搜索", "Search")}" value="${esc(p.get("q") || "")}" placeholder="${tool ? t("搜索组件库、规范、资料…", "Search libraries, specs, resources…") : t("搜索提示词、动效、排版…", "Search prompts, motion, typography…")}"><button type="submit" class="icon-button" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label></div>${tool ? "" : `<fieldset class="category-facet"><legend class="sr-only">${t("用途", "Purpose")}</legend><div class="category-strip">${filterButtons("purpose", { "": ["全部用途", "All purposes"], ...purposes })}</div></fieldset>`}</form><p class="guidance-result-count" role="status"></p><div class="guidance-grid" data-content-results></div>`,
     );
     updateList(false);
   }

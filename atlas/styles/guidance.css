@@ -47,7 +47,7 @@
   color: var(--muted-text);
   font-weight: 500;
 }
-.catalog-toolbar .content-types button.active {
+.catalog-toolbar .content-types:not(.selection-group) button.active {
   background: var(--ink);
 }
 .content-types button:disabled {

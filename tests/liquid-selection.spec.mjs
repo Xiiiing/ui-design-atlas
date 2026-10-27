@@ -163,3 +163,106 @@ test("Selection tracks scrolled controls, language, resizing and reduced motion"
     }
   }
 });
+
+for (const [route, kind, count] of [
+  ["guidance", "skill", 5],
+  ["tools", "design", 1],
+]) {
+  test(`${route} animates the existing type marker without moving button labels`, async ({
+    page,
+  }) => {
+    await page.goto(`#${route}?lang=en`);
+    await page.evaluate(() => document.fonts.ready);
+    const group = ".content-types";
+    await aligned(page, group, '[aria-pressed="true"]');
+    const samples = await page.locator(group).evaluate(async (el, kind) => {
+      const marker = el.querySelector("[data-selection-marker]");
+      const buttons = [...el.querySelectorAll("button")];
+      const target = el.querySelector(`[data-value="${kind}"]`);
+      const before = buttons.map((b) => b.getBoundingClientRect().toJSON());
+      const start = marker.getBoundingClientRect().x;
+      const end = target.getBoundingClientRect().x;
+      const frames = [];
+      target.click();
+      const deadline = performance.now() + 650;
+      do {
+        await new Promise(requestAnimationFrame);
+        frames.push(marker.getBoundingClientRect().x);
+      } while (performance.now() < deadline);
+      return {
+        start,
+        end,
+        frames,
+        sameMarker: marker === el.querySelector("[data-selection-marker]"),
+        before,
+        after: buttons.map((b) => b.getBoundingClientRect().toJSON()),
+      };
+    }, kind);
+    expect(samples.sameMarker).toBe(true);
+    expect(samples.after).toEqual(samples.before);
+    expect(
+      samples.frames.some((x) => x > samples.start + 2 && x < samples.end - 2),
+    ).toBe(true);
+    await expect(page.locator(".guidance-card")).toHaveCount(count);
+    await aligned(page, group, '[aria-pressed="true"]');
+    await expect(page.locator(`${group} [aria-pressed="true"]`)).toHaveCSS(
+      "background-color",
+      "rgba(0, 0, 0, 0)",
+    );
+    // Retarget the same spring before it settles, then activate using the keyboard.
+    await page.locator(group).evaluate(async (el) => {
+      el.querySelector('[data-value=""]').click();
+      await new Promise(requestAnimationFrame);
+      el.querySelectorAll("button")[1].click();
+    });
+    await aligned(page, group, '[aria-pressed="true"]');
+    const all = page.locator(`${group} [data-value=""]`);
+    await all.focus();
+    await page.keyboard.press("Space");
+    await expect(all).toBeFocused();
+    await aligned(page, group, '[aria-pressed="true"]');
+  });
+}
+
+test("Content type markers follow touch, horizontal scrolling and reduced motion", async ({
+  browser,
+  baseURL,
+}) => {
+  const context = await browser.newContext({
+    baseURL,
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    colorScheme: "dark",
+    reducedMotion: "reduce",
+  });
+  const page = await context.newPage();
+  try {
+    for (const lang of ["zh-CN", "en"]) {
+      for (const [route, kind] of [
+        ["guidance", "checklist"],
+        ["tools", "learning"],
+      ]) {
+        await page.goto(`#${route}?lang=${lang}`);
+        await aligned(page, ".content-types", '[aria-pressed="true"]');
+        const target = page.locator(`.content-types [data-value="${kind}"]`);
+        await target.tap();
+        await expect(target).toHaveAttribute("aria-pressed", "true");
+        await aligned(page, ".content-types", '[aria-pressed="true"]');
+        await page.setViewportSize({ width: 768, height: 1000 });
+        await aligned(page, ".content-types", '[aria-pressed="true"]');
+        await page.setViewportSize({ width: 390, height: 844 });
+        await expect(
+          page.locator(".content-types [data-selection-marker]"),
+        ).toHaveCount(1);
+        await aligned(page, ".content-types", '[aria-pressed="true"]');
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth,
+          ),
+        ).toBe(true);
+      }
+    }
+  } finally {
+    await context.close();
+  }
+});
