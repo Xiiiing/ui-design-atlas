@@ -8950,5 +8950,932 @@
       "zh-CN": "将「Bloom」的视觉语言应用到现有内容。\n\n低饱和自然色、衬线标题和柔和圆角；按钮为胶囊形，明暗主题采用各自的语义配色。\n\n只迁移字体层级、色彩、边框、圆角和留白关系；使用交付样式中的语义变量适应明暗主题。保留现有业务结构，不增加该演示的表单、数据或业务流程。\n\n基础主题变量（其他主题以交付 CSS 为准）：background=#f7f5ed, surface=#fffef9, text=#244536, accent=#305744, border=#dce1d5, radius=18px",
       "en": "Apply the visual language of Bloom to existing content.\n\nMuted natural colours, serif headings and soft corners; pill buttons and semantic colours for each theme.\n\nTransfer only typography hierarchy, colours, borders, corners and spacing relationships, using delivered semantic variables for both themes. Keep the existing business structure without adding this demo’s forms, data or business flows.\n\nBase theme variables (see delivered CSS for other themes): background=#f7f5ed, surface=#fffef9, text=#244536, accent=#305744, border=#dce1d5, radius=18px"
     }
+  },
+  {
+    "id": "boardui-agent-thinking",
+    "key": "boardui-agent-thinking",
+    "type": "component",
+    "sourceId": "boardui",
+    "libraryIds": [
+      "boardui"
+    ],
+    "category": "loading",
+    "interactions": [
+      "auto",
+      "click"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "AI 思考指示器",
+      "en": "Agent thinking indicators"
+    },
+    "description": {
+      "zh-CN": "四种思考动效，配合闪光文字与计时，可切换和暂停。",
+      "en": "Four thinking indicators with shimmering text, elapsed time and pause."
+    },
+    "tags": {
+      "zh-CN": [
+        "AI 思考指示器",
+        "BoardUI",
+        "loading"
+      ],
+      "en": [
+        "Agent thinking indicators",
+        "BoardUI",
+        "loading"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "聊天输入框上方、异步任务与助手等待状态。",
+      "en": "Above chat composers, asynchronous jobs and assistant waiting states."
+    },
+    "principle": {
+      "zh-CN": "点阵波浪、旋转、星芒、无限轨迹共用同一行基线；弱化计时，让状态说明成为阅读重点。",
+      "en": "Wave, spin, stars and infinity share one baseline; secondary elapsed time keeps attention on the status label."
+    },
+    "rules": {
+      "zh-CN": [
+        "提供四种样式切换与暂停；暂停时冻结装饰并隐藏计时，恢复后重新计时。减少动态效果时停止粒子/轨迹与文字闪光，不声称连接真实模型。",
+        "保留作者与 MIT 许可，使用交付源码中的实际依赖和交互边界。"
+      ],
+      "en": [
+        "Switch between four variants and pause; pausing freezes decoration and hides elapsed time, and resuming restarts the timer. Reduced motion stops the indicator and label animation. No model is connected.",
+        "Retain authorship and MIT notices, using the dependencies and interaction boundaries in the delivered source."
+      ]
+    },
+    "files": [
+      "src/demos/intake/boardui-thinking.tsx",
+      "src/vendor/boardui/agent-thinking.tsx"
+    ],
+    "supportFiles": [
+      "src/demos/intake/shared.tsx",
+      "src/demos/intake/styles.css"
+    ],
+    "originalUrl": "https://www.boardui.com/components/agent-thinking",
+    "sourceUrl": "https://github.com/BoardUI/boardui/blob/ec5c5eb3e29c2441be63b9422cd54f411ef23466/components/application/agent-thinking/agent-thinking.tsx",
+    "cover": "./assets/previews/component-boardui-agent-thinking.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=boardui-agent-thinking",
+      "mode": "inline"
+    },
+    "prompt": {
+      "zh-CN": "复用「AI 思考指示器」的实际组件源码。\n\n结构与行为：提供四种样式切换与暂停；暂停时冻结装饰并隐藏计时，恢复后重新计时。减少动态效果时停止粒子/轨迹与文字闪光，不声称连接真实模型。\n\n视觉规则：点阵波浪、旋转、星芒、无限轨迹共用同一行基线；弱化计时，让状态说明成为阅读重点。\n\n保留实际依赖、明暗主题、中英文、键盘和减少动态效果适配，以及来源与 MIT 许可。图鉴示例只演示上述本地行为；替换业务内容时不增加未实现的服务或效果保证。",
+      "en": "Reuse the actual source of Agent thinking indicators.\n\nStructure and behavior: Switch between four variants and pause; pausing freezes decoration and hides elapsed time, and resuming restarts the timer. Reduced motion stops the indicator and label animation. No model is connected.\n\nVisual rules: Wave, spin, stars and infinity share one baseline; secondary elapsed time keeps attention on the status label.\n\nRetain its real dependencies, themes, localization, keyboard/reduced-motion adaptations, attribution and MIT license. The preview demonstrates only these local behaviors; replacing content must not imply services or outcomes not implemented here."
+    },
+    "stylePrompt": {
+      "zh-CN": "将「AI 思考指示器」的视觉语言用于现有内容：点阵波浪、旋转、星芒、无限轨迹共用同一行基线；弱化计时，让状态说明成为阅读重点。只迁移层级、颜色、边框、圆角、间距与状态连续性；保留现有业务结构，不自动添加该示例的数据或流程。",
+      "en": "Apply the visual language of Agent thinking indicators to existing content: Wave, spin, stars and infinity share one baseline; secondary elapsed time keeps attention on the status label. Transfer hierarchy, colors, borders, corners, spacing and state continuity while preserving the existing business structure; do not automatically add the demo data or workflow."
+    },
+    "categories": [
+      "loading",
+      "feedback"
+    ],
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "provenance": "open-source",
+    "aliases": [
+      "BoardUI",
+      "AI 思考指示器",
+      "Agent thinking indicators"
+    ]
+  },
+  {
+    "id": "bencho-slide-confirm",
+    "key": "bencho-slide-confirm",
+    "type": "component",
+    "sourceId": "bencho",
+    "libraryIds": [
+      "bencho"
+    ],
+    "category": "buttons",
+    "interactions": [
+      "drag",
+      "click"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "滑动确认",
+      "en": "Slide to confirm"
+    },
+    "description": {
+      "zh-CN": "拖到轨道尽头，手柄展开成完成态；也可用键盘确认。",
+      "en": "Drag the handle to confirm, or use the keyboard."
+    },
+    "tags": {
+      "zh-CN": [
+        "滑动确认",
+        "Bencho",
+        "buttons"
+      ],
+      "en": [
+        "Slide to confirm",
+        "Bencho",
+        "buttons"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "需要刻意操作、又希望确认与完成状态连续衔接的动作。",
+      "en": "Deliberate actions whose confirmation and completion should feel like one continuous object."
+    },
+    "principle": {
+      "zh-CN": "确认前后保留同一个胶囊对象，手柄的位置和宽度由同一数值推导，完成时右边缘保持稳定。",
+      "en": "The same capsule persists through confirmation; handle width and offset derive from one value so the right edge stays planted."
+    },
+    "rules": {
+      "zh-CN": [
+        "使用 240px 轨道；完整拖到尽头松手才确认，中途松手返回起点。聚焦手柄后 Enter 或空格可确认，完成态保留 1.5 秒再复位；不执行真实业务操作。减少动态效果时跳过空间弹簧和缩放。",
+        "保留作者与 MIT 许可，使用交付源码中的实际依赖和交互边界。"
+      ],
+      "en": [
+        "Use a 240px track. Releasing at the end confirms; partial drags return home. Enter or Space on the handle confirms. Hold the completed state for 1.5 seconds, then reset. No real operation runs; reduced motion skips spatial springs and scaling.",
+        "Retain authorship and MIT notices, using the dependencies and interaction boundaries in the delivered source."
+      ]
+    },
+    "files": [
+      "src/demos/intake/bencho-slide-confirm.tsx",
+      "src/vendor/bencho/SlideConfirm.tsx"
+    ],
+    "supportFiles": [
+      "src/demos/intake/shared.tsx",
+      "src/demos/intake/styles.css"
+    ],
+    "originalUrl": "https://bencho.dev/blocks/slide-confirm",
+    "sourceUrl": "https://github.com/cabralorenzo/bencho/blob/27ac3159201fa48eb16ef65faa5d8078963a9a61/blocks/slide-confirm/SlideConfirm.tsx",
+    "cover": "./assets/previews/component-bencho-slide-confirm.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=bencho-slide-confirm",
+      "mode": "inline"
+    },
+    "prompt": {
+      "zh-CN": "复用「滑动确认」的实际组件源码。\n\n结构与行为：使用 240px 轨道；完整拖到尽头松手才确认，中途松手返回起点。聚焦手柄后 Enter 或空格可确认，完成态保留 1.5 秒再复位；不执行真实业务操作。减少动态效果时跳过空间弹簧和缩放。\n\n视觉规则：确认前后保留同一个胶囊对象，手柄的位置和宽度由同一数值推导，完成时右边缘保持稳定。\n\n保留实际依赖、明暗主题、中英文、键盘和减少动态效果适配，以及来源与 MIT 许可。图鉴示例只演示上述本地行为；替换业务内容时不增加未实现的服务或效果保证。",
+      "en": "Reuse the actual source of Slide to confirm.\n\nStructure and behavior: Use a 240px track. Releasing at the end confirms; partial drags return home. Enter or Space on the handle confirms. Hold the completed state for 1.5 seconds, then reset. No real operation runs; reduced motion skips spatial springs and scaling.\n\nVisual rules: The same capsule persists through confirmation; handle width and offset derive from one value so the right edge stays planted.\n\nRetain its real dependencies, themes, localization, keyboard/reduced-motion adaptations, attribution and MIT license. The preview demonstrates only these local behaviors; replacing content must not imply services or outcomes not implemented here."
+    },
+    "stylePrompt": {
+      "zh-CN": "将「滑动确认」的视觉语言用于现有内容：确认前后保留同一个胶囊对象，手柄的位置和宽度由同一数值推导，完成时右边缘保持稳定。只迁移层级、颜色、边框、圆角、间距与状态连续性；保留现有业务结构，不自动添加该示例的数据或流程。",
+      "en": "Apply the visual language of Slide to confirm to existing content: The same capsule persists through confirmation; handle width and offset derive from one value so the right edge stays planted. Transfer hierarchy, colors, borders, corners, spacing and state continuity while preserving the existing business structure; do not automatically add the demo data or workflow."
+    },
+    "categories": [
+      "buttons",
+      "feedback"
+    ],
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "provenance": "open-source",
+    "aliases": [
+      "Bencho",
+      "滑动确认",
+      "Slide to confirm"
+    ]
+  },
+  {
+    "id": "bencho-context-meter",
+    "key": "bencho-context-meter",
+    "type": "component",
+    "sourceId": "bencho",
+    "libraryIds": [
+      "bencho"
+    ],
+    "category": "data",
+    "interactions": [
+      "hover",
+      "click"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "上下文用量表",
+      "en": "Context usage meter"
+    },
+    "description": {
+      "zh-CN": "按类型查看上下文用量，切换点阵或条形，体验压缩和撤销。",
+      "en": "Explore context usage as dots or bars, compact and undo."
+    },
+    "tags": {
+      "zh-CN": [
+        "上下文用量表",
+        "Bencho",
+        "data"
+      ],
+      "en": [
+        "Context usage meter",
+        "Bencho",
+        "data"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "模型上下文、存储或其他由多个类别构成的容量展示。",
+      "en": "Model context, storage and other capacity summaries composed of several categories."
+    },
+    "principle": {
+      "zh-CN": "点阵或连续分段条在固定容量内表达占用；聚焦某一类型时其他类型减弱，数字同步切换到该项。",
+      "en": "A dot field or segmented bar shows usage against a fixed capacity; focusing a category dims the others and reveals its value."
+    },
+    "rules": {
+      "zh-CN": [
+        "固定总容量 200K，初始使用 175.6K；压缩将对话从 108.6K 降为 30.4K，总使用变为 97.4K，撤销恢复。切换点阵/条形与彩色/单色不清除压缩状态；类型按钮支持焦点查看。数据只在本页内存，不连接模型计费或真实上下文。",
+        "保留作者与 MIT 许可，使用交付源码中的实际依赖和交互边界。"
+      ],
+      "en": [
+        "Capacity is fixed at 200K with 175.6K initially used. Compact changes chat from 108.6K to 30.4K and total usage to 97.4K; Undo restores it. Field/bar and colour/monochrome changes retain compact state. Categories can be focused. Data exists only in this page; no live model context or billing is connected.",
+        "Retain authorship and MIT notices, using the dependencies and interaction boundaries in the delivered source."
+      ]
+    },
+    "files": [
+      "src/demos/intake/bencho-context-meter.tsx",
+      "src/vendor/bencho/ContextMeter.tsx"
+    ],
+    "supportFiles": [
+      "src/demos/intake/shared.tsx",
+      "src/demos/intake/styles.css"
+    ],
+    "originalUrl": "https://bencho.dev/blocks/context-meter",
+    "sourceUrl": "https://github.com/cabralorenzo/bencho/blob/27ac3159201fa48eb16ef65faa5d8078963a9a61/blocks/context-meter/ContextMeter.tsx",
+    "cover": "./assets/previews/component-bencho-context-meter.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=bencho-context-meter",
+      "mode": "canvas"
+    },
+    "prompt": {
+      "zh-CN": "复用「上下文用量表」的实际组件源码。\n\n结构与行为：固定总容量 200K，初始使用 175.6K；压缩将对话从 108.6K 降为 30.4K，总使用变为 97.4K，撤销恢复。切换点阵/条形与彩色/单色不清除压缩状态；类型按钮支持焦点查看。数据只在本页内存，不连接模型计费或真实上下文。\n\n视觉规则：点阵或连续分段条在固定容量内表达占用；聚焦某一类型时其他类型减弱，数字同步切换到该项。\n\n保留实际依赖、明暗主题、中英文、键盘和减少动态效果适配，以及来源与 MIT 许可。图鉴示例只演示上述本地行为；替换业务内容时不增加未实现的服务或效果保证。",
+      "en": "Reuse the actual source of Context usage meter.\n\nStructure and behavior: Capacity is fixed at 200K with 175.6K initially used. Compact changes chat from 108.6K to 30.4K and total usage to 97.4K; Undo restores it. Field/bar and colour/monochrome changes retain compact state. Categories can be focused. Data exists only in this page; no live model context or billing is connected.\n\nVisual rules: A dot field or segmented bar shows usage against a fixed capacity; focusing a category dims the others and reveals its value.\n\nRetain its real dependencies, themes, localization, keyboard/reduced-motion adaptations, attribution and MIT license. The preview demonstrates only these local behaviors; replacing content must not imply services or outcomes not implemented here."
+    },
+    "stylePrompt": {
+      "zh-CN": "将「上下文用量表」的视觉语言用于现有内容：点阵或连续分段条在固定容量内表达占用；聚焦某一类型时其他类型减弱，数字同步切换到该项。只迁移层级、颜色、边框、圆角、间距与状态连续性；保留现有业务结构，不自动添加该示例的数据或流程。",
+      "en": "Apply the visual language of Context usage meter to existing content: A dot field or segmented bar shows usage against a fixed capacity; focusing a category dims the others and reveals its value. Transfer hierarchy, colors, borders, corners, spacing and state continuity while preserving the existing business structure; do not automatically add the demo data or workflow."
+    },
+    "categories": [
+      "data",
+      "feedback"
+    ],
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "provenance": "open-source",
+    "aliases": [
+      "Bencho",
+      "上下文用量表",
+      "Context usage meter"
+    ]
+  },
+  {
+    "id": "libraries-thinking-orb",
+    "key": "libraries-thinking-orb",
+    "type": "component",
+    "sourceId": "libraries-dev",
+    "libraryIds": [
+      "libraries-dev"
+    ],
+    "category": "loading",
+    "interactions": [
+      "auto",
+      "click"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "粒子思考光球",
+      "en": "Particle thinking orb"
+    },
+    "description": {
+      "zh-CN": "九种粒子与线条光球，可切换状态和暂停。",
+      "en": "Nine particle and strand orbs with state selection and pause."
+    },
+    "tags": {
+      "zh-CN": [
+        "粒子思考光球",
+        "Libraries.dev",
+        "loading"
+      ],
+      "en": [
+        "Particle thinking orb",
+        "Libraries.dev",
+        "loading"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "异步助手、搜索、聆听和生成过程的轻量状态反馈。",
+      "en": "Lightweight feedback for assistant, search, listening and generation waits."
+    },
+    "principle": {
+      "zh-CN": "64px 透明 Canvas 在胶囊内用粒子的疏密、轨迹和深度区分任务状态，标签保持稳定。",
+      "en": "A transparent 64px canvas uses density, trajectory and depth to distinguish states while its text label remains stable."
+    },
+    "rules": {
+      "zh-CN": [
+        "使用原库九种状态，尺寸 64px；暂停冻结当前帧，减少动态效果绘制确定性静态帧，离屏或隐藏标签页停止动画。状态为演示选择，不代表真实模型进度；不启用 Studio Pro、自定义着色器或指针重力。",
+        "保留作者与 MIT 许可，使用交付源码中的实际依赖和交互边界。"
+      ],
+      "en": [
+        "Expose the original nine states at 64px. Pause freezes the frame; reduced motion paints a deterministic still, and offscreen/hidden previews stop animating. States are selected demo values, not model progress. Studio Pro, custom shaders and pointer gravity are not enabled.",
+        "Retain authorship and MIT notices, using the dependencies and interaction boundaries in the delivered source."
+      ]
+    },
+    "files": [
+      "src/demos/intake/libraries-thinking-orb.tsx",
+      "src/vendor/libraries-dev/thinking-orbs/ThinkingOrb.tsx"
+    ],
+    "supportFiles": [
+      "src/demos/intake/shared.tsx",
+      "src/demos/intake/styles.css"
+    ],
+    "originalUrl": "https://libraries.dev/orbs",
+    "sourceUrl": "https://github.com/Jakubantalik/Libraries.dev/blob/9a42e88847dab0ac145733f15cf90535e9cb59ab/packages/thinking-orbs/src/ThinkingOrb.tsx",
+    "cover": "./assets/previews/component-libraries-thinking-orb.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=libraries-thinking-orb",
+      "mode": "inline"
+    },
+    "prompt": {
+      "zh-CN": "复用「粒子思考光球」的实际组件源码。\n\n结构与行为：使用原库九种状态，尺寸 64px；暂停冻结当前帧，减少动态效果绘制确定性静态帧，离屏或隐藏标签页停止动画。状态为演示选择，不代表真实模型进度；不启用 Studio Pro、自定义着色器或指针重力。\n\n视觉规则：64px 透明 Canvas 在胶囊内用粒子的疏密、轨迹和深度区分任务状态，标签保持稳定。\n\n保留实际依赖、明暗主题、中英文、键盘和减少动态效果适配，以及来源与 MIT 许可。图鉴示例只演示上述本地行为；替换业务内容时不增加未实现的服务或效果保证。",
+      "en": "Reuse the actual source of Particle thinking orb.\n\nStructure and behavior: Expose the original nine states at 64px. Pause freezes the frame; reduced motion paints a deterministic still, and offscreen/hidden previews stop animating. States are selected demo values, not model progress. Studio Pro, custom shaders and pointer gravity are not enabled.\n\nVisual rules: A transparent 64px canvas uses density, trajectory and depth to distinguish states while its text label remains stable.\n\nRetain its real dependencies, themes, localization, keyboard/reduced-motion adaptations, attribution and MIT license. The preview demonstrates only these local behaviors; replacing content must not imply services or outcomes not implemented here."
+    },
+    "stylePrompt": {
+      "zh-CN": "将「粒子思考光球」的视觉语言用于现有内容：64px 透明 Canvas 在胶囊内用粒子的疏密、轨迹和深度区分任务状态，标签保持稳定。只迁移层级、颜色、边框、圆角、间距与状态连续性；保留现有业务结构，不自动添加该示例的数据或流程。",
+      "en": "Apply the visual language of Particle thinking orb to existing content: A transparent 64px canvas uses density, trajectory and depth to distinguish states while its text label remains stable. Transfer hierarchy, colors, borders, corners, spacing and state continuity while preserving the existing business structure; do not automatically add the demo data or workflow."
+    },
+    "categories": [
+      "loading",
+      "feedback"
+    ],
+    "styleIds": [
+      "minimal",
+      "technology"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "provenance": "open-source",
+    "aliases": [
+      "Libraries.dev",
+      "粒子思考光球",
+      "Particle thinking orb"
+    ]
+  },
+  {
+    "id": "watermelon-frequency-selector",
+    "key": "watermelon-frequency-selector",
+    "type": "component",
+    "sourceId": "watermelon-ui",
+    "libraryIds": [
+      "watermelon-ui"
+    ],
+    "category": "forms",
+    "interactions": [
+      "click"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "变形频率选择器",
+      "en": "Morphing frequency selector"
+    },
+    "description": {
+      "zh-CN": "将摘要胶囊展开为周期与日期选择，确认或取消。",
+      "en": "A summary pill expands into period and date choices."
+    },
+    "tags": {
+      "zh-CN": [
+        "变形频率选择器",
+        "Watermelon UI",
+        "forms"
+      ],
+      "en": [
+        "Morphing frequency selector",
+        "Watermelon UI",
+        "forms"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "重复提醒、订阅频率和任务周期的局部选择。",
+      "en": "Inline choices for recurring reminders, subscriptions and task cadence."
+    },
+    "principle": {
+      "zh-CN": "同一容器和选中胶囊通过共享布局，从一行摘要展开为周期栏和上下文选项网格。",
+      "en": "Shared-layout containers and selected pills connect a one-line summary to a period row and contextual option grid."
+    },
+    "rules": {
+      "zh-CN": [
+        "初始为每周二；支持每天、每周、每月和每年。展开后编辑草稿，确认才更新摘要；Escape 取消并恢复焦点，重新展开从已确认值开始。每天无附加选项；选项和确认均使用可聚焦按钮，不执行真实调度。保留上游对 nitishkmrk 的视觉灵感署名。",
+        "保留作者与 MIT 许可，使用交付源码中的实际依赖和交互边界。"
+      ],
+      "en": [
+        "Initially weekly on Tuesday. Choose daily, weekly, monthly or yearly. Edits remain a draft until confirmation; Escape cancels and returns focus, and reopening starts from the confirmed value. Daily has no sub-option. Focusable buttons expose selection and confirmation. No schedule is created. Retain upstream visual-inspiration credit to nitishkmrk.",
+        "Retain authorship and MIT notices, using the dependencies and interaction boundaries in the delivered source."
+      ]
+    },
+    "files": [
+      "src/demos/intake/watermelon-frequency.tsx",
+      "src/vendor/watermelon-ui/frequency-selector.tsx"
+    ],
+    "supportFiles": [
+      "src/demos/intake/shared.tsx",
+      "src/demos/intake/styles.css"
+    ],
+    "originalUrl": "https://ui.watermelon.sh/animated-components/frequency-selector",
+    "sourceUrl": "https://github.com/WatermelonCorp/watermelon-platform/blob/b0171095227a67c40e627271a1e0ae67cdc2ed21/src/data/contents/animated-components/frequency-selector/original.tsx",
+    "cover": "./assets/previews/component-watermelon-frequency-selector.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=watermelon-frequency-selector",
+      "mode": "canvas"
+    },
+    "prompt": {
+      "zh-CN": "复用「变形频率选择器」的实际组件源码。\n\n结构与行为：初始为每周二；支持每天、每周、每月和每年。展开后编辑草稿，确认才更新摘要；Escape 取消并恢复焦点，重新展开从已确认值开始。每天无附加选项；选项和确认均使用可聚焦按钮，不执行真实调度。保留上游对 nitishkmrk 的视觉灵感署名。\n\n视觉规则：同一容器和选中胶囊通过共享布局，从一行摘要展开为周期栏和上下文选项网格。\n\n保留实际依赖、明暗主题、中英文、键盘和减少动态效果适配，以及来源与 MIT 许可。图鉴示例只演示上述本地行为；替换业务内容时不增加未实现的服务或效果保证。",
+      "en": "Reuse the actual source of Morphing frequency selector.\n\nStructure and behavior: Initially weekly on Tuesday. Choose daily, weekly, monthly or yearly. Edits remain a draft until confirmation; Escape cancels and returns focus, and reopening starts from the confirmed value. Daily has no sub-option. Focusable buttons expose selection and confirmation. No schedule is created. Retain upstream visual-inspiration credit to nitishkmrk.\n\nVisual rules: Shared-layout containers and selected pills connect a one-line summary to a period row and contextual option grid.\n\nRetain its real dependencies, themes, localization, keyboard/reduced-motion adaptations, attribution and MIT license. The preview demonstrates only these local behaviors; replacing content must not imply services or outcomes not implemented here."
+    },
+    "stylePrompt": {
+      "zh-CN": "将「变形频率选择器」的视觉语言用于现有内容：同一容器和选中胶囊通过共享布局，从一行摘要展开为周期栏和上下文选项网格。只迁移层级、颜色、边框、圆角、间距与状态连续性；保留现有业务结构，不自动添加该示例的数据或流程。",
+      "en": "Apply the visual language of Morphing frequency selector to existing content: Shared-layout containers and selected pills connect a one-line summary to a period row and contextual option grid. Transfer hierarchy, colors, borders, corners, spacing and state continuity while preserving the existing business structure; do not automatically add the demo data or workflow."
+    },
+    "categories": [
+      "forms",
+      "navigation"
+    ],
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "provenance": "open-source",
+    "aliases": [
+      "Watermelon UI",
+      "变形频率选择器",
+      "Morphing frequency selector"
+    ]
+  },
+  {
+    "id": "beui-expandable-tabs",
+    "key": "beui-expandable-tabs",
+    "type": "component",
+    "sourceId": "beui",
+    "libraryIds": [
+      "beui"
+    ],
+    "category": "navigation",
+    "interactions": [
+      "click"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "展开式标签导航",
+      "en": "Expandable icon tabs"
+    },
+    "description": {
+      "zh-CN": "图标标签展开名称，上方面板随内容变形。",
+      "en": "Icon labels expand while the panel morphs to its content."
+    },
+    "tags": {
+      "zh-CN": [
+        "展开式标签导航",
+        "beUI (free)",
+        "navigation"
+      ],
+      "en": [
+        "Expandable icon tabs",
+        "beUI (free)",
+        "navigation"
+      ]
+    },
+    "useCases": {
+      "zh-CN": "紧凑工作台、上下文工具面板和少量分组操作。",
+      "en": "Compact workspaces, contextual tool panels and small action groups."
+    },
+    "principle": {
+      "zh-CN": "固定底栏锚定面板，只有活动图标展开文字；实测内容尺寸驱动外壳，图标保持自身比例。",
+      "en": "A fixed bottom dock anchors the panel; only the active icon reveals its label, and measured content sizes drive the shell without scaling icons."
+    },
+    "rules": {
+      "zh-CN": [
+        "采用 beUI 免费 MIT 组件，非 beUI Pro。发布、收件箱、流程三个标签切换两行内容；行选择只显示本地反馈。方向键及 Home/End 切换标签，Escape 或外部点击收起。尺寸、焦点与减少动态效果使用实际适配；无页面路由或真实发布操作。",
+        "保留作者与 MIT 许可，使用交付源码中的实际依赖和交互边界。"
+      ],
+      "en": [
+        "Use beUI’s free MIT component, not beUI Pro. Launch, Inbox and Flows show two rows each, with local selection feedback. Arrow keys and Home/End switch tabs; Escape or outside click closes the panel. Retain measured sizing, focus behavior and reduced motion. No page routing or real release action runs.",
+        "Retain authorship and MIT notices, using the dependencies and interaction boundaries in the delivered source."
+      ]
+    },
+    "files": [
+      "src/demos/intake/beui-expandable-tabs.tsx",
+      "src/vendor/beui/expandable-tabs.tsx"
+    ],
+    "supportFiles": [
+      "src/demos/intake/shared.tsx",
+      "src/demos/intake/styles.css"
+    ],
+    "originalUrl": "https://beui.dev/components/blocks/expandable-tabs",
+    "sourceUrl": "https://github.com/starc007/ui-components/blob/090f6e3b5aebbb61a0bd2aaeb9fdae253cf51838/components/motion/expandable-tabs.tsx",
+    "cover": "./assets/previews/component-beui-expandable-tabs.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=beui-expandable-tabs",
+      "mode": "inline"
+    },
+    "prompt": {
+      "zh-CN": "复用「展开式标签导航」的实际组件源码。\n\n结构与行为：采用 beUI 免费 MIT 组件，非 beUI Pro。发布、收件箱、流程三个标签切换两行内容；行选择只显示本地反馈。方向键及 Home/End 切换标签，Escape 或外部点击收起。尺寸、焦点与减少动态效果使用实际适配；无页面路由或真实发布操作。\n\n视觉规则：固定底栏锚定面板，只有活动图标展开文字；实测内容尺寸驱动外壳，图标保持自身比例。\n\n保留实际依赖、明暗主题、中英文、键盘和减少动态效果适配，以及来源与 MIT 许可。图鉴示例只演示上述本地行为；替换业务内容时不增加未实现的服务或效果保证。",
+      "en": "Reuse the actual source of Expandable icon tabs.\n\nStructure and behavior: Use beUI’s free MIT component, not beUI Pro. Launch, Inbox and Flows show two rows each, with local selection feedback. Arrow keys and Home/End switch tabs; Escape or outside click closes the panel. Retain measured sizing, focus behavior and reduced motion. No page routing or real release action runs.\n\nVisual rules: A fixed bottom dock anchors the panel; only the active icon reveals its label, and measured content sizes drive the shell without scaling icons.\n\nRetain its real dependencies, themes, localization, keyboard/reduced-motion adaptations, attribution and MIT license. The preview demonstrates only these local behaviors; replacing content must not imply services or outcomes not implemented here."
+    },
+    "stylePrompt": {
+      "zh-CN": "将「展开式标签导航」的视觉语言用于现有内容：固定底栏锚定面板，只有活动图标展开文字；实测内容尺寸驱动外壳，图标保持自身比例。只迁移层级、颜色、边框、圆角、间距与状态连续性；保留现有业务结构，不自动添加该示例的数据或流程。",
+      "en": "Apply the visual language of Expandable icon tabs to existing content: A fixed bottom dock anchors the panel; only the active icon reveals its label, and measured content sizes drive the shell without scaling icons. Transfer hierarchy, colors, borders, corners, spacing and state continuity while preserving the existing business structure; do not automatically add the demo data or workflow."
+    },
+    "categories": [
+      "navigation",
+      "layout"
+    ],
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "provenance": "open-source",
+    "aliases": [
+      "beUI (free)",
+      "展开式标签导航",
+      "Expandable icon tabs"
+    ]
+  },
+  {
+    "id": "effect-atlas-pixel-wipe-button",
+    "type": "component",
+    "sourceId": "effect-atlas",
+    "libraryIds": [
+      "effect-atlas"
+    ],
+    "category": "buttons",
+    "categories": [
+      "buttons"
+    ],
+    "interactions": [
+      "hover",
+      "click"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "native"
+    ],
+    "audience": "b2c",
+    "provenance": "source-available",
+    "name": {
+      "zh-CN": "像素擦除按钮",
+      "en": "Pixel Wipe Button"
+    },
+    "description": {
+      "zh-CN": "像素格从左到右填满按钮，离开时再扫回底色。",
+      "en": "A grid of pixels wipes over a button and sweeps the base color back on exit."
+    },
+    "useCases": {
+      "zh-CN": "用于主操作或作品集导航，给低频操作一点触感。",
+      "en": "Give a primary action or portfolio link a tactile response."
+    },
+    "principle": {
+      "zh-CN": "保留稳定的按钮轮廓，像素逐列填充，文字和箭头以独立节奏运动。",
+      "en": "Keep the button silhouette stable while cells sweep in columns and the label and arrow move on their own timing."
+    },
+    "rules": {
+      "zh-CN": [
+        "悬停、键盘聚焦和触摸均有状态反馈；离开时从同一方向扫回底色，而非倒放。缩减动态时直接切换状态。"
+      ],
+      "en": [
+        "Support hover, keyboard focus and touch. Sweep back to the base color in the same direction instead of reversing the animation. With reduced motion, switch state without the sweep."
+      ]
+    },
+    "prompt": {
+      "zh-CN": "复用「像素擦除按钮」的实际原生代码。悬停、键盘聚焦和触摸均有状态反馈；离开时从同一方向扫回底色，而非倒放。缩减动态时直接切换状态。\n\n视觉：保留稳定的按钮轮廓，像素逐列填充，文字和箭头以独立节奏运动。\n\n保留原作者版权和 Effect Atlas License 1.0，不引入框架或在线依赖。",
+      "en": "Reuse the original native implementation of Pixel Wipe Button. Support hover, keyboard focus and touch. Sweep back to the base color in the same direction instead of reversing the animation. With reduced motion, switch state without the sweep.\n\nVisual structure: Keep the button silhouette stable while cells sweep in columns and the label and arrow move on their own timing.\n\nRetain the copyright and Effect Atlas License 1.0. Do not add a framework or network dependency."
+    },
+    "stylePrompt": {
+      "zh-CN": "在现有内容中借鉴「像素擦除按钮」的表现：保留稳定的按钮轮廓，像素逐列填充，文字和箭头以独立节奏运动。 保留业务结构，只迁移动效节奏、对齐方式和视觉反馈。",
+      "en": "Apply the visual treatment of Pixel Wipe Button to existing content: Keep the button silhouette stable while cells sweep in columns and the label and arrow move on their own timing. Preserve the existing workflow and transfer only the motion timing, alignment and feedback."
+    },
+    "cover": "./assets/previews/component-effect-atlas-pixel-wipe-button.png",
+    "preview": {
+      "width": 640,
+      "height": 560,
+      "mode": "inline",
+      "url": "./examples/ui-market/effect-atlas/pixel-wipe-button/index.html"
+    },
+    "codeFormat": "static",
+    "files": [
+      "public/effect-atlas/pixel-wipe-button/index.html",
+      "public/effect-atlas/pixel-wipe-button/effect.js",
+      "public/effect-atlas/pixel-wipe-button/effect.css"
+    ],
+    "supportFiles": [
+      "licenses/effect-atlas-LICENSE",
+      "public/effect-atlas/preview.css",
+      "public/effect-atlas/preview.js"
+    ],
+    "originalUrl": "https://effectatlas.com/effects/pixel-wipe-button",
+    "sourceUrl": "https://github.com/effect-atlas/effect-atlas/blob/c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84/effects/pixel-wipe-button/effect.js"
+  },
+  {
+    "id": "effect-atlas-crosshair-image-reveal",
+    "type": "component",
+    "sourceId": "effect-atlas",
+    "libraryIds": [
+      "effect-atlas"
+    ],
+    "category": "cards",
+    "categories": [
+      "cards"
+    ],
+    "interactions": [
+      "drag",
+      "scroll"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "native"
+    ],
+    "audience": "b2c",
+    "provenance": "source-available",
+    "name": {
+      "zh-CN": "十字线揭图",
+      "en": "Crosshair Image Reveal"
+    },
+    "description": {
+      "zh-CN": "拖动蓝色交点、滚动或按方向键，让图像从角落展开。",
+      "en": "Drag the blue point, scroll or use arrow keys to reveal an image from its corner."
+    },
+    "useCases": {
+      "zh-CN": "适合产品摄影、案例图片与画廊封面。",
+      "en": "Use for product photography, case-study imagery and gallery covers."
+    },
+    "principle": {
+      "zh-CN": "横竖辅助线与蓝色交点标出剪裁角；显示范围与图像比例同时随进度变化。",
+      "en": "Guides and a blue point identify the clipping corner. The visible area and image scale follow the same progress value."
+    },
+    "rules": {
+      "zh-CN": [
+        "使用同一个进度驱动拖拽、滚轮与键盘。Home 和 End 直达两端；缩减动态时默认展开，仍允许手动移动。"
+      ],
+      "en": [
+        "Drive drag, wheel and keys with one progress value. Home and End select the endpoints. Show the full image by default with reduced motion and keep manual control."
+      ]
+    },
+    "prompt": {
+      "zh-CN": "复用「十字线揭图」的实际原生代码。使用同一个进度驱动拖拽、滚轮与键盘。Home 和 End 直达两端；缩减动态时默认展开，仍允许手动移动。\n\n视觉：横竖辅助线与蓝色交点标出剪裁角；显示范围与图像比例同时随进度变化。\n\n保留原作者版权和 Effect Atlas License 1.0，不引入框架或在线依赖。",
+      "en": "Reuse the original native implementation of Crosshair Image Reveal. Drive drag, wheel and keys with one progress value. Home and End select the endpoints. Show the full image by default with reduced motion and keep manual control.\n\nVisual structure: Guides and a blue point identify the clipping corner. The visible area and image scale follow the same progress value.\n\nRetain the copyright and Effect Atlas License 1.0. Do not add a framework or network dependency."
+    },
+    "stylePrompt": {
+      "zh-CN": "在现有内容中借鉴「十字线揭图」的表现：横竖辅助线与蓝色交点标出剪裁角；显示范围与图像比例同时随进度变化。 保留业务结构，只迁移动效节奏、对齐方式和视觉反馈。",
+      "en": "Apply the visual treatment of Crosshair Image Reveal to existing content: Guides and a blue point identify the clipping corner. The visible area and image scale follow the same progress value. Preserve the existing workflow and transfer only the motion timing, alignment and feedback."
+    },
+    "cover": "./assets/previews/component-effect-atlas-crosshair-image-reveal.png",
+    "preview": {
+      "width": 900,
+      "height": 560,
+      "mode": "canvas",
+      "url": "./examples/ui-market/effect-atlas/crosshair-image-reveal/index.html"
+    },
+    "codeFormat": "static",
+    "files": [
+      "public/effect-atlas/crosshair-image-reveal/index.html",
+      "public/effect-atlas/crosshair-image-reveal/effect.js",
+      "public/effect-atlas/crosshair-image-reveal/effect.css"
+    ],
+    "supportFiles": [
+      "licenses/effect-atlas-LICENSE",
+      "public/effect-atlas/preview.css",
+      "public/effect-atlas/preview.js"
+    ],
+    "originalUrl": "https://effectatlas.com/effects/crosshair-image-reveal",
+    "sourceUrl": "https://github.com/effect-atlas/effect-atlas/blob/c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84/effects/crosshair-image-reveal/effect.js"
+  },
+  {
+    "id": "effect-atlas-shared-element-transition",
+    "type": "component",
+    "sourceId": "effect-atlas",
+    "libraryIds": [
+      "effect-atlas"
+    ],
+    "category": "cards",
+    "categories": [
+      "cards"
+    ],
+    "interactions": [
+      "click"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "native"
+    ],
+    "audience": "b2c",
+    "provenance": "source-available",
+    "name": {
+      "zh-CN": "共享元素转场",
+      "en": "Shared Element Transition"
+    },
+    "description": {
+      "zh-CN": "选择缩略图把它放大成详情，再从原位置缩回。",
+      "en": "Open a tile into a detail view, then return it to its original position."
+    },
+    "useCases": {
+      "zh-CN": "适合项目缩略图、图片详情和轻量目录。",
+      "en": "Use for project thumbnails, image details and compact indexes."
+    },
+    "principle": {
+      "zh-CN": "同一张图形跨过列表和详情两种布局；过渡中补偿非等比缩放造成的圆角与图标变形。",
+      "en": "Carry the same artwork between layouts and compensate for nonuniform scaling so corners and icons retain their shape."
+    },
+    "rules": {
+      "zh-CN": [
+        "用点击、Enter 或空格打开或收回选中的缩略图。列表和详情共享图形，减少动态效果时直接切换。"
+      ],
+      "en": [
+        "Use click, Enter or Space to open or close the selected tile. Reuse the same artwork across states and switch directly with reduced motion."
+      ]
+    },
+    "prompt": {
+      "zh-CN": "复用「共享元素转场」的实际原生代码。用点击、Enter 或空格打开或收回选中的缩略图。列表和详情共享图形，减少动态效果时直接切换。\n\n视觉：同一张图形跨过列表和详情两种布局；过渡中补偿非等比缩放造成的圆角与图标变形。\n\n保留原作者版权和 Effect Atlas License 1.0，不引入框架或在线依赖。",
+      "en": "Reuse the original native implementation of Shared Element Transition. Use click, Enter or Space to open or close the selected tile. Reuse the same artwork across states and switch directly with reduced motion.\n\nVisual structure: Carry the same artwork between layouts and compensate for nonuniform scaling so corners and icons retain their shape.\n\nRetain the copyright and Effect Atlas License 1.0. Do not add a framework or network dependency."
+    },
+    "stylePrompt": {
+      "zh-CN": "在现有内容中借鉴「共享元素转场」的表现：同一张图形跨过列表和详情两种布局；过渡中补偿非等比缩放造成的圆角与图标变形。 保留业务结构，只迁移动效节奏、对齐方式和视觉反馈。",
+      "en": "Apply the visual treatment of Shared Element Transition to existing content: Carry the same artwork between layouts and compensate for nonuniform scaling so corners and icons retain their shape. Preserve the existing workflow and transfer only the motion timing, alignment and feedback."
+    },
+    "cover": "./assets/previews/component-effect-atlas-shared-element-transition.png",
+    "preview": {
+      "width": 900,
+      "height": 560,
+      "mode": "canvas",
+      "url": "./examples/ui-market/effect-atlas/shared-element-transition/index.html"
+    },
+    "codeFormat": "static",
+    "files": [
+      "public/effect-atlas/shared-element-transition/index.html",
+      "public/effect-atlas/shared-element-transition/effect.js",
+      "public/effect-atlas/shared-element-transition/effect.css"
+    ],
+    "supportFiles": [
+      "licenses/effect-atlas-LICENSE",
+      "public/effect-atlas/preview.css",
+      "public/effect-atlas/preview.js"
+    ],
+    "originalUrl": "https://effectatlas.com/effects/shared-element-transition",
+    "sourceUrl": "https://github.com/effect-atlas/effect-atlas/blob/c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84/effects/shared-element-transition/effect.js"
+  },
+  {
+    "id": "effect-atlas-scroll-minimap",
+    "type": "component",
+    "sourceId": "effect-atlas",
+    "libraryIds": [
+      "effect-atlas"
+    ],
+    "category": "navigation",
+    "categories": [
+      "navigation"
+    ],
+    "interactions": [
+      "scroll",
+      "click",
+      "drag"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "native"
+    ],
+    "audience": "b2c",
+    "provenance": "source-available",
+    "name": {
+      "zh-CN": "滚动小地图",
+      "en": "Scroll Minimap"
+    },
+    "description": {
+      "zh-CN": "滚动正文时框选当前视窗，也能从缩略地图跳到章节。",
+      "en": "The map marks the visible part of the page and lets readers jump to sections."
+    },
+    "useCases": {
+      "zh-CN": "适合长篇案例、文档和具有多个章节的作品集。",
+      "en": "Use for long case studies, documentation and sectioned portfolios."
+    },
+    "principle": {
+      "zh-CN": "地图沿用正文的真实章节比例，描边框把局部阅读位置放回全文结构中。",
+      "en": "The map uses the same section proportions as the page. An outlined frame places the current reading position in context."
+    },
+    "rules": {
+      "zh-CN": [
+        "在示例正文中滚动、拖动地图或激活章节按钮；章节按钮可用键盘。避免用独立动画模拟正文位置，减少动态时直接定位。"
+      ],
+      "en": [
+        "Scroll the sample, drag the map or activate a section button with the pointer or keyboard. Map the actual reading position and jump immediately with reduced motion."
+      ]
+    },
+    "prompt": {
+      "zh-CN": "复用「滚动小地图」的实际原生代码。在示例正文中滚动、拖动地图或激活章节按钮；章节按钮可用键盘。避免用独立动画模拟正文位置，减少动态时直接定位。\n\n视觉：地图沿用正文的真实章节比例，描边框把局部阅读位置放回全文结构中。\n\n保留原作者版权和 Effect Atlas License 1.0，不引入框架或在线依赖。",
+      "en": "Reuse the original native implementation of Scroll Minimap. Scroll the sample, drag the map or activate a section button with the pointer or keyboard. Map the actual reading position and jump immediately with reduced motion.\n\nVisual structure: The map uses the same section proportions as the page. An outlined frame places the current reading position in context.\n\nRetain the copyright and Effect Atlas License 1.0. Do not add a framework or network dependency."
+    },
+    "stylePrompt": {
+      "zh-CN": "在现有内容中借鉴「滚动小地图」的表现：地图沿用正文的真实章节比例，描边框把局部阅读位置放回全文结构中。 保留业务结构，只迁移动效节奏、对齐方式和视觉反馈。",
+      "en": "Apply the visual treatment of Scroll Minimap to existing content: The map uses the same section proportions as the page. An outlined frame places the current reading position in context. Preserve the existing workflow and transfer only the motion timing, alignment and feedback."
+    },
+    "cover": "./assets/previews/component-effect-atlas-scroll-minimap.png",
+    "preview": {
+      "width": 900,
+      "height": 560,
+      "mode": "canvas",
+      "url": "./examples/ui-market/effect-atlas/scroll-minimap/index.html"
+    },
+    "codeFormat": "static",
+    "files": [
+      "public/effect-atlas/scroll-minimap/index.html",
+      "public/effect-atlas/scroll-minimap/effect.js",
+      "public/effect-atlas/scroll-minimap/effect.css"
+    ],
+    "supportFiles": [
+      "licenses/effect-atlas-LICENSE",
+      "public/effect-atlas/preview.css",
+      "public/effect-atlas/preview.js"
+    ],
+    "originalUrl": "https://effectatlas.com/effects/scroll-minimap",
+    "sourceUrl": "https://github.com/effect-atlas/effect-atlas/blob/c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84/effects/scroll-minimap/effect.js"
   }
 ]

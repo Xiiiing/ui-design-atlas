@@ -8,6 +8,8 @@
     "en": "Components, motion and complete interfaces worth reusing. Try the real thing. Take the prompt and code."
   },
   "featured": [
+    "bencho-slide-confirm",
+    "libraries-thinking-orb",
     "magicui-bento-grid",
     "magicui-particles",
     "magicui-shimmer-button",
@@ -39,7 +41,11 @@
         "en": "Small moments of motion in buttons, cards and navigation."
       },
       "motion": true,
-      "categories": ["buttons", "cards", "navigation"]
+      "categories": [
+        "buttons",
+        "cards",
+        "navigation"
+      ]
     },
     {
       "id": "text-and-backgrounds",
@@ -52,7 +58,10 @@
         "en": "Set the scene with animated typography and backgrounds."
       },
       "motion": true,
-      "categories": ["text", "backgrounds"]
+      "categories": [
+        "text",
+        "backgrounds"
+      ]
     },
     {
       "id": "login-and-signup",
@@ -70,10 +79,54 @@
         "shadcn-login-01",
         "shadcn-signup-01"
       ]
+    },
+    {
+      "id": "expressive-ui",
+      "name": {
+        "zh-CN": "让状态变化连成一体",
+        "en": "Make state changes feel continuous"
+      },
+      "description": {
+        "zh-CN": "从思考反馈到确认与变形导航，体验本轮收录的真实组件。",
+        "en": "Try the new real components, from thinking feedback to confirmation and morphing navigation."
+      },
+      "resources": [
+        "boardui-agent-thinking",
+        "bencho-slide-confirm",
+        "bencho-context-meter",
+        "libraries-thinking-orb",
+        "watermelon-frequency-selector",
+        "beui-expandable-tabs"
+      ]
+    },
+    {
+      "id": "effect-atlas-motion",
+      "name": {
+        "zh-CN": "Effect Atlas 动效精选",
+        "en": "Effect Atlas motion selection"
+      },
+      "description": {
+        "zh-CN": "从按钮反馈到滚动、揭示和转场。",
+        "en": "From button feedback to scrolling, reveals and transitions."
+      },
+      "resources": [
+        "effect-atlas-pixel-wipe-button",
+        "effect-atlas-crosshair-image-reveal",
+        "effect-atlas-shared-element-transition",
+        "effect-atlas-scroll-minimap"
+      ]
     }
   ],
-  "cases": ["shadcn-admin", "folio", "bloom"],
+  "cases": [
+    "shadcn-admin",
+    "folio",
+    "bloom"
+  ],
   "gallery": [
+    "watermelon-frequency-selector",
+    "bencho-context-meter",
+    "beui-expandable-tabs",
+    "boardui-agent-thinking",
     "magicui-number-ticker",
     "shadcn-sidebar-07",
     "shadcn-dashboard-01",
@@ -89,7 +142,11 @@
     "magicui-text-animate",
     "fluent-toast",
     "antd-form",
-    "fluent-toolbar"
+    "fluent-toolbar",
+    "effect-atlas-pixel-wipe-button",
+    "effect-atlas-crosshair-image-reveal",
+    "effect-atlas-shared-element-transition",
+    "effect-atlas-scroll-minimap"
   ],
   "previewThemes": {
     "magicui-magic-card": "dark",

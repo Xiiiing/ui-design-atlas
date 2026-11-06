@@ -239,10 +239,14 @@ export function createBrowse({
       id,
       t(labels[0], labels[1]),
     ]),
-  )}${selectFilter("source", t("全部来源", "All sources"), [
-    ["open-source", t("开源收录", "Open source")],
-    ["original", t("本站原创", "Original")],
-  ])}${["style", "audience"]
+  )}${selectFilter(
+    "source",
+    t("全部来源", "All sources"),
+    Object.entries(taxonomy.provenance).map(([id, labels]) => [
+      id,
+      t(labels[0], labels[1]),
+    ]),
+  )}${["style", "audience"]
     .filter((name) => appState.route.params.has(name))
     .map(
       (name) =>

@@ -26,7 +26,7 @@ export interface Resource {
   interactions: Interaction[];
   styleIds: VisualStyle[];
   technologyIds: Technology[];
-  provenance: "original" | "open-source";
+  provenance: keyof typeof import("../content/taxonomy.json").provenance;
   aliases?: string[];
   scene?: Localized;
   source?: "original" | "open-source";
@@ -49,6 +49,7 @@ export interface Resource {
     mode?: "inline" | "canvas";
   };
   files?: string[];
+  codeFormat?: "static";
   supportFiles?: string[];
   pages?: CasePage[];
   principle?: Localized;

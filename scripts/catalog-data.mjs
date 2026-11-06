@@ -17,6 +17,15 @@ const detailFields = new Set([
   "sourceUrl",
   "originalUrl",
   "libraryVersions",
+  "codeFormat",
+  // Legacy case notes belong to the detail payload, not the library index.
+  "english",
+  "summary",
+  "palette",
+  "brief",
+  "modules",
+  "libraries",
+  "notes",
 ]);
 export const summaryOf = (resource) => ({
   ...Object.fromEntries(
@@ -57,6 +66,13 @@ export function validateCatalog(
     if (typeof r.motion !== "boolean") fail(r, "motion");
     if (r.preview?.mode && !["inline", "canvas"].includes(r.preview.mode))
       fail(r, "preview mode");
+    if (
+      r.codeFormat &&
+      (r.codeFormat !== "static" ||
+        !r.files?.[0]?.startsWith("public/") ||
+        !r.files[0].endsWith("/index.html"))
+    )
+      fail(r, "static code entry");
     for (const file of [...(r.files || []), ...(r.supportFiles || [])])
       if (
         typeof file !== "string" ||

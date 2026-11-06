@@ -66,5 +66,65 @@
     "original": true,
     "license": "MIT",
     "licenseFile": "./examples/ui-market/licenses/atlas-compositions-LICENSE"
+  },
+  "boardui": {
+    "id": "boardui",
+    "name": "BoardUI",
+    "author": "Mertcan Dundar Esmergul (BoardUI)",
+    "repo": "https://github.com/BoardUI/boardui",
+    "docs": "https://www.boardui.com/",
+    "commit": "ec5c5eb3e29c2441be63b9422cd54f411ef23466",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/boardui-LICENSE"
+  },
+  "bencho": {
+    "id": "bencho",
+    "name": "Bencho",
+    "author": "Lorenzo Cabra",
+    "repo": "https://github.com/cabralorenzo/bencho",
+    "docs": "https://bencho.dev/",
+    "commit": "27ac3159201fa48eb16ef65faa5d8078963a9a61",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/bencho-LICENSE"
+  },
+  "beui": {
+    "id": "beui",
+    "name": "beUI (free)",
+    "author": "Saurabh Chauhan",
+    "repo": "https://github.com/starc007/ui-components",
+    "docs": "https://beui.dev/",
+    "commit": "090f6e3b5aebbb61a0bd2aaeb9fdae253cf51838",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/beui-LICENSE"
+  },
+  "libraries-dev": {
+    "id": "libraries-dev",
+    "name": "Libraries.dev",
+    "author": "Jakub Antalik and Alexandr Brinza",
+    "repo": "https://github.com/Jakubantalik/Libraries.dev",
+    "docs": "https://libraries.dev/",
+    "commit": "9a42e88847dab0ac145733f15cf90535e9cb59ab",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/libraries-dev-LICENSE"
+  },
+  "watermelon-ui": {
+    "id": "watermelon-ui",
+    "name": "Watermelon UI",
+    "author": "Watermelon Platform Contributors; visual inspiration credited upstream to nitishkmrk",
+    "repo": "https://github.com/WatermelonCorp/watermelon-platform",
+    "docs": "https://ui.watermelon.sh/",
+    "commit": "b0171095227a67c40e627271a1e0ae67cdc2ed21",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/watermelon-ui-LICENSE"
+  },
+  "effect-atlas": {
+    "id": "effect-atlas",
+    "name": "Effect Atlas",
+    "author": "PROJECT Y/O",
+    "repo": "https://github.com/effect-atlas/effect-atlas",
+    "docs": "https://effectatlas.com",
+    "commit": "c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84",
+    "license": "Effect Atlas License 1.0",
+    "licenseFile": "./examples/ui-market/licenses/effect-atlas-LICENSE"
   }
 }

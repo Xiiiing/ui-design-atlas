@@ -36,7 +36,8 @@ export interface Tool {
   id: string;
   name: Localized;
   kind: "library" | "skills" | "design" | "learning";
-  repo: string;
+  repo?: string;
+  website?: string;
   description: Localized;
   technologies: string[];
   aliases: string[];

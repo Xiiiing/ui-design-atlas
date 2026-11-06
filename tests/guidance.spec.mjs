@@ -257,7 +257,7 @@ test("Guidance and interfaces link both ways and hand selected references to the
 
 for (const [route, title, kind, total, filtered] of [
   ["guidance", "Design guidance", "skill", 13, 5],
-  ["tools", "Resource directory", "library", 8, 4],
+  ["tools", "Resource directory", "library", 14, 10],
 ]) {
   test(`${route} exposes compact filters with keyboard, touch and empty-result recovery`, async ({
     page,
@@ -298,5 +298,75 @@ for (const [route, title, kind, total, filtered] of [
     await page.locator(`.guidance-reader > a[href^="#${route}?"]`).click();
     await expect(type).toHaveAttribute("aria-pressed", "true");
     await expect(page.locator(".guidance-card")).toHaveCount(filtered);
+  });
+}
+
+for (const locale of ["zh-CN", "en"]) {
+  test(`UI directory additions support search, details, source links and saved items in ${locale}`, async ({
+    page,
+  }) => {
+    const additions = [
+      ["boardui", "BoardUI", "Board UI", "https://www.boardui.com/"],
+      ["bencho", "Bencho", "Bencho UI", "https://bencho.dev/"],
+      ["heroui-pro", "HeroUI Pro", "HeroUl Pro", "https://heroui.pro/"],
+      ["beui-pro", "beUI Pro", "be UI Pro", "https://pro.beui.dev/"],
+      [
+        "libraries-dev",
+        "Libraries.dev",
+        "Libraries dev",
+        "https://libraries.dev/",
+      ],
+      [
+        "watermelon-ui",
+        "Watermelon UI",
+        "Watermelon Ul",
+        "https://ui.watermelon.sh/",
+      ],
+    ];
+    await page.goto(`#tools?lang=${locale}&kind=library`);
+    await expect(page.locator(".guidance-card")).toHaveCount(10);
+    for (const [id, name, alias, website] of additions) {
+      await page.locator("#content-filters [name=q]").fill(alias);
+      const card = page.locator(`[data-resource="tool:${id}"]`);
+      await expect(card).toBeVisible();
+      await card.locator("h2 a").click();
+      await expect(page.locator("h1")).toHaveText(name);
+      const link = page.getByRole("link", {
+        name: locale === "en" ? "Open website" : "打开官网",
+      });
+      await expect(link).toHaveAttribute("href", website);
+      await expect(link).toHaveAttribute("target", "_blank");
+      await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+      const save = page.locator(`[data-save="tool:${id}"]`);
+      await save.click();
+      await expect(save).toHaveAttribute("aria-pressed", "true");
+      await page.reload();
+      await expect(save).toHaveAttribute("aria-pressed", "true");
+      await page.locator('.guidance-reader > a[href^="#tools?"]').click();
+      await expect(card.locator("[data-save]")).toHaveAttribute(
+        "aria-pressed",
+        "true",
+      );
+    }
+    await page.goto(`#tools/ant-design?lang=${locale}`);
+    await expect(
+      page.getByRole("link", {
+        name: locale === "en" ? "Open repository" : "打开原始仓库",
+      }),
+    ).toHaveAttribute("href", "https://github.com/ant-design/ant-design");
+    await page.goto(`#tools/boardui?lang=${locale}`);
+    await expect(
+      page.getByRole("link", {
+        name: locale === "en" ? "Open repository" : "打开原始仓库",
+      }),
+    ).toHaveAttribute("href", "https://github.com/BoardUI/boardui");
+    await page.keyboard.press("Control+k");
+    await page.locator("#quick-search").fill("Bencho");
+    const result = page.locator('#search-results a[href*="tools/bencho"]');
+    await expect(result).toContainText(
+      locale === "en" ? "Libraries" : "组件库",
+    );
+    await result.click();
+    await expect(page.locator("h1")).toHaveText("Bencho");
   });
 }

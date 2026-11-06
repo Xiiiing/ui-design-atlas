@@ -164,9 +164,17 @@ export function createGuidanceViews(deps) {
   function toolDetail(item) {
     if (!root) return;
     const linked = guidance.filter((g) => g.toolId === item.id);
+    const libraryId = /** @type {Record<string,string>} */ ({
+      "ant-design": "antd",
+      boardui: "boardui",
+      bencho: "bencho",
+      "libraries-dev": "libraries-dev",
+      "watermelon-ui": "watermelon-ui",
+      "beui-pro": "beui",
+    })[item.id];
     replaceShellHTML(
       root,
-      `<article class="guidance-reader"><a class="text-link" href="${esc(listURL(lastTools))}">← ${t("返回资源导航", "Back to directory")}</a><header><div class="guidance-card-heading"><span class="guidance-kind">${t(.../** @type {[string,string]} */ (toolKinds[item.kind]))}</span>${button("tool:" + item.id)}</div><h1>${esc(l(item.name))}</h1><p class="guidance-lead">${esc(l(item.description))}</p><div class="guidance-tags">${item.technologies.map((x) => `<span>${esc(x)}</span>`).join("")}</div><a class="button" href="${esc(item.repo)}" target="_blank" rel="noopener noreferrer">${t("打开原始仓库", "Open repository")} ↗</a></header><section><h2>${t("相关指导", "Related guidance")}</h2><div class="guidance-grid">${linked.length ? linked.map((g) => contentCard(g, deps)).join("") : `<p>${t("尚未逐项收录，使用原始仓库查看文档与内容。", "Individual entries have not been curated yet. Read the repository for documentation and content.")}</p>`}</div></section>${item.id === "ant-design" ? `<a class="text-link" href="${href("explore", "", { library: "antd" })}">${t("查看图鉴中的相关界面", "Explore related interfaces")} ↗</a>` : ""}</article>`,
+      `<article class="guidance-reader"><a class="text-link" href="${esc(listURL(lastTools))}">← ${t("返回资源导航", "Back to directory")}</a><header><div class="guidance-card-heading"><span class="guidance-kind">${t(.../** @type {[string,string]} */ (toolKinds[item.kind]))}</span>${button("tool:" + item.id)}</div><h1>${esc(l(item.name))}</h1><p class="guidance-lead">${esc(l(item.description))}</p><div class="guidance-tags">${item.technologies.map((x) => `<span>${esc(x)}</span>`).join("")}</div><div class="button-row">${item.website ? `<a class="button" href="${esc(item.website)}" target="_blank" rel="noopener noreferrer">${t("打开官网", "Open website")} ↗</a>` : ""}${item.repo ? `<a class="button" href="${esc(item.repo)}" target="_blank" rel="noopener noreferrer">${t("打开原始仓库", "Open repository")} ↗</a>` : ""}</div></header><section><h2>${t("相关指导", "Related guidance")}</h2><div class="guidance-grid">${linked.length ? linked.map((g) => contentCard(g, deps)).join("") : `<p>${t("尚未逐项收录，使用上方来源链接查看文档与内容。", "Individual entries have not been curated yet. Use the source links above for documentation and content.")}</p>`}</div></section>${libraryId ? `<a class="text-link" href="${href("explore", "", { library: libraryId })}">${item.id === "beui-pro" ? t("查看 beUI 免费版收录", "Explore the beUI free selection") : t("查看图鉴中的相关界面", "Explore related interfaces")} ↗</a>` : ""}</article>`,
     );
   }
   /** @param {import('./guidance-types').Guidance} item */
@@ -268,7 +276,7 @@ export function createGuidanceViews(deps) {
           root,
           `<div class="market-empty"><h1>${t("内容不存在", "Content not found")}</h1><a href="${href(route.view)}">${t("返回列表", "Back to list")}</a></div>`,
         );
-      else if ("repo" in item) toolDetail(item);
+      else if ("technologies" in item) toolDetail(item);
       else void guidanceDetail(item);
     } else list();
     if (signal.aborted) return;

@@ -1,0 +1,79 @@
+:root {
+  color-scheme: light;
+  --frame: #fff;
+  --copy: #17181a;
+  --hint: #585b66;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --frame: #11121a;
+  --copy: #eef0fa;
+  --hint: #b1b5c5;
+}
+body {
+  margin: 0;
+  background: var(--frame);
+  color: var(--copy);
+  font:
+    14px/1.45 system-ui,
+    sans-serif;
+}
+main {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 12px;
+  box-sizing: border-box;
+  width: min(100%, 1060px);
+  min-height: 290px;
+  height: 100dvh;
+  max-height: 720px;
+  margin: auto;
+  padding: 12px;
+}
+header {
+  padding-inline: 4px;
+}
+h1,
+p {
+  margin: 0;
+}
+h1 {
+  font-size: 1rem;
+}
+header p {
+  color: var(--hint);
+  font-size: 0.8rem;
+}
+#stage {
+  min-height: 0;
+}
+:root[data-compact] main {
+  display: block;
+  min-height: 0;
+  padding: 0;
+}
+:root[data-compact] #stage {
+  height: 100%;
+  border-radius: 0;
+}
+:root[data-compact] header {
+  position: absolute;
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+:root[data-theme="dark"] #stage {
+  --fx-wash: #202131;
+}
+:root[data-theme="dark"] #stage::before {
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    #b6bfff26 1px,
+    transparent 1.6px
+  );
+}
+#stage :is(a, button, [tabindex]):focus-visible {
+  outline: 2px solid #6576ff;
+  outline-offset: 3px;
+}

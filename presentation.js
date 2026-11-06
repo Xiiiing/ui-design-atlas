@@ -34,16 +34,23 @@ export function resourcePresentation(resource, context = "card") {
   const canvasCard = context === "card" && mode === "canvas";
   const control = !wide && resource.category === "buttons";
   const tallCard = resource.kind === "pricing" || resource.id === "folio-card";
-  const canvasWidth = tallCard
-    ? 400
-    : resource.id === "shadcn-admin-trend-chart"
-      ? 640
-      : 960;
-  const canvasHeight = tallCard
-    ? 440
-    : resource.id === "shadcn-admin-trend-chart"
-      ? 480
-      : 640;
+  const compactCanvas = [
+    "bencho-context-meter",
+    "watermelon-frequency-selector",
+  ].includes(resource.id);
+  const canvasWidth =
+    tallCard || compactCanvas
+      ? 400
+      : resource.id === "shadcn-admin-trend-chart"
+        ? 640
+        : 960;
+  const canvasHeight = compactCanvas
+    ? 480
+    : tallCard
+      ? 440
+      : resource.id === "shadcn-admin-trend-chart"
+        ? 480
+        : 640;
   return {
     mode,
     layout: wide ? "wide" : "compact",

@@ -25,7 +25,7 @@ const read = async (name) =>
 test("Guidance catalog validates independent kinds, real references and complete pinned bundles", async () => {
   const d = await readGuidance(root);
   assert.equal(d.guidance.length, 13);
-  assert.equal(d.tools.length, 8);
+  assert.equal(d.tools.length, 14);
   assert.equal(d.guidance.filter((g) => g.kind === "skill").length, 5);
   assert.equal(d.details.animate.files["RECIPES.md"].includes("#"), true);
   assert(
@@ -65,6 +65,40 @@ test("Invalid kinds, duplicate IDs, references and file traversal fail checks", 
     const copy = structuredClone(args);
     change(copy);
     assert.throws(() => validateGuidance(...copy));
+  }
+});
+test("Directory accepts websites and repositories, rejecting missing or unsafe destinations", async () => {
+  const args = await Promise.all(
+    ["guidance", "tools", "resources", "guidance-sources"].map(read),
+  );
+  for (const links of [
+    { website: "https://example.com/docs" },
+    { repo: "https://github.com/example/ui" },
+    {
+      website: "https://example.com/",
+      repo: "https://github.com/example/ui",
+    },
+  ]) {
+    const copy = structuredClone(args);
+    delete copy[1][0].repo;
+    Object.assign(copy[1][0], links);
+    assert.doesNotThrow(() => validateGuidance(...copy));
+  }
+  for (const links of [
+    {},
+    { website: "javascript:alert(1)" },
+    { website: "http://example.com" },
+    { website: "https://" },
+    { website: "https://user:password@example.com" },
+    { website: "https://example.com/with spaces" },
+    { website: 42 },
+    { website: "https://example.com", repo: "javascript:alert(1)" },
+    { website: "javascript:alert(1)", repo: "https://github.com/example/ui" },
+  ]) {
+    const copy = structuredClone(args);
+    delete copy[1][0].repo;
+    Object.assign(copy[1][0], links);
+    assert.throws(() => validateGuidance(...copy), /Invalid tool/);
   }
 });
 test("Downloaded archives retain exact source, supporting files, license and reuse notes", async () => {

@@ -64,6 +64,10 @@
 
 打开 [设计指导](https://xiiiing.github.io/ui-design-atlas/#guidance?lang=zh-CN)，按用途查找提示词、Skills、设计规范和检查清单；[资源导航](https://xiiiing.github.io/ui-design-atlas/#tools?lang=zh-CN) 提供组件库、Skills 集合和学习资料入口。它们可以与界面一起收藏，并通过关联内容互相查阅。
 
+本轮从 BoardUI、Bencho、Libraries.dev、Watermelon UI 和 beUI 免费仓库收录六个可交互组件：思考指示器、滑动确认、上下文用量表、粒子光球、变形频率选择器和展开式标签导航。可直接体验、阅读设计解读与提示词，并查看和下载源码。六家站点的设计评估、Pro 内容边界与选型理由见[收录记录](docs/content/ui-intake.md)。
+
+另有四个 [Effect Atlas 动效精选](docs/content/effect-atlas.md)：像素擦除按钮、十字线揭图、共享元素转场和滚动小地图。每个均提供可离线打开的静态演示和原作者许可。
+
 [提示词组合器](https://xiiiing.github.io/ui-design-atlas/#compose?lang=zh-CN) 将需求、规范、界面参考、任务和交付检查组合成可编辑文本，支持复制、Markdown 导出与本地草稿。普通对话提供整理后的任务要点，编程助手模式另外提供完整 Skill 文件。收录和内容核对不等于生成效果已验证。使用、兼容及维护方法见 [设计指导说明](docs/guidance/README.md)。
 
 组合器按项目需求、方法与参考、交付要求分组，桌面双栏对照输入和输出，移动端纵向阅读。全站编辑式设计规范、前后截图和验收记录见 [改版说明](docs/ui/editorial-atlas/README.md)。

@@ -1,5 +1,24 @@
 import { lazy } from "react";
 export const demos = {
+  "boardui-agent-thinking": lazy(
+    () => import("./demos/intake/boardui-thinking"),
+  ),
+  "bencho-slide-confirm": lazy(
+    () => import("./demos/intake/bencho-slide-confirm"),
+  ),
+  "bencho-context-meter": lazy(
+    () => import("./demos/intake/bencho-context-meter"),
+  ),
+  "libraries-thinking-orb": lazy(
+    () => import("./demos/intake/libraries-thinking-orb"),
+  ),
+  "watermelon-frequency-selector": lazy(
+    () => import("./demos/intake/watermelon-frequency"),
+  ),
+  "beui-expandable-tabs": lazy(
+    () => import("./demos/intake/beui-expandable-tabs"),
+  ),
+
   "atlas-upload": lazy(() => import("./demos/atlas/upload")),
   "atlas-steps": lazy(() => import("./demos/atlas/steps")),
   "atlas-search": lazy(() => import("./demos/atlas/search")),

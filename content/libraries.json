@@ -65,5 +65,64 @@
       "Microsoft",
       "微软"
     ]
+  },
+  "boardui": {
+    "id": "boardui",
+    "name": "BoardUI",
+    "version": "ec5c5eb",
+    "docs": "https://www.boardui.com/",
+    "aliases": [
+      "boardui",
+      "React"
+    ]
+  },
+  "bencho": {
+    "id": "bencho",
+    "name": "Bencho",
+    "version": "27ac315",
+    "docs": "https://bencho.dev/",
+    "aliases": [
+      "bencho",
+      "React"
+    ]
+  },
+  "beui": {
+    "id": "beui",
+    "name": "beUI (free)",
+    "version": "090f6e3",
+    "docs": "https://beui.dev/",
+    "aliases": [
+      "beui",
+      "React"
+    ]
+  },
+  "libraries-dev": {
+    "id": "libraries-dev",
+    "name": "Libraries.dev",
+    "version": "9a42e88",
+    "docs": "https://libraries.dev/",
+    "aliases": [
+      "libraries-dev",
+      "React"
+    ]
+  },
+  "watermelon-ui": {
+    "id": "watermelon-ui",
+    "name": "Watermelon UI",
+    "version": "b017109",
+    "docs": "https://ui.watermelon.sh/",
+    "aliases": [
+      "watermelon-ui",
+      "React"
+    ]
+  },
+  "effect-atlas": {
+    "id": "effect-atlas",
+    "name": "Effect Atlas",
+    "version": "c0f2b5a",
+    "docs": "https://effectatlas.com",
+    "aliases": [
+      "effect-atlas"
+    ]
   }
 }

@@ -443,6 +443,294 @@
           "sha256": "e91035187ca51719f3ff1ed776033b151bf177d71dfdaac0c01546ca7febb7ce"
         }
       ]
+    },
+    "boardui": {
+      "repo": "https://github.com/BoardUI/boardui",
+      "commit": "ec5c5eb3e29c2441be63b9422cd54f411ef23466",
+      "license": "MIT",
+      "sourceRoot": ".",
+      "files": [
+        {
+          "upstream": "components/application/agent-thinking/agent-thinking.tsx",
+          "original": "upstream/boardui/components/application/agent-thinking/agent-thinking.tsx",
+          "sha256": "3f5fd82e603d49a8d3f9862dacd12fda874aa43fb958f3784425aa52b62f7d90"
+        },
+        {
+          "upstream": "styles/globals.css",
+          "original": "upstream/boardui/styles/globals.css",
+          "sha256": "61eb0d742c68f3fe7914626d1a31f97a9e242f084191098bbc27379b5d683183"
+        },
+        {
+          "upstream": "LICENSE",
+          "original": "upstream/boardui/LICENSE",
+          "sha256": "7a28c78354f8f88d8773f72bf37fb9c037817f8abd2fa5a63694d6c946a5ce80"
+        }
+      ]
+    },
+    "bencho": {
+      "repo": "https://github.com/cabralorenzo/bencho",
+      "commit": "27ac3159201fa48eb16ef65faa5d8078963a9a61",
+      "license": "MIT",
+      "sourceRoot": ".",
+      "files": [
+        {
+          "upstream": "blocks/slide-confirm/SlideConfirm.tsx",
+          "original": "upstream/bencho/blocks/slide-confirm/SlideConfirm.tsx",
+          "sha256": "b2c188f9c08a61be50d82b0894ea54ffc5dbedbe408dc59474048da587710845"
+        },
+        {
+          "upstream": "blocks/slide-confirm/SlideConfirm.css",
+          "original": "upstream/bencho/blocks/slide-confirm/SlideConfirm.css",
+          "sha256": "3c4b05ba2f2cfa90b6e42177096691c547354fc13e5f16092e2da71fbcada300"
+        },
+        {
+          "upstream": "blocks/slide-confirm/README.md",
+          "original": "upstream/bencho/blocks/slide-confirm/README.md",
+          "sha256": "aad0af48b0ab9261e8f8446c908debf262b9072550fece228439ca869f11fb4f"
+        },
+        {
+          "upstream": "blocks/context-meter/ContextMeter.tsx",
+          "original": "upstream/bencho/blocks/context-meter/ContextMeter.tsx",
+          "sha256": "f3f901e7158fa2117e4e57d97567e40f7bd0e7e8dbed0a49ad56105f4acd46e2"
+        },
+        {
+          "upstream": "blocks/context-meter/ContextMeter.css",
+          "original": "upstream/bencho/blocks/context-meter/ContextMeter.css",
+          "sha256": "00c994a53a64d654c62399b649756a15745ee3dc75cb647742ba9bba055642fd"
+        },
+        {
+          "upstream": "blocks/context-meter/README.md",
+          "original": "upstream/bencho/blocks/context-meter/README.md",
+          "sha256": "4e74b0909fded9ccf4f1c8947f10151eff60a0aa52ee20ae8d18c02e9f88dd57"
+        },
+        {
+          "upstream": "tokens.css",
+          "original": "upstream/bencho/tokens.css",
+          "sha256": "abb75ad433a1b7ec6f0136b603c279b5c9e53afa067c0b5f9cd10c95529d0f1a"
+        },
+        {
+          "upstream": "THIRD_PARTY.md",
+          "original": "upstream/bencho/THIRD_PARTY.md",
+          "sha256": "5a06fa88b258e8f876f93d900fda3b7efd8a17908fbdab5f557eb2f3f1eef969"
+        },
+        {
+          "upstream": "LICENSE",
+          "original": "upstream/bencho/LICENSE",
+          "sha256": "9f9d2eedd3383d018e343db1205e9b41f07fa49632050482fb40cc1a03dd64fe"
+        }
+      ]
+    },
+    "beui": {
+      "repo": "https://github.com/starc007/ui-components",
+      "commit": "090f6e3b5aebbb61a0bd2aaeb9fdae253cf51838",
+      "license": "MIT",
+      "sourceRoot": ".",
+      "files": [
+        {
+          "upstream": "components/motion/expandable-tabs.tsx",
+          "original": "upstream/beui/components/motion/expandable-tabs.tsx",
+          "sha256": "35ec18de66399f9122bc66f3672bf14bbb1cf0926cb0cab661c5dd66d6da4b1d"
+        },
+        {
+          "upstream": "lib/ease.ts",
+          "original": "upstream/beui/lib/ease.ts",
+          "sha256": "cde4ce91ec645335cfa8297d6094c90b6e62ee6a1a021fe2ac0a6ece673c2a8f"
+        },
+        {
+          "upstream": "LICENSE",
+          "original": "upstream/beui/LICENSE",
+          "sha256": "9e27b491d5691a1bd95708e79de23beb2962f33fe6c1ee31ab639f43009a0b20"
+        }
+      ]
+    },
+    "libraries-dev": {
+      "repo": "https://github.com/Jakubantalik/Libraries.dev",
+      "commit": "9a42e88847dab0ac145733f15cf90535e9cb59ab",
+      "license": "MIT",
+      "sourceRoot": ".",
+      "files": [
+        {
+          "upstream": "packages/thinking-orbs/src/ThinkingOrb.tsx",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/ThinkingOrb.tsx",
+          "sha256": "1c0bdc43869d2758919876f603b19f254e062c275e3869575d6660ec4f2f1bd0"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/engine/braid.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/engine/braid.ts",
+          "sha256": "a0d09442a9162dfa2f16fafb8dc435b88edb0bc9e7011ea6bc558be586ae938b"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/engine/core.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/engine/core.ts",
+          "sha256": "05aa3d5f24c1c35e5fcfd6c804204f0cab3ca7909a6e9089dee3673cbe28e1cc"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/engine/index.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/engine/index.ts",
+          "sha256": "8d3004c6cb6bb8a7923a6c6c600294e697269bbecda688b565d51afc3e6a4275"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/engine/lattice.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/engine/lattice.ts",
+          "sha256": "785e03ee9dc7ddc955952f666c8b269351571dffc96fb0ddc4050e5718444397"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/engine/morph.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/engine/morph.ts",
+          "sha256": "d341cb6d9dc6e681c3965a46b7200b211c37136b439d3d86dfc88fd85e9c12d4"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/engine/orbits.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/engine/orbits.ts",
+          "sha256": "27f974f2d9e0e1614055882673217b4db230bf8e4b88dc5ac21b298a924dfb65"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/engine/profiles.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/engine/profiles.ts",
+          "sha256": "a092bef089437cc7fce681ca6f9af24a831191d77e91814ad6b66cbb1d8fab01"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/engine/registry.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/engine/registry.ts",
+          "sha256": "fb36d8815f598e69535bb86af576260c375bf1dcf4d54c0d6a31e68f42a13c49"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/engine/ribbon.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/engine/ribbon.ts",
+          "sha256": "a79cc262b42f3f12f5d4a108e7cf9710938d5fb1f6166c9fa789f02d4e0679c4"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/engine/types.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/engine/types.ts",
+          "sha256": "33dc880d34da6c68adf0d03e484f42f43e97783b764991f21b8a6e386c2d7972"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/engine/web.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/engine/web.ts",
+          "sha256": "1dc2e38e9d01298ebf32744a3569f4e3234ba4af61cc64c5089511f7a9b7369d"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/gravity.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/gravity.ts",
+          "sha256": "a6fb8aa9174be72ae528fbfed6ae103de4ee0bf57f3b35f32012b7cb5f5d82c2"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/index.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/index.ts",
+          "sha256": "6a6d1da12c5a82e33684b168590be596055921bbb43145702ee86cc50467cab8"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/presets.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/presets.ts",
+          "sha256": "a06ab0dea139a735ef9ac212965dc86dc7be60bc3bfd9e3cd9e93b9701faae31"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/theme.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/theme.ts",
+          "sha256": "f8650dcef8796ac92260f62cf3f4739763512012de288a541c0b15b127726a1b"
+        },
+        {
+          "upstream": "packages/thinking-orbs/src/types.ts",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/src/types.ts",
+          "sha256": "de765f265d968db035ae50bafc3c3cd0b9dedb9406ec26ed4b7e85a5c490a63e"
+        },
+        {
+          "upstream": "packages/thinking-orbs/README.md",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/README.md",
+          "sha256": "1e681b07ec5152b3de5710d1c69913ac570e9fdd0b31335f30f8c7c0d8f5ba6c"
+        },
+        {
+          "upstream": "packages/thinking-orbs/package.json",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/package.json",
+          "sha256": "3026779264b1c05f5ff4833fc4c923a0b5fbe56fed317ee0bfb947eb2127e1f7"
+        },
+        {
+          "upstream": "packages/thinking-orbs/LICENSE",
+          "original": "upstream/libraries-dev/packages/thinking-orbs/LICENSE",
+          "sha256": "915a283980628a0ca9e7b423ebafc6f3a0fa1e630ff17d34e59034808d92011c"
+        }
+      ]
+    },
+    "watermelon-ui": {
+      "repo": "https://github.com/WatermelonCorp/watermelon-platform",
+      "commit": "b0171095227a67c40e627271a1e0ae67cdc2ed21",
+      "license": "MIT",
+      "sourceRoot": ".",
+      "files": [
+        {
+          "upstream": "src/data/contents/animated-components/frequency-selector/original.tsx",
+          "original": "upstream/watermelon-ui/src/data/contents/animated-components/frequency-selector/original.tsx",
+          "sha256": "ec5a8fc14126f96ba52516ff99f8d790782e69121793635fb54c926cdc84985b"
+        },
+        {
+          "upstream": "src/data/contents/animated-components/frequency-selector/demo-original.tsx",
+          "original": "upstream/watermelon-ui/src/data/contents/animated-components/frequency-selector/demo-original.tsx",
+          "sha256": "f0a7593c39962f1d90bb072e81fd5cbffb1a33ec46931b5a42557d5a88407f13"
+        },
+        {
+          "upstream": "src/data/contents/registry/frequency-selector.mdx",
+          "original": "upstream/watermelon-ui/src/data/contents/registry/frequency-selector.mdx",
+          "sha256": "ac83981e1b423b060ce92a3720f4e3ebe80d7d449445c2f7832683d67410cc84"
+        },
+        {
+          "upstream": "LICENSE",
+          "original": "upstream/watermelon-ui/LICENSE",
+          "sha256": "53acf7b74b1e84b858c3340dbc2bcb809491eea857986132873041166ffcdfe0"
+        }
+      ]
+    },
+    "effect-atlas": {
+      "repo": "https://github.com/effect-atlas/effect-atlas",
+      "commit": "c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84",
+      "license": "Effect Atlas License 1.0",
+      "sourceRoot": "effects",
+      "files": [
+        {
+          "upstream": "LICENSE",
+          "original": "licenses/effect-atlas-LICENSE",
+          "sha256": "9064484f11592e83aae744db7cd298f84076754dfa24fb1f04c56b51f94435e4"
+        },
+        {
+          "upstream": "effects/pixel-wipe-button/effect.js",
+          "original": "public/effect-atlas/pixel-wipe-button/effect.js",
+          "sha256": "0596316e0c0403e036df11078b467c47160147be6f30be1a17ab0da43dbc475e"
+        },
+        {
+          "upstream": "effects/pixel-wipe-button/effect.css",
+          "original": "public/effect-atlas/pixel-wipe-button/effect.css",
+          "sha256": "dddc6c1a2593daf822143c37c2e8d5a23d7e3054f3578c3fe69c323107964613"
+        },
+        {
+          "upstream": "effects/crosshair-image-reveal/effect.js",
+          "original": "public/effect-atlas/crosshair-image-reveal/effect.js",
+          "sha256": "79fb33fc9983a3f1314147de9fe0ab910b0e531d79d8f85a551591f324f674f3"
+        },
+        {
+          "upstream": "effects/crosshair-image-reveal/effect.css",
+          "original": "public/effect-atlas/crosshair-image-reveal/effect.css",
+          "sha256": "4f1417f2ff13bc5494c3e5fcde7ff10da7bfeb44a680d0c810728afbd7c6b554"
+        },
+        {
+          "upstream": "effects/shared-element-transition/effect.js",
+          "original": "public/effect-atlas/shared-element-transition/effect.js",
+          "sha256": "dabcc683782d594e7aac3debf78288abbfffbd88967ef6eb93a77a8ddacdb68f"
+        },
+        {
+          "upstream": "effects/shared-element-transition/effect.css",
+          "original": "public/effect-atlas/shared-element-transition/effect.css",
+          "sha256": "b3051951f1f2d214cbb38e1e930cf6c0b0acc50a85b358d1ef690496fc16e576"
+        },
+        {
+          "upstream": "effects/scroll-minimap/effect.js",
+          "original": "public/effect-atlas/scroll-minimap/effect.js",
+          "sha256": "49ca72c2f2b03aca2c9954a0c28a16f9de13cdd091e0a76a085b7f414a2e9886"
+        },
+        {
+          "upstream": "effects/scroll-minimap/effect.css",
+          "original": "public/effect-atlas/scroll-minimap/effect.css",
+          "sha256": "da93cba610f48bdad8f31afecc99082070f520f4488ecfeadbf395852e605cd4"
+        }
+      ]
     }
   },
   "foundation": {

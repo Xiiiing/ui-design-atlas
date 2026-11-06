@@ -46,3 +46,56 @@ The Bento Grid demo's notification backdrop uses Motion-managed 75%/90% scaling,
 so its AnimatedList layout projections share the same scale coordinates. This
 removes the insertion jump caused by a CSS-scaled ancestor; source notification
 items, timing, card hover behavior and the other backgrounds are retained.
+
+## Expressive UI intake
+
+The following public MIT sources supply real local previews. Exact originals,
+commit IDs and SHA-256 hashes are retained in `upstream/` and `sources.lock.json`;
+licenses are retained in `licenses/` and the delivered source bundles.
+
+- **BoardUI / Mertcan Dundar Esmergul**, `ec5c5eb3e29c2441be63b9422cd54f411ef23466`:
+  `components/application/agent-thinking/agent-thinking.tsx` and the relevant rules
+  from `styles/globals.css`. Atlas removes the documentation-only localization
+  wrapper, maps typography and color tokens, and supplies variant/pause controls.
+  The public MIT repository is used; BoardUI Pro is not imported.
+- **Bencho / Lorenzo Cabra**, `27ac3159201fa48eb16ef65faa5d8078963a9a61`:
+  Slide Confirm and Context Meter from `blocks/`, with their styles, README files,
+  original token definitions and third-party notice. Atlas uses `motion/react`
+  instead of `framer-motion`, supplies translated labels and scoped theme tokens,
+  makes the dot field responsive, and adds keyboard confirmation and reduced-motion
+  spatial behavior. No Bencho trademarks, photographs, sounds or Pro-only blocks
+  are included. See https://github.com/cabralorenzo/bencho.
+- **Libraries.dev / Jakub Antalik and Alexandr Brinza**,
+  `9a42e88847dab0ac145733f15cf90535e9cb59ab`: the MIT Thinking Orbs package
+  (`packages/thinking-orbs`, version 0.3.2). The runtime source remains unchanged;
+  Atlas adds a nine-state selector, translated status labels and a pause button.
+  This is the public Canvas engine, without Studio Pro or models. See
+  https://github.com/Jakubantalik/Libraries.dev.
+- **Watermelon Platform Contributors**,
+  `b0171095227a67c40e627271a1e0ae67cdc2ed21`: Frequency Selector original source,
+  demo and registry description. Atlas adds translation props, keyboard-accessible
+  trigger/confirmation, selection semantics, Escape cancellation and focus return.
+  Upstream credits **nitishkmrk** (https://x.com/nitishkmrk) for visual inspiration;
+  this credit is retained rather than attributing the design solely to Atlas.
+  See https://github.com/WatermelonCorp/watermelon-platform.
+- **beUI / Saurabh Chauhan**, `090f6e3b5aebbb61a0bd2aaeb9fdae253cf51838`:
+  free `components/motion/expandable-tabs.tsx` and `lib/ease.ts`. Atlas changes
+  local imports, adds tab keyboard/ARIA relationships and Escape focus handling,
+  and provides three localized panels whose rows return local selection feedback.
+  This is an MIT alternative from **beUI free**, not a beUI Pro component. See
+  https://github.com/starc007/ui-components.
+
+HeroUI Pro and beUI Pro were evaluated visually but their proprietary source was
+not imported or reconstructed. The selection and exclusions are documented in
+`../../docs/content/ui-intake.md` in the repository.
+
+## Effect Atlas
+
+The four static examples under `public/effect-atlas/` use the original CSS
+and JavaScript from [Effect Atlas](https://github.com/effect-atlas/effect-atlas)
+at `c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84`: Pixel Wipe Button, Crosshair
+Image Reveal, Shared Element Transition and Scroll Minimap. Copyright (c) 2026
+PROJECT Y/O. [Effect Atlas License 1.0](licenses/effect-atlas-LICENSE) applies
+to these effects and remains included in each downloadable sample. This is a
+selected set of demos; the remaining catalogue, third-party dependencies and
+site assets are not redistributed. Atlas provides the preview host and covers.
