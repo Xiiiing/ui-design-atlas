@@ -91,6 +91,10 @@ test("Startup budget measures every main-document script and records iframe scri
     );
   });
   await page.goto("#explore?lang=en");
+  const start = page.locator("[data-start-preview]").first();
+  await expect(start).toBeVisible();
+  await expect(page.locator("iframe")).toHaveCount(0);
+  await start.press("Enter");
   await expect(
     page.locator("[data-preview-state=ready]").first(),
   ).toBeVisible();

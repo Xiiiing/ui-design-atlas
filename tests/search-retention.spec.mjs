@@ -80,6 +80,7 @@ test("Unchanged previews retain their document, input and frame across search an
   });
   await page.goto("#components?lang=en&category=forms&q=folio");
   const card = page.locator('[data-resource="component:folio-form"]');
+  await card.locator("[data-start-preview]").click();
   await expect(card).toHaveAttribute("data-preview-state", "ready");
   const frame = card.frameLocator("iframe");
   await frame.locator("input[type=email]").fill("retain@example.com");
@@ -126,6 +127,7 @@ test("Unchanged previews retain their document, input and frame across search an
     false,
   );
   await page.locator("[name=q]").fill("folio");
+  await card.locator("[data-start-preview]").click();
   await expect(card).toHaveAttribute("data-preview-state", "ready");
   await expect(frame.locator("input[type=email]")).toHaveValue("");
 });

@@ -27,16 +27,6 @@ export function createBrowse({
   observeCards,
   extraSaved,
 }) {
-  /** @type {Record<string,string>} */
-  const viewIcons = {
-    explore: "grid-2x2",
-    motion: "play",
-    components: "layers",
-    blocks: "layout-template",
-    pages: "monitor",
-    cases: "code-xml",
-  };
-
   /** @type {Record<string,[string,string]>} */
   const viewModes = {
     explore: ["全部", "All"],
@@ -207,7 +197,7 @@ export function createBrowse({
   )
     .map(
       ([v, labels]) =>
-        `<a href="${modeURL(v)}" data-market-mode="${v}" class="${activeMode() === v ? "active" : ""}" ${activeMode() === v ? 'aria-current="page"' : ""}>${icon(viewIcons[v])}${t(labels[0], labels[1])}<span>${typeCount(typeCounts, v)}</span></a>`,
+        `<a href="${modeURL(v)}" data-market-mode="${v}" class="${activeMode() === v ? "active" : ""}" ${activeMode() === v ? 'aria-current="page"' : ""}>${t(labels[0], labels[1])}<span>${typeCount(typeCounts, v)}</span></a>`,
     )
     .join(
       "",

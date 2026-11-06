@@ -576,7 +576,8 @@ kbd {
 .asset-card:focus-within .asset-preview {
   border-color: var(--line-strong);
 }
-.asset-preview > img {
+.asset-preview > picture,
+.asset-preview img {
   display: block;
   width: 100%;
   height: 100%;
@@ -608,7 +609,7 @@ kbd {
   opacity: 1;
   background: var(--panel);
 }
-.asset-card.is-live .asset-preview > img {
+.asset-card.is-live .asset-preview > picture {
   opacity: 0;
 }
 .asset-save,

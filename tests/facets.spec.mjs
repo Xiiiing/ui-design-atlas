@@ -153,6 +153,7 @@ test("Library appends preserve visible frames, documents and input without docum
       requests++;
   });
   await page.goto("#explore?lang=en");
+  await page.locator(".resource-group [data-start-preview]").first().click();
   await expect(page.locator(".resource-group iframe").first()).toBeVisible();
   await expect
     .poll(() =>
@@ -217,6 +218,7 @@ test("Entering and clearing search preserves a retained card across result group
   );
   await page.reload();
   const card = page.locator('[data-resource="component:folio-form"]');
+  await card.locator("[data-start-preview]").click();
   await expect(card).toHaveAttribute("data-preview-state", "ready");
   await card
     .frameLocator("iframe")

@@ -9,7 +9,7 @@ test("Visible cards operate directly and expose prompt, details and filter tags"
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("#components?lang=en&category=buttons");
   const card = page.locator('[data-resource="component:folio-button"]');
-  await card.scrollIntoViewIfNeeded();
+  await card.locator("[data-start-preview]").click();
   await expect(card).toHaveAttribute("data-preview-state", "ready");
   const url = page.url();
   await card
@@ -43,7 +43,7 @@ test("Inline forms accept input on touch devices without opening a viewer", asyn
     "http://127.0.0.1:4173/ui-design-atlas/#components?lang=en&q=folio&category=forms",
   );
   const card = page.locator('[data-resource="component:folio-form"]');
-  await card.scrollIntoViewIfNeeded();
+  await card.locator("[data-start-preview]").tap();
   await expect(card).toHaveAttribute("data-preview-state", "ready");
   const form = card.frameLocator("iframe");
   await form.locator("input[type=email]").fill("demo@example.com");
@@ -58,7 +58,7 @@ test("Inline forms accept input on touch devices without opening a viewer", asyn
   await context.close();
 });
 
-test("Failed card loads retry in place and the live iframe budget is bounded", async ({
+test("Failed card loads retry in place and scrolling never starts other previews", async ({
   page,
 }) => {
   await page.route("**/component-preview.html?**", (r) =>
@@ -66,19 +66,17 @@ test("Failed card loads retry in place and the live iframe budget is bounded", a
   );
   await page.goto("#components?lang=en&category=buttons");
   const card = page.locator('[data-resource="component:folio-button"]');
-  await card.scrollIntoViewIfNeeded();
+  await card.locator("[data-start-preview]").click();
   await expect(card).toHaveAttribute("data-preview-state", "error");
   const before = await card.boundingBox();
   await page.unroute("**/component-preview.html?**");
-  await card.locator("[data-retry-preview]").click();
+  await card.getByRole("button", { name: /Retry preview/ }).click();
   await expect(card).toHaveAttribute("data-preview-state", "ready");
   expect(await card.boundingBox()).toEqual(before);
   await page.goto("#components?lang=en");
   for (const y of [0, 500, 1200, 2200, 4000]) {
     await page.evaluate((y) => scrollTo(0, y), y);
-    await expect
-      .poll(() => page.locator(".asset-live iframe").count())
-      .toBeLessThanOrEqual(8);
+    await expect(page.locator(".asset-live iframe")).toHaveCount(0);
   }
 });
 
@@ -87,8 +85,10 @@ test("Focused demos survive recycling, keyboard input works and forged card mess
 }) => {
   await page.goto("#components?lang=en");
   const card = page.locator('[data-resource="component:magicui-border-beam"]');
-  await card.scrollIntoViewIfNeeded();
+  const start = card.locator("[data-start-preview]");
+  await start.press("Enter");
   await expect(card).toHaveClass(/is-live/);
+  await expect(card.locator("iframe")).toBeFocused();
   const input = card.frameLocator("iframe").locator("input[type=email]");
   await input.fill("focus@example.com");
   await input.press("Tab");
@@ -123,7 +123,7 @@ test("Focused demos survive recycling, keyboard input works and forged card mess
   );
   await page.locator(".asset-caption a").last().focus();
   await expect(card.locator("iframe")).toHaveCount(0);
-  await card.scrollIntoViewIfNeeded();
+  await card.locator("[data-start-preview]").click();
   await expect(card).toHaveClass(/is-live/);
   await expect(input).toHaveValue("");
 });
@@ -193,7 +193,7 @@ test("Adjusted compact previews fit phone cards without truncation", async ({
       `#components?lang=en&q=${encodeURIComponent(findResource(id).name.en)}`,
     );
     const card = page.locator(`[data-resource="component:${id}"]`);
-    await card.scrollIntoViewIfNeeded();
+    await card.locator("[data-start-preview]").click();
     await expect(card).toHaveClass(/is-live/);
     const size = await card.locator("iframe").evaluate((f) => {
       const d = f.contentDocument,
@@ -228,7 +228,7 @@ test("A touch swipe starting inside a compact iframe scrolls the resource list",
       "http://127.0.0.1:4173/ui-design-atlas/#components?lang=en&category=buttons",
     );
     const card = page.locator('[data-resource="component:folio-button"]');
-    await card.scrollIntoViewIfNeeded();
+    await card.locator("[data-start-preview]").click();
     await expect(card).toHaveClass(/is-live/);
     const box = await card.locator("iframe").boundingBox(),
       before = await page.evaluate(() => scrollY);

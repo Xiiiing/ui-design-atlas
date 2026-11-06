@@ -7,6 +7,7 @@ test("Core filter, navigation, saved state, source and preview workflow", async 
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("#components?lang=en&category=forms&q=folio");
   const card = page.locator('[data-resource="component:folio-form"]');
+  await card.locator("[data-start-preview]").click();
   await expect(card).toHaveAttribute("data-preview-state", "ready");
   await card
     .frameLocator("iframe")

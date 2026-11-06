@@ -99,6 +99,28 @@ test("Cover variants change with appearance without changing card geometry", asy
   expect(await cover.boundingBox()).toEqual(before);
 });
 
+test("Wide cards load a small WebP on phones and switch it with the theme", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("#components?lang=en&q=Filterable%20Table");
+  const cover = page.locator('[data-resource="component:antd-table"] img');
+  await cover.scrollIntoViewIfNeeded();
+  await expect
+    .poll(() => cover.evaluate((img) => img.currentSrc))
+    .toMatch(/antd-table-480\.webp$/);
+  const before = await cover.boundingBox();
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expect
+    .poll(() => cover.evaluate((img) => img.currentSrc))
+    .toMatch(/antd-table-dark-480\.webp$/);
+  await expect
+    .poll(() => cover.evaluate((img) => img.complete && img.naturalWidth > 0))
+    .toBe(true);
+  expect(await cover.boundingBox()).toEqual(before);
+});
+
 test("New practical resources operate locally with validation, search and recovery", async ({
   page,
 }) => {

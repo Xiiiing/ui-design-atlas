@@ -14,8 +14,10 @@ const context = await browser.newContext({
 const page = await context.newPage();
 await page.goto(base + "#explore?lang=zh-CN");
 await expect(
-  page.locator('[data-resource="component:magicui-border-beam"]'),
-).toHaveAttribute("data-preview-state", "ready");
+  page.locator(
+    '[data-resource="component:magicui-border-beam"] [data-start-preview]',
+  ),
+).toBeVisible();
 await page.screenshot({ path: dir + "/header-expanded.png" });
 await page.mouse.move(1280, 750);
 await page.mouse.wheel(0, 600);
@@ -55,8 +57,10 @@ for (const width of [2560, 768, 375]) {
   const p = await context.newPage();
   await p.goto(base + "#explore?lang=zh-CN");
   await expect(
-    p.locator('[data-resource="component:magicui-border-beam"]'),
-  ).toHaveAttribute("data-preview-state", "ready");
+    p.locator(
+      '[data-resource="component:magicui-border-beam"] [data-start-preview]',
+    ),
+  ).toBeVisible();
   await p.evaluate(() => scrollTo(0, 600));
   await expect(p.locator("#topbar")).toHaveClass("is-compact");
   await expect

@@ -7,6 +7,7 @@ import { parseHash } from "./navigation.js";
 import { guidanceForResource } from "../guidance-registry.js";
 import { resourceTags, interactions } from "../resource-tags.js";
 import { resourcePresentation } from "../presentation.js";
+import { responsiveCovers, coverSrcset } from "../preview-covers.js";
 import {
   getCase,
   libraries,
@@ -160,8 +161,12 @@ export function createResourceViews({
       r.type === "page" && r.caseId
         ? `${l(getCase(r.caseId)?.name || r.name).split(" · ")[0]} · ${l(r.name)}`
         : l(r.name);
-    return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${framing.layout}" data-experience="${framing.mode}" data-cover-layout="${framing.layout}">
-  <div class="asset-preview"><img data-cover="${esc(r.cover)}" src="${esc(coverURL(r.cover, shellTheme()))}" alt="${esc(name)}" loading="lazy" width="${framing.width}" height="${framing.height}">${inline ? `<div class="asset-live" data-live="${key(r)}"></div><div class="preview-state" role="status"><span>${t("正在加载体验…", "Loading experience…")}</span><button type="button" class="button" data-retry-preview hidden>${t("重试", "Retry")}</button></div>` : `<a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("打开体验", "Open experience")} ${esc(name)}"><span>${icon("arrow-up-right")}${t("打开体验", "Open experience")}</span></a>`}</div>
+    const cover = coverURL(r.cover, shellTheme());
+    const source = responsiveCovers.has(r.cover)
+      ? `<source type="image/webp" srcset="${esc(coverSrcset(cover))}" sizes="(max-width: 599px) 90vw, (max-width: 899px) 90vw, (max-width: 1199px) 60vw, 620px">`
+      : "";
+    return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${framing.layout}" data-experience="${framing.mode}" ${inline ? 'data-preview-state="idle"' : ""} data-cover-layout="${framing.layout}">
+  <div class="asset-preview"><picture>${source}<img data-cover="${esc(r.cover)}" src="${esc(cover)}" alt="${esc(name)}" loading="lazy" decoding="async" width="${framing.width}" height="${framing.height}"></picture>${inline ? `<div class="asset-live" data-live="${key(r)}"></div><button class="asset-cover-link" type="button" data-start-preview><span><span data-preview-label>${t("启动预览", "Start preview")}</span><span class="sr-only"> ${esc(name)}</span></span></button><span class="sr-only" role="status" data-preview-status></span>` : `<a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("打开体验", "Open experience")} ${esc(name)}"><span>${icon("arrow-up-right")}${t("打开体验", "Open experience")}</span></a>`}</div>
   <div class="asset-caption"><a data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}">${esc(name)}</a><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" title="${esc(libraries[id].name)}">${esc(libraries[id].name)}</span>`).join("")}</span></div>
   <p class="asset-description" id="description-${r.id}" title="${esc(l(r.description))}">${esc(l(r.description))}</p><div class="asset-footer">${tagLinks(r)}
   <div class="asset-actions">${saveButton(r)}<span data-shell-card-menu></span><span hidden data-card-actions><button class="icon-button" data-card-prompt="${key(r)}" aria-label="${t("复制提示词", "Copy prompt")}" title="${t("复制提示词", "Copy prompt")}">${icon("copy")}</button><a class="icon-button" data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}" aria-label="${t("查看详情", "Details")}" title="${t("查看详情", "Details")}">${icon("panel-right")}</a></span></div></div></article>`;

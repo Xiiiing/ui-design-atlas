@@ -26,6 +26,7 @@ test("Effect Atlas is searchable and filterable; the button runs in its library 
     '[data-resource="component:effect-atlas-pixel-wipe-button"]',
   );
   await card.scrollIntoViewIfNeeded();
+  await card.locator("[data-start-preview]").click();
   await expect(card).toHaveAttribute("data-preview-state", "ready");
   const demo = card.frameLocator("iframe");
   const cta = demo.getByRole("link", { name: "Book a demo" });

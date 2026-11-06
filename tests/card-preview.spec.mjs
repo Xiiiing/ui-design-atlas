@@ -5,7 +5,7 @@ async function geometry(card) {
     const box = (s) => el.querySelector(s).getBoundingClientRect().toJSON();
     return {
       preview: box(".asset-preview"),
-      image: box(".asset-preview > img"),
+      image: box(".asset-preview img"),
       caption: box(".asset-caption"),
       description: box(".asset-description"),
       badge: el.querySelector(".motion-badge") ? box(".motion-badge") : null,
@@ -49,6 +49,8 @@ test("Card metadata never covers or resizes the canvas on hover, focus or live l
           "1",
         );
         await card.hover();
+        await expect(card.locator("iframe")).toHaveCount(0);
+        await card.locator("[data-start-preview]").click();
         await expect(card).toHaveClass(/is-live/);
         await expect(card.locator(".asset-description")).toHaveCSS(
           "opacity",
@@ -91,9 +93,10 @@ test("Revealing metadata keeps adjacent rows fixed and wide block covers intact"
       );
     const before = await positions();
     await cards.first().locator(".asset-caption a").focus();
-    if ((await cards.first().getAttribute("data-experience")) === "inline")
+    if ((await cards.first().getAttribute("data-experience")) === "inline") {
+      await cards.first().locator("[data-start-preview]").click();
       await expect(cards.first()).toHaveClass(/is-live/);
-    else await expect(cards.first().locator("iframe")).toHaveCount(0);
+    } else await expect(cards.first().locator("iframe")).toHaveCount(0);
     separate(await geometry(cards.first()));
     expect(await positions()).toEqual(before);
     await cards.nth(1).hover();
@@ -135,7 +138,7 @@ test("Touch cards keep descriptions outside the preview and open the actual reso
       .getByRole("button", { name: "返回资源市场", exact: true })
       .click();
     await expect(card.locator(".card-menu-trigger")).toBeFocused();
-    await expect(card).toHaveClass(/is-live/);
+    await expect(card.locator("iframe")).toHaveCount(0);
     separate(await geometry(card));
   } finally {
     await ctx.close();

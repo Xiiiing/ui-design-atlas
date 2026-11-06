@@ -123,31 +123,40 @@ test("Inline resources retain their content and controls within phone squares", 
       );
       const card = page.locator(`[data-resource="${r.type}:${r.id}"]`);
       await card.scrollIntoViewIfNeeded();
+      await card.locator("[data-start-preview]").click();
       await expect(card).toHaveAttribute("data-preview-state", "ready");
-      const content = await card.locator("iframe").evaluate((f) => {
-        const d = f.contentDocument,
-          w = f.contentWindow,
-          root = d.scrollingElement;
-        return {
-          overflowX: root.scrollWidth - w.innerWidth,
-          overflowY: root.scrollHeight - w.innerHeight,
-          clippedControls: [
-            ...d.querySelectorAll("button,input,a,select,textarea"),
-          ].filter((e) => {
-            const b = e.getBoundingClientRect();
-            return (
-              b.width &&
-              b.height &&
-              (b.top < 0 ||
-                b.bottom > w.innerHeight + 1 ||
-                b.left < 0 ||
-                b.right > w.innerWidth + 1)
-            );
-          }).length,
-        };
-      });
-      expect(content.overflowX, `${r.id}/${lang}`).toBeLessThanOrEqual(2);
-      expect(content.overflowY, `${r.id}/${lang}`).toBeLessThanOrEqual(2);
-      expect(content.clippedControls, `${r.id}/${lang}`).toBe(0);
+      // Readiness means the demo mounted. Its layout animation can still be running.
+      const measure = () =>
+        card.locator("iframe").evaluate((f) => {
+          const d = f.contentDocument,
+            w = f.contentWindow,
+            root = d.scrollingElement;
+          return {
+            overflowX: root.scrollWidth - w.innerWidth,
+            overflowY: root.scrollHeight - w.innerHeight,
+            clippedControls: [
+              ...d.querySelectorAll("button,input,a,select,textarea"),
+            ].filter((e) => {
+              const b = e.getBoundingClientRect();
+              return (
+                b.width &&
+                b.height &&
+                (b.top < 0 ||
+                  b.bottom > w.innerHeight + 1 ||
+                  b.left < 0 ||
+                  b.right > w.innerWidth + 1)
+              );
+            }).length,
+          };
+        });
+      await expect
+        .poll(
+          async () => {
+            const { overflowX, overflowY, clippedControls } = await measure();
+            return overflowX <= 2 && overflowY <= 2 && clippedControls === 0;
+          },
+          { message: `${r.id}/${lang} fits the card after layout settles` },
+        )
+        .toBe(true);
     }
 });
