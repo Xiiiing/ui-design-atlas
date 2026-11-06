@@ -8,7 +8,7 @@ export function createFilterActions({ appState, updateResults, cancelInput }) {
   return function handleFilterAction(b) {
     if (
       !b.matches(
-        "[data-more],[data-category],[data-remove-filter],[data-advanced-filters],[data-reset-filters]",
+        "[data-more],[data-category],[data-visual],[data-remove-filter],[data-advanced-filters],[data-reset-filters]",
       )
     )
       return false;
@@ -18,10 +18,14 @@ export function createFilterActions({ appState, updateResults, cancelInput }) {
       updateResults(true);
       return true;
     }
-    if (b.dataset.category) {
-      const field = element("#filters [name=category]"),
-        selected = selections(field.value),
-        value = b.dataset.category;
+    const facet = b.dataset.category ? "category" : "visual";
+    const value = b.dataset[facet];
+    if (value) {
+      const field = element(
+          facet === "category" ? "[name=category]" : "[name=visual]",
+          element("#filters"),
+        ),
+        selected = selections(field.value);
       field.value =
         value === "all"
           ? "all"
@@ -39,7 +43,7 @@ export function createFilterActions({ appState, updateResults, cancelInput }) {
       if (name === "q") field.value = "";
       else if (name === "collection" || name === "style" || name === "audience")
         field.remove();
-      else if (name === "category")
+      else if (name === "category" || name === "visual")
         field.value = selections(field.value)
           .filter((v) => v !== b.dataset.filterValue)
           .join(",");
@@ -68,6 +72,7 @@ export function createFilterActions({ appState, updateResults, cancelInput }) {
           setFieldValue(el.dataset.shellField || "", "all");
         element("[name=q]", form).value = "";
         element("[name=category]", form).value = "all";
+        element("[name=visual]", form).value = "all";
         for (const el of form.querySelectorAll("input[type=checkbox]"))
           if (el instanceof HTMLInputElement) el.checked = false;
         for (const el of form.querySelectorAll(

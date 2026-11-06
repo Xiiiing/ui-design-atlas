@@ -2,6 +2,65 @@ import { test, expect } from "@playwright/test";
 import { resources, searchResources } from "../catalog.js";
 import { filterResources } from "../atlas/filter-model.js";
 
+test("Visible style categories combine with type and purpose and persist in links", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("#components?lang=en&category=cards");
+  const styles = page.getByRole("group", { name: "Visual style" });
+  const editorial = styles.getByRole("button", { name: "Editorial 2" });
+  const natural = styles.getByRole("button", { name: "Natural 2" });
+  const cards = page.locator("#results .asset-card");
+  await expect(page.locator("#advanced-filters")).toBeHidden();
+  await expect(
+    styles.getByRole("button", { name: "Enterprise 0" }),
+  ).toBeDisabled();
+  await editorial.press("Space");
+  await expect(editorial).toBeFocused();
+  await expect(editorial).toHaveAttribute("aria-pressed", "true");
+  await expect(cards).toHaveCount(2);
+  await expect(cards.first()).toHaveAttribute(
+    "data-resource",
+    "component:folio-card",
+  );
+  await natural.click();
+  await expect(cards).toHaveCount(4);
+  await expect(page).toHaveURL(/category=cards.*visual=editorial%2Cnatural/);
+  await page.reload();
+  await expect(page.locator("#advanced-filters")).toBeHidden();
+  await expect(styles.locator("button[aria-pressed=true]")).toHaveCount(2);
+  await expect(cards).toHaveCount(4);
+  await page.locator("[data-market-mode=explore]").click();
+  await page.goBack();
+  await expect(natural).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Remove Style: Editorial" }).click();
+  await expect(cards).toHaveCount(2);
+  await expect(cards.first()).toHaveAttribute(
+    "data-resource",
+    "component:bloom-card",
+  );
+  await page.getByRole("button", { name: "Clear all" }).click();
+  await expect(
+    styles.getByRole("button", { name: /^All styles/ }),
+  ).toHaveAttribute("aria-pressed", "true");
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await page.goto("#components?lang=zh-CN&category=cards&visual=editorial");
+  await expect(
+    page
+      .getByRole("group", { name: "视觉风格" })
+      .getByRole("button", { name: "编辑式 2" }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(cards).toHaveCount(2);
+  await page.goto("#components?lang=en&visual=constructor");
+  await expect(page.locator(".market-empty")).toBeVisible();
+  await page.getByRole("button", { name: "Remove Style: constructor" }).click();
+  await expect(cards.first()).toBeVisible();
+});
+
 test("Facet combinations, scoped counts, zero options and URL history are coherent", async ({
   page,
 }) => {

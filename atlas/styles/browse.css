@@ -92,13 +92,26 @@
   margin: 16px 0 0;
   min-width: 0;
 }
-.category-facet .category-strip {
+.classification-facet + .classification-facet {
+  margin-top: 10px;
+}
+.classification-facet legend {
+  float: left;
+  width: 6.5rem;
+  padding: 0 12px 0 0;
+  color: var(--muted-text);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 36px;
+}
+.category-facet :is(.category-strip, .classification-options) {
+  display: flex;
   flex-wrap: wrap;
   overflow: visible;
   padding: 0;
   gap: 8px;
 }
-.category-facet .category-strip button {
+.category-facet :is(.category-strip, .classification-options) button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -108,15 +121,25 @@
   background: var(--surface);
   min-height: 36px;
   font-size: 14px;
+  white-space: nowrap;
+  color: var(--muted-text);
 }
-.category-facet .category-strip button[aria-pressed="true"] {
+.category-facet
+  :is(.category-strip, .classification-options)
+  button[aria-pressed="true"] {
   color: var(--panel);
   background: var(--ink);
 }
-.category-facet .category-strip button:not(:disabled):hover {
+.category-facet
+  :is(.category-strip, .classification-options)
+  button:not(:disabled):hover {
   box-shadow: inset 0 0 0 1px var(--line-strong);
 }
-.category-strip button > span {
+.classification-options button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+:is(.category-strip, .classification-options) button > span {
   display: inline-block;
   min-width: 2ch;
   text-align: right;
@@ -125,6 +148,9 @@
   font-size: 12px;
   color: inherit;
   opacity: 0.65;
+}
+.classification-options button > span {
+  min-width: 3ch;
 }
 .collection-shortcuts .text-link {
   justify-content: space-between;
@@ -248,8 +274,23 @@
   .catalog-toolbar .market-search input {
     height: 44px;
   }
-  .category-facet .category-strip button {
+  .classification-facet legend {
+    float: none;
+    width: auto;
+    margin-bottom: 2px;
+    line-height: 20px;
+  }
+  .category-facet .classification-options {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 4px;
+    scrollbar-width: thin;
+  }
+  .category-facet :is(.category-strip, .classification-options) button {
     min-height: 44px;
+  }
+  .classification-options button {
+    flex-shrink: 0;
   }
 }
 
