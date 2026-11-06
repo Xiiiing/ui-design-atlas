@@ -8,6 +8,9 @@
 .library-page .asset-card[data-layout="wide"] {
   grid-column: span 2;
 }
+.library-page :is(.comparison-mixed, .comparison-styles) .asset-card {
+  grid-column: auto;
+}
 .library-page .asset-card .asset-preview {
   width: 100%;
   min-width: 0;

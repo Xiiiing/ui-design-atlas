@@ -757,6 +757,14 @@ document.addEventListener("keydown", (e) => {
   if (isComposing(e)) return;
   handleSearchKeys(e);
   if (
+    e.key === "Escape" &&
+    e.target.closest(".classification-facet, [data-classification]")
+  ) {
+    const toggle = maybe('[data-classification][aria-expanded="true"]');
+    toggle?.click();
+    toggle?.focus();
+  }
+  if (
     e.key === "/" &&
     !/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) &&
     !maybe("dialog[open]")

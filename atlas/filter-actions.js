@@ -1,5 +1,5 @@
 // @ts-check
-import { element, all } from "./dom.js";
+import { element, all, maybe } from "./dom.js";
 import { selections } from "./filter-model.js";
 import { setFieldValue } from "../shell/controls.tsx";
 /** @param {{appState:import('./types').AppState;updateResults:(updateURL?:boolean)=>void;cancelInput:()=>void}} dependencies */
@@ -8,11 +8,28 @@ export function createFilterActions({ appState, updateResults, cancelInput }) {
   return function handleFilterAction(b) {
     if (
       !b.matches(
-        "[data-more],[data-category],[data-visual],[data-remove-filter],[data-advanced-filters],[data-reset-filters]",
+        "[data-more],[data-category],[data-visual],[data-remove-filter],[data-advanced-filters],[data-reset-filters],[data-classification],[data-compare-cards]",
       )
     )
       return false;
+    if (b.hasAttribute("data-classification")) {
+      const open = b.getAttribute("aria-expanded") === "false";
+      for (const toggle of all("[data-classification]")) {
+        const expanded = toggle === b && open;
+        toggle.setAttribute("aria-expanded", String(expanded));
+        element(`#facet-${toggle.dataset.classification}`).hidden = !expanded;
+      }
+      return true;
+    }
     cancelInput();
+    if (b.hasAttribute("data-compare-cards")) {
+      const field = element("input[name=compare]");
+      field.value = field.value ? "" : "cards";
+      maybe('[data-classification][aria-expanded="true"]')?.click();
+      appState.limit = 24;
+      updateResults(true);
+      return true;
+    }
     if (b.hasAttribute("data-more")) {
       appState.limit += 24;
       updateResults(true);
@@ -73,6 +90,7 @@ export function createFilterActions({ appState, updateResults, cancelInput }) {
         element("[name=q]", form).value = "";
         element("[name=category]", form).value = "all";
         element("[name=visual]", form).value = "all";
+        element("input[name=compare]", form).value = "";
         for (const el of form.querySelectorAll("input[type=checkbox]"))
           if (el instanceof HTMLInputElement) el.checked = false;
         for (const el of form.querySelectorAll(

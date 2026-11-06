@@ -19,13 +19,34 @@ test("The root opens the library, with collections in more filters and cases in 
   await expect(page).toHaveURL(/#explore.*q=Fluent/);
 });
 
-test("Search compares like resources in distinct groups and library restores after wide experience", async ({
+test("The mixed catalog restores after a wide experience", async ({
   page,
 }) => {
   await page.goto("#explore?lang=en");
-  await expect(
-    page.locator(".resource-group[data-type=component]"),
-  ).toBeVisible();
+  const cards = page.locator(".comparison-mixed .asset-card");
+  await expect(cards).toHaveCount(24);
+  const firstBatch = await cards.evaluateAll((els) =>
+    els.map((el) => el.dataset.resource),
+  );
+  expect(await cards.locator(".asset-type").allTextContents()).toEqual(
+    expect.arrayContaining(["Component", "Block", "Page", "System"]),
+  );
+  expect(firstBatch.slice(0, 4).map((key) => key.split(":")[0])).toEqual([
+    "component", "block", "page", "case",
+  ]);
+  const row = await cards.evaluateAll((els) =>
+    els.slice(0, 4).map((el) => el.getBoundingClientRect().top),
+  );
+  expect(new Set(row).size).toBe(1);
+  expect(row[0]).toBeLessThan(350);
+  await page.locator("[data-more]").click();
+  await expect(cards).toHaveCount(48);
+  const expanded = await cards.evaluateAll((els) =>
+    els.map((el) => el.dataset.resource),
+  );
+  expect(expanded.slice(0, 24)).toEqual(firstBatch);
+  expect(new Set(expanded).size).toBe(48);
+  await page.evaluate(() => scrollTo(0, 0));
   await page.goto("#discover?lang=en");
   await page
     .locator("#results .asset-caption [data-open]")
@@ -164,10 +185,10 @@ test("Touch library cards show their actual UI and retain readable captions", as
   expect(bounds.descriptionTop).toBeGreaterThanOrEqual(bounds.captionBottom);
 });
 
-test("The library mixes framed card widths and restores loaded results after detail", async ({
+test("Type views mix framed card widths and restore loaded results after detail", async ({
   page,
 }) => {
-  await page.goto("#explore?lang=en");
+  await page.goto("#components?lang=en");
   await expect(page.locator("#results .asset-card")).toHaveCount(24);
   const geometry = await page
     .locator(".comparison-grid")

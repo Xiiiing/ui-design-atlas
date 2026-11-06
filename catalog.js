@@ -78,24 +78,6 @@ export function resourcePreview(r, lang = "zh-CN", theme = "light") {
     return `./component-preview.html?id=${r.id}&lang=${lang}&theme=${theme}`;
   return previewURL(c, r.type === "case" ? c.pages?.[0] || r : r, lang, theme);
 }
-export const resourceCounts = {
-  total: resources.length,
-  motion: 0,
-  byType: new Map(),
-  byCategory: new Map(),
-};
-for (const r of resources) {
-  resourceCounts.byType.set(
-    r.type,
-    (resourceCounts.byType.get(r.type) || 0) + 1,
-  );
-  for (const category of r.categories)
-    resourceCounts.byCategory.set(
-      category,
-      (resourceCounts.byCategory.get(category) || 0) + 1,
-    );
-  if (r.motion) resourceCounts.motion++;
-}
 /** @param {import("./atlas/types").Resource} r */
 export const resourceSearchFields = (r) => ({
   names: r.name,
@@ -113,8 +95,6 @@ export const resourceSearchFields = (r) => ({
   ],
 });
 const searchIndex = createSearchIndex(resources, resourceSearchFields);
-/** @param {import("./atlas/types").Resource} r */
-export const resourceSearch = (r) => searchIndex.get(r)?.text || "";
 /** @param {string} query @param {import("./atlas/types").Resource[]} [items] */
 export const searchResources = (query, items = resources) =>
   rankSearch(items, query, searchIndex);

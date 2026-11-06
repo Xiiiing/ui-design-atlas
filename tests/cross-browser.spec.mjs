@@ -1,4 +1,87 @@
 import { test, expect } from "@playwright/test";
+import { openClassification } from "./navigation.mjs";
+
+test("Phone library keeps both type rows and the first cover in view", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("#explore?lang=zh-CN");
+  await page.evaluate(() => document.fonts.ready);
+  const types = page.locator("[data-market-mode]");
+  const sizes = await types.evaluateAll((links) =>
+    links.map((link) => {
+      const { top, left, right, height } = link.getBoundingClientRect();
+      return { top, left, right, height };
+    }),
+  );
+  expect(sizes).toHaveLength(6);
+  expect(new Set(sizes.slice(0, 3).map(({ top }) => top)).size).toBe(1);
+  expect(new Set(sizes.slice(3).map(({ top }) => top)).size).toBe(1);
+  expect(sizes[3].top).toBeGreaterThan(sizes[0].top);
+  expect(
+    sizes.every(
+      ({ left, right, height }) => left >= 0 && right <= 390 && height >= 44,
+    ),
+  ).toBe(true);
+  expect(
+    (await page.locator(".asset-preview").first().boundingBox()).y,
+  ).toBeLessThan(400);
+  for (const [mode, type] of [
+    ["pages", "page"],
+    ["cases", "case"],
+  ]) {
+    await page.locator(`[data-market-mode=${mode}]`).click();
+    await expect(page).toHaveURL(new RegExp(`#${mode}`));
+    await expect(page.locator(`.resource-group[data-type=${type}]`)).toBeVisible();
+    const keys = await page
+      .locator(".asset-card")
+      .evaluateAll((cards) => cards.map((card) => card.dataset.resource));
+    expect(keys.length).toBeGreaterThan(0);
+    expect(keys.every((key) => key.startsWith(`${type}:`))).toBe(true);
+  }
+});
+
+test("Card comparison opens four distinct styles, respects filters and restores from its URL", async ({
+  page,
+}) => {
+  await page.goto("#explore?lang=en");
+  const toggle = page.getByRole("button", { name: "Compare card styles" });
+  await expect(toggle).toBeHidden();
+  await openClassification(page);
+  await page.locator("[data-category=cards]").press("Space");
+  await toggle.press("Space");
+  await expect(toggle).toHaveAttribute("aria-pressed", "true");
+  await expect(page).toHaveURL(/category=cards/);
+  await expect(page).toHaveURL(/compare=cards/);
+  const comparison = page.locator(".comparison-styles");
+  await expect(comparison.locator(".asset-style")).toHaveText([
+    "Editorial",
+    "Swiss",
+    "Technology",
+    "Natural",
+  ]);
+  await page.reload();
+  await expect(comparison.locator(".asset-card")).toHaveCount(4);
+  await openClassification(page, "visual");
+  await page.locator("[data-visual=editorial]").click();
+  await expect(comparison.locator(".asset-card")).toHaveAttribute(
+    "data-resource",
+    "component:folio-card",
+  );
+  await comparison.locator(".asset-caption [data-details]").click();
+  await expect(page).toHaveURL(/component\/folio-card/);
+  await page.goBack();
+  await expect(toggle).toHaveAttribute("aria-pressed", "true");
+  await expect(comparison.locator(".asset-card")).toHaveCount(1);
+  await toggle.click();
+  await expect(page).not.toHaveURL(/compare=/);
+  await expect(page.locator("[data-remove-filter=visual]")).toBeVisible();
+  await expect(page.locator("#results .asset-card")).not.toHaveCount(1);
+  await toggle.click();
+  await page.locator("[data-remove-filter=category]").click();
+  await expect(toggle).toBeHidden();
+  await expect(page).not.toHaveURL(/compare=/);
+});
 // Runs in all three engines; no clipboard permissions or Chromium-only APIs.
 test("Core filter, navigation, saved state, source and preview workflow", async ({
   page,

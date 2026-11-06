@@ -8,7 +8,7 @@ test("Library mixes compact and double-width previews with consistent metadata",
   for (const lang of ["en", "zh-CN"])
     for (const width of [2560, 1440, 1024, 768, 375]) {
       await page.setViewportSize({ width, height: 1000 });
-      await page.goto(`#discover?lang=${lang}`);
+      await page.goto(`#components?lang=${lang}`);
       const sizes = await page
         .locator(".market-grid")
         .first()

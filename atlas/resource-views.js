@@ -5,7 +5,7 @@ import { replaceShellHTML } from "../shell/controls.tsx";
 import { escapeHTML as esc } from "./html.js";
 import { parseHash } from "./navigation.js";
 import { guidanceForResource } from "../guidance-registry.js";
-import { resourceTags, interactions } from "../resource-tags.js";
+import { resourceTags, interactions, visualStyles } from "../resource-tags.js";
 import { resourcePresentation } from "../presentation.js";
 import { responsiveCovers, coverSrcset } from "../preview-covers.js";
 import {
@@ -109,6 +109,7 @@ export function createResourceViews({
     const params = Object.fromEntries(context.params);
     for (const field of ["panel", "tab", "theme", "page"]) delete params[field];
     params[name] = value;
+    if (params.category !== "cards") delete params.compare;
     return href(
       types[context.view] || context.view === "discover"
         ? "explore"
@@ -167,6 +168,7 @@ export function createResourceViews({
       : "";
     return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${framing.layout}" data-experience="${framing.mode}" ${inline ? 'data-preview-state="idle"' : ""} data-cover-layout="${framing.layout}">
   <div class="asset-preview"><picture>${source}<img data-cover="${esc(r.cover)}" src="${esc(cover)}" alt="${esc(name)}" loading="lazy" decoding="async" width="${framing.width}" height="${framing.height}"></picture>${inline ? `<div class="asset-live" data-live="${key(r)}"></div><button class="asset-cover-link" type="button" data-start-preview><span><span data-preview-label>${t("启动预览", "Start preview")}</span><span class="sr-only"> ${esc(name)}</span></span></button><span class="sr-only" role="status" data-preview-status></span>` : `<a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("打开体验", "Open experience")} ${esc(name)}"><span>${icon("arrow-up-right")}${t("打开体验", "Open experience")}</span></a>`}</div>
+  <span class="asset-type">${labelType(r)}</span><span class="asset-style">${t(...visualStyles[r.styleIds[0]])}</span>
   <div class="asset-caption"><a data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}">${esc(name)}</a><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" title="${esc(libraries[id].name)}">${esc(libraries[id].name)}</span>`).join("")}</span></div>
   <p class="asset-description" id="description-${r.id}" title="${esc(l(r.description))}">${esc(l(r.description))}</p><div class="asset-footer">${tagLinks(r)}
   <div class="asset-actions">${saveButton(r)}<span data-shell-card-menu></span><span hidden data-card-actions><button class="icon-button" data-card-prompt="${key(r)}" aria-label="${t("复制提示词", "Copy prompt")}" title="${t("复制提示词", "Copy prompt")}">${icon("copy")}</button><a class="icon-button" data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}" aria-label="${t("查看详情", "Details")}" title="${t("查看详情", "Details")}">${icon("panel-right")}</a></span></div></div></article>`;

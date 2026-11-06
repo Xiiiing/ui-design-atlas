@@ -1,3 +1,4 @@
+import { openClassification } from "./navigation.mjs";
 import { test, expect } from "@playwright/test";
 
 for (const lang of ["en", "zh-CN"]) {
@@ -14,6 +15,7 @@ for (const lang of ["en", "zh-CN"]) {
     await expect(page.locator("#results .asset-card")).toHaveCount(4);
     await expect(page).toHaveURL(/#explore.*q=Fluent/);
     await page.goto(`#explore?lang=${lang}`);
+    await openClassification(page);
     await page.locator('[data-category=buttons]').focus();
     await page.keyboard.press("Space");
     await expect(page).toHaveURL(/#explore.*category=buttons/);
@@ -23,6 +25,7 @@ for (const lang of ["en", "zh-CN"]) {
     await page.reload();
     await expect(page.locator("[data-category=buttons]")).toHaveAttribute("aria-pressed", "true");
     await expect(page.locator("[data-category=forms]")).toHaveAttribute("aria-pressed", "true");
+    await openClassification(page);
     await page.locator("[data-category=all]").click();
     await expect(page.locator("[data-remove-filter=category]")).toHaveCount(0);
     await page.goto(`#discover?lang=${lang}&category=buttons&library=magicui`);
@@ -38,12 +41,13 @@ test("Collapsed facets retain visible conditions; card menu works with keyboard 
 }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("#explore?lang=en");
-  await expect(page.locator(".category-strip")).toBeVisible();
+  await expect(page.locator(".category-strip")).toBeHidden();
   await expect(page.locator("#advanced-filters")).toBeHidden();
-  await page.locator("[data-advanced-filters]").click();
+  await openClassification(page);
   await page.locator("[data-category=buttons]").click();
-  await page.locator("[data-advanced-filters]").click();
-  await expect(page.locator(".category-strip")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("[data-classification=category]")).toBeFocused();
+  await expect(page.locator(".category-strip")).toBeHidden();
   await expect(page.locator("#advanced-filters")).toBeHidden();
   await expect(page.locator("[data-remove-filter=category]")).toBeVisible();
   const card = page.locator(".asset-card").first();
@@ -114,7 +118,7 @@ for (const width of [1440, 1024, 768, 390]) {
             .evaluateAll((els) =>
               els.map((el) => Math.round(el.getBoundingClientRect().width)),
             );
-          expect(new Set(widths).size).toBe(width > 599 ? 2 : 1);
+          expect(new Set(widths).size).toBe(1);
         }
       }
     }
@@ -198,6 +202,7 @@ test("Touch card menus and independent saved shortcut remain operable", async ({
   await page.goto(
     "http://127.0.0.1:4173/ui-design-atlas/#discover?lang=en",
   );
+  await page.locator('[data-classification=category]').tap();
   await page.locator('[data-category=buttons]').tap();
   await expect(page).toHaveURL(/#explore.*category=buttons/);
   await expect(page.locator("#advanced-filters")).toBeHidden();

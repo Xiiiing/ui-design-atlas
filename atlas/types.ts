@@ -145,6 +145,7 @@ interface DOMSelectors {
   "[name=q]": HTMLInputElement;
   "[name=category]": HTMLInputElement;
   "[name=visual]": HTMLInputElement;
+  "input[name=compare]": HTMLInputElement;
   "#filters [name=q]": HTMLInputElement;
   "#fallback-text": HTMLTextAreaElement;
   "#standalone": HTMLAnchorElement;
