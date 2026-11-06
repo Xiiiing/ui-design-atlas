@@ -9549,5 +9549,333 @@
       "展开式标签导航",
       "Expandable icon tabs"
     ]
+  },
+  {
+    "id": "effect-atlas-pixel-wipe-button",
+    "type": "component",
+    "sourceId": "effect-atlas",
+    "libraryIds": [
+      "effect-atlas"
+    ],
+    "category": "buttons",
+    "categories": [
+      "buttons"
+    ],
+    "interactions": [
+      "hover",
+      "click"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "native"
+    ],
+    "audience": "b2c",
+    "provenance": "source-available",
+    "name": {
+      "zh-CN": "像素擦除按钮",
+      "en": "Pixel Wipe Button"
+    },
+    "description": {
+      "zh-CN": "像素格从左到右填满按钮，离开时再扫回底色。",
+      "en": "A grid of pixels wipes over a button and sweeps the base color back on exit."
+    },
+    "useCases": {
+      "zh-CN": "用于主操作或作品集导航，给低频操作一点触感。",
+      "en": "Give a primary action or portfolio link a tactile response."
+    },
+    "principle": {
+      "zh-CN": "保留稳定的按钮轮廓，像素逐列填充，文字和箭头以独立节奏运动。",
+      "en": "Keep the button silhouette stable while cells sweep in columns and the label and arrow move on their own timing."
+    },
+    "rules": {
+      "zh-CN": [
+        "悬停、键盘聚焦和触摸均有状态反馈；离开时从同一方向扫回底色，而非倒放。缩减动态时直接切换状态。"
+      ],
+      "en": [
+        "Support hover, keyboard focus and touch. Sweep back to the base color in the same direction instead of reversing the animation. With reduced motion, switch state without the sweep."
+      ]
+    },
+    "prompt": {
+      "zh-CN": "复用「像素擦除按钮」的实际原生代码。悬停、键盘聚焦和触摸均有状态反馈；离开时从同一方向扫回底色，而非倒放。缩减动态时直接切换状态。\n\n视觉：保留稳定的按钮轮廓，像素逐列填充，文字和箭头以独立节奏运动。\n\n保留原作者版权和 Effect Atlas License 1.0，不引入框架或在线依赖。",
+      "en": "Reuse the original native implementation of Pixel Wipe Button. Support hover, keyboard focus and touch. Sweep back to the base color in the same direction instead of reversing the animation. With reduced motion, switch state without the sweep.\n\nVisual structure: Keep the button silhouette stable while cells sweep in columns and the label and arrow move on their own timing.\n\nRetain the copyright and Effect Atlas License 1.0. Do not add a framework or network dependency."
+    },
+    "stylePrompt": {
+      "zh-CN": "在现有内容中借鉴「像素擦除按钮」的表现：保留稳定的按钮轮廓，像素逐列填充，文字和箭头以独立节奏运动。 保留业务结构，只迁移动效节奏、对齐方式和视觉反馈。",
+      "en": "Apply the visual treatment of Pixel Wipe Button to existing content: Keep the button silhouette stable while cells sweep in columns and the label and arrow move on their own timing. Preserve the existing workflow and transfer only the motion timing, alignment and feedback."
+    },
+    "cover": "./assets/previews/component-effect-atlas-pixel-wipe-button.png",
+    "preview": {
+      "width": 640,
+      "height": 560,
+      "mode": "inline",
+      "url": "./examples/ui-market/effect-atlas/pixel-wipe-button/index.html"
+    },
+    "codeFormat": "static",
+    "files": [
+      "public/effect-atlas/pixel-wipe-button/index.html",
+      "public/effect-atlas/pixel-wipe-button/effect.js",
+      "public/effect-atlas/pixel-wipe-button/effect.css"
+    ],
+    "supportFiles": [
+      "licenses/effect-atlas-LICENSE",
+      "public/effect-atlas/preview.css",
+      "public/effect-atlas/preview.js"
+    ],
+    "originalUrl": "https://effectatlas.com/effects/pixel-wipe-button",
+    "sourceUrl": "https://github.com/effect-atlas/effect-atlas/blob/c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84/effects/pixel-wipe-button/effect.js"
+  },
+  {
+    "id": "effect-atlas-crosshair-image-reveal",
+    "type": "component",
+    "sourceId": "effect-atlas",
+    "libraryIds": [
+      "effect-atlas"
+    ],
+    "category": "cards",
+    "categories": [
+      "cards"
+    ],
+    "interactions": [
+      "drag",
+      "scroll"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "native"
+    ],
+    "audience": "b2c",
+    "provenance": "source-available",
+    "name": {
+      "zh-CN": "十字线揭图",
+      "en": "Crosshair Image Reveal"
+    },
+    "description": {
+      "zh-CN": "拖动蓝色交点、滚动或按方向键，让图像从角落展开。",
+      "en": "Drag the blue point, scroll or use arrow keys to reveal an image from its corner."
+    },
+    "useCases": {
+      "zh-CN": "适合产品摄影、案例图片与画廊封面。",
+      "en": "Use for product photography, case-study imagery and gallery covers."
+    },
+    "principle": {
+      "zh-CN": "横竖辅助线与蓝色交点标出剪裁角；显示范围与图像比例同时随进度变化。",
+      "en": "Guides and a blue point identify the clipping corner. The visible area and image scale follow the same progress value."
+    },
+    "rules": {
+      "zh-CN": [
+        "使用同一个进度驱动拖拽、滚轮与键盘。Home 和 End 直达两端；缩减动态时默认展开，仍允许手动移动。"
+      ],
+      "en": [
+        "Drive drag, wheel and keys with one progress value. Home and End select the endpoints. Show the full image by default with reduced motion and keep manual control."
+      ]
+    },
+    "prompt": {
+      "zh-CN": "复用「十字线揭图」的实际原生代码。使用同一个进度驱动拖拽、滚轮与键盘。Home 和 End 直达两端；缩减动态时默认展开，仍允许手动移动。\n\n视觉：横竖辅助线与蓝色交点标出剪裁角；显示范围与图像比例同时随进度变化。\n\n保留原作者版权和 Effect Atlas License 1.0，不引入框架或在线依赖。",
+      "en": "Reuse the original native implementation of Crosshair Image Reveal. Drive drag, wheel and keys with one progress value. Home and End select the endpoints. Show the full image by default with reduced motion and keep manual control.\n\nVisual structure: Guides and a blue point identify the clipping corner. The visible area and image scale follow the same progress value.\n\nRetain the copyright and Effect Atlas License 1.0. Do not add a framework or network dependency."
+    },
+    "stylePrompt": {
+      "zh-CN": "在现有内容中借鉴「十字线揭图」的表现：横竖辅助线与蓝色交点标出剪裁角；显示范围与图像比例同时随进度变化。 保留业务结构，只迁移动效节奏、对齐方式和视觉反馈。",
+      "en": "Apply the visual treatment of Crosshair Image Reveal to existing content: Guides and a blue point identify the clipping corner. The visible area and image scale follow the same progress value. Preserve the existing workflow and transfer only the motion timing, alignment and feedback."
+    },
+    "cover": "./assets/previews/component-effect-atlas-crosshair-image-reveal.png",
+    "preview": {
+      "width": 900,
+      "height": 560,
+      "mode": "canvas",
+      "url": "./examples/ui-market/effect-atlas/crosshair-image-reveal/index.html"
+    },
+    "codeFormat": "static",
+    "files": [
+      "public/effect-atlas/crosshair-image-reveal/index.html",
+      "public/effect-atlas/crosshair-image-reveal/effect.js",
+      "public/effect-atlas/crosshair-image-reveal/effect.css"
+    ],
+    "supportFiles": [
+      "licenses/effect-atlas-LICENSE",
+      "public/effect-atlas/preview.css",
+      "public/effect-atlas/preview.js"
+    ],
+    "originalUrl": "https://effectatlas.com/effects/crosshair-image-reveal",
+    "sourceUrl": "https://github.com/effect-atlas/effect-atlas/blob/c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84/effects/crosshair-image-reveal/effect.js"
+  },
+  {
+    "id": "effect-atlas-shared-element-transition",
+    "type": "component",
+    "sourceId": "effect-atlas",
+    "libraryIds": [
+      "effect-atlas"
+    ],
+    "category": "cards",
+    "categories": [
+      "cards"
+    ],
+    "interactions": [
+      "click"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "native"
+    ],
+    "audience": "b2c",
+    "provenance": "source-available",
+    "name": {
+      "zh-CN": "共享元素转场",
+      "en": "Shared Element Transition"
+    },
+    "description": {
+      "zh-CN": "选择缩略图把它放大成详情，再从原位置缩回。",
+      "en": "Open a tile into a detail view, then return it to its original position."
+    },
+    "useCases": {
+      "zh-CN": "适合项目缩略图、图片详情和轻量目录。",
+      "en": "Use for project thumbnails, image details and compact indexes."
+    },
+    "principle": {
+      "zh-CN": "同一张图形跨过列表和详情两种布局；过渡中补偿非等比缩放造成的圆角与图标变形。",
+      "en": "Carry the same artwork between layouts and compensate for nonuniform scaling so corners and icons retain their shape."
+    },
+    "rules": {
+      "zh-CN": [
+        "用点击、Enter 或空格打开或收回选中的缩略图。列表和详情共享图形，减少动态效果时直接切换。"
+      ],
+      "en": [
+        "Use click, Enter or Space to open or close the selected tile. Reuse the same artwork across states and switch directly with reduced motion."
+      ]
+    },
+    "prompt": {
+      "zh-CN": "复用「共享元素转场」的实际原生代码。用点击、Enter 或空格打开或收回选中的缩略图。列表和详情共享图形，减少动态效果时直接切换。\n\n视觉：同一张图形跨过列表和详情两种布局；过渡中补偿非等比缩放造成的圆角与图标变形。\n\n保留原作者版权和 Effect Atlas License 1.0，不引入框架或在线依赖。",
+      "en": "Reuse the original native implementation of Shared Element Transition. Use click, Enter or Space to open or close the selected tile. Reuse the same artwork across states and switch directly with reduced motion.\n\nVisual structure: Carry the same artwork between layouts and compensate for nonuniform scaling so corners and icons retain their shape.\n\nRetain the copyright and Effect Atlas License 1.0. Do not add a framework or network dependency."
+    },
+    "stylePrompt": {
+      "zh-CN": "在现有内容中借鉴「共享元素转场」的表现：同一张图形跨过列表和详情两种布局；过渡中补偿非等比缩放造成的圆角与图标变形。 保留业务结构，只迁移动效节奏、对齐方式和视觉反馈。",
+      "en": "Apply the visual treatment of Shared Element Transition to existing content: Carry the same artwork between layouts and compensate for nonuniform scaling so corners and icons retain their shape. Preserve the existing workflow and transfer only the motion timing, alignment and feedback."
+    },
+    "cover": "./assets/previews/component-effect-atlas-shared-element-transition.png",
+    "preview": {
+      "width": 900,
+      "height": 560,
+      "mode": "canvas",
+      "url": "./examples/ui-market/effect-atlas/shared-element-transition/index.html"
+    },
+    "codeFormat": "static",
+    "files": [
+      "public/effect-atlas/shared-element-transition/index.html",
+      "public/effect-atlas/shared-element-transition/effect.js",
+      "public/effect-atlas/shared-element-transition/effect.css"
+    ],
+    "supportFiles": [
+      "licenses/effect-atlas-LICENSE",
+      "public/effect-atlas/preview.css",
+      "public/effect-atlas/preview.js"
+    ],
+    "originalUrl": "https://effectatlas.com/effects/shared-element-transition",
+    "sourceUrl": "https://github.com/effect-atlas/effect-atlas/blob/c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84/effects/shared-element-transition/effect.js"
+  },
+  {
+    "id": "effect-atlas-scroll-minimap",
+    "type": "component",
+    "sourceId": "effect-atlas",
+    "libraryIds": [
+      "effect-atlas"
+    ],
+    "category": "navigation",
+    "categories": [
+      "navigation"
+    ],
+    "interactions": [
+      "scroll",
+      "click",
+      "drag"
+    ],
+    "motion": true,
+    "styleId": "motion-neutral",
+    "style": {
+      "zh-CN": "中性动效",
+      "en": "Neutral motion"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "native"
+    ],
+    "audience": "b2c",
+    "provenance": "source-available",
+    "name": {
+      "zh-CN": "滚动小地图",
+      "en": "Scroll Minimap"
+    },
+    "description": {
+      "zh-CN": "滚动正文时框选当前视窗，也能从缩略地图跳到章节。",
+      "en": "The map marks the visible part of the page and lets readers jump to sections."
+    },
+    "useCases": {
+      "zh-CN": "适合长篇案例、文档和具有多个章节的作品集。",
+      "en": "Use for long case studies, documentation and sectioned portfolios."
+    },
+    "principle": {
+      "zh-CN": "地图沿用正文的真实章节比例，描边框把局部阅读位置放回全文结构中。",
+      "en": "The map uses the same section proportions as the page. An outlined frame places the current reading position in context."
+    },
+    "rules": {
+      "zh-CN": [
+        "在示例正文中滚动、拖动地图或激活章节按钮；章节按钮可用键盘。避免用独立动画模拟正文位置，减少动态时直接定位。"
+      ],
+      "en": [
+        "Scroll the sample, drag the map or activate a section button with the pointer or keyboard. Map the actual reading position and jump immediately with reduced motion."
+      ]
+    },
+    "prompt": {
+      "zh-CN": "复用「滚动小地图」的实际原生代码。在示例正文中滚动、拖动地图或激活章节按钮；章节按钮可用键盘。避免用独立动画模拟正文位置，减少动态时直接定位。\n\n视觉：地图沿用正文的真实章节比例，描边框把局部阅读位置放回全文结构中。\n\n保留原作者版权和 Effect Atlas License 1.0，不引入框架或在线依赖。",
+      "en": "Reuse the original native implementation of Scroll Minimap. Scroll the sample, drag the map or activate a section button with the pointer or keyboard. Map the actual reading position and jump immediately with reduced motion.\n\nVisual structure: The map uses the same section proportions as the page. An outlined frame places the current reading position in context.\n\nRetain the copyright and Effect Atlas License 1.0. Do not add a framework or network dependency."
+    },
+    "stylePrompt": {
+      "zh-CN": "在现有内容中借鉴「滚动小地图」的表现：地图沿用正文的真实章节比例，描边框把局部阅读位置放回全文结构中。 保留业务结构，只迁移动效节奏、对齐方式和视觉反馈。",
+      "en": "Apply the visual treatment of Scroll Minimap to existing content: The map uses the same section proportions as the page. An outlined frame places the current reading position in context. Preserve the existing workflow and transfer only the motion timing, alignment and feedback."
+    },
+    "cover": "./assets/previews/component-effect-atlas-scroll-minimap.png",
+    "preview": {
+      "width": 900,
+      "height": 560,
+      "mode": "canvas",
+      "url": "./examples/ui-market/effect-atlas/scroll-minimap/index.html"
+    },
+    "codeFormat": "static",
+    "files": [
+      "public/effect-atlas/scroll-minimap/index.html",
+      "public/effect-atlas/scroll-minimap/effect.js",
+      "public/effect-atlas/scroll-minimap/effect.css"
+    ],
+    "supportFiles": [
+      "licenses/effect-atlas-LICENSE",
+      "public/effect-atlas/preview.css",
+      "public/effect-atlas/preview.js"
+    ],
+    "originalUrl": "https://effectatlas.com/effects/scroll-minimap",
+    "sourceUrl": "https://github.com/effect-atlas/effect-atlas/blob/c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84/effects/scroll-minimap/effect.js"
   }
 ]

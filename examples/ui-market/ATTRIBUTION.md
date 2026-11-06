@@ -88,3 +88,14 @@ licenses are retained in `licenses/` and the delivered source bundles.
 HeroUI Pro and beUI Pro were evaluated visually but their proprietary source was
 not imported or reconstructed. The selection and exclusions are documented in
 `../../docs/content/ui-intake.md` in the repository.
+
+## Effect Atlas
+
+The four static examples under `public/effect-atlas/` use the original CSS
+and JavaScript from [Effect Atlas](https://github.com/effect-atlas/effect-atlas)
+at `c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84`: Pixel Wipe Button, Crosshair
+Image Reveal, Shared Element Transition and Scroll Minimap. Copyright (c) 2026
+PROJECT Y/O. [Effect Atlas License 1.0](licenses/effect-atlas-LICENSE) applies
+to these effects and remains included in each downloadable sample. This is a
+selected set of demos; the remaining catalogue, third-party dependencies and
+site assets are not redistributed. Atlas provides the preview host and covers.

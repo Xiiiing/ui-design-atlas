@@ -135,6 +135,10 @@
     "open-source": [
       "开源收录",
       "Open source"
+    ],
+    "source-available": [
+      "源码可见",
+      "Source available"
     ]
   }
 }

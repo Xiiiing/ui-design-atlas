@@ -134,7 +134,7 @@ export async function generateDelivery(root, out) {
   for (const file of marketDelivery) {
     const rel = path.relative(market, file).split(path.sep).join("/");
     if (
-      /\.(tsx?|css|json|md|html|svg)$/.test(rel) ||
+      /\.(tsx?|js|css|json|md|html|svg)$/.test(rel) ||
       rel === "LICENSE" ||
       rel.startsWith("licenses/")
     )
@@ -229,12 +229,11 @@ export async function generateDelivery(root, out) {
     zip.pipe(destination);
     for (const [name, content] of Object.entries(manifest.files))
       zip.append(content, { name: `${slug}/${name}` });
-    zip.append(
-      project === "shadcn-admin" ? noticeText : marketNotices.join(""),
-      {
-        name: `${slug}/THIRD_PARTY_NOTICES.md`,
-      },
-    );
+    if (manifest.project !== "static")
+      zip.append(
+        project === "shadcn-admin" ? noticeText : marketNotices.join(""),
+        { name: `${slug}/THIRD_PARTY_NOTICES.md` },
+      );
     await zip.finalize();
     await finished;
   }

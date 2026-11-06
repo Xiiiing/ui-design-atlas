@@ -116,5 +116,15 @@
     "commit": "b0171095227a67c40e627271a1e0ae67cdc2ed21",
     "license": "MIT",
     "licenseFile": "./examples/ui-market/licenses/watermelon-ui-LICENSE"
+  },
+  "effect-atlas": {
+    "id": "effect-atlas",
+    "name": "Effect Atlas",
+    "author": "PROJECT Y/O",
+    "repo": "https://github.com/effect-atlas/effect-atlas",
+    "docs": "https://effectatlas.com",
+    "commit": "c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84",
+    "license": "Effect Atlas License 1.0",
+    "licenseFile": "./examples/ui-market/licenses/effect-atlas-LICENSE"
   }
 }

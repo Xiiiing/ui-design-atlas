@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { cases, pages, components, resources } from "../catalog.js";
+import { cases, pages, components, resources, resourcePreview } from "../catalog.js";
 const example = (path = "/", lang = "en", extra = "") =>
   `examples/shadcn-admin/index.html?lang=${lang}${extra}#${path}`;
 function watch(page) {
@@ -575,7 +575,11 @@ test("Independent upstream resources load locally with source, prompts and reduc
       : route.abort(),
   );
   for (const r of independent) {
-    await page.goto(`examples/ui-market/index.html?item=${r.id}&lang=en`);
+    await page.goto(resourcePreview(r, "en"));
+    if (r.codeFormat === "static") {
+      await expect(page.locator("#stage .fx-board")).toBeVisible();
+      continue;
+    }
     await expect(page.locator(".demo-surface")).not.toContainText(
       "Loading preview…",
     );
@@ -671,22 +675,28 @@ for (const lang of ["en", "zh-CN"])
     const independent = resources.filter((r) => r.preview.url);
     async function check(r, width, theme) {
       await page.setViewportSize({ width, height: 900 });
-      await page.goto(
-        `examples/ui-market/index.html?item=${r.id}&lang=${lang}&theme=${theme}`,
-      );
-      await expect(page.locator(".demo-surface")).not.toContainText(
-        /Loading preview|正在加载演示/,
-      );
-      await expect(page.locator(".demo-surface [role=alert]")).toHaveCount(0);
-      await noOverflow(page);
+      await page.goto(resourcePreview(r, lang, theme));
+      if (r.codeFormat === "static") {
+        await expect(page.locator("#stage .fx-board")).toBeVisible();
+        await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+      } else {
+        await expect(page.locator(".demo-surface")).not.toContainText(
+          /Loading preview|正在加载演示/,
+        );
+        await expect(page.locator(".demo-surface [role=alert]")).toHaveCount(0);
+        await expect
+          .poll(() =>
+            page.locator("html").evaluate((el) => el.classList.contains("dark")),
+          )
+          .toBe(theme === "dark");
+      }
       await expect(page.locator("html")).toHaveAttribute("lang", lang);
-      await expect
-        .poll(() =>
-          page.locator("html").evaluate((el) => el.classList.contains("dark")),
-        )
-        .toBe(theme === "dark");
+      await noOverflow(page);
     }
-    for (const r of independent) await check(r, 1440, "light");
+    for (const r of independent) {
+      await check(r, 1440, "light");
+      if (r.codeFormat === "static") await check(r, 375, "dark");
+    }
     for (const id of [
       "magicui-border-beam",
       "magicui-dock",

@@ -678,6 +678,59 @@
           "sha256": "53acf7b74b1e84b858c3340dbc2bcb809491eea857986132873041166ffcdfe0"
         }
       ]
+    },
+    "effect-atlas": {
+      "repo": "https://github.com/effect-atlas/effect-atlas",
+      "commit": "c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84",
+      "license": "Effect Atlas License 1.0",
+      "sourceRoot": "effects",
+      "files": [
+        {
+          "upstream": "LICENSE",
+          "original": "licenses/effect-atlas-LICENSE",
+          "sha256": "9064484f11592e83aae744db7cd298f84076754dfa24fb1f04c56b51f94435e4"
+        },
+        {
+          "upstream": "effects/pixel-wipe-button/effect.js",
+          "original": "public/effect-atlas/pixel-wipe-button/effect.js",
+          "sha256": "0596316e0c0403e036df11078b467c47160147be6f30be1a17ab0da43dbc475e"
+        },
+        {
+          "upstream": "effects/pixel-wipe-button/effect.css",
+          "original": "public/effect-atlas/pixel-wipe-button/effect.css",
+          "sha256": "dddc6c1a2593daf822143c37c2e8d5a23d7e3054f3578c3fe69c323107964613"
+        },
+        {
+          "upstream": "effects/crosshair-image-reveal/effect.js",
+          "original": "public/effect-atlas/crosshair-image-reveal/effect.js",
+          "sha256": "79fb33fc9983a3f1314147de9fe0ab910b0e531d79d8f85a551591f324f674f3"
+        },
+        {
+          "upstream": "effects/crosshair-image-reveal/effect.css",
+          "original": "public/effect-atlas/crosshair-image-reveal/effect.css",
+          "sha256": "4f1417f2ff13bc5494c3e5fcde7ff10da7bfeb44a680d0c810728afbd7c6b554"
+        },
+        {
+          "upstream": "effects/shared-element-transition/effect.js",
+          "original": "public/effect-atlas/shared-element-transition/effect.js",
+          "sha256": "dabcc683782d594e7aac3debf78288abbfffbd88967ef6eb93a77a8ddacdb68f"
+        },
+        {
+          "upstream": "effects/shared-element-transition/effect.css",
+          "original": "public/effect-atlas/shared-element-transition/effect.css",
+          "sha256": "b3051951f1f2d214cbb38e1e930cf6c0b0acc50a85b358d1ef690496fc16e576"
+        },
+        {
+          "upstream": "effects/scroll-minimap/effect.js",
+          "original": "public/effect-atlas/scroll-minimap/effect.js",
+          "sha256": "49ca72c2f2b03aca2c9954a0c28a16f9de13cdd091e0a76a085b7f414a2e9886"
+        },
+        {
+          "upstream": "effects/scroll-minimap/effect.css",
+          "original": "public/effect-atlas/scroll-minimap/effect.css",
+          "sha256": "da93cba610f48bdad8f31afecc99082070f520f4488ecfeadbf395852e605cd4"
+        }
+      ]
     }
   },
   "foundation": {

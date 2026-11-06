@@ -42,6 +42,32 @@ export function imports(file, content) {
 }
 
 export function resourceCode(resource, allFiles, project) {
+  if (resource.codeFormat === "static") {
+    const entryFiles = [resource.files[0]];
+    const files = {};
+    for (const file of [...resource.files, ...(resource.supportFiles || [])]) {
+      if (!Object.hasOwn(allFiles, file))
+        throw Error(`Missing static resource file: ${resource.id} -> ${file}`);
+      files[file] = allFiles[file];
+    }
+    const instructions = {
+      "zh-CN": [
+        `解压后直接打开 ${entryFiles[0]}。无需安装依赖；可在地址后添加 ?lang=zh-CN&theme=dark 切换语言和主题。保留相对目录与随附许可。`,
+      ],
+      en: [
+        `Extract and open ${entryFiles[0]} directly. No installation is needed. Add ?lang=zh-CN&theme=dark to select Chinese and dark mode. Preserve the relative paths and included license.`,
+      ],
+    };
+    files["ATLAS-REUSE.md"] =
+      `# ${resource.name["zh-CN"]} / ${resource.name.en}\n\n${instructions["zh-CN"][0]}\n\n${instructions.en[0]}\n\nSource: ${resource.sourceUrl}\n`;
+    return {
+      resourceId: resource.id,
+      project: "static",
+      entryFiles,
+      instructions,
+      files,
+    };
+  }
   const entryFiles = resource.files?.length ? resource.files : ["src/main.tsx"];
   const styleFiles = ["src/styles/index.css"];
   const contextFiles =

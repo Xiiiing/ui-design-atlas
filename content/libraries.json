@@ -115,5 +115,14 @@
       "watermelon-ui",
       "React"
     ]
+  },
+  "effect-atlas": {
+    "id": "effect-atlas",
+    "name": "Effect Atlas",
+    "version": "c0f2b5a",
+    "docs": "https://effectatlas.com",
+    "aliases": [
+      "effect-atlas"
+    ]
   }
 }

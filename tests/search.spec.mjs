@@ -35,7 +35,16 @@ test("List and keyboard search rank exact names first and preserve filters and h
   await page.locator("[name=q]").fill("no-such-resource");
   await expect(page.locator(".market-empty")).toBeVisible();
   await page.locator(".market-empty [data-reset-filters]").click();
-  await expect(page.locator("#results .asset-card")).toHaveCount(
-    resources.filter((r) => r.motion).length,
-  );
+  const cards = page.locator("#results .asset-card");
+  const total = resources.filter((r) => r.motion).length;
+  await expect(cards.first()).toBeVisible();
+  for (
+    let visible = await cards.count();
+    visible < total;
+    visible = await cards.count()
+  ) {
+    await page.getByRole("button", { name: "Explore more" }).click();
+    await expect.poll(() => cards.count()).toBeGreaterThan(visible);
+  }
+  await expect(cards).toHaveCount(total);
 });

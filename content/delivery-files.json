@@ -392,7 +392,22 @@
     "src/vendor/watermelon-ui/frequency-selector.tsx",
     "src/vite-env.d.ts",
     "tsconfig.json",
-    "vite.config.ts"
+    "vite.config.ts",
+    "licenses/effect-atlas-LICENSE",
+    "public/effect-atlas/preview.css",
+    "public/effect-atlas/preview.js",
+    "public/effect-atlas/pixel-wipe-button/index.html",
+    "public/effect-atlas/pixel-wipe-button/effect.js",
+    "public/effect-atlas/pixel-wipe-button/effect.css",
+    "public/effect-atlas/crosshair-image-reveal/index.html",
+    "public/effect-atlas/crosshair-image-reveal/effect.js",
+    "public/effect-atlas/crosshair-image-reveal/effect.css",
+    "public/effect-atlas/shared-element-transition/index.html",
+    "public/effect-atlas/shared-element-transition/effect.js",
+    "public/effect-atlas/shared-element-transition/effect.css",
+    "public/effect-atlas/scroll-minimap/index.html",
+    "public/effect-atlas/scroll-minimap/effect.js",
+    "public/effect-atlas/scroll-minimap/effect.css"
   ],
   "original": [
     "preview.html",

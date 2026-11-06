@@ -98,6 +98,23 @@
         "watermelon-frequency-selector",
         "beui-expandable-tabs"
       ]
+    },
+    {
+      "id": "effect-atlas-motion",
+      "name": {
+        "zh-CN": "Effect Atlas 动效精选",
+        "en": "Effect Atlas motion selection"
+      },
+      "description": {
+        "zh-CN": "从按钮反馈到滚动、揭示和转场。",
+        "en": "From button feedback to scrolling, reveals and transitions."
+      },
+      "resources": [
+        "effect-atlas-pixel-wipe-button",
+        "effect-atlas-crosshair-image-reveal",
+        "effect-atlas-shared-element-transition",
+        "effect-atlas-scroll-minimap"
+      ]
     }
   ],
   "cases": [
@@ -125,7 +142,11 @@
     "magicui-text-animate",
     "fluent-toast",
     "antd-form",
-    "fluent-toolbar"
+    "fluent-toolbar",
+    "effect-atlas-pixel-wipe-button",
+    "effect-atlas-crosshair-image-reveal",
+    "effect-atlas-shared-element-transition",
+    "effect-atlas-scroll-minimap"
   ],
   "previewThemes": {
     "magicui-magic-card": "dark",
