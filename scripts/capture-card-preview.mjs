@@ -57,6 +57,7 @@ try {
     const before = await geometry();
     if (width !== 375) {
       await card.hover();
+      await card.locator("[data-start-preview]").click();
       await expect(card).toHaveClass(/is-live/);
       // iframe load precedes React's lazy demo chunk. Capture the actual
       // archived UI after Suspense resolves rather than its loading fallback.
@@ -135,6 +136,7 @@ try {
     '[data-resource="component:magicui-shimmer-button"]',
   );
   await card.hover();
+  await card.locator("[data-start-preview]").click();
   await expect(card).toHaveClass(/is-live/);
   await page.waitForTimeout(650);
   await page.mouse.move(0, 0);

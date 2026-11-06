@@ -5,13 +5,15 @@ import { inlinePreviewURL } from "./presentation.js";
 // Only frames owned by this controller may report readiness. The detail viewer
 // has its own channel; card messages never change its resource, locale or theme.
 /** @typedef {{frame:HTMLIFrameElement;id:string;timeout:ReturnType<typeof setTimeout>|undefined}} Entry */
-/** @param {{resource:(card:HTMLElement)=>import('./atlas/types').Resource|undefined;url:(resource:import('./atlas/types').Resource)=>string;label:(resource:import('./atlas/types').Resource)=>string;loading:()=>string;failure:()=>string;config:()=>{locale:string;theme:string}}} options */
+/** @param {{resource:(card:HTMLElement)=>import('./atlas/types').Resource|undefined;url:(resource:import('./atlas/types').Resource)=>string;label:(resource:import('./atlas/types').Resource)=>string;start:()=>string;loading:()=>string;failure:()=>string;retry:()=>string;config:()=>{locale:string;theme:string}}} options */
 export function createLiveCards({
   resource,
   url,
   label,
   loading,
   failure,
+  start,
+  retry,
   config,
 }) {
   /** @type {Map<HTMLElement,Entry>} */
@@ -20,8 +22,7 @@ export function createLiveCards({
   const visible = new Set();
   /** @type {Set<HTMLElement>} */
   const observed = new Set();
-  /** @type {HTMLElement|null|undefined} */
-  let preferred;
+
   /** @param {Entry} entry */
   function configure(entry) {
     entry.frame.contentWindow?.postMessage(
@@ -31,6 +32,16 @@ export function createLiveCards({
   }
   /** @param {Entry} entry */
   const focused = (entry) => document.activeElement === entry.frame;
+  /** @param {HTMLElement} card @param {"idle"|"loading"|"error"|"ready"} state */
+  function setState(card, state) {
+    const trigger = element("[data-start-preview]", card);
+    card.dataset.previewState = state;
+    trigger.setAttribute("aria-disabled", String(state === "loading"));
+    element("[data-preview-label]", trigger).textContent =
+      state === "loading" ? loading() : state === "error" ? retry() : start();
+    element("[data-preview-status]", card).textContent =
+      state === "error" ? failure() : "";
+  }
   /** @param {HTMLElement} card */
   function release(card) {
     const entry = frames.get(card);
@@ -39,19 +50,17 @@ export function createLiveCards({
     entry.frame.remove();
     frames.delete(card);
     card.classList.remove("is-live");
-    card.dataset.previewState = "idle";
+    setState(card, "idle");
   }
   /** @param {HTMLElement} card @param {Entry} entry */
   function fail(card, entry) {
     if (frames.get(card) !== entry) return;
     release(card);
-    card.dataset.previewState = "error";
-    element(".preview-state span", card).textContent = failure();
-    element("[data-retry-preview]", card).hidden = false;
+    setState(card, "error");
   }
   /** @param {HTMLElement} card */
   function mount(card) {
-    if (frames.has(card) || card.dataset.previewState === "error") return;
+    if (frames.has(card)) return;
     const r = resource(card),
       frame = document.createElement("iframe");
     if (!r) return;
@@ -59,9 +68,7 @@ export function createLiveCards({
     frame.src = inlinePreviewURL(url(r));
     frame.allow = "clipboard-write";
     frame.dataset.resource = r.id;
-    card.dataset.previewState = "loading";
-    element(".preview-state span", card).textContent = loading();
-    element("[data-retry-preview]", card).hidden = true;
+    setState(card, "loading");
     /** @type {Entry} */
     const entry = { frame, id: r.id, timeout: undefined };
     frames.set(card, entry);
@@ -83,19 +90,6 @@ export function createLiveCards({
     for (const [card, entry] of frames)
       if (!card.isConnected || (!visible.has(card) && !focused(entry)))
         release(card);
-    const wanted = [...visible].filter((card) => card.isConnected);
-    wanted.sort((a, b) => Number(b === preferred) - Number(a === preferred));
-    for (const card of wanted) {
-      if (frames.has(card) || card.dataset.previewState === "error") continue;
-      if (frames.size >= 8 && card === preferred) {
-        const victim = [...frames].find(
-          ([other, entry]) => other !== preferred && !focused(entry),
-        );
-        if (victim) release(victim[0]);
-      }
-      if (frames.size >= 8) break;
-      mount(card);
-    }
   }
   const observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {
@@ -115,19 +109,14 @@ export function createLiveCards({
         continue;
       if (event.data.type === "atlas:inline-ready") {
         clearTimeout(entry.timeout);
-        card.dataset.previewState = "ready";
+        const moveFocus =
+          document.activeElement === element("[data-start-preview]", card);
+        setState(card, "ready");
         card.classList.add("is-live");
+        if (moveFocus) entry.frame.focus();
         configure(entry);
       } else if (event.data.type === "atlas:inline-error") fail(card, entry);
       break;
-    }
-  });
-  document.addEventListener("pointerover", (event) => {
-    if (!(event.target instanceof Element)) return;
-    const card = event.target.closest('.asset-card[data-experience="inline"]');
-    if (card instanceof HTMLElement && card !== preferred) {
-      preferred = card;
-      reconcile();
     }
   });
   document.addEventListener("focusin", reconcile);
@@ -157,17 +146,24 @@ export function createLiveCards({
       observer.disconnect();
       observed.clear();
       visible.clear();
-      preferred = null;
       for (const card of frames.keys()) release(card);
     },
     /** @param {Element|null} card */
-    retry(card) {
-      if (!(card instanceof HTMLElement)) return;
-      release(card);
-      card.dataset.previewState = "idle";
-      preferred = card;
+    activate(card) {
+      if (
+        !(card instanceof HTMLElement) ||
+        !observed.has(card) ||
+        frames.has(card)
+      )
+        return;
+      if (frames.size >= 8) {
+        const victim = [...frames].find(([, entry]) => !focused(entry));
+        if (!victim) return;
+        release(victim[0]);
+      }
+      // The observer may not have reported the card yet if it was just rendered.
       visible.add(card);
-      reconcile();
+      mount(card);
     },
   };
 }

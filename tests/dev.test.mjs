@@ -134,6 +134,7 @@ test(
       const card = page.locator(
         '[data-resource="component:magicui-border-beam"]',
       );
+      await card.locator("[data-start-preview]").click();
       await expect(card).toHaveAttribute("data-preview-state", "ready", {
         timeout: 30000,
       });
@@ -164,6 +165,7 @@ test(
       );
       await expect(page).toHaveTitle(/Atlas development marker/);
       assert.equal(await page.evaluate(() => window.devIdentity), undefined);
+      await card.locator("[data-start-preview]").click();
       await expect(card).toHaveAttribute("data-preview-state", "ready");
       const frame = card.frameLocator("iframe");
       assert.equal(
@@ -354,6 +356,7 @@ test(
       await guidancePage.close();
       // A deliberate invalid catalog can reject shell registry imports; wait for recovery.
       await page.goto(base + "#components?lang=en&q=border%20beam");
+      await card.locator("[data-start-preview]").click();
       await expect(card).toHaveAttribute("data-preview-state", "ready");
       errors.length = 0;
 
@@ -494,6 +497,7 @@ test(
       errors.length = 0;
       // Restore the live demo used below after catalog invalidation/recovery.
       await page.goto(base + "#components?lang=en&q=Catalog%20hot%20name");
+      await card.locator("[data-start-preview]").click();
       await expect(card).toHaveAttribute("data-preview-state", "ready");
 
       const admin = await browser.newPage();

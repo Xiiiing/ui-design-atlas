@@ -166,6 +166,18 @@ for (const r of resources.filter((r) => !r.caseId && r.type !== "case")) {
   for (const file of [...r.files, ...r.supportFiles])
     await access(new URL("examples/ui-market/" + file, base));
 }
+const { responsiveCovers, coverWidths, coverThumbnail } =
+  await import("../preview-covers.js");
+for (const cover of responsiveCovers) {
+  assert.ok(
+    resources.some((r) => r.cover === cover),
+    `Unknown cover: ${cover}`,
+  );
+  if (!process.argv.includes("--capture-previews"))
+    for (const png of [cover, cover.replace(/\.png$/, "-dark.png")])
+      for (const width of coverWidths)
+        await access(new URL(coverThumbnail(png, width), base));
+}
 if (!process.argv.includes("--capture-previews"))
   for (const r of resources) {
     await access(new URL(r.cover, base));

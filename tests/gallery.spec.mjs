@@ -98,6 +98,8 @@ test("Live cards fit their available interactive viewport and unload outside the
   const r = resources.find((r) => r.id === "magicui-shimmer-button");
   const card = page.locator(`[data-resource="component:${r.id}"]`);
   await card.hover();
+  await expect(card.locator("iframe")).toHaveCount(0);
+  await card.locator("[data-start-preview]").click();
   await expect(card.locator("iframe")).toBeAttached();
   await expect
     .poll(() =>
@@ -126,7 +128,7 @@ test("Live cards fit their available interactive viewport and unload outside the
         ),
     )
     .toBe("true");
-  await page.locator("footer").scrollIntoViewIfNeeded();
+  await page.locator("footer a").first().focus();
   await expect(card.locator("iframe")).toHaveCount(0);
   expect(await page.locator(".asset-live iframe").count()).toBeLessThanOrEqual(
     8,

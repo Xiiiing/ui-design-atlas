@@ -114,6 +114,7 @@ test("Live card follows system and cycle changes without reloading or clearing i
   await page.goto("#explore?lang=en&q=Border%20Beam");
   const card = page.locator('[data-resource="component:magicui-border-beam"]');
   await card.scrollIntoViewIfNeeded();
+  await card.locator("[data-start-preview]").click();
   await expect(card).toHaveAttribute("data-preview-state", "ready");
   const frame = card.frameLocator("iframe");
   await expect(frameTheme(frame)).toHaveClass(/dark/);

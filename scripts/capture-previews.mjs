@@ -1,6 +1,11 @@
 import { chromium } from "@playwright/test";
 import { spawn } from "node:child_process";
-import { mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
+import {
+  responsiveCovers,
+  coverThumbnail,
+  coverWidths,
+} from "../preview-covers.js";
 import { resources, resourcePreview } from "../catalog.js";
 import { resourcePresentation } from "../presentation.js";
 const port = 4188;
@@ -64,12 +69,38 @@ try {
               content:
                 "* { scrollbar-width: none !important; } *::-webkit-scrollbar { display: none !important; }",
             });
-            await page.screenshot({
-              path: r.cover
-                .replace("./", "")
-                .replace(/\.png$/, theme === "dark" ? "-dark.png" : ".png"),
+            const png = r.cover
+              .replace("./", "")
+              .replace(/\.png$/, theme === "dark" ? "-dark.png" : ".png");
+            const image = await page.screenshot({
+              path: png,
               animations: "allow",
             });
+            if (responsiveCovers.has(r.cover)) {
+              for (const width of coverWidths) {
+                const webp = await page.evaluate(
+                  async ({ data, width }) => {
+                    const image = new Image();
+                    image.src = "data:image/png;base64," + data;
+                    await image.decode();
+                    const canvas = document.createElement("canvas");
+                    canvas.width = width;
+                    canvas.height = Math.round(
+                      (image.height * width) / image.width,
+                    );
+                    canvas
+                      .getContext("2d")
+                      .drawImage(image, 0, 0, canvas.width, canvas.height);
+                    return canvas.toDataURL("image/webp", 0.87).split(",")[1];
+                  },
+                  { data: image.toString("base64"), width },
+                );
+                await writeFile(
+                  coverThumbnail(png, width),
+                  Buffer.from(webp, "base64"),
+                );
+              }
+            }
             console.log(`Captured ${r.type}:${r.id}/${theme}`);
           }
         } catch (e) {

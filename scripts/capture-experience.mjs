@@ -158,6 +158,7 @@ try {
   await page.goto(base + "#components?lang=en&category=buttons");
   const card = page.locator('[data-resource="component:folio-button"]');
   await card.scrollIntoViewIfNeeded();
+  await card.locator("[data-start-preview]").click();
   await expect(card).toHaveClass(/is-live/);
   await pause();
   await card
@@ -214,6 +215,7 @@ try {
   const mobile = await touch.newPage();
   await mobile.goto(base + "#components?lang=en&category=forms&q=folio");
   const form = mobile.locator('[data-resource="component:folio-form"]');
+  await form.locator("[data-start-preview]").click();
   await expect(form).toHaveClass(/is-live/);
   await form
     .frameLocator("iframe")

@@ -198,7 +198,7 @@ test("Live cards and wide experience follow the shell while fixed-height demos f
   const particles = page.locator(
     '[data-resource="component:magicui-particles"]',
   );
-  await particles.hover();
+  await particles.locator("[data-start-preview]").click();
   const iframe = particles.locator("iframe");
   await expect(iframe).toBeAttached();
   await expect

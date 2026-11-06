@@ -12,6 +12,7 @@ import { readFavorites } from "./atlas/favorite-data.js";
 import { createFilterActions } from "./atlas/filter-actions.js";
 import { reconcileResults } from "./atlas/results.js";
 import { loadResourceDetails } from "./atlas/resource-data.js";
+import { coverSrcset } from "./preview-covers.js";
 import { types, key, coverURL } from "./atlas/resource-views.js";
 import {
   replaceShellHTML,
@@ -268,6 +269,8 @@ const liveCards = createLiveCards({
     resourcePreview(r, appState.locale, shellTheme()),
   config: () => ({ locale: appState.locale, theme: shellTheme() }),
   label: (/** @type {import("./atlas/types").Resource} */ r) => l(r.name),
+  start: () => t("启动预览", "Start preview"),
+  retry: () => t("重试预览", "Retry preview"),
   failure: () => t("体验加载失败", "Experience could not be loaded"),
   loading: () => t("正在加载体验…", "Loading experience…"),
 });
@@ -506,8 +509,8 @@ document.addEventListener("click", async (e) => {
   if (b.hasAttribute("data-retry-info")) return location.reload();
   if (b.hasAttribute("data-retry-saved")) return render();
   if ((await handlePreviewAction(b)) || (await handleSourceAction(b))) return;
-  if (b.hasAttribute("data-retry-preview"))
-    return liveCards.retry(b.closest(".asset-card"));
+  if (b.hasAttribute("data-start-preview"))
+    return liveCards.activate(b.closest(".asset-card"));
   if (b.dataset.cardPrompt) {
     const [type, id] = b.dataset.cardPrompt.split(":");
     const resource = findResource(id, type);
@@ -828,7 +831,10 @@ render();
 window.addEventListener("atlas:shell-theme", () => {
   liveCards.configure();
   all("img[data-cover]").forEach((img) => {
-    img.src = coverURL(img.dataset.cover || "", shellTheme());
+    const url = coverURL(img.dataset.cover || "", shellTheme());
+    const source = img.parentElement?.querySelector("source");
+    if (source) source.srcset = coverSrcset(url);
+    img.src = url;
   });
   if (!appState.selected) return;
   const nextTheme = shellTheme();
