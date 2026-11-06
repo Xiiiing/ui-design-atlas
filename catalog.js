@@ -1,4 +1,5 @@
 // @ts-check
+import { categories, interactions, visualStyles } from "./resource-tags.js";
 import { resolveCasePages } from "./catalog-pages.js";
 import records from "./content/resources.json" with { type: "json" };
 import sourceRecords from "./content/sources.json" with { type: "json" };
@@ -95,7 +96,8 @@ for (const r of resources) {
     );
   if (r.motion) resourceCounts.motion++;
 }
-const searchIndex = createSearchIndex(resources, (r) => ({
+/** @param {import("./atlas/types").Resource} r */
+export const resourceSearchFields = (r) => ({
   names: r.name,
   aliases: [
     r.aliases,
@@ -104,7 +106,13 @@ const searchIndex = createSearchIndex(resources, (r) => ({
   ],
   description: r.description,
   context: [r.categories, r.interactions, r.style, resourceSource(r)?.name],
-}));
+  labels: [
+    r.categories.map((id) => categories[id]),
+    r.interactions.map((id) => interactions[id]),
+    r.styleIds.map((id) => visualStyles[id]),
+  ],
+});
+const searchIndex = createSearchIndex(resources, resourceSearchFields);
 /** @param {import("./atlas/types").Resource} r */
 export const resourceSearch = (r) => searchIndex.get(r)?.text || "";
 /** @param {string} query @param {import("./atlas/types").Resource[]} [items] */

@@ -5,7 +5,17 @@ test("List and keyboard search rank exact names first and preserve filters and h
   page,
 }) => {
   await page.goto("#explore?lang=en");
-  for (const query of ["Border Beam", "流光边框", "antd 表格", "微软"]) {
+  for (const query of [
+    "Border Beam",
+    "流光边框",
+    "antd 表格",
+    "微软",
+    "编辑式",
+    "科技感",
+    "瑞士风格",
+    "数据展示",
+    "Drag",
+  ]) {
     await page.locator("[name=q]").fill(query);
     const expected = searchResources(query)[0];
     await expect(page.locator("#results .asset-card").first()).toHaveAttribute(

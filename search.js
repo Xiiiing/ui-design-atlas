@@ -11,12 +11,14 @@ const strings = (value) =>
       ? Object.values(value).flatMap(strings)
       : [normalize(value)];
 
-/** @template T @param {T[]} items @param {(item:T)=>{names:unknown;aliases?:unknown;description?:unknown;context?:unknown}} fields */
+/** @template T @param {T[]} items @param {(item:T)=>{names:unknown;aliases?:unknown;description?:unknown;context?:unknown;labels?:unknown}} fields */
 export function createSearchIndex(items, fields) {
   return new Map(
     items.map((item) => {
-      const { names, aliases, description, context } = fields(item);
-      const groups = [names, aliases, description, context].map(strings);
+      const { names, aliases, description, context, labels } = fields(item);
+      const groups = [names, aliases, description, context, labels].map(
+        strings,
+      );
       return [item, { groups, text: groups.flat().join(" ") }];
     }),
   );
@@ -33,7 +35,7 @@ export function rankSearch(items, query, index) {
       if (!entry) return null;
       const { groups, text } = entry;
       if (!words.every((word) => text.includes(word))) return null;
-      const [names, aliases, descriptions] = groups;
+      const [names, aliases, descriptions, , labels] = groups;
       /** @param {string[]} values */
       const contains = (values) =>
         values.some((value) => value.includes(phrase));
@@ -61,17 +63,19 @@ export function rankSearch(items, query, index) {
         ? 9
         : quality === 3
           ? 8
-          : words.every((word) => strength(word, descriptions) === 3)
-            ? 7
-            : quality === 2
-              ? 6
-              : contains(names)
-                ? 4
-                : contains(aliases)
-                  ? 3
-                  : contains(descriptions)
-                    ? 2
-                    : 1;
+          : labels.includes(phrase)
+            ? 7.5
+            : words.every((word) => strength(word, descriptions) === 3)
+              ? 7
+              : quality === 2
+                ? 6
+                : contains(names)
+                  ? 4
+                  : contains(aliases)
+                    ? 3
+                    : contains(descriptions)
+                      ? 2
+                      : 1;
       const wordScore = words.reduce(
         (sum, word) =>
           sum +
