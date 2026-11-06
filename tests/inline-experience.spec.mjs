@@ -27,7 +27,7 @@ test("Visible cards operate directly and expose prompt, details and filter tags"
   await expect(page).toHaveURL(/category=buttons.*style=folio/);
   await expect(page.locator(".asset-card")).toHaveCount(1);
   await page.goBack();
-  await expect(page.locator(".asset-card")).toHaveCount(6);
+  await expect(page.locator(".asset-card")).toHaveCount(7);
 });
 
 test("Inline forms accept input on touch devices without opening a viewer", async ({

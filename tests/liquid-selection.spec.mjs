@@ -61,7 +61,7 @@ test("Purpose multi-select preserves geometry, independent pressed states and ke
   await page.locator("[data-category=buttons]").focus();
   await page.keyboard.press("Space");
   await expect(page.locator("[data-category=buttons]")).toBeFocused();
-  await expect(page.locator(".asset-card")).toHaveCount(2);
+  await expect(page.locator(".asset-card")).toHaveCount(3);
 });
 
 test("Type selection retains its moving marker, link dimensions and focus through navigation and history", async ({
@@ -104,7 +104,7 @@ test("Type selection retains its moving marker, link dimensions and focus throug
   await openFilters(page);
   await page.locator("[data-category=buttons]").click();
   await page.locator("[data-market-mode=motion]").click();
-  await expect(page.locator(".asset-card")).toHaveCount(2);
+  await expect(page.locator(".asset-card")).toHaveCount(3);
   await page.goBack();
   await expect(page.locator("[data-market-mode=explore]")).toHaveAttribute(
     "aria-current",
@@ -118,7 +118,7 @@ test("Type selection retains its moving marker, link dimensions and focus throug
   await aligned(page, ".category-strip", "[aria-pressed=true]");
   await page.goForward();
   await page.reload();
-  await expect(page.locator(".asset-card")).toHaveCount(2);
+  await expect(page.locator(".asset-card")).toHaveCount(3);
   await aligned(page, group, ".active");
   await aligned(page, ".category-strip", "[aria-pressed=true]");
   await page.goto("#explore?lang=en");
