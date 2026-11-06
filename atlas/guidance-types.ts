@@ -59,8 +59,8 @@ export interface ContentHit {
   view: string;
   name: Localized;
   description: Localized;
-  aliases: unknown;
-  context: unknown;
+  aliases?: unknown;
+  context?: unknown;
   item: Resource | Guidance | Tool;
 }
 export interface ComposerDraft {

@@ -1,5 +1,5 @@
 // @ts-check
-import { resources, libraries } from "../catalog.js";
+import { resources, resourceSearchFields } from "../catalog.js";
 import { guidance, tools } from "../guidance-catalog.js";
 import { createSearchIndex, rankSearch } from "../search.js";
 /** @type {import('./guidance-types').ContentHit[]} */
@@ -11,15 +11,6 @@ export const contentEntries = [
     view: r.type,
     name: r.name,
     description: r.description,
-    aliases: [
-      r.aliases,
-      r.tags,
-      r.libraryIds.flatMap((id) => [
-        libraries[id]?.name,
-        libraries[id]?.aliases,
-      ]),
-    ],
-    context: [r.categories, r.interactions, r.style],
     item: r,
   })),
   ...guidance.map((g) => ({
@@ -45,12 +36,16 @@ export const contentEntries = [
     item: g,
   })),
 ];
-const index = createSearchIndex(contentEntries, (r) => ({
-  names: r.name,
-  aliases: r.aliases,
-  description: r.description,
-  context: r.context,
-}));
+const index = createSearchIndex(contentEntries, (r) =>
+  r.domain === "ui" && "sourceId" in r.item
+    ? resourceSearchFields(r.item)
+    : {
+        names: r.name,
+        aliases: r.aliases,
+        description: r.description,
+        context: r.context,
+      },
+);
 /** @param {string} q @param {typeof contentEntries} [items] */
 export const searchContent = (q, items = contentEntries) =>
   rankSearch(items, q, index);

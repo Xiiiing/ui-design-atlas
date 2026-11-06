@@ -69,3 +69,33 @@ test("Legacy folio links find Morrow independently of descriptive copy", () => {
     ["folio-form"],
   );
 });
+
+test("Bilingual labels find the members of every visual, purpose and interaction facet", async () => {
+  const { default: taxonomy } = await import("../../content/taxonomy.json", {
+    with: { type: "json" },
+  });
+  for (const [facet, field] of [
+    ["styles", "styleIds"],
+    ["categories", "categories"],
+    ["interactions", "interactions"],
+  ]) {
+    for (const [id, labels] of Object.entries(taxonomy[facet])) {
+      const members = resources.filter((resource) =>
+        resource[field].includes(id),
+      );
+      for (const label of labels) {
+        const result = new Set(searchResources(label));
+        assert.ok(
+          members.every((resource) => result.has(resource)),
+          label,
+        );
+      }
+    }
+  }
+  assert.deepEqual(
+    searchResources("编辑式 card")
+      .filter((r) => r.type === "component")
+      .map((r) => r.id),
+    ["folio-card", "folio-pricing"],
+  );
+});
