@@ -144,11 +144,8 @@ interface DOMSelectors {
   "[data-preview-setting]": HTMLInputElement;
   "[name=q]": HTMLInputElement;
   "[name=category]": HTMLInputElement;
+  "[name=visual]": HTMLInputElement;
   "#filters [name=q]": HTMLInputElement;
-  "#filters [name=category]": HTMLInputElement;
-  "#filters select, #filters input[name=category]":
-    | HTMLSelectElement
-    | HTMLInputElement;
   "#fallback-text": HTMLTextAreaElement;
   "#standalone": HTMLAnchorElement;
   "[data-market-mode]": HTMLAnchorElement;

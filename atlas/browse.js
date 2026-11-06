@@ -3,7 +3,6 @@ import { element, maybe, all } from "./dom.js";
 import { reconcileResults } from "./results.js";
 import {
   sourceProjects,
-  resourceCounts,
   resources,
   discovery,
   libraries,
@@ -13,7 +12,7 @@ import {
 import { key, types } from "./resource-views.js";
 import { icon } from "../icons.js";
 import { escapeHTML as esc } from "./html.js";
-import { categories, interactions } from "../resource-tags.js";
+import { categories, interactions, visualStyles } from "../resource-tags.js";
 import taxonomy from "../content/taxonomy.json" with { type: "json" };
 import { filterResources, facetCounts, selections } from "./filter-model.js";
 import { parse } from "./navigation.js";
@@ -56,6 +55,16 @@ export function createBrowse({
     cases: "case",
     motion: "motion",
   };
+  const classificationLabels = { category: categories, visual: visualStyles };
+  /** @param {string} facet */
+  const countsFor = (facet) =>
+    facetCounts(
+      resources,
+      appState.route,
+      appState.favorites,
+      currentValues(),
+      facet,
+    );
   function activeMode() {
     return appState.route.view === "favorites"
       ? Object.keys(modeTypes).find(
@@ -71,15 +80,8 @@ export function createBrowse({
     else delete params.type;
     return href("favorites", "", params);
   }
-  /** @param {string} v */
-  function typeCount(v) {
-    const counts = facetCounts(
-      resources,
-      appState.route,
-      appState.favorites,
-      currentValues(),
-      "type",
-    );
+  /** @param {Map<string,number>} counts @param {string} v */
+  function typeCount(counts, v) {
     return counts.get(v === "explore" ? "all" : modeTypes[v]) || 0;
   }
   function currentValues() {
@@ -107,6 +109,21 @@ export function createBrowse({
   function selectFilter(name, label, entries) {
     const selected = selections(appState.route.params.get(name));
     return `<fieldset class="facet-group" data-facet="${name}"><legend>${label}</legend>${entries.map(([v, label]) => `<label><input type="checkbox" name="${name}" value="${v}" ${selected.includes(v) ? "checked" : ""}>${esc(label)} <span data-facet-count></span></label>`).join("")}</fieldset>`;
+  }
+  /** @param {"category"|"visual"} name @param {string} label @param {[string,string]} allLabels */
+  function classification(name, label, allLabels) {
+    const value = appState.route.params.get(name) || "all";
+    const selected = selections(value);
+    const counts = countsFor(name);
+    return `<input type="hidden" name="${name}" value="${esc(value)}"><fieldset class="category-facet classification-facet"><legend>${label}</legend><div class="classification-options${name === "category" ? " category-strip" : ""}">${Object.entries(
+      { all: allLabels, ...classificationLabels[name] },
+    )
+      .map(([id, labels]) => {
+        const count = counts.get(id) || 0;
+        const pressed = id === "all" ? !selected.length : selected.includes(id);
+        return `<button type="button" data-${name}="${id}" aria-pressed="${pressed}" ${id !== "all" && !pressed && !count ? "disabled" : ""}>${t(...labels)}<span>${count}</span></button>`;
+      })
+      .join("")}</div></fieldset>`;
   }
   function savedDomain() {
     const value = appState.route.params.get("domain");
@@ -174,7 +191,6 @@ export function createBrowse({
     );
     const expanded = (appState.browseFiltersExpanded ??= [
       "library",
-      "visual",
       "technology",
       "project",
       "motion",
@@ -184,40 +200,27 @@ export function createBrowse({
       "audience",
     ].some((k) => appState.route.params.has(k)));
     const contentOnly = savedContentOnly();
+    const typeCounts = countsFor("type");
     return `<form id="filters" class="market-filters${contentOnly ? " content-only-filters" : ""}" data-expanded="${expanded}">${appState.route.view === "favorites" ? `<input type="hidden" name="domain" value="${savedDomain()}">` : ""}
   <div class="catalog-toolbar">  <nav class="market-tabs" data-shell-group data-shell-key="market-types" aria-label="${t("资源类型", "Resource types")}">${Object.entries(
     viewModes,
   )
     .map(
       ([v, labels]) =>
-        `<a href="${modeURL(v)}" data-market-mode="${v}" class="${activeMode() === v ? "active" : ""}" ${activeMode() === v ? 'aria-current="page"' : ""}>${icon(viewIcons[v])}${t(labels[0], labels[1])}<span>${typeCount(v)}</span></a>`,
+        `<a href="${modeURL(v)}" data-market-mode="${v}" class="${activeMode() === v ? "active" : ""}" ${activeMode() === v ? 'aria-current="page"' : ""}>${icon(viewIcons[v])}${t(labels[0], labels[1])}<span>${typeCount(typeCounts, v)}</span></a>`,
     )
     .join(
       "",
     )}</nav><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${appState.route.view === "favorites" ? t("搜索收藏", "Search saved") : t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(appState.route.params.get("q") || "")}"><button class="icon-button" type="submit" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label><div class="catalog-facets">
   <button type="button" class="button advanced-filters-toggle" data-advanced-filters aria-controls="advanced-filters" aria-expanded="${expanded}">${icon("sliders-horizontal")}${t("更多筛选", "More filters")}</button></div></div>
-  ${collection ? `<input type="hidden" name="collection" value="${collection.id}">` : ""}<input type="hidden" name="category" value="${esc(appState.route.params.get("category") || "all")}">
-
-  <fieldset class="category-facet"><legend class="sr-only">${t("用途分类", "Categories")}</legend>  <nav class="category-strip" data-shell-key="resource-categories" aria-label="${t("资源分类", "Resource categories")}">${Object.entries(
-    { all: ["全部分类", "All categories"], ...categories },
-  )
-    .map(
-      ([id, labels]) =>
-        `<button type="button" data-category="${id}" aria-pressed="${id === "all" ? !selections(appState.route.params.get("category")).length : selections(appState.route.params.get("category")).includes(id)}">${t(labels[0], labels[1])}<span>${id === "all" ? resourceCounts.total : resourceCounts.byCategory.get(id) || 0}</span></button>`,
-    )
-    .join("")}</nav></fieldset>
+  ${collection ? `<input type="hidden" name="collection" value="${collection.id}">` : ""}
+  ${classification("category", t("用途", "Purpose"), ["全部用途", "All purposes"])}
+  ${classification("visual", t("视觉风格", "Visual style"), ["全部风格", "All styles"])}
   <div class="filter-options-row"><div class="active-filters" id="active-filters" aria-label="${t("已选条件", "Selected filters")}"></div></div>
   <div class="advanced-filters" id="advanced-filters"><fieldset class="facet-group collection-shortcuts"><legend>${t("主题合集", "Collections")}</legend>${discovery.collections.map((c) => `<a class="text-link" href="${href("explore", "", { collection: c.id })}">${esc(l(c.name))}${icon("arrow-up-right")}</a>`).join("")}</fieldset>${selectFilter(
     "library",
     t("组件库", "Libraries"),
     Object.values(libraries).map((x) => [x.id, x.name]),
-  )}${selectFilter(
-    "visual",
-    t("视觉风格", "Visual styles"),
-    Object.entries(taxonomy.styles).map(([id, labels]) => [
-      id,
-      t(labels[0], labels[1]),
-    ]),
   )}${selectFilter(
     "project",
     t("来源项目", "Source projects"),
@@ -293,38 +296,29 @@ export function createBrowse({
     element("#active-filters").innerHTML =
       chips
         .map(([name, value]) => {
-          const label =
-            name === "collection"
+          const classificationLabel =
+            (name === "category" || name === "visual") &&
+            Object.hasOwn(classificationLabels[name], value)
+              ? classificationLabels[name][value]
+              : undefined;
+          const label = classificationLabel
+            ? t(...classificationLabel)
+            : name === "collection"
               ? l(discovery.collections.find((c) => c.id === value)?.name)
-              : name === "category"
-                ? t(
-                    categories[value]?.[0] || value,
-                    categories[value]?.[1] || value,
-                  )
-                : name === "q"
-                  ? value
-                  : form
-                      .querySelector(
-                        `input[name="${name}"][value="${CSS.escape(value)}"]`,
-                      )
-                      ?.closest("label")
-                      ?.textContent?.replace(/\s*\d+\s*$/, "") || value;
+              : name === "q"
+                ? value
+                : form
+                    .querySelector(
+                      `input[name="${name}"][value="${CSS.escape(value)}"]`,
+                    )
+                    ?.closest("label")
+                    ?.textContent?.replace(/\s*\d+\s*$/, "") || value;
           return `<button type="button" class="filter-chip" data-remove-filter="${name}" data-filter-value="${esc(value)}" aria-label="${t("清除", "Remove")} ${esc(labels[name])}: ${esc(label)}"><span>${esc(label)}</span>${icon("x")}</button>`;
         })
         .join("") +
       (chips.length
         ? `<button type="button" class="clear-filters" data-reset-filters>${t("清空条件", "Clear all")}</button>`
         : "");
-    all("[data-category]").forEach((el) =>
-      el.setAttribute(
-        "aria-pressed",
-        String(
-          el.dataset.category === "all"
-            ? !selections(values.category).length
-            : selections(values.category).includes(el.dataset.category || ""),
-        ),
-      ),
-    );
   }
 
   /** @param {import("./types").Route} [route] */
@@ -339,15 +333,14 @@ export function createBrowse({
     );
   }
   function updateFacetCounts() {
+    const typeCounts = countsFor("type");
     all("[data-market-mode]").forEach((el) => {
-      const count = typeCount(el.dataset.marketMode || "explore");
+      const count = typeCount(typeCounts, el.dataset.marketMode || "explore");
       const unavailable = count === 0 && el.dataset.marketMode !== activeMode();
       el.setAttribute("aria-disabled", String(unavailable));
       el.tabIndex = unavailable ? -1 : 0;
       el.href = modeURL(el.dataset.marketMode || "explore");
-      element("span", el).textContent = String(
-        typeCount(el.dataset.marketMode || "explore"),
-      );
+      element("span", el).textContent = String(count);
     });
     const values = currentValues();
     for (const group of all("[data-facet]")) {
@@ -367,20 +360,18 @@ export function createBrowse({
           element("[data-facet-count]", label).textContent = String(count);
       }
     }
-    const counts = facetCounts(
-      resources,
-      appState.route,
-      appState.favorites,
-      values,
-      "category",
-    );
-    for (const button of all("[data-category]")) {
-      const id = button.dataset.category || "all",
-        count = counts.get(id) || 0;
-      if (button instanceof HTMLButtonElement)
-        button.disabled =
-          id !== "all" && !selections(values.category).includes(id) && !count;
-      element("span", button).textContent = String(count);
+    for (const name of ["category", "visual"]) {
+      const counts = countsFor(name);
+      const selected = selections(values[name]);
+      for (const button of all(`[data-${name}]`)) {
+        if (!(button instanceof HTMLButtonElement)) continue;
+        const id = button.dataset[name] || "all";
+        const count = counts.get(id) || 0;
+        const pressed = id === "all" ? !selected.length : selected.includes(id);
+        button.setAttribute("aria-pressed", String(pressed));
+        button.disabled = id !== "all" && !pressed && !count;
+        element("span", button).textContent = String(count);
+      }
     }
   }
 
@@ -432,8 +423,11 @@ export function createBrowse({
   }
 
   function restoreFilters() {
-    for (const el of all("#filters select, #filters input[name=category]"))
-      el.value = appState.route.params.get(el.name) || "all";
+    for (const el of all(
+      "#filters select, #filters input:is([name=category], [name=visual])",
+    ))
+      if (el instanceof HTMLInputElement || el instanceof HTMLSelectElement)
+        el.value = appState.route.params.get(el.name) || "all";
     updateResults();
     updateFacetCounts();
     observeCards();

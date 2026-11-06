@@ -11,6 +11,7 @@ function labels(values) {
   );
 }
 export const categories = labels(taxonomy.categories);
+export const visualStyles = labels(taxonomy.styles);
 export const interactions = labels(taxonomy.interactions);
 /** @param {import("./atlas/types").Resource} resource @returns {{name:string;value:string;label:string}[]} */
 export function resourceTags(resource, lang = "zh-CN") {
