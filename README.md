@@ -64,6 +64,8 @@
 
 打开 [设计指导](https://xiiiing.github.io/ui-design-atlas/#guidance?lang=zh-CN)，按用途查找提示词、Skills、设计规范和检查清单；[资源导航](https://xiiiing.github.io/ui-design-atlas/#tools?lang=zh-CN) 提供组件库、Skills 集合和学习资料入口。它们可以与界面一起收藏，并通过关联内容互相查阅。
 
+资源导航收录 [BoardUI](https://www.boardui.com/)、[Bencho](https://bencho.dev/)、[HeroUI Pro](https://heroui.pro/)、[beUI Pro](https://pro.beui.dev/)、[Libraries.dev](https://libraries.dev/) 和 [Watermelon UI](https://ui.watermelon.sh/)，可搜索名称或别名、收藏并打开官网。部分资源提供付费组件或定制功能，使用范围以各自官网为准。
+
 [提示词组合器](https://xiiiing.github.io/ui-design-atlas/#compose?lang=zh-CN) 将需求、规范、界面参考、任务和交付检查组合成可编辑文本，支持复制、Markdown 导出与本地草稿。普通对话提供整理后的任务要点，编程助手模式另外提供完整 Skill 文件。收录和内容核对不等于生成效果已验证。使用、兼容及维护方法见 [设计指导说明](docs/guidance/README.md)。
 
 组合器按项目需求、方法与参考、交付要求分组，桌面双栏对照输入和输出，移动端纵向阅读。全站编辑式设计规范、前后截图和验收记录见 [改版说明](docs/ui/editorial-atlas/README.md)。

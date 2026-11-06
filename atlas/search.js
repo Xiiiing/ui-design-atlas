@@ -26,7 +26,7 @@ export function createSearch({ href, l, labelType, t }) {
             const label =
               "preview" in item
                 ? labelType(item)
-                : "repo" in item
+                : "technologies" in item
                   ? t(.../** @type {[string,string]} */ (toolKinds[item.kind]))
                   : t(
                       .../** @type {[string,string]} */ (

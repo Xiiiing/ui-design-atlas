@@ -18,6 +18,16 @@ const validPath = (value) =>
     .every(
       (part) => part && part !== "." && part !== ".." && !part.startsWith("."),
     );
+const validWebsite = (value) => {
+  if (typeof value !== "string" || !/^https:\/\/[^\s]+$/.test(value))
+    return false;
+  try {
+    const url = new URL(value);
+    return !!url.hostname && !url.username && !url.password;
+  } catch {
+    return false;
+  }
+};
 export function validateGuidance(guidance, tools, resources, sources) {
   const keys = new Set(),
     toolIds = new Set(),
@@ -27,7 +37,10 @@ export function validateGuidance(guidance, tools, resources, sources) {
       !/^[-a-z0-9]+$/.test(tool.id) ||
       toolIds.has(tool.id) ||
       !["library", "skills", "design", "learning"].includes(tool.kind) ||
-      !/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+$/.test(tool.repo) ||
+      (!tool.repo && !tool.website) ||
+      (tool.repo !== undefined &&
+        !/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+$/.test(tool.repo)) ||
+      (tool.website !== undefined && !validWebsite(tool.website)) ||
       !localized(tool.name) ||
       !localized(tool.description) ||
       !Array.isArray(tool.technologies) ||

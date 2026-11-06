@@ -81,6 +81,152 @@
     ]
   },
   {
+    "id": "boardui",
+    "name": {
+      "zh-CN": "BoardUI",
+      "en": "BoardUI"
+    },
+    "kind": "library",
+    "website": "https://www.boardui.com/",
+    "description": {
+      "zh-CN": "基于 React、Tailwind CSS 和 React Aria 的设计系统，提供组件、图表与 AI 界面；免费组件之外另有付费 Pro 组件和模板。",
+      "en": "A React design system using Tailwind CSS and React Aria, with components, charts and AI interfaces; Pro components and templates require a paid license."
+    },
+    "technologies": [
+      "React",
+      "Tailwind CSS",
+      "React Aria"
+    ],
+    "aliases": [
+      "Board UI",
+      "BoardUI Pro",
+      "AI 界面",
+      "设计系统"
+    ],
+    "repo": "https://github.com/BoardUI/boardui"
+  },
+  {
+    "id": "bencho",
+    "name": {
+      "zh-CN": "Bencho",
+      "en": "Bencho"
+    },
+    "kind": "library",
+    "website": "https://bencho.dev/",
+    "description": {
+      "zh-CN": "可在线体验的 React 交互组件与微动效集合，涵盖拖拽、悬停、选择器和加载反馈，适合寻找交互灵感与实现参考。",
+      "en": "A collection of interactive React components and micro-interactions, with live drag, hover, picker and loading examples for design and implementation reference."
+    },
+    "technologies": [
+      "React"
+    ],
+    "aliases": [
+      "Bencho UI",
+      "微交互",
+      "微动效",
+      "交互动效"
+    ]
+  },
+  {
+    "id": "heroui-pro",
+    "name": {
+      "zh-CN": "HeroUI Pro",
+      "en": "HeroUI Pro"
+    },
+    "kind": "library",
+    "website": "https://heroui.pro/",
+    "description": {
+      "zh-CN": "HeroUI 的付费组件与模板产品，面向 React 和 React Native 应用；公开文档可供评估，受保护源码与下载需相应授权。",
+      "en": "HeroUI’s premium components and templates for React and React Native applications; public docs support evaluation, while protected source and downloads require an eligible license."
+    },
+    "technologies": [
+      "React",
+      "React Native",
+      "React Aria"
+    ],
+    "aliases": [
+      "HeroUI",
+      "Hero UI Pro",
+      "HeroUl Pro",
+      "NextUI Pro"
+    ]
+  },
+  {
+    "id": "beui-pro",
+    "name": {
+      "zh-CN": "beUI Pro",
+      "en": "beUI Pro"
+    },
+    "kind": "library",
+    "website": "https://pro.beui.dev/",
+    "description": {
+      "zh-CN": "面向 React 与 Next.js 的付费动效区块和完整页面模板，使用 Tailwind CSS 与 Motion，提供源码及组件注册表接入。",
+      "en": "Premium animated blocks and full-page templates for React and Next.js, using Tailwind CSS and Motion with source files and registry integration."
+    },
+    "technologies": [
+      "React",
+      "Next.js",
+      "Tailwind CSS",
+      "Motion"
+    ],
+    "aliases": [
+      "beUI",
+      "be UI Pro",
+      "动画区块",
+      "落地页模板"
+    ]
+  },
+  {
+    "id": "libraries-dev",
+    "name": {
+      "zh-CN": "Libraries.dev",
+      "en": "Libraries.dev"
+    },
+    "kind": "library",
+    "website": "https://libraries.dev/",
+    "description": {
+      "zh-CN": "React 视觉效果库集合，包含流光边框、思考光球、液态金属与 Gooey 效果；提供免费 npm 库，深度定制 Studio 另属 Pro 方案。",
+      "en": "A collection of React visual-effect libraries including border beams, thinking orbs, liquid metal and gooey effects; free npm libraries are complemented by a paid Pro customization Studio."
+    },
+    "technologies": [
+      "React"
+    ],
+    "aliases": [
+      "Libraries dev",
+      "Jakub Antalik",
+      "Border beam",
+      "Thinking orbs",
+      "Liquid metal",
+      "Gooey",
+      "视觉效果"
+    ]
+  },
+  {
+    "id": "watermelon-ui",
+    "name": {
+      "zh-CN": "Watermelon UI",
+      "en": "Watermelon UI"
+    },
+    "kind": "library",
+    "website": "https://ui.watermelon.sh/",
+    "description": {
+      "zh-CN": "免费的开源 React UI 资源平台，提供 Tailwind CSS 与 shadcn/ui 组件、动效、页面区块、仪表盘和模板，可浏览示例并查阅安装文档。",
+      "en": "A free, open-source React UI platform offering Tailwind CSS and shadcn/ui components, animations, page blocks, dashboards and templates with examples and installation docs."
+    },
+    "technologies": [
+      "React",
+      "Tailwind CSS",
+      "shadcn/ui"
+    ],
+    "aliases": [
+      "Watermelon",
+      "Watermelon Ul",
+      "西瓜 UI",
+      "西瓜组件库"
+    ],
+    "repo": "https://github.com/WatermelonCorp/watermelon-platform"
+  },
+  {
     "id": "awesome-design-md",
     "name": {
       "zh-CN": "Awesome DESIGN.md",

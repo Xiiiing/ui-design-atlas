@@ -4,7 +4,7 @@ import { escapeHTML as esc } from "./html.js";
 import { icon } from "../icons.js";
 /** @param {import('./guidance-types').Guidance|import('./guidance-types').Tool} item @param {import('./types').BaseDependencies} deps */
 export function contentCard(item, { appState, t, l, href }) {
-  const isTool = "repo" in item,
+  const isTool = "technologies" in item,
     key = `${isTool ? "tool" : "guidance"}:${item.id}`;
   const labels = isTool ? toolKinds[item.kind] : guidanceKinds[item.kind];
   const saved = appState.favorites.has(key);
