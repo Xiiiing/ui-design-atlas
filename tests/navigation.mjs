@@ -13,6 +13,12 @@ export async function openFilters(page) {
     await trigger.click();
 }
 
+export async function openClassification(page, name = "category") {
+  const trigger = page.locator(`[data-classification="${name}"]`);
+  if ((await trigger.getAttribute("aria-expanded")) !== "true")
+    await trigger.click();
+}
+
 export async function copyCardPrompt(page, card) {
   await card.locator(".card-menu-trigger").click();
   await page

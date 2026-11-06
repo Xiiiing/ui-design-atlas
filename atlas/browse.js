@@ -6,15 +6,21 @@ import {
   resources,
   discovery,
   libraries,
-  searchResources,
   resourceSource,
 } from "../catalog.js";
-import { key, types } from "./resource-views.js";
+import { types } from "./resource-views.js";
 import { icon } from "../icons.js";
 import { escapeHTML as esc } from "./html.js";
 import { categories, interactions, visualStyles } from "../resource-tags.js";
 import taxonomy from "../content/taxonomy.json" with { type: "json" };
-import { filterResources, facetCounts, selections } from "./filter-model.js";
+import {
+  filterResources,
+  facetCounts,
+  selections,
+  modeTypes,
+  canCompareCards,
+  cardStyleExamples,
+} from "./filter-model.js";
 import { parse } from "./navigation.js";
 
 /** @param {import("./types").BaseDependencies & {card:import("./types").Card;observeCards:()=>void;extraSaved:(values:Record<string,string>,domain:string)=>{count:number;html:string;counts:Record<string,number>}}} dependencies */
@@ -37,15 +43,13 @@ export function createBrowse({
     cases: ["完整案例", "Systems"],
   };
 
-  /** @type {Record<string,string>} */
-  const modeTypes = {
-    components: "component",
-    blocks: "block",
-    pages: "page",
-    cases: "case",
-    motion: "motion",
-  };
+  const order = ["component", "block", "page", "case"];
   const classificationLabels = { category: categories, visual: visualStyles };
+  /** @type {Record<string,[string,string]>} */
+  const classificationNames = {
+    category: ["用途", "Purpose"],
+    visual: ["风格", "Style"],
+  };
   /** @param {string} facet */
   const countsFor = (facet) =>
     facetCounts(
@@ -65,6 +69,7 @@ export function createBrowse({
   /** @param {string} mode */
   function modeURL(mode) {
     const params = Object.fromEntries(appState.route.params);
+    if (mode !== "explore" && mode !== "components") delete params.compare;
     if (appState.route.view !== "favorites") return href(mode, "", params);
     if (modeTypes[mode]) params.type = modeTypes[mode];
     else delete params.type;
@@ -80,17 +85,22 @@ export function createBrowse({
       : Object.fromEntries(appState.route.params);
   }
 
-  /** @param {import("./types").Resource[]} items */
-  function resultGroups(items) {
-    if (currentValues().q?.trim())
-      return `<section class="resource-group" data-type="search"><h2>${t("搜索结果", "Search results")}<span>${items.length}</span></h2><div class="market-grid comparison-grid">${items.map(card).join("")}</div></section>`;
-    const order = ["component", "block", "page", "case"];
+  /** @param {import("./types").Resource[]} items @param {string} type @param {string} title */
+  function resultGroup(items, type, title) {
+    return `<section class="resource-group" data-type="${type}"><h2>${title}</h2><div class="market-grid comparison-grid comparison-${type}">${items.map(card).join("")}</div></section>`;
+  }
+  /** @param {import("./types").Resource[]} items @param {string} layout */
+  function resultGroups(items, layout) {
+    if (layout === "mixed")
+      return resultGroup(items, layout, t("全部资源", "All resources"));
+    if (layout === "styles")
+      return resultGroup(items, layout, t("卡片风格对照", "Card styles"));
+    if (layout === "search")
+      return resultGroup(items, layout, t("搜索结果", "Search results"));
     return order
       .map((type) => {
         const group = items.filter((r) => r.type === type);
-        return group.length
-          ? `<section class="resource-group" data-type="${type}"><h2>${t(...types[type])}<span>${group.length}</span></h2><div class="market-grid comparison-grid comparison-${type}">${group.map(card).join("")}</div></section>`
-          : "";
+        return group.length ? resultGroup(group, type, t(...types[type])) : "";
       })
       .join("");
   }
@@ -100,12 +110,12 @@ export function createBrowse({
     const selected = selections(appState.route.params.get(name));
     return `<fieldset class="facet-group" data-facet="${name}"><legend>${label}</legend>${entries.map(([v, label]) => `<label><input type="checkbox" name="${name}" value="${v}" ${selected.includes(v) ? "checked" : ""}>${esc(label)} <span data-facet-count></span></label>`).join("")}</fieldset>`;
   }
-  /** @param {"category"|"visual"} name @param {string} label @param {[string,string]} allLabels */
-  function classification(name, label, allLabels) {
+  /** @param {"category"|"visual"} name @param {[string,string]} allLabels */
+  function classification(name, allLabels) {
     const value = appState.route.params.get(name) || "all";
     const selected = selections(value);
     const counts = countsFor(name);
-    return `<input type="hidden" name="${name}" value="${esc(value)}"><fieldset class="category-facet classification-facet"><legend>${label}</legend><div class="classification-options${name === "category" ? " category-strip" : ""}">${Object.entries(
+    return `<input type="hidden" name="${name}" value="${esc(value)}"><fieldset id="facet-${name}" class="classification-facet" hidden><legend class="sr-only">${t(...classificationNames[name])}</legend><div class="classification-options${name === "category" ? " category-strip" : ""}">${Object.entries(
       { all: allLabels, ...classificationLabels[name] },
     )
       .map(([id, labels]) => {
@@ -202,10 +212,18 @@ export function createBrowse({
     .join(
       "",
     )}</nav><label class="market-search">${icon("search")}<input name="q" type="search" aria-label="${appState.route.view === "favorites" ? t("搜索收藏", "Search saved") : t("搜索 UI", "Search UI")}" placeholder="${t("找一个按钮、悬停效果、表格…", "Find a button, hover effect, table…")}" value="${esc(appState.route.params.get("q") || "")}"><button class="icon-button" type="submit" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label><div class="catalog-facets">
-  <button type="button" class="button advanced-filters-toggle" data-advanced-filters aria-controls="advanced-filters" aria-expanded="${expanded}">${icon("sliders-horizontal")}${t("更多筛选", "More filters")}</button></div></div>
+  <button type="button" class="button advanced-filters-toggle" data-advanced-filters aria-controls="advanced-filters" aria-expanded="${expanded}" aria-label="${t("更多筛选", "More filters")}">${icon("sliders-horizontal")}${t("筛选", "Filters")}</button></div></div>
   ${collection ? `<input type="hidden" name="collection" value="${collection.id}">` : ""}
-  ${classification("category", t("用途", "Purpose"), ["全部用途", "All purposes"])}
-  ${classification("visual", t("视觉风格", "Visual style"), ["全部风格", "All styles"])}
+  <input type="hidden" name="compare" value="${appState.route.params.get("compare") === "cards" ? "cards" : ""}">
+  <div class="classification-tools">${Object.entries(classificationNames)
+    .map(
+      ([name, label]) =>
+        `<button type="button" class="button" data-classification="${name}" aria-controls="facet-${name}" aria-expanded="false">${t(...label)} · <span></span>${icon("chevron-right")}</button>`,
+    )
+    .join("")}
+  <button type="button" class="button" data-compare-cards aria-pressed="false" hidden>${t("对比卡片风格", "Compare card styles")}</button></div>
+  ${classification("category", ["全部用途", "All purposes"])}
+  ${classification("visual", ["全部风格", "All styles"])}
   <div class="filter-options-row"><div class="active-filters" id="active-filters" aria-label="${t("已选条件", "Selected filters")}"></div></div>
   <div class="advanced-filters" id="advanced-filters"><fieldset class="facet-group collection-shortcuts"><legend>${t("主题合集", "Collections")}</legend>${discovery.collections.map((c) => `<a class="text-link" href="${href("explore", "", { collection: c.id })}">${esc(l(c.name))}${icon("arrow-up-right")}</a>`).join("")}</fieldset>${selectFilter(
     "library",
@@ -282,7 +300,10 @@ export function createBrowse({
       .flatMap(([name, value]) =>
         (name === "q" ? [value] : selections(value)).map((v) => [name, v]),
       )
-      .filter(([name, v]) => name !== "domain" && v && v !== "all");
+      .filter(
+        ([name, v]) =>
+          name !== "domain" && name !== "compare" && v && v !== "all",
+      );
     element("#active-filters").innerHTML =
       chips
         .map(([name, value]) => {
@@ -350,9 +371,19 @@ export function createBrowse({
           element("[data-facet-count]", label).textContent = String(count);
       }
     }
-    for (const name of ["category", "visual"]) {
+    for (const name of /** @type {const} */ (["category", "visual"])) {
       const counts = countsFor(name);
       const selected = selections(values[name]);
+      const labels = classificationLabels[name];
+      const label =
+        selected.length === 1 && Object.hasOwn(labels, selected[0])
+          ? labels[selected[0]]
+          : null;
+      element(`[data-classification="${name}"] span`).textContent = label
+        ? t(...label)
+        : selected.length
+          ? String(selected.length)
+          : t("全部", "All");
       for (const button of all(`[data-${name}]`)) {
         if (!(button instanceof HTMLButtonElement)) continue;
         const id = button.dataset[name] || "all";
@@ -365,9 +396,9 @@ export function createBrowse({
     }
   }
 
-  /** @param {number} count */
-  function resultsSummary(count) {
-    return `<div class="market-results-line"><span><strong>${count}</strong> ${appState.route.view === "favorites" ? t("项收藏", "saved items") : t("个设计资源", "design resources")}</span><span><i class="status-dot"></i>${appState.route.view === "favorites" ? t("界面 · 指导 · 资源", "INTERFACES · GUIDANCE · RESOURCES") : t("真实交互预览 · 提示词与源码", "LIVE PREVIEWS · PROMPTS & SOURCE")}</span></div>`;
+  /** @param {number} shown @param {number} total */
+  function resultsSummary(shown, total) {
+    return `<div class="market-results-line"><span>${t("已显示", "Showing")} <strong>${shown}</strong> / ${t("匹配", "matching")} <strong>${total}</strong></span></div>`;
   }
 
   function filterParameters() {
@@ -381,6 +412,13 @@ export function createBrowse({
 
   function updateResults(updateURL = false) {
     if (!maybe("#results")) return;
+    const values = currentValues();
+    const compareAvailable = canCompareCards(appState.route, values);
+    const comparing = compareAvailable && values.compare === "cards";
+    const compareButton = element("[data-compare-cards]");
+    compareButton.hidden = !compareAvailable;
+    compareButton.setAttribute("aria-pressed", String(comparing));
+    if (!comparing) element("input[name=compare]").value = "";
     if (updateURL) {
       history.replaceState(
         { ...history.state, limit: appState.limit },
@@ -395,6 +433,31 @@ export function createBrowse({
     );
     const domain = appState.route.view === "favorites" ? savedDomain() : "ui";
     const items = domain === "tool" || domain === "guidance" ? [] : filtered();
+    const layout = comparing
+      ? "styles"
+      : values.q?.trim()
+        ? "search"
+        : appState.route.view === "explore" &&
+            Object.keys(filterParameters()).every((name) => name === "q")
+          ? "mixed"
+          : "";
+    let ordered = items;
+    if (layout === "mixed") {
+      const groups = order.map((type) =>
+        items.filter((item) => item.type === type),
+      );
+      ordered = Array.from(
+        { length: Math.max(...groups.map((group) => group.length)) },
+        (_, index) =>
+          groups.flatMap((group) => (group[index] ? [group[index]] : [])),
+      ).flat();
+    } else if (comparing && !values.q?.trim()) {
+      ordered = items.sort(
+        (a, b) =>
+          cardStyleExamples.indexOf(a.id) - cardStyleExamples.indexOf(b.id),
+      );
+    }
+    const visible = ordered.slice(0, appState.limit);
     const extra =
       appState.route.view === "favorites"
         ? extraSaved(currentValues(), domain)
@@ -405,7 +468,7 @@ export function createBrowse({
       );
     reconcileResults(
       element("#results"),
-      `${resultsSummary(items.length + extra.count)}${items.length + extra.count ? `${resultGroups(items.slice(0, appState.limit))}${extra.html}${items.length > appState.limit ? `<button class="button load-more" data-more>${t("再看一些", "Explore more")} ${icon("arrow-down")}</button>` : ""}` : `<div class="market-empty">${icon("search")}<h2 tabindex="-1">${t("换个关键词试试", "Try another search")}</h2><p>${t("也可以清空筛选，看看其他界面。", "Clear the filters to discover more interfaces.")}</p><button class="button" data-reset-filters>${t("清空筛选", "Clear filters")}</button></div>`}`,
+      `${resultsSummary(visible.length + extra.count, items.length + extra.count)}${items.length + extra.count ? `${resultGroups(visible, layout)}${extra.html}${items.length > appState.limit ? `<button class="button load-more" data-more>${t("再看一些", "Explore more")} ${icon("arrow-down")}</button>` : ""}` : `<div class="market-empty">${icon("search")}<h2 tabindex="-1">${t("换个关键词试试", "Try another search")}</h2><p>${t("也可以清空筛选，看看其他界面。", "Clear the filters to discover more interfaces.")}</p><button class="button" data-reset-filters>${t("清空筛选", "Clear filters")}</button></div>`}`,
     );
     updateFilterChips();
     updateFacetCounts();
@@ -419,8 +482,6 @@ export function createBrowse({
       if (el instanceof HTMLInputElement || el instanceof HTMLSelectElement)
         el.value = appState.route.params.get(el.name) || "all";
     updateResults();
-    updateFacetCounts();
-    observeCards();
   }
   return { listing, filtered, updateResults, restoreFilters };
 }

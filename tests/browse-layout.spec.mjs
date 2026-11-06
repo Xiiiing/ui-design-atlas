@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { openFilters } from "./navigation.mjs";
+import { openClassification, openFilters } from "./navigation.mjs";
 
 async function positions(page) {
   await page.evaluate(() => document.fonts.ready);
@@ -44,10 +44,12 @@ for (const lang of ["zh-CN", "en"]) {
       expect(await positions(page)).toEqual(before);
       await page.goForward();
       expect(await positions(page)).toEqual(before);
-      await openFilters(page);
+      await openClassification(page);
       await page.locator("[data-category=buttons]").click();
-      await page.locator("[data-advanced-filters]").click();
-      expect(await positions(page)).toEqual(before);
+      await page.locator("[data-classification=category]").click();
+      const filtered = await positions(page);
+      expect(filtered.cardTop).toBeGreaterThan(before.cardTop);
+      expect({ ...filtered, cardTop: before.cardTop }).toEqual(before);
       await page.locator("[data-remove-filter=category]").click();
       expect(await positions(page)).toEqual(before);
     }

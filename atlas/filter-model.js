@@ -31,6 +31,16 @@ export const selectedType = (route) =>
   route.view === "favorites"
     ? route.params.get("type") || ""
     : modeTypes[route.view] || "";
+export const cardStyleExamples = [
+  "folio-card",
+  "forma-card",
+  "orbit-card",
+  "bloom-card",
+];
+/** @param {Route} route @param {Record<string,string>} values */
+export const canCompareCards = (route, values) =>
+  (route.view === "explore" || route.view === "components") &&
+  values.category === "cards";
 /** Explicit inputs: computing counts or detail neighbors never mutates navigation. @param {Resource[]} resources @param {Route} route @param {ReadonlySet<string>} favorites @param {Record<string,string>} [values] @param {string} [omit] */
 export function filterResources(
   resources,
@@ -40,12 +50,15 @@ export function filterResources(
   omit = "",
 ) {
   const type = selectedType(route),
+    compare =
+      !omit && values.compare === "cards" && canCompareCards(route, values),
     collection = values.collection
       ? new Set(collectionResources(values.collection).map((r) => r.id))
       : null;
   return searchResources(
     values.q || "",
     resources.filter((r) => {
+      if (compare && !cardStyleExamples.includes(r.id)) return false;
       if (collection && !collection.has(r.id)) return false;
       if (route.view === "favorites" && !favorites.has(`${r.type}:${r.id}`))
         return false;

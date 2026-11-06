@@ -1,3 +1,4 @@
+import { openClassification } from "./navigation.mjs";
 import { test, expect } from "@playwright/test";
 import { resources } from "../catalog.js";
 
@@ -67,6 +68,7 @@ test("Filter chips remove individual conditions and collapsed filters retain the
 }) => {
   await page.goto("#explore?lang=en");
   await page.locator("[data-advanced-filters]").click();
+  await openClassification(page);
   await page.locator("[data-category=feedback]").click();
   await choose(page, "#filter-library", "Fluent UI React v9");
   await choose(page, "#filter-source", "Open source");

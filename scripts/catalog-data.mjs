@@ -227,10 +227,26 @@ export function catalogEsbuildPlugin(root) {
       );
       build.onLoad(
         { filter: /[/\\]content[/\\]resources\.json$/ },
-        async () => ({
-          contents: JSON.stringify((await readCatalog(root)).map(summaryOf)),
-          loader: "json",
-        }),
+        async () => {
+          const rows = (await readCatalog(root)).map(summaryOf);
+          // Keep repeated fields together for compression. Sparse slots
+          // preserve absent properties without changing the runtime records.
+          const fields = [...new Set(rows.flatMap(Object.keys))].sort();
+          const columns = fields.map((key) => {
+            const values = rows.map((row) => JSON.stringify(row[key])).join(",");
+            return `${JSON.stringify(key)}:[${values},]`;
+          });
+          return {
+            contents: `
+              const columns = {${columns.join(",")}};
+              const rows = Array.from({ length: ${rows.length} }, () => ({}));
+              for (const [key, column] of Object.entries(columns))
+                column.forEach((value, index) => { rows[index][key] = value; });
+              export default rows;
+            `,
+            loader: "js",
+          };
+        },
       );
     },
   };
