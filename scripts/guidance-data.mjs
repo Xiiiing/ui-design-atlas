@@ -36,7 +36,9 @@ export function validateGuidance(guidance, tools, resources, sources) {
     if (
       !/^[-a-z0-9]+$/.test(tool.id) ||
       toolIds.has(tool.id) ||
-      !["library", "skills", "design", "learning"].includes(tool.kind) ||
+      !["library", "tooling", "skills", "design", "learning"].includes(
+        tool.kind,
+      ) ||
       (!tool.repo && !tool.website) ||
       (tool.repo !== undefined &&
         !/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+$/.test(tool.repo)) ||

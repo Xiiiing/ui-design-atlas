@@ -312,5 +312,360 @@
       "学习路线",
       "学习资料"
     ]
+  },
+  {
+    "id": "anthropic-skills",
+    "name": {
+      "zh-CN": "Anthropic Skills",
+      "en": "Anthropic Skills"
+    },
+    "kind": "skills",
+    "repo": "https://github.com/anthropics/skills",
+    "website": "https://github.com/anthropics/skills/tree/main/skills/frontend-design",
+    "description": {
+      "zh-CN": "包含 frontend-design 等面向智能体的 Skills，可参考其前端设计指令。",
+      "en": "Agent Skills from Anthropic, including frontend-design instructions for building interfaces."
+    },
+    "technologies": [
+      "Agent Skills",
+      "Markdown"
+    ],
+    "aliases": [
+      "frontend-design",
+      "Anthropic",
+      "前端设计",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "shadcn-ui",
+    "name": {
+      "zh-CN": "shadcn/ui",
+      "en": "shadcn/ui"
+    },
+    "kind": "library",
+    "repo": "https://github.com/shadcn-ui/ui",
+    "website": "https://ui.shadcn.com/",
+    "description": {
+      "zh-CN": "可将组件源码复制到项目并按需修改，也提供登录、侧栏和仪表盘区块。",
+      "en": "Copy component source into your project and customize it. Includes login, sidebar and dashboard blocks."
+    },
+    "technologies": [
+      "React",
+      "Tailwind CSS"
+    ],
+    "aliases": [
+      "shadcn",
+      "区块",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "radix-primitives",
+    "name": {
+      "zh-CN": "Radix Primitives",
+      "en": "Radix Primitives"
+    },
+    "kind": "library",
+    "repo": "https://github.com/radix-ui/primitives",
+    "website": "https://www.radix-ui.com/primitives",
+    "description": {
+      "zh-CN": "无样式 React 基础组件，提供下拉菜单、对话框和弹出层的焦点及键盘行为。",
+      "en": "Unstyled React primitives with focus and keyboard behavior for menus, dialogs and popovers."
+    },
+    "technologies": [
+      "React",
+      "TypeScript"
+    ],
+    "aliases": [
+      "Radix UI",
+      "无头组件",
+      "下拉菜单",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "cmdk",
+    "name": {
+      "zh-CN": "cmdk",
+      "en": "cmdk"
+    },
+    "kind": "library",
+    "repo": "https://github.com/dip/cmdk",
+    "description": {
+      "zh-CN": "可组合的 React 命令菜单，内置搜索过滤和键盘选择。",
+      "en": "A composable React command menu with built-in search filtering and keyboard selection."
+    },
+    "technologies": [
+      "React",
+      "TypeScript"
+    ],
+    "aliases": [
+      "命令面板",
+      "command palette",
+      "⌘K",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "impeccable",
+    "name": {
+      "zh-CN": "Impeccable",
+      "en": "Impeccable"
+    },
+    "kind": "skills",
+    "repo": "https://github.com/pbakaus/impeccable",
+    "website": "https://impeccable.style/",
+    "description": {
+      "zh-CN": "以设计审查、界面润色和排版调整为主要任务的前端设计 Skill。",
+      "en": "A frontend design skill with workflows for design critique, polish and typography."
+    },
+    "technologies": [
+      "Agent Skills"
+    ],
+    "aliases": [
+      "设计审查",
+      "界面润色",
+      "critique",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "magic-ui",
+    "name": {
+      "zh-CN": "Magic UI",
+      "en": "Magic UI"
+    },
+    "kind": "library",
+    "repo": "https://github.com/magicuidesign/magicui",
+    "website": "https://magicui.design/",
+    "description": {
+      "zh-CN": "提供流光边框、闪光按钮、跑马灯等可复制的 React 动效组件。",
+      "en": "Copy-ready animated React components such as border beams, shimmer buttons and marquees."
+    },
+    "technologies": [
+      "React",
+      "Motion",
+      "Tailwind CSS"
+    ],
+    "aliases": [
+      "MagicUI",
+      "动效",
+      "marquee",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "sonner",
+    "name": {
+      "zh-CN": "Sonner",
+      "en": "Sonner"
+    },
+    "kind": "library",
+    "repo": "https://github.com/emilkowalski/sonner",
+    "website": "https://sonner.emilkowal.ski/",
+    "description": {
+      "zh-CN": "用于堆叠、展开和关闭临时通知的 React Toast 库。",
+      "en": "A React toast library for stacking, expanding and dismissing transient notifications."
+    },
+    "technologies": [
+      "React"
+    ],
+    "aliases": [
+      "Toast",
+      "消息通知",
+      "堆叠",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "tailwind-css",
+    "name": {
+      "zh-CN": "Tailwind CSS",
+      "en": "Tailwind CSS"
+    },
+    "kind": "tooling",
+    "repo": "https://github.com/tailwindlabs/tailwindcss",
+    "website": "https://tailwindcss.com/",
+    "description": {
+      "zh-CN": "以工具类组织布局、排版、断点和状态的 CSS 框架。",
+      "en": "A utility-first CSS framework for layout, typography, breakpoints and states."
+    },
+    "technologies": [
+      "CSS"
+    ],
+    "aliases": [
+      "Tailwind",
+      "原子化 CSS",
+      "工具类",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "storybook",
+    "name": {
+      "zh-CN": "Storybook",
+      "en": "Storybook"
+    },
+    "kind": "tooling",
+    "repo": "https://github.com/storybookjs/storybook",
+    "website": "https://storybook.js.org/",
+    "description": {
+      "zh-CN": "独立运行、记录和测试 UI 组件状态的开发环境。",
+      "en": "A development environment for building, documenting and testing UI component states in isolation."
+    },
+    "technologies": [
+      "Component testing",
+      "Documentation"
+    ],
+    "aliases": [
+      "组件测试",
+      "组件文档",
+      "交互验收",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "vaul",
+    "name": {
+      "zh-CN": "Vaul",
+      "en": "Vaul"
+    },
+    "kind": "library",
+    "repo": "https://github.com/emilkowalski/vaul",
+    "description": {
+      "zh-CN": "提供可拖动的 React 抽屉，适用于移动端底部操作面板。",
+      "en": "A draggable React drawer suited to bottom sheets on touch devices."
+    },
+    "technologies": [
+      "React",
+      "Radix UI"
+    ],
+    "aliases": [
+      "底部抽屉",
+      "bottom sheet",
+      "拖动",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "tabler-icons",
+    "name": {
+      "zh-CN": "Tabler Icons",
+      "en": "Tabler Icons"
+    },
+    "kind": "library",
+    "repo": "https://github.com/tabler/tabler-icons",
+    "website": "https://tabler.io/icons",
+    "description": {
+      "zh-CN": "开源线条 SVG 图标库，支持独立 SVG 和 React 等集成方式。",
+      "en": "An open-source outline SVG icon library with standalone SVGs and integrations including React."
+    },
+    "technologies": [
+      "SVG",
+      "React"
+    ],
+    "aliases": [
+      "Tabler",
+      "线条图标",
+      "iconography",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "tremor",
+    "name": {
+      "zh-CN": "Tremor",
+      "en": "Tremor"
+    },
+    "kind": "library",
+    "repo": "https://github.com/tremorlabs/tremor",
+    "website": "https://tremor.so/",
+    "description": {
+      "zh-CN": "面向仪表盘的数据展示组件，提供可复制的指标、进度和图表源码。",
+      "en": "Copy-ready dashboard components for metrics, progress and charts."
+    },
+    "technologies": [
+      "React",
+      "Tailwind CSS"
+    ],
+    "aliases": [
+      "KPI",
+      "仪表盘",
+      "指标卡",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "recharts",
+    "name": {
+      "zh-CN": "Recharts",
+      "en": "Recharts"
+    },
+    "kind": "library",
+    "repo": "https://github.com/recharts/recharts",
+    "website": "https://recharts.github.io/",
+    "description": {
+      "zh-CN": "用可组合的 React 组件绘制柱状图、折线图和面积图。",
+      "en": "Composable React components for drawing bar, line and area charts."
+    },
+    "technologies": [
+      "React",
+      "SVG"
+    ],
+    "aliases": [
+      "数据可视化",
+      "柱状图",
+      "图表",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "mantine",
+    "name": {
+      "zh-CN": "Mantine",
+      "en": "Mantine"
+    },
+    "kind": "library",
+    "repo": "https://github.com/mantinedev/mantine",
+    "website": "https://mantine.dev/",
+    "description": {
+      "zh-CN": "提供表单、布局、反馈组件及 hooks 的 React UI 库，可配置主题和组件样式。",
+      "en": "A React UI library with form, layout and feedback components, hooks and customizable themes."
+    },
+    "technologies": [
+      "React",
+      "TypeScript"
+    ],
+    "aliases": [
+      "分段控件",
+      "SegmentedControl",
+      "主题",
+      "0xclayo"
+    ]
+  },
+  {
+    "id": "daisyui",
+    "name": {
+      "zh-CN": "daisyUI",
+      "en": "daisyUI"
+    },
+    "kind": "library",
+    "repo": "https://github.com/saadeghi/daisyui",
+    "website": "https://daisyui.com/",
+    "description": {
+      "zh-CN": "通过语义类名提供按钮、卡片和输入控件的 Tailwind CSS 插件，内置可切换主题。",
+      "en": "A Tailwind CSS plugin with semantic classes for buttons, cards and inputs and built-in themes."
+    },
+    "technologies": [
+      "Tailwind CSS",
+      "CSS"
+    ],
+    "aliases": [
+      "daisy UI",
+      "主题切换",
+      "theme switcher",
+      "0xclayo"
+    ]
   }
 ]

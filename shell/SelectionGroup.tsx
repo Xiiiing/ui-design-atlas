@@ -1,24 +1,16 @@
 // Atlas adapter of the archived Yingxu selection: animate explicit geometry only.
 // The immutable upstream reference and its styles remain under vendor/.
 import {
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
   type HTMLAttributes,
   type ReactNode,
 } from "react";
-import {
-  m,
-  LazyMotion,
-  domAnimation,
-  useMotionValue,
-  useReducedMotion,
-  useTransform,
-  useVelocity,
-} from "motion/react";
 import "../vendor/yingxu-ui/reference/css/selection.css";
 
-type Box = { x: number; y: number; width: number; height: number };
+export type Box = { x: number; y: number; width: number; height: number };
 /** A single visual selection follows the active control without moving its text. */
 export function SelectionGroup({
   as: Tag = "div",
@@ -35,21 +27,63 @@ export function SelectionGroup({
   selector?: string;
   children: ReactNode;
 }) {
-  const root = useRef<HTMLElement>(null),
-    reduce = useReducedMotion();
+  const root = useRef<HTMLElement>(null);
+  const marker = useRef<HTMLSpanElement>(null);
+  const latest = useRef<Box | null>(null);
+  const motion = useRef<ReturnType<
+    typeof import("./selection-motion").animateSelection
+  > | null>(null);
   const [box, setBox] = useState<Box | null>(null);
-  const markerX = useMotionValue(0);
-  const speed = useVelocity(markerX);
-  // Stretch only the visual marker in proportion to its actual movement. This
-  // also works for equal-width choices and continuous, interrupted gestures.
-  const stretch = useTransform(speed, (v) =>
-    reduce ? 1 : 1 + Math.min(Math.abs(v) / 12000, 0.065),
-  );
-  const squash = useTransform(speed, (v) =>
-    reduce || variant === "underline"
-      ? 1
-      : 1 - Math.min(Math.abs(v) / 32000, 0.02),
-  );
+
+  useEffect(() => {
+    const group = root.current;
+    if (!group) return;
+    const controller = new AbortController();
+    const { signal } = controller;
+    let pending = false;
+    const prepare = () => {
+      if (pending || motion.current || !marker.current) return;
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      pending = true;
+      void import("./selection-motion")
+        .then(({ animateSelection }) => {
+          if (signal.aborted || !marker.current || !latest.current) return;
+          motion.current = animateSelection(marker.current, variant);
+          motion.current.update(latest.current);
+        })
+        .catch(() => {
+          // The marker follows selection using CSS if optional motion is unavailable.
+        })
+        .finally(() => {
+          pending = false;
+        });
+    };
+    group.addEventListener("pointerenter", prepare, { signal });
+    group.addEventListener("focusin", prepare, { signal });
+    group.addEventListener("click", prepare, { capture: true, signal });
+    return () => {
+      controller.abort();
+      motion.current?.destroy();
+      motion.current = null;
+    };
+  }, [variant]);
+
+  useLayoutEffect(() => {
+    latest.current = box;
+    if (!box || !marker.current) {
+      motion.current?.destroy();
+      motion.current = null;
+      return;
+    }
+    if (motion.current) {
+      motion.current.update(box);
+    } else {
+      marker.current.style.width = `${box.width}px`;
+      marker.current.style.height = `${box.height}px`;
+      marker.current.style.transform = `translate(${box.x}px, ${box.y}px)`;
+    }
+  }, [box]);
+
   useLayoutEffect(() => {
     const group = root.current;
     if (!group) return;
@@ -131,8 +165,6 @@ export function SelectionGroup({
       window.removeEventListener("resize", schedule);
     };
   }, [value, variant, selector]);
-  // Motion tracks both position and changing item width; the spring retains its
-  // current velocity when a user selects again before the previous move ends.
   return (
     <Tag
       {...props}
@@ -143,21 +175,12 @@ export function SelectionGroup({
     >
       {children}
       {box && (
-        <LazyMotion features={domAnimation}>
-          <m.span
-            aria-hidden="true"
-            data-selection-marker
-            className="selection-marker"
-            initial={false}
-            style={{ x: markerX, scaleX: stretch, scaleY: squash }}
-            animate={box}
-            transition={
-              reduce
-                ? { duration: 0 }
-                : { type: "spring", stiffness: 440, damping: 34, mass: 0.75 }
-            }
-          />
-        </LazyMotion>
+        <span
+          ref={marker}
+          aria-hidden="true"
+          className="selection-marker"
+          data-selection-marker
+        />
       )}
     </Tag>
   );

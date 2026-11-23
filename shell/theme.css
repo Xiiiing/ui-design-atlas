@@ -112,3 +112,12 @@ html[data-theme="dark"] {
   --leading-page: 48px;
   --icon-stroke: 1.65;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .selection-marker:not([data-selection-motion]) {
+    transition:
+      transform 220ms ease-out,
+      width 220ms ease-out,
+      height 220ms ease-out;
+  }
+}

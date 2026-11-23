@@ -1,5 +1,23 @@
 import { lazy } from "react";
 export const demos = {
+  "radix-file-menu": lazy(() => import("./demos/ui-references/radix-menu")),
+  "cmdk-workspace-command": lazy(
+    () => import("./demos/ui-references/command-menu"),
+  ),
+  "sonner-toast-stack": lazy(
+    () => import("./demos/ui-references/sonner-stack"),
+  ),
+  "vaul-sort-sheet": lazy(() => import("./demos/ui-references/vaul-sheet")),
+  "tabler-icon-browser": lazy(
+    () => import("./demos/ui-references/tabler-icons"),
+  ),
+  "tremor-delivery-kpi": lazy(() => import("./demos/ui-references/tremor-kpi")),
+  "mantine-list-density": lazy(
+    () => import("./demos/ui-references/mantine-settings"),
+  ),
+  "daisyui-theme-switcher": lazy(
+    () => import("./demos/ui-references/daisy-themes"),
+  ),
   "boardui-agent-thinking": lazy(
     () => import("./demos/intake/boardui-thinking"),
   ),

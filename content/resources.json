@@ -12762,5 +12762,779 @@
     ],
     "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
     "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
+  },
+  {
+    "id": "radix-file-menu",
+    "key": "radix-file-menu",
+    "type": "component",
+    "sourceId": "radix-primitives",
+    "libraryIds": [
+      "radix-primitives"
+    ],
+    "category": "navigation",
+    "categories": [
+      "navigation",
+      "files",
+      "settings"
+    ],
+    "interactions": [
+      "click"
+    ],
+    "motion": false,
+    "styleId": "reference-minimal",
+    "style": {
+      "zh-CN": "中性极简",
+      "en": "Neutral minimal"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "文件操作菜单",
+      "en": "File actions menu"
+    },
+    "description": {
+      "zh-CN": "使用 Radix 菜单切换文件置顶状态和列表显示方式。",
+      "en": "Use a Radix menu to pin a file and switch its display mode."
+    },
+    "tags": {
+      "zh-CN": [
+        "Radix Primitives",
+        "文件操作菜单"
+      ],
+      "en": [
+        "Radix Primitives",
+        "File actions menu"
+      ]
+    },
+    "aliases": [
+      "Radix UI",
+      "无头组件",
+      "下拉菜单"
+    ],
+    "useCases": {
+      "zh-CN": "列表项附属操作、显示偏好。",
+      "en": "Secondary actions and view preferences for list items."
+    },
+    "principle": {
+      "zh-CN": "菜单把单独开关和互斥选项分组，并用对勾呈现当前状态。",
+      "en": "Group the independent toggle separately from the mutually exclusive options and mark current values with checkmarks."
+    },
+    "rules": {
+      "zh-CN": [
+        "打开菜单后用鼠标或方向键选择。复选项切换置顶，单选项切换列表或卡片，当前状态显示在文件名下。",
+        "使用浅色面板、细分隔线和对齐的状态勾选，保留清晰的键盘高亮。"
+      ],
+      "en": [
+        "Open the menu and use the pointer or arrow keys to choose. The checkbox toggles pinning, the radio group selects List or Cards, and the current state appears below the file name.",
+        "Use a lightly bordered surface, a fine divider and aligned checkmarks, with a distinct keyboard highlight."
+      ]
+    },
+    "files": [
+      "src/demos/ui-references/radix-menu.tsx"
+    ],
+    "originalUrl": "https://www.radix-ui.com/primitives/docs/components/dropdown-menu",
+    "sourceUrl": "https://github.com/radix-ui/primitives/blob/f825330a9639c439f56180ea6b0685672f2bbb29/packages/react/dropdown-menu/src/dropdown-menu.tsx",
+    "cover": "./assets/previews/component-radix-file-menu.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=radix-file-menu",
+      "mode": "canvas"
+    },
+    "provenance": "open-source",
+    "prompt": {
+      "zh-CN": "使用 Radix Primitives 实现「文件操作菜单」。打开菜单后用鼠标或方向键选择。复选项切换置顶，单选项切换列表或卡片，当前状态显示在文件名下。\n\n使用浅色面板、细分隔线和对齐的状态勾选，保留清晰的键盘高亮。 保留源码中的依赖、来源与许可。",
+      "en": "Use Radix Primitives to build file actions menu. Open the menu and use the pointer or arrow keys to choose. The checkbox toggles pinning, the radio group selects List or Cards, and the current state appears below the file name.\n\nUse a lightly bordered surface, a fine divider and aligned checkmarks, with a distinct keyboard highlight. Retain the dependencies, attribution and license included with the source."
+    },
+    "stylePrompt": {
+      "zh-CN": "使用浅色面板、细分隔线和对齐的状态勾选，保留清晰的键盘高亮。",
+      "en": "Use a lightly bordered surface, a fine divider and aligned checkmarks, with a distinct keyboard highlight."
+    },
+    "supportFiles": [
+      "src/demos/ui-references/shared.tsx",
+      "src/demos/ui-references/references.css"
+    ]
+  },
+  {
+    "id": "cmdk-workspace-command",
+    "key": "cmdk-workspace-command",
+    "type": "component",
+    "sourceId": "cmdk",
+    "libraryIds": [
+      "cmdk"
+    ],
+    "category": "search",
+    "categories": [
+      "search",
+      "navigation"
+    ],
+    "interactions": [
+      "input",
+      "click"
+    ],
+    "motion": false,
+    "styleId": "reference-minimal",
+    "style": {
+      "zh-CN": "中性极简",
+      "en": "Neutral minimal"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "工作区命令面板",
+      "en": "Workspace command palette"
+    },
+    "description": {
+      "zh-CN": "按中英文搜索命令，用方向键和回车选择。",
+      "en": "Search commands in Chinese or English, then select with arrow keys and Enter."
+    },
+    "tags": {
+      "zh-CN": [
+        "cmdk",
+        "工作区命令面板"
+      ],
+      "en": [
+        "cmdk",
+        "Workspace command palette"
+      ]
+    },
+    "aliases": [
+      "命令面板",
+      "command palette",
+      "⌘K"
+    ],
+    "useCases": {
+      "zh-CN": "桌面工作区快捷操作、站内命令检索。",
+      "en": "Workspace shortcuts and in-app command search."
+    },
+    "principle": {
+      "zh-CN": "输入框与结果共用一个面板，焦点和当前选项都可见。",
+      "en": "Keep the input and results on one surface, with visible focus and selection."
+    },
+    "rules": {
+      "zh-CN": [
+        "用 Ctrl K 或 ⌘ K 聚焦输入框。检索三个示例命令，确认后清空搜索并报告所选命令。",
+        "用一条细线分隔输入与结果，浅底突出当前选项，图标与动作标签按同一列对齐。"
+      ],
+      "en": [
+        "Focus the search field with Ctrl K or ⌘ K. Search three sample commands, then clear the query and show which command was selected.",
+        "Separate input and results with a fine rule, tint the active option and align icons and action labels."
+      ]
+    },
+    "files": [
+      "src/demos/ui-references/command-menu.tsx"
+    ],
+    "originalUrl": "https://github.com/dip/cmdk#use",
+    "sourceUrl": "https://github.com/dip/cmdk/blob/fb4ea04e9ec211777fbb39c6104e3c5f2ee107d2/cmdk/src/index.tsx",
+    "cover": "./assets/previews/component-cmdk-workspace-command.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=cmdk-workspace-command",
+      "mode": "canvas"
+    },
+    "provenance": "open-source",
+    "prompt": {
+      "zh-CN": "使用 cmdk 实现「工作区命令面板」。用 Ctrl K 或 ⌘ K 聚焦输入框。检索三个示例命令，确认后清空搜索并报告所选命令。\n\n用一条细线分隔输入与结果，浅底突出当前选项，图标与动作标签按同一列对齐。 保留源码中的依赖、来源与许可。",
+      "en": "Use cmdk to build workspace command palette. Focus the search field with Ctrl K or ⌘ K. Search three sample commands, then clear the query and show which command was selected.\n\nSeparate input and results with a fine rule, tint the active option and align icons and action labels. Retain the dependencies, attribution and license included with the source."
+    },
+    "stylePrompt": {
+      "zh-CN": "用一条细线分隔输入与结果，浅底突出当前选项，图标与动作标签按同一列对齐。",
+      "en": "Separate input and results with a fine rule, tint the active option and align icons and action labels."
+    },
+    "supportFiles": [
+      "src/demos/ui-references/shared.tsx",
+      "src/demos/ui-references/references.css"
+    ]
+  },
+  {
+    "id": "sonner-toast-stack",
+    "key": "sonner-toast-stack",
+    "type": "component",
+    "sourceId": "sonner",
+    "libraryIds": [
+      "sonner"
+    ],
+    "category": "feedback",
+    "categories": [
+      "feedback"
+    ],
+    "interactions": [
+      "click",
+      "hover"
+    ],
+    "motion": true,
+    "styleId": "reference-minimal",
+    "style": {
+      "zh-CN": "中性极简",
+      "en": "Neutral minimal"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "堆叠消息通知",
+      "en": "Stacked toast notifications"
+    },
+    "description": {
+      "zh-CN": "连续触发三条通知，悬停展开或手动清除。",
+      "en": "Trigger three stacked notifications, hover to expand them and clear them manually."
+    },
+    "tags": {
+      "zh-CN": [
+        "Sonner",
+        "堆叠消息通知"
+      ],
+      "en": [
+        "Sonner",
+        "Stacked toast notifications"
+      ]
+    },
+    "aliases": [
+      "Toast",
+      "消息通知",
+      "堆叠"
+    ],
+    "useCases": {
+      "zh-CN": "保存、协作和错误等短时反馈。",
+      "en": "Transient feedback for saves, collaboration and errors."
+    },
+    "principle": {
+      "zh-CN": "较新的消息置于顶部。展开后可逐条读取，收起时节约空间。",
+      "en": "Newer messages lead the stack. Expanding makes individual messages readable, while the collapsed stack saves space."
+    },
+    "rules": {
+      "zh-CN": [
+        "一次触发成功、信息和错误三条本地通知。鼠标悬停展开，可用关闭按钮移除单条或清除全部。",
+        "用一致的位置、语义颜色和图标区分通知意图，堆叠状态保留卡片轮廓。"
+      ],
+      "en": [
+        "Trigger local success, info and error notifications together. Hover to expand, dismiss items individually or clear the stack.",
+        "Use consistent placement, semantic color and icons for each intent, preserving visible card edges in the stack."
+      ]
+    },
+    "files": [
+      "src/demos/ui-references/sonner-stack.tsx"
+    ],
+    "originalUrl": "https://sonner.emilkowal.ski/",
+    "sourceUrl": "https://github.com/emilkowalski/sonner/blob/ecce1841c55e4a72dfe139a8992b56498660125e/src/index.tsx",
+    "cover": "./assets/previews/component-sonner-toast-stack.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=sonner-toast-stack",
+      "mode": "canvas"
+    },
+    "provenance": "open-source",
+    "prompt": {
+      "zh-CN": "使用 Sonner 实现「堆叠消息通知」。一次触发成功、信息和错误三条本地通知。鼠标悬停展开，可用关闭按钮移除单条或清除全部。\n\n用一致的位置、语义颜色和图标区分通知意图，堆叠状态保留卡片轮廓。 保留源码中的依赖、来源与许可。",
+      "en": "Use Sonner to build stacked toast notifications. Trigger local success, info and error notifications together. Hover to expand, dismiss items individually or clear the stack.\n\nUse consistent placement, semantic color and icons for each intent, preserving visible card edges in the stack. Retain the dependencies, attribution and license included with the source."
+    },
+    "stylePrompt": {
+      "zh-CN": "用一致的位置、语义颜色和图标区分通知意图，堆叠状态保留卡片轮廓。",
+      "en": "Use consistent placement, semantic color and icons for each intent, preserving visible card edges in the stack."
+    },
+    "supportFiles": [
+      "src/demos/ui-references/shared.tsx",
+      "src/demos/ui-references/references.css"
+    ]
+  },
+  {
+    "id": "vaul-sort-sheet",
+    "key": "vaul-sort-sheet",
+    "type": "component",
+    "sourceId": "vaul",
+    "libraryIds": [
+      "vaul"
+    ],
+    "category": "forms",
+    "categories": [
+      "forms",
+      "settings"
+    ],
+    "interactions": [
+      "click",
+      "drag"
+    ],
+    "motion": true,
+    "styleId": "reference-minimal",
+    "style": {
+      "zh-CN": "中性极简",
+      "en": "Neutral minimal"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "底部排序抽屉",
+      "en": "Bottom sort sheet"
+    },
+    "description": {
+      "zh-CN": "从底部打开排序选项，应用后更新，也可拖动关闭。",
+      "en": "Open sort options from the bottom, apply a choice or drag to dismiss."
+    },
+    "tags": {
+      "zh-CN": [
+        "Vaul",
+        "底部排序抽屉"
+      ],
+      "en": [
+        "Vaul",
+        "Bottom sort sheet"
+      ]
+    },
+    "aliases": [
+      "底部抽屉",
+      "bottom sheet",
+      "拖动"
+    ],
+    "useCases": {
+      "zh-CN": "移动端筛选、排序和少量设置。",
+      "en": "Mobile filtering, sorting and short settings tasks."
+    },
+    "principle": {
+      "zh-CN": "底部面板把操作留在近手区域，关闭与应用分别对应草稿和确认。",
+      "en": "The bottom surface keeps controls within reach, with distinct draft and apply states."
+    },
+    "rules": {
+      "zh-CN": [
+        "从抽屉内选择最近更新或名称，应用后更新外部状态。取消、Escape 或向下拖动关闭会丢弃草稿。",
+        "用顶部把手、圆角和半透明遮罩描述面板边界，将确认动作放在选项之后。"
+      ],
+      "en": [
+        "Choose Recently updated or Name in the drawer and apply to update the summary. Cancel, Escape and a downward drag discard the draft.",
+        "Use a top handle, rounded upper corners and a translucent overlay, placing confirmation after the choices."
+      ]
+    },
+    "files": [
+      "src/demos/ui-references/vaul-sheet.tsx"
+    ],
+    "originalUrl": "https://vaul.emilkowal.ski/",
+    "sourceUrl": "https://github.com/emilkowalski/vaul/blob/6ba4c44ad99fdfec7def4fa47cabd229fc261965/src/index.tsx",
+    "cover": "./assets/previews/component-vaul-sort-sheet.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=vaul-sort-sheet",
+      "mode": "canvas"
+    },
+    "provenance": "open-source",
+    "prompt": {
+      "zh-CN": "使用 Vaul 实现「底部排序抽屉」。从抽屉内选择最近更新或名称，应用后更新外部状态。取消、Escape 或向下拖动关闭会丢弃草稿。\n\n用顶部把手、圆角和半透明遮罩描述面板边界，将确认动作放在选项之后。 保留源码中的依赖、来源与许可。",
+      "en": "Use Vaul to build bottom sort sheet. Choose Recently updated or Name in the drawer and apply to update the summary. Cancel, Escape and a downward drag discard the draft.\n\nUse a top handle, rounded upper corners and a translucent overlay, placing confirmation after the choices. Retain the dependencies, attribution and license included with the source."
+    },
+    "stylePrompt": {
+      "zh-CN": "用顶部把手、圆角和半透明遮罩描述面板边界，将确认动作放在选项之后。",
+      "en": "Use a top handle, rounded upper corners and a translucent overlay, placing confirmation after the choices."
+    },
+    "supportFiles": [
+      "src/demos/ui-references/shared.tsx",
+      "src/demos/ui-references/references.css"
+    ]
+  },
+  {
+    "id": "tabler-icon-browser",
+    "key": "tabler-icon-browser",
+    "type": "component",
+    "sourceId": "tabler-icons",
+    "libraryIds": [
+      "tabler-icons"
+    ],
+    "category": "data",
+    "categories": [
+      "data",
+      "search"
+    ],
+    "interactions": [
+      "input"
+    ],
+    "motion": false,
+    "styleId": "reference-minimal",
+    "style": {
+      "zh-CN": "中性极简",
+      "en": "Neutral minimal"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "线条图标浏览器",
+      "en": "Outline icon browser"
+    },
+    "description": {
+      "zh-CN": "从十个 Tabler 图标中检索并调整线宽。",
+      "en": "Search ten Tabler icons and adjust their stroke width."
+    },
+    "tags": {
+      "zh-CN": [
+        "Tabler Icons",
+        "线条图标浏览器"
+      ],
+      "en": [
+        "Tabler Icons",
+        "Outline icon browser"
+      ]
+    },
+    "aliases": [
+      "Tabler",
+      "线条图标",
+      "iconography"
+    ],
+    "useCases": {
+      "zh-CN": "选取导航、操作或反馈图标，检查不同线宽的一致性。",
+      "en": "Select icons for navigation, actions or feedback and compare stroke weights."
+    },
+    "principle": {
+      "zh-CN": "使用固定图标尺寸和统一网格，以便把辨识度差异归因于图形和线宽。",
+      "en": "A fixed icon size and uniform grid make differences in shape and stroke easier to compare."
+    },
+    "rules": {
+      "zh-CN": [
+        "按中英文名称过滤十个 SVG 图标，滑块同步调整所有可见图标的线宽。",
+        "让图标置于等宽网格，名称放在图标下方，空状态保留搜索和线宽控件。"
+      ],
+      "en": [
+        "Filter ten SVG icons by an English or Chinese name and adjust every visible icon’s stroke with one slider.",
+        "Use an equal-width grid with names below the icons and keep the controls visible in the empty state."
+      ]
+    },
+    "files": [
+      "src/demos/ui-references/tabler-icons.tsx"
+    ],
+    "originalUrl": "https://tabler.io/icons",
+    "sourceUrl": "https://github.com/tabler/tabler-icons/blob/009744c9d381b96c31a0ccd53582c1c0e953dbac/README.md",
+    "cover": "./assets/previews/component-tabler-icon-browser.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=tabler-icon-browser",
+      "mode": "canvas"
+    },
+    "provenance": "open-source",
+    "prompt": {
+      "zh-CN": "使用 Tabler Icons 实现「线条图标浏览器」。按中英文名称过滤十个 SVG 图标，滑块同步调整所有可见图标的线宽。\n\n让图标置于等宽网格，名称放在图标下方，空状态保留搜索和线宽控件。 保留源码中的依赖、来源与许可。",
+      "en": "Use Tabler Icons to build outline icon browser. Filter ten SVG icons by an English or Chinese name and adjust every visible icon’s stroke with one slider.\n\nUse an equal-width grid with names below the icons and keep the controls visible in the empty state. Retain the dependencies, attribution and license included with the source."
+    },
+    "stylePrompt": {
+      "zh-CN": "让图标置于等宽网格，名称放在图标下方，空状态保留搜索和线宽控件。",
+      "en": "Use an equal-width grid with names below the icons and keep the controls visible in the empty state."
+    },
+    "supportFiles": [
+      "src/demos/ui-references/shared.tsx",
+      "src/demos/ui-references/references.css"
+    ]
+  },
+  {
+    "id": "tremor-delivery-kpi",
+    "key": "tremor-delivery-kpi",
+    "type": "component",
+    "sourceId": "tremor",
+    "libraryIds": [
+      "tremor"
+    ],
+    "category": "data",
+    "categories": [
+      "data",
+      "cards"
+    ],
+    "interactions": [
+      "click"
+    ],
+    "motion": true,
+    "styleId": "reference-minimal",
+    "style": {
+      "zh-CN": "中性极简",
+      "en": "Neutral minimal"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "交付进度指标卡",
+      "en": "Delivery progress KPI"
+    },
+    "description": {
+      "zh-CN": "切换周或月，比较交付数量、目标和 Tremor 进度条。",
+      "en": "Switch between week and month to compare actual deliveries, the target and a Tremor progress bar."
+    },
+    "tags": {
+      "zh-CN": [
+        "Tremor",
+        "交付进度指标卡"
+      ],
+      "en": [
+        "Tremor",
+        "Delivery progress KPI"
+      ]
+    },
+    "aliases": [
+      "KPI",
+      "仪表盘",
+      "指标卡"
+    ],
+    "useCases": {
+      "zh-CN": "目标完成度、配额和仪表盘摘要。",
+      "en": "Targets, quotas and dashboard summaries."
+    },
+    "principle": {
+      "zh-CN": "实际值、目标和百分比共享同一组数据，数字与视觉条形互相补充。",
+      "en": "Show actual, target and percent from the same data, with numerals and a bar reinforcing each other."
+    },
+    "rules": {
+      "zh-CN": [
+        "切换本周与本月，使用 72/100 与 318/400 条本地示例数据。让进度条以真实目标为上限。",
+        "放大实际值、弱化目标值，令细进度条和百分比在数字下方对齐。"
+      ],
+      "en": [
+        "Switch between local weekly (72/100) and monthly (318/400) figures. Use the target as the progress bar maximum.",
+        "Emphasize the actual figure, soften the target and align a thin progress bar and percentage underneath."
+      ]
+    },
+    "files": [
+      "src/demos/ui-references/tremor-kpi.tsx",
+      "src/vendor/tremor/src/components/ProgressBar/ProgressBar.tsx"
+    ],
+    "originalUrl": "https://github.com/tremorlabs/tremor/tree/ca4d588f47820ff3d514d37fa4ee08a4222dec11/src/components/ProgressBar",
+    "sourceUrl": "https://github.com/tremorlabs/tremor/blob/ca4d588f47820ff3d514d37fa4ee08a4222dec11/src/components/ProgressBar/ProgressBar.tsx",
+    "cover": "./assets/previews/component-tremor-delivery-kpi.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=tremor-delivery-kpi",
+      "mode": "canvas"
+    },
+    "provenance": "open-source",
+    "prompt": {
+      "zh-CN": "使用 Tremor 实现「交付进度指标卡」。切换本周与本月，使用 72/100 与 318/400 条本地示例数据。让进度条以真实目标为上限。\n\n放大实际值、弱化目标值，令细进度条和百分比在数字下方对齐。 保留源码中的依赖、来源与许可。",
+      "en": "Use Tremor to build delivery progress kpi. Switch between local weekly (72/100) and monthly (318/400) figures. Use the target as the progress bar maximum.\n\nEmphasize the actual figure, soften the target and align a thin progress bar and percentage underneath. Retain the dependencies, attribution and license included with the source."
+    },
+    "stylePrompt": {
+      "zh-CN": "放大实际值、弱化目标值，令细进度条和百分比在数字下方对齐。",
+      "en": "Emphasize the actual figure, soften the target and align a thin progress bar and percentage underneath."
+    },
+    "supportFiles": [
+      "src/demos/ui-references/shared.tsx",
+      "src/demos/ui-references/references.css",
+      "src/vendor/tremor/src/utils/cx.ts"
+    ]
+  },
+  {
+    "id": "mantine-list-density",
+    "key": "mantine-list-density",
+    "type": "component",
+    "sourceId": "mantine",
+    "libraryIds": [
+      "mantine"
+    ],
+    "category": "settings",
+    "categories": [
+      "settings",
+      "data"
+    ],
+    "interactions": [
+      "click"
+    ],
+    "motion": true,
+    "styleId": "reference-minimal",
+    "style": {
+      "zh-CN": "中性极简",
+      "en": "Neutral minimal"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "列表密度选择器",
+      "en": "List density selector"
+    },
+    "description": {
+      "zh-CN": "用 Mantine 分段控件即时比较紧凑、标准和宽松行高。",
+      "en": "Use a Mantine segmented control to compare compact, standard and comfortable row heights."
+    },
+    "tags": {
+      "zh-CN": [
+        "Mantine",
+        "列表密度选择器"
+      ],
+      "en": [
+        "Mantine",
+        "List density selector"
+      ]
+    },
+    "aliases": [
+      "分段控件",
+      "SegmentedControl",
+      "主题"
+    ],
+    "useCases": {
+      "zh-CN": "后台列表的视图偏好、数据密度对照。",
+      "en": "List view preferences and information density comparisons."
+    },
+    "principle": {
+      "zh-CN": "同一份内容随选择即时换行距，便于直接比较。",
+      "en": "Update spacing on the same content immediately so the densities can be compared directly."
+    },
+    "rules": {
+      "zh-CN": [
+        "单选紧凑、标准或宽松，使下方三条样例记录更新垂直间距。选项支持键盘，减少动态效果时关闭滑动过渡。",
+        "让分段控件和列表等宽，保持文本、日期与分隔线在各密度下位置可辨。"
+      ],
+      "en": [
+        "Select Compact, Standard or Comfortable to change the vertical spacing of three sample rows. Support keyboard selection and remove the sliding transition for reduced motion.",
+        "Align the control and list at equal widths, keeping text, date and divider relationships clear at each density."
+      ]
+    },
+    "files": [
+      "src/demos/ui-references/mantine-settings.tsx"
+    ],
+    "originalUrl": "https://mantine.dev/core/segmented-control/",
+    "sourceUrl": "https://github.com/mantinedev/mantine/blob/b2512bd1a8dbd278a976c88d8f00f595b00eecaf/packages/@mantine/core/src/components/SegmentedControl/SegmentedControl.tsx",
+    "cover": "./assets/previews/component-mantine-list-density.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=mantine-list-density",
+      "mode": "canvas"
+    },
+    "provenance": "open-source",
+    "prompt": {
+      "zh-CN": "使用 Mantine 实现「列表密度选择器」。单选紧凑、标准或宽松，使下方三条样例记录更新垂直间距。选项支持键盘，减少动态效果时关闭滑动过渡。\n\n让分段控件和列表等宽，保持文本、日期与分隔线在各密度下位置可辨。 保留源码中的依赖、来源与许可。",
+      "en": "Use Mantine to build list density selector. Select Compact, Standard or Comfortable to change the vertical spacing of three sample rows. Support keyboard selection and remove the sliding transition for reduced motion.\n\nAlign the control and list at equal widths, keeping text, date and divider relationships clear at each density. Retain the dependencies, attribution and license included with the source."
+    },
+    "stylePrompt": {
+      "zh-CN": "让分段控件和列表等宽，保持文本、日期与分隔线在各密度下位置可辨。",
+      "en": "Align the control and list at equal widths, keeping text, date and divider relationships clear at each density."
+    },
+    "supportFiles": [
+      "src/demos/ui-references/shared.tsx",
+      "src/demos/ui-references/references.css"
+    ]
+  },
+  {
+    "id": "daisyui-theme-switcher",
+    "key": "daisyui-theme-switcher",
+    "type": "component",
+    "sourceId": "daisyui",
+    "libraryIds": [
+      "daisyui"
+    ],
+    "category": "settings",
+    "categories": [
+      "settings",
+      "cards"
+    ],
+    "interactions": [
+      "click"
+    ],
+    "motion": false,
+    "styleId": "reference-minimal",
+    "style": {
+      "zh-CN": "中性极简",
+      "en": "Neutral minimal"
+    },
+    "styleIds": [
+      "minimal"
+    ],
+    "technologyIds": [
+      "react"
+    ],
+    "audience": "b2b",
+    "name": {
+      "zh-CN": "主题切换卡片",
+      "en": "Theme switcher card"
+    },
+    "description": {
+      "zh-CN": "在同一张卡片上切换 daisyUI 主题并比较组件样式。",
+      "en": "Switch daisyUI themes on the same card and compare component styles."
+    },
+    "tags": {
+      "zh-CN": [
+        "daisyUI",
+        "主题切换卡片"
+      ],
+      "en": [
+        "daisyUI",
+        "Theme switcher card"
+      ]
+    },
+    "aliases": [
+      "daisy UI",
+      "主题切换",
+      "theme switcher"
+    ],
+    "useCases": {
+      "zh-CN": "产品主题选择、语义色与组件样式对照。",
+      "en": "Product theme selectors and semantic token comparisons."
+    },
+    "principle": {
+      "zh-CN": "把主题变量作用域限定在预览区域，使卡片能独立切换配色。",
+      "en": "Scope theme variables to the sample so the card can change its own colors."
+    },
+    "rules": {
+      "zh-CN": [
+        "选择跟随图鉴、浅色、深色、Nord 或 Sunset，主题即时作用于卡片、标签、按钮和进度条。切换主题保留本地收藏状态。",
+        "保持内容、布局和交互状态，以语义颜色、边框和圆角表现主题差异。"
+      ],
+      "en": [
+        "Choose Follow Atlas, Light, Dark, Nord or Sunset to update the card, badge, button and progress bar. Preserve the local save state when switching.",
+        "Keep content, layout and state consistent while expressing theme differences through semantic colors, borders and corner radii."
+      ]
+    },
+    "files": [
+      "src/demos/ui-references/daisy-themes.tsx"
+    ],
+    "originalUrl": "https://daisyui.com/docs/themes/",
+    "sourceUrl": "https://github.com/saadeghi/daisyui/blob/43bc54e9ea25a0f26d85392c169dae6b9839d6e5/packages/daisyui/index.js",
+    "cover": "./assets/previews/component-daisyui-theme-switcher.png",
+    "preview": {
+      "width": 640,
+      "height": 480,
+      "url": "./examples/ui-market/index.html?item=daisyui-theme-switcher",
+      "mode": "canvas"
+    },
+    "provenance": "open-source",
+    "prompt": {
+      "zh-CN": "使用 daisyUI 实现「主题切换卡片」。选择跟随图鉴、浅色、深色、Nord 或 Sunset，主题即时作用于卡片、标签、按钮和进度条。切换主题保留本地收藏状态。\n\n保持内容、布局和交互状态，以语义颜色、边框和圆角表现主题差异。 保留源码中的依赖、来源与许可。",
+      "en": "Use daisyUI to build theme switcher card. Choose Follow Atlas, Light, Dark, Nord or Sunset to update the card, badge, button and progress bar. Preserve the local save state when switching.\n\nKeep content, layout and state consistent while expressing theme differences through semantic colors, borders and corner radii. Retain the dependencies, attribution and license included with the source."
+    },
+    "stylePrompt": {
+      "zh-CN": "保持内容、布局和交互状态，以语义颜色、边框和圆角表现主题差异。",
+      "en": "Keep content, layout and state consistent while expressing theme differences through semantic colors, borders and corner radii."
+    },
+    "supportFiles": [
+      "src/demos/ui-references/shared.tsx",
+      "src/demos/ui-references/references.css",
+      "src/demos/ui-references/daisy.css"
+    ]
   }
 ]

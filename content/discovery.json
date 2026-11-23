@@ -164,6 +164,32 @@
         "ui-moments-radial-menu",
         "ui-moments-dot-revolve"
       ]
+    },
+    {
+      "id": "clayo-ui-references",
+      "name": {
+        "zh-CN": "UI 组件库精选",
+        "en": "UI library selection"
+      },
+      "description": {
+        "zh-CN": "从 @0xclayo 的仓库清单体验命令面板、堆叠通知、抽屉、图标、指标和主题。",
+        "en": "Try command menus, stacked toasts, drawers, icons, metrics and themes from @0xclayo’s repository list."
+      },
+      "resources": [
+        "radix-file-menu",
+        "cmdk-workspace-command",
+        "sonner-toast-stack",
+        "vaul-sort-sheet",
+        "tabler-icon-browser",
+        "tremor-delivery-kpi",
+        "mantine-list-density",
+        "daisyui-theme-switcher",
+        "shadcn-sidebar-07",
+        "magicui-border-beam",
+        "magicui-shimmer-button",
+        "magicui-marquee",
+        "shadcn-admin-trend-chart"
+      ]
     }
   ],
   "cases": [

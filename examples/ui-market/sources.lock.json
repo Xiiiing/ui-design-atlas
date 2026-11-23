@@ -731,6 +731,29 @@
           "sha256": "da93cba610f48bdad8f31afecc99082070f520f4488ecfeadbf395852e605cd4"
         }
       ]
+    },
+    "tremor": {
+      "repo": "https://github.com/tremorlabs/tremor",
+      "commit": "ca4d588f47820ff3d514d37fa4ee08a4222dec11",
+      "license": "Apache-2.0",
+      "sourceRoot": "src",
+      "files": [
+        {
+          "upstream": "src/components/ProgressBar/ProgressBar.tsx",
+          "original": "src/vendor/tremor/src/components/ProgressBar/ProgressBar.tsx",
+          "sha256": "89607e5d6c49deb7e6050a65eef5b41655abb25e692dd994cfda0dd99a76108e"
+        },
+        {
+          "upstream": "src/utils/cx.ts",
+          "original": "src/vendor/tremor/src/utils/cx.ts",
+          "sha256": "1d84c1b1b8afa7708dd626acf536ae1b7f57b3162b3a959b1cf02c5f22e98592"
+        },
+        {
+          "upstream": "LICENSE",
+          "original": "licenses/tremor-LICENSE",
+          "sha256": "6e43333ff4b171baacff233a3672365923eb688bf7ce8724eac42868bc4a08eb"
+        }
+      ]
     }
   },
   "foundation": {

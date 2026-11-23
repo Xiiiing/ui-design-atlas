@@ -15,6 +15,13 @@ const server = spawn(process.execPath, ["scripts/serve.mjs", "--dist"], {
 });
 const browser = await chromium.launch();
 const failures = [];
+const referenceDemo = (r) =>
+  r.files?.[0]?.startsWith("src/demos/ui-references/");
+const referenceCoverActions = {
+  "radix-file-menu": "文件选项",
+  "sonner-toast-stack": "发送三条通知",
+  "vaul-sort-sheet": "更改排序",
+};
 try {
   let ready = false;
   for (let i = 0; i < 100; i++) {
@@ -37,7 +44,9 @@ try {
             r.preview.width < 900
           : process.argv[2] === "--new"
             ? Boolean(r.preview.url)
-            : r.id.includes(process.argv[2])),
+            : process.argv[2] === "--ui-references"
+              ? referenceDemo(r)
+              : r.id.includes(process.argv[2])),
   );
   let index = 0;
   await Promise.all(
@@ -47,22 +56,30 @@ try {
         const r = jobs[index++];
         try {
           const framing = resourcePresentation(r);
-          await page.setViewportSize({
-            width: framing.width,
-            height: framing.height,
-          });
+          const action = referenceCoverActions[r.id];
+          await page.setViewportSize(
+            referenceDemo(r)
+              ? { width: 640, height: 426 }
+              : { width: framing.width, height: framing.height },
+          );
           for (const theme of ["light", "dark"]) {
             await page.emulateMedia({ colorScheme: theme });
             const url = new URL(
               resourcePreview(r, "zh-CN", theme),
               `http://127.0.0.1:${port}/`,
             );
-            url.searchParams.set("thumb", "1");
+            url.searchParams.set(action ? "embed" : "thumb", "1");
             await page.goto(url.href, {
               waitUntil: "networkidle",
               timeout: 20000,
             });
             await page.evaluate(() => document.fonts.ready);
+            if (action) {
+              await page
+                .getByRole("button", { name: action, exact: true })
+                .click();
+              await page.mouse.move(0, 0);
+            }
             await page.waitForTimeout(r.motion ? 1100 : 200);
             // Screenshot-only chrome removal: live demos keep all native scrolling.
             await page.addStyleTag({

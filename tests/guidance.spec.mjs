@@ -257,7 +257,7 @@ test("Guidance and interfaces link both ways and hand selected references to the
 
 for (const [route, title, kind, total, filtered] of [
   ["guidance", "Design guidance", "skill", 13, 5],
-  ["tools", "Resource directory", "library", 14, 10],
+  ["tools", "Resource directory", "library", 29, 21],
 ]) {
   test(`${route} exposes compact filters with keyboard, touch and empty-result recovery`, async ({
     page,
@@ -324,7 +324,7 @@ for (const locale of ["zh-CN", "en"]) {
       ],
     ];
     await page.goto(`#tools?lang=${locale}&kind=library`);
-    await expect(page.locator(".guidance-card")).toHaveCount(10);
+    await expect(page.locator(".guidance-card")).toHaveCount(21);
     for (const [id, name, alias, website] of additions) {
       await page.locator("#content-filters [name=q]").fill(alias);
       const card = page.locator(`[data-resource="tool:${id}"]`);
