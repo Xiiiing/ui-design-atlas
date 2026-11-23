@@ -271,3 +271,24 @@ test("Content type markers follow touch, horizontal scrolling and reduced motion
     await context.close();
   }
 });
+
+test("Catalog controls retain the measured marker when the optional motion chunk fails", async ({
+  page,
+}) => {
+  let attempted = 0;
+  await page.route("**/atlas-selection-motion-*.js", (route) => {
+    attempted++;
+    return route.abort();
+  });
+  await page.goto("#explore?lang=en");
+  const group = "[data-shell-key=market-types] [data-selection-group]";
+  await aligned(page, group, ".active");
+  expect(attempted).toBe(0);
+  const blocks = page.locator("[data-market-mode=blocks]");
+  await blocks.focus();
+  await expect.poll(() => attempted).toBe(1);
+  await page.keyboard.press("Enter");
+  await expect(blocks).toHaveAttribute("aria-current", "page");
+  await expect(blocks).toBeFocused();
+  await aligned(page, group, ".active");
+});
