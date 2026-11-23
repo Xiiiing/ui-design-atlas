@@ -25,7 +25,7 @@ const read = async (name) =>
 test("Guidance catalog validates independent kinds, real references and complete pinned bundles", async () => {
   const d = await readGuidance(root);
   assert.equal(d.guidance.length, 13);
-  assert.equal(d.tools.length, 14);
+  assert.equal(d.tools.length, 29);
   assert.equal(d.guidance.filter((g) => g.kind === "skill").length, 5);
   assert.equal(d.details.animate.files["RECIPES.md"].includes("#"), true);
   assert(

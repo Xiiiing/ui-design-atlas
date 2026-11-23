@@ -35,7 +35,7 @@ export type Guidance =
 export interface Tool {
   id: string;
   name: Localized;
-  kind: "library" | "skills" | "design" | "learning";
+  kind: "library" | "tooling" | "skills" | "design" | "learning";
   repo?: string;
   website?: string;
   description: Localized;

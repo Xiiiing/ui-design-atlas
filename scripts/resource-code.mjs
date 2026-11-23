@@ -36,7 +36,9 @@ export function imports(file, content) {
       .importedFiles.map((item) => item.fileName);
   if (file.endsWith(".css"))
     return [
-      ...content.matchAll(/@import\s+(?:url\(\s*)?["']([^"']+)["']/g),
+      ...content.matchAll(
+        /@(?:import|plugin)\s+(?:url\(\s*)?["']([^"']+)["']/g,
+      ),
     ].map((match) => match[1]);
   return [];
 }

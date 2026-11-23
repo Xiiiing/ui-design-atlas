@@ -99,3 +99,18 @@ PROJECT Y/O. [Effect Atlas License 1.0](licenses/effect-atlas-LICENSE) applies
 to these effects and remains included in each downloadable sample. This is a
 selected set of demos; the remaining catalogue, third-party dependencies and
 site assets are not redistributed. Atlas provides the preview host and covers.
+
+## UI library selection from @0xclayo
+
+[The repository list](https://x.com/0xclayo/status/2124487017446654447) is
+credited to @0xclayo. The layouts and examples under `src/demos/ui-references/`
+were written by UI Design Atlas. They use these upstream packages:
+
+- Radix Primitives dropdown menu 2.2.1, cmdk 1.1.1, Sonner 2.0.8, Vaul 1.1.2,
+  Tabler Icons React 3.49.0, Mantine 9.8.2, and daisyUI 5.8.2 (MIT).
+- Tremor ProgressBar and `cx` at `ca4d588f47820ff3d514d37fa4ee08a4222dec11`
+  (Apache-2.0), used directly from `src/vendor/tremor/`. The byte hashes are in
+  `sources.lock.json`.
+
+The corresponding licenses are included in `licenses/`. npm package
+versions and integrity hashes are recorded in `package-lock.json`.

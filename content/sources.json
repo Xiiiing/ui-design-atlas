@@ -141,5 +141,117 @@
       "en": "Independent Atlas implementation based on guanmo_ai's UI Moments episode 04 video. The download contains Atlas code and its license."
     },
     "commit": "6e12ef93f59000b12de1642848e73e7b1a4754e7"
+  },
+  "radix-primitives": {
+    "id": "radix-primitives",
+    "name": "Radix Primitives",
+    "author": "Radix Primitives contributors",
+    "repo": "https://github.com/radix-ui/primitives",
+    "docs": "https://www.radix-ui.com/primitives/docs/components/dropdown-menu",
+    "commit": "f825330a9639c439f56180ea6b0685672f2bbb29",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/radix-primitives-LICENSE",
+    "notice": {
+      "zh-CN": "图鉴示例使用上游组件与本地示例数据。界面组合、设计解读与提示词由 UI Design Atlas 编写。",
+      "en": "This Atlas example uses the upstream component and local sample data. The composition, design notes and prompts were written by UI Design Atlas."
+    }
+  },
+  "cmdk": {
+    "id": "cmdk",
+    "name": "cmdk",
+    "author": "Paco Coursey and cmdk contributors",
+    "repo": "https://github.com/dip/cmdk",
+    "docs": "https://github.com/dip/cmdk#use",
+    "commit": "fb4ea04e9ec211777fbb39c6104e3c5f2ee107d2",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/cmdk-LICENSE",
+    "notice": {
+      "zh-CN": "图鉴示例使用上游组件与本地示例数据。界面组合、设计解读与提示词由 UI Design Atlas 编写。",
+      "en": "This Atlas example uses the upstream component and local sample data. The composition, design notes and prompts were written by UI Design Atlas."
+    }
+  },
+  "sonner": {
+    "id": "sonner",
+    "name": "Sonner",
+    "author": "Emil Kowalski and Sonner contributors",
+    "repo": "https://github.com/emilkowalski/sonner",
+    "docs": "https://sonner.emilkowal.ski/",
+    "commit": "ecce1841c55e4a72dfe139a8992b56498660125e",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/sonner-LICENSE",
+    "notice": {
+      "zh-CN": "图鉴示例使用上游组件与本地示例数据。界面组合、设计解读与提示词由 UI Design Atlas 编写。",
+      "en": "This Atlas example uses the upstream component and local sample data. The composition, design notes and prompts were written by UI Design Atlas."
+    }
+  },
+  "vaul": {
+    "id": "vaul",
+    "name": "Vaul",
+    "author": "Emil Kowalski and Vaul contributors",
+    "repo": "https://github.com/emilkowalski/vaul",
+    "docs": "https://vaul.emilkowal.ski/",
+    "commit": "6ba4c44ad99fdfec7def4fa47cabd229fc261965",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/vaul-LICENSE",
+    "notice": {
+      "zh-CN": "图鉴示例使用上游组件与本地示例数据。界面组合、设计解读与提示词由 UI Design Atlas 编写。",
+      "en": "This Atlas example uses the upstream component and local sample data. The composition, design notes and prompts were written by UI Design Atlas."
+    }
+  },
+  "tabler-icons": {
+    "id": "tabler-icons",
+    "name": "Tabler Icons",
+    "author": "Paweł Kuna and Tabler Icons contributors",
+    "repo": "https://github.com/tabler/tabler-icons",
+    "docs": "https://tabler.io/icons",
+    "commit": "009744c9d381b96c31a0ccd53582c1c0e953dbac",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/tabler-icons-LICENSE",
+    "notice": {
+      "zh-CN": "图鉴示例使用上游组件与本地示例数据。界面组合、设计解读与提示词由 UI Design Atlas 编写。",
+      "en": "This Atlas example uses the upstream component and local sample data. The composition, design notes and prompts were written by UI Design Atlas."
+    }
+  },
+  "tremor": {
+    "id": "tremor",
+    "name": "Tremor",
+    "author": "Tremor contributors",
+    "repo": "https://github.com/tremorlabs/tremor",
+    "docs": "https://github.com/tremorlabs/tremor/tree/ca4d588f47820ff3d514d37fa4ee08a4222dec11/src/components/ProgressBar",
+    "commit": "ca4d588f47820ff3d514d37fa4ee08a4222dec11",
+    "license": "Apache-2.0",
+    "licenseFile": "./examples/ui-market/licenses/tremor-LICENSE",
+    "notice": {
+      "zh-CN": "图鉴示例使用上游组件与本地示例数据。界面组合、设计解读与提示词由 UI Design Atlas 编写。",
+      "en": "This Atlas example uses the upstream component and local sample data. The composition, design notes and prompts were written by UI Design Atlas."
+    }
+  },
+  "mantine": {
+    "id": "mantine",
+    "name": "Mantine",
+    "author": "Mantine contributors",
+    "repo": "https://github.com/mantinedev/mantine",
+    "docs": "https://mantine.dev/core/segmented-control/",
+    "commit": "b2512bd1a8dbd278a976c88d8f00f595b00eecaf",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/mantine-LICENSE",
+    "notice": {
+      "zh-CN": "图鉴示例使用上游组件与本地示例数据。界面组合、设计解读与提示词由 UI Design Atlas 编写。",
+      "en": "This Atlas example uses the upstream component and local sample data. The composition, design notes and prompts were written by UI Design Atlas."
+    }
+  },
+  "daisyui": {
+    "id": "daisyui",
+    "name": "daisyUI",
+    "author": "Pouya Saadeghi and daisyUI contributors",
+    "repo": "https://github.com/saadeghi/daisyui",
+    "docs": "https://daisyui.com/docs/themes/",
+    "commit": "43bc54e9ea25a0f26d85392c169dae6b9839d6e5",
+    "license": "MIT",
+    "licenseFile": "./examples/ui-market/licenses/daisyui-LICENSE",
+    "notice": {
+      "zh-CN": "图鉴示例使用上游组件与本地示例数据。界面组合、设计解读与提示词由 UI Design Atlas 编写。",
+      "en": "This Atlas example uses the upstream component and local sample data. The composition, design notes and prompts were written by UI Design Atlas."
+    }
   }
 }

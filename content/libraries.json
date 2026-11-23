@@ -136,5 +136,93 @@
       "guanmo_ai",
       "microinteractions"
     ]
+  },
+  "radix-primitives": {
+    "id": "radix-primitives",
+    "name": "Radix Primitives",
+    "version": "Dropdown Menu 2.2.1",
+    "docs": "https://www.radix-ui.com/primitives/docs/components/dropdown-menu",
+    "aliases": [
+      "Radix UI",
+      "无头组件",
+      "下拉菜单"
+    ]
+  },
+  "cmdk": {
+    "id": "cmdk",
+    "name": "cmdk",
+    "version": "1.1.1",
+    "docs": "https://github.com/dip/cmdk#use",
+    "aliases": [
+      "命令面板",
+      "command palette",
+      "⌘K"
+    ]
+  },
+  "sonner": {
+    "id": "sonner",
+    "name": "Sonner",
+    "version": "2.0.8",
+    "docs": "https://sonner.emilkowal.ski/",
+    "aliases": [
+      "Toast",
+      "消息通知",
+      "堆叠"
+    ]
+  },
+  "vaul": {
+    "id": "vaul",
+    "name": "Vaul",
+    "version": "1.1.2",
+    "docs": "https://vaul.emilkowal.ski/",
+    "aliases": [
+      "底部抽屉",
+      "bottom sheet",
+      "拖动"
+    ]
+  },
+  "tabler-icons": {
+    "id": "tabler-icons",
+    "name": "Tabler Icons",
+    "version": "3.49.0",
+    "docs": "https://tabler.io/icons",
+    "aliases": [
+      "Tabler",
+      "线条图标",
+      "iconography"
+    ]
+  },
+  "tremor": {
+    "id": "tremor",
+    "name": "Tremor",
+    "version": "ca4d588 · ProgressBar 0.0.3",
+    "docs": "https://github.com/tremorlabs/tremor/tree/ca4d588f47820ff3d514d37fa4ee08a4222dec11/src/components/ProgressBar",
+    "aliases": [
+      "KPI",
+      "仪表盘",
+      "指标卡"
+    ]
+  },
+  "mantine": {
+    "id": "mantine",
+    "name": "Mantine",
+    "version": "9.8.2",
+    "docs": "https://mantine.dev/core/segmented-control/",
+    "aliases": [
+      "分段控件",
+      "SegmentedControl",
+      "主题"
+    ]
+  },
+  "daisyui": {
+    "id": "daisyui",
+    "name": "daisyUI",
+    "version": "5.8.2",
+    "docs": "https://daisyui.com/docs/themes/",
+    "aliases": [
+      "daisy UI",
+      "主题切换",
+      "theme switcher"
+    ]
   }
 }

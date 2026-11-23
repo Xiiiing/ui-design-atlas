@@ -80,6 +80,8 @@
 
 本轮从 BoardUI、Bencho、Libraries.dev、Watermelon UI 和 beUI 免费仓库收录六个可交互组件：思考指示器、滑动确认、上下文用量表、粒子光球、变形频率选择器和展开式标签导航。可直接体验、阅读设计解读与提示词，并查看和下载源码。六家站点的设计评估、Pro 内容边界与选型理由见[收录记录](docs/content/ui-intake.md)。
 
+[@0xclayo 的 UI 仓库清单](docs/content/clayo-ui-references.md)收录了 15 个项目。打开[组件库精选](https://xiiiing.github.io/ui-design-atlas/#explore?lang=zh-CN&collection=clayo-ui-references)体验命令面板、通知、底部抽屉、图标、指标和主题，或在[资源导航](https://xiiiing.github.io/ui-design-atlas/#tools?lang=zh-CN&q=0xclayo)查找上游仓库。
+
 另有四个 [Effect Atlas 动效精选](docs/content/effect-atlas.md)：像素擦除按钮、十字线揭图、共享元素转场和滚动小地图。每个均提供可离线打开的静态演示和原作者许可。
 
 [提示词组合器](https://xiiiing.github.io/ui-design-atlas/#compose?lang=zh-CN) 将需求、规范、界面参考、任务和交付检查组合成可编辑文本，支持复制、Markdown 导出与本地草稿。普通对话提供整理后的任务要点，编程助手模式另外提供完整 Skill 文件。收录和内容核对不等于生成效果已验证。使用、兼容及维护方法见 [设计指导说明](docs/guidance/README.md)。

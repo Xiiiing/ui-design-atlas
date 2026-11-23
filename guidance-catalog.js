@@ -18,6 +18,7 @@ export const guidanceKinds = {
 };
 export const toolKinds = {
   library: ["组件库", "Libraries"],
+  tooling: ["开发工具", "Development tools"],
   skills: ["Skills 集合", "Skill collections"],
   design: ["规范集合", "Design collections"],
   learning: ["学习资料", "Learning"],
