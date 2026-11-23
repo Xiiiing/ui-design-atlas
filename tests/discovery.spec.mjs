@@ -8,7 +8,12 @@ test("The root opens the library, with collections in more filters and cases in 
   await expect(page.locator("[data-market-mode=cases]")).toBeVisible();
   await page.locator("[data-advanced-filters]").click();
   await page.locator('.collection-shortcuts a[href*="micro-interactions"]').click();
-  await expect(page.locator("#results .asset-card")).toHaveCount(collectionResources("micro-interactions").length);
+  const collectionCount = collectionResources("micro-interactions").length;
+  await expect(page.locator("#results .asset-card")).toHaveCount(Math.min(24, collectionCount));
+  if (collectionCount > 24) {
+    await page.locator("[data-more]").click();
+    await expect(page.locator("#results .asset-card")).toHaveCount(collectionCount);
+  }
   await expect(page.locator("[data-remove-filter=collection]")).toBeVisible();
   await page.locator("[data-remove-filter=collection]").click();
   await expect(page.locator("#results .asset-card")).toHaveCount(24);

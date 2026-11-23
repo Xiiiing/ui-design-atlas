@@ -42,3 +42,9 @@ When changing these previews, check the full source and design notes against the
 actual behavior. In particular, compaction must be reversible, recurrence edits
 must remain uncommitted until confirmation, and tab changes must keep keyboard
 focus and content visible. A successful build does not replace those interactions.
+
+## UI Moments video follow-up
+
+The 36 microinteractions from episode 04 are documented in
+[UI Moments intake](ui-moments-intake.md), including the verified source-access
+limitation and the scope of the independent Atlas implementation.

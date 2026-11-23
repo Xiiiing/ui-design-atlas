@@ -115,6 +115,55 @@
         "effect-atlas-shared-element-transition",
         "effect-atlas-scroll-minimap"
       ]
+    },
+    {
+      "id": "ui-moments-04",
+      "name": {
+        "zh-CN": "UI Moments · 第四期",
+        "en": "UI Moments · Episode 04"
+      },
+      "description": {
+        "zh-CN": "参考视频中的 36 项微动效，本站独立实现。",
+        "en": "Independent Atlas implementations of 36 microinteractions in the reference video."
+      },
+      "resources": [
+        "ui-moments-bars-fade",
+        "ui-moments-bloom-toggle",
+        "ui-moments-snap-grid",
+        "ui-moments-card-fan",
+        "ui-moments-gooey-tab-bar",
+        "ui-moments-blocks-scale",
+        "ui-moments-stretch-toggle",
+        "ui-moments-merge-drops",
+        "ui-moments-paper-plane",
+        "ui-moments-detent-dial",
+        "ui-moments-domino-row",
+        "ui-moments-pebble-rating",
+        "ui-moments-jelly-pad",
+        "ui-moments-swipe-confirm",
+        "ui-moments-bookmark",
+        "ui-moments-depth-stack",
+        "ui-moments-menu-morph",
+        "ui-moments-elastic-string",
+        "ui-moments-ripple-pad",
+        "ui-moments-worm-dots",
+        "ui-moments-download-ring",
+        "ui-moments-leaf-tabs",
+        "ui-moments-bell-toggle",
+        "ui-moments-ink-switch",
+        "ui-moments-rocker-switch",
+        "ui-moments-scrub-wave",
+        "ui-moments-squash-play",
+        "ui-moments-rubber-search",
+        "ui-moments-odometer",
+        "ui-moments-tide-progress",
+        "ui-moments-eclipse-half",
+        "ui-moments-magnet-grid",
+        "ui-moments-checklist",
+        "ui-moments-flip-coin",
+        "ui-moments-radial-menu",
+        "ui-moments-dot-revolve"
+      ]
     }
   ],
   "cases": [

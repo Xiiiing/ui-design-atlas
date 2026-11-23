@@ -1,6 +1,6 @@
 import { copyCardPrompt } from "./navigation.mjs";
 import { test, expect } from "@playwright/test";
-import { findResource, resourcePrompt } from "../catalog.js";
+import { findResource, resourcePrompt, resources } from "../catalog.js";
 
 test("Visible cards operate directly and expose prompt, details and filter tags", async ({
   page,
@@ -27,7 +27,11 @@ test("Visible cards operate directly and expose prompt, details and filter tags"
   await expect(page).toHaveURL(/category=buttons.*style=folio/);
   await expect(page.locator(".asset-card")).toHaveCount(1);
   await page.goBack();
-  await expect(page.locator(".asset-card")).toHaveCount(8);
+  await expect(page.locator(".asset-card")).toHaveCount(
+    resources.filter(
+      (r) => r.type === "component" && r.categories.includes("buttons"),
+    ).length,
+  );
 });
 
 test("Inline forms accept input on touch devices without opening a viewer", async ({

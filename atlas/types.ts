@@ -177,6 +177,7 @@ export interface Case {
   scene: Localized;
 }
 export interface Source {
+  notice?: Localized;
   id: string;
   name: string;
   author: string;

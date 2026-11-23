@@ -177,11 +177,7 @@ export function catalogBrowserPlugin(root) {
           return (
             "export default " +
             JSON.stringify(
-              data.guidance.map(({ id, name, related }) => ({
-                id,
-                name,
-                related,
-              })),
+              data.guidance.map(({ id }) => ({ id })),
             )
           );
         if (id.split("?")[0] === path.join(root, "content/tools.json"))
@@ -214,11 +210,7 @@ export function catalogEsbuildPlugin(root) {
           return {
             contents: JSON.stringify(
               args.path.endsWith("guidance.json")
-                ? data.guidance.map(({ id, name, related }) => ({
-                    id,
-                    name,
-                    related,
-                  }))
+                ? data.guidance.map(({ id }) => ({ id }))
                 : data.tools.map(({ id }) => ({ id })),
             ),
             loader: "json",
