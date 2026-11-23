@@ -1,5 +1,10 @@
 import { openClassification } from "./navigation.mjs";
 import { test, expect } from "@playwright/test";
+import { resources } from "../catalog.js";
+
+const motionButtons = resources.filter(
+  (r) => r.motion && r.categories.includes("buttons"),
+).length;
 
 async function aligned(page, group, selected) {
   if (group === ".category-strip") {
@@ -61,7 +66,7 @@ test("Purpose multi-select preserves control geometry, independent pressed state
   await page.locator("[data-category=buttons]").focus();
   await page.keyboard.press("Space");
   await expect(page.locator("[data-category=buttons]")).toBeFocused();
-  await expect(page.locator(".asset-card")).toHaveCount(4);
+  await expect(page.locator(".asset-card")).toHaveCount(motionButtons);
 });
 
 test("Type selection retains its moving marker, link dimensions and focus through navigation and history", async ({
@@ -104,7 +109,7 @@ test("Type selection retains its moving marker, link dimensions and focus throug
   await openClassification(page);
   await page.locator("[data-category=buttons]").click();
   await page.locator("[data-market-mode=motion]").click();
-  await expect(page.locator(".asset-card")).toHaveCount(4);
+  await expect(page.locator(".asset-card")).toHaveCount(motionButtons);
   await page.goBack();
   await expect(page.locator("[data-market-mode=explore]")).toHaveAttribute(
     "aria-current",
@@ -118,7 +123,7 @@ test("Type selection retains its moving marker, link dimensions and focus throug
   await aligned(page, ".category-strip", "[aria-pressed=true]");
   await page.goForward();
   await page.reload();
-  await expect(page.locator(".asset-card")).toHaveCount(4);
+  await expect(page.locator(".asset-card")).toHaveCount(motionButtons);
   await aligned(page, group, ".active");
   await aligned(page, ".category-strip", "[aria-pressed=true]");
   await page.goto("#explore?lang=en");

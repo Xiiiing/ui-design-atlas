@@ -3,6 +3,7 @@ import { expect } from "@playwright/test";
 // Check actual content geometry as well as the document: overflow:hidden alone
 // must never hide the bottom controls or turn a cropped canvas into a passing fit.
 export async function expectViewerContained(page) {
+  await expect(page.locator(".experience-viewer")).toBeVisible();
   if (
     await page.evaluate(
       () =>

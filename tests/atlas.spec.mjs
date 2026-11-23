@@ -577,7 +577,8 @@ test("Independent upstream resources load locally with source, prompts and reduc
   for (const r of independent) {
     await page.goto(resourcePreview(r, "en"));
     if (r.codeFormat === "static") {
-      await expect(page.locator("#stage .fx-board")).toBeVisible();
+      await expect(page.locator("#stage")).toBeVisible();
+      await expect.poll(() => page.locator("#stage").evaluate((stage) => stage.querySelectorAll("button, input, svg, [role=img]").length)).toBeGreaterThan(0);
       continue;
     }
     await expect(page.locator(".demo-surface")).not.toContainText(
@@ -677,7 +678,8 @@ for (const lang of ["en", "zh-CN"])
       await page.setViewportSize({ width, height: 900 });
       await page.goto(resourcePreview(r, lang, theme));
       if (r.codeFormat === "static") {
-        await expect(page.locator("#stage .fx-board")).toBeVisible();
+        await expect(page.locator("#stage")).toBeVisible();
+        await expect.poll(() => page.locator("#stage").evaluate((stage) => stage.querySelectorAll("button, input, svg, [role=img]").length)).toBeGreaterThan(0);
         await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
       } else {
         await expect(page.locator(".demo-surface")).not.toContainText(

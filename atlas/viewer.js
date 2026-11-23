@@ -1,12 +1,11 @@
 // @ts-check
+import { createResourceDetails } from "./resource-detail-views.js";
 import { loadResourceDetails } from "./resource-data.js";
 import { element, maybe, all } from "./dom.js";
 import { escapeHTML as esc } from "./html.js";
 import { icon } from "../icons.js";
 import {
   replaceShellHTML,
-  browseScroll,
-  scrollBrowseTo,
   fieldValue,
   setFieldValue,
 } from "../shell/controls.tsx";
@@ -21,7 +20,7 @@ import { resourcePresentation, embeddedPreviewURL } from "../presentation.js";
 import { key } from "./resource-views.js";
 import { parse } from "./navigation.js";
 
-/** @param {import("./types").BaseDependencies & Pick<ReturnType<typeof import("./resource-views").createResourceViews>, "labelType"|"saveButton"|"tagLinks"|"resourceDetails"|"caseDirectory"|"related"|"language"> & {loadCode:import("./types").LoadCode;stopAllLive:()=>void;main:HTMLElement;shellTheme:()=>import("./types").Theme;render:()=>void}} dependencies */
+/** @param {import("./types").BaseDependencies & Pick<ReturnType<typeof import("./resource-views").createResourceViews>, "labelType"|"saveButton"|"tagLinks"|"language"> & {loadCode:import("./types").LoadCode;stopAllLive:()=>void;main:HTMLElement;shellTheme:()=>import("./types").Theme;render:()=>void}} dependencies */
 export function createViewer({
   appState,
   labelType,
@@ -29,17 +28,18 @@ export function createViewer({
   saveButton,
   l,
   tagLinks,
-  resourceDetails,
-  caseDirectory,
-  related,
   loadCode,
   language,
   stopAllLive,
   main,
-  shellTheme,
   href,
-  render,
 }) {
+  const { resourceDetails, related, caseDirectory } = createResourceDetails({
+    appState,
+    t,
+    href,
+    l,
+  });
   let detailsSerial = 0;
   /** @param {import("./types").Resource} resource */
   async function loadViewerDetails(resource) {
@@ -230,52 +230,6 @@ export function createViewer({
       () => previewLoadState("error"),
       15000,
     );
-  }
-
-  /** @param {string} id @param {string} type */
-  function openResource(id, type, replace = false, details = false) {
-    const r = findResource(id, type);
-    if (!r) return;
-    if (!appState.selected) {
-      appState.theme = shellTheme();
-      appState.originBrowse = {
-        hash: location.hash || href(),
-        scroll: browseScroll(),
-        limit: appState.limit,
-        focus: key(r),
-        focusSelector: document.activeElement?.closest(".asset-actions")
-          ? ".card-menu-trigger"
-          : document.activeElement?.closest(".asset-caption")
-            ? ".asset-caption [data-open]"
-            : "[data-open]",
-        items: [...all(".asset-card")].map((el) => el.dataset.resource || ""),
-      };
-      history.replaceState(
-        { ...history.state, browse: appState.originBrowse },
-        "",
-        location.href,
-      );
-    }
-    const depth = history.state?.resourceDepth || 0;
-    const state = {
-      background: appState.originBrowse,
-      resourceDepth: replace ? Math.max(1, depth) : depth + 1,
-    };
-    const url = href(r.type, r.id, {
-      ...(details ? { panel: "details" } : {}),
-    });
-    history[replace ? "replaceState" : "pushState"](state, "", url);
-    appState.route = parse();
-    render();
-    scrollBrowseTo(0);
-  }
-
-  function closeViewer() {
-    if (appState.originBrowse && history.state?.resourceDepth) {
-      history.go(-history.state.resourceDepth);
-      return;
-    }
-    location.hash = href("explore").slice(1);
   }
 
   function syncDetailsPanel(focus = false) {
@@ -472,8 +426,6 @@ export function createViewer({
     showViewer,
     previewLoadState,
     beginPreviewLoad,
-    openResource,
-    closeViewer,
     syncDetailsPanel,
     toggleDetails,
     scalePreview,

@@ -69,6 +69,7 @@ await cp(path.join(root, "assets"), path.join(out, "assets"), {
 const bundle = await build({
   entryPoints: { "atlas-shell": path.join(root, "app.js") },
   bundle: true,
+  charset: "utf8",
   format: "esm",
   target: "es2022",
   jsx: "automatic",

@@ -38,7 +38,7 @@ import { createResourceViews } from "./atlas/resource-views.js";
 
 import { createPreviewActions } from "./atlas/preview-actions.js";
 import { createSourceActions } from "./atlas/source-actions.js";
-import { createViewer } from "./atlas/viewer.js";
+import { createLazyViewer } from "./atlas/viewer-loader.js";
 import { createBrowse } from "./atlas/browse.js";
 
 /** @type {import("./atlas/types").AppState} */
@@ -292,9 +292,6 @@ const {
   tagURL,
   tagLinks,
   card,
-  resourceDetails,
-  related,
-  caseDirectory,
 } = createResourceViews({ appState, t, href, syncNavigation, l, shellTheme });
 
 /** @type {Promise<ReturnType<typeof import("./atlas/source-code.js").createSourceCode>>|undefined} */
@@ -356,16 +353,13 @@ const {
   sendPreviewTheme,
   acceptPreviewTheme,
   updateThemeURL,
-} = createViewer({
+} = createLazyViewer({
   appState,
   labelType,
   t,
   saveButton,
   l,
   tagLinks,
-  resourceDetails,
-  caseDirectory,
-  related,
   loadCode,
   language,
   stopAllLive,
@@ -536,6 +530,7 @@ document.addEventListener("click", async (e) => {
       );
       return;
     }
+  if (b.hasAttribute("data-reload-viewer")) return location.reload();
   if (b.hasAttribute("data-close-viewer")) return closeViewer();
   if (b.dataset.save) return favoriteActions.toggle(b.dataset.save);
   if (b.hasAttribute("data-import-favorites")) {
