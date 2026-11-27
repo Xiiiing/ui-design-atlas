@@ -1,13 +1,113 @@
 import { test, expect } from "@playwright/test";
 import { resources } from "../catalog.js";
 import { resourcePresentation } from "../presentation.js";
-const additions = resources.filter(
-  (resource) => resource.sourceId === "ui-moments-atlas",
+import { mkdtemp, writeFile, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
+import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
+const additions = resources.filter((resource) =>
+  resource.id.startsWith("ui-moments-"),
 );
 const preview = (slug, lang = "en", theme = "light") =>
   `examples/ui-market/ui-moments/${slug}/index.html?inline=1&lang=${lang}&theme=${theme}`;
 
-test("All 36 video references enter the catalog with independent source, covers and reusable packages", async ({
+test("Official static ZIP preserves font bytes and runs offline outside Atlas", async ({
+  page,
+  request,
+}) => {
+  const directory = await mkdtemp(path.join(tmpdir(), "atlas-ui-moments-"));
+  try {
+    const zip = await request.get(
+      "downloads/resources/component-ui-moments-ink-switch.zip",
+    );
+    expect(zip.ok()).toBe(true);
+    const archive = path.join(directory, "demo.zip");
+    await writeFile(archive, await zip.body());
+    execFileSync("unzip", ["-q", archive, "-d", directory]);
+    const project = path.join(directory, "component-ui-moments-ink-switch");
+    const font = await readFile(
+      path.join(
+        project,
+        "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
+      ),
+    );
+    const lock = JSON.parse(
+      await readFile("examples/ui-market/sources.lock.json", "utf8"),
+    );
+    const expected = lock.sources["ui-moments"].files.find((file) =>
+      file.upstream.endsWith(".woff2"),
+    );
+    expect(createHash("sha256").update(font).digest("hex")).toBe(
+      expected.sha256,
+    );
+    const errors = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    await page.route(/^https?:/, (route) => route.abort());
+    const url = pathToFileURL(
+      path.join(project, "public/ui-moments/ink-switch/index.html"),
+    );
+    url.search = "?lang=zh-CN&theme=dark";
+    await page.goto(url.href);
+    await page.evaluate(() => document.fonts.ready);
+    await expect(page.locator("html")).toHaveAttribute("lang", "zh-CN");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await page.locator(".ink").press("Space");
+    await expect(page.locator(".ink")).toHaveAttribute("aria-checked", "true");
+    expect(await page.evaluate(() => document.fonts.check("14px Geist"))).toBe(
+      true,
+    );
+    expect(errors).toEqual([]);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("Atlas pause freezes official progress and theme changes retain checkbox state and language", async ({
+  page,
+}) => {
+  await page.goto(preview("download-ring"));
+  await page.locator(".dl").click();
+  await page.locator("#pause").click();
+  const progress = await page.locator(".dl .bar").getAttribute("style");
+  await page.waitForTimeout(250);
+  expect(await page.locator(".dl .bar").getAttribute("style")).toBe(progress);
+  await page.locator("#pause").click();
+  await expect
+    .poll(() => page.locator(".dl .bar").getAttribute("style"))
+    .not.toBe(progress);
+  await page.goto(preview("checklist"));
+  await page.locator(".todo label").first().click();
+  await page.evaluate(() =>
+    window.postMessage(
+      {
+        type: "atlas:preview-config",
+        resourceId: "ui-moments-checklist",
+        theme: "dark",
+        locale: "zh-CN",
+      },
+      location.origin,
+    ),
+  );
+  await expect(page.locator(".todo")).toContainText("收集需求");
+  await expect(page.locator(".todo :checked")).toHaveCount(2);
+  await page.evaluate(() =>
+    window.postMessage(
+      {
+        type: "atlas:preview-config",
+        resourceId: "ui-moments-checklist",
+        theme: "light",
+        locale: "en",
+      },
+      location.origin,
+    ),
+  );
+  await expect(page.locator(".todo")).toContainText("Gather requirements");
+  await expect(page.locator(".todo :checked")).toHaveCount(2);
+});
+
+test("All 36 resources retain their IDs, accurate provenance, covers and reusable packages", async ({
   page,
   request,
 }) => {
@@ -22,12 +122,22 @@ test("All 36 video references enter the catalog with independent source, covers 
     ).json();
     expect(code.project).toBe("static");
     expect(code.files[resource.files[0]]).toContain('id="demo"');
-    expect(code.files["public/ui-moments/ATTRIBUTION.md"]).toContain(
-      "independently written",
-    );
-    expect(code.files["licenses/ui-moments-atlas-LICENSE"]).toContain(
-      "UI Design Atlas contributors",
-    );
+    if (resource.sourceId === "ui-moments") {
+      expect(code.files["licenses/ui-moments-LICENSE"]).toContain(
+        "Copyright (c) 2026 guanmo-ai",
+      );
+      expect(
+        code.binaryFiles[
+          "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2"
+        ],
+      ).toBeTruthy();
+      expect(resource.provenance).toBe("open-source");
+    } else {
+      expect(code.files["licenses/ui-moments-atlas-LICENSE"]).toContain(
+        "UI Design Atlas contributors",
+      );
+      expect(resource.provenance).toBe("original");
+    }
     expect(
       (
         await request.get(`downloads/resources/component-${resource.id}.zip`)
@@ -45,12 +155,10 @@ test("All 36 video references enter the catalog with independent source, covers 
     "component:ui-moments-paper-plane",
   );
   await page.locator(".asset-caption [data-open]").click();
-  await expect(page.locator("#inspector")).toContainText(
-    "参考观默 UI Moments 第四期视频",
-  );
+  await expect(page.locator("#inspector")).toContainText("官方源码");
   await page.locator("[data-tab=code]").click();
   await expect(page.locator("#code-text")).toContainText(
-    'data-demo="paper-plane"',
+    "guanmo-ai/ui-moments",
   );
   await page.goBack();
   await expect(page.locator("[name=q]")).toHaveValue("纸飞机");
@@ -102,64 +210,89 @@ test("All video demos fit their interactive frames in both languages and themes"
   expect(errors).toEqual([]);
 });
 
-test("Send, download and checklist keep meaningful completion states under reduced motion", async ({
+test("Official send, download and checklist preserve completion, cancellation and keyboard behavior", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(preview("paper-plane"));
-  const send = page.locator(".plane-send");
+  const send = page.locator(".send");
   await send.press("Enter");
-  await expect(send).toHaveAttribute("data-state", "sent");
-  await send.press("Space");
-  await expect(send).toHaveAttribute("data-state", "idle");
+  await expect(send).toHaveAttribute("data-done", "");
+  await expect(page.locator("#send-status")).toHaveText("Sent");
+  await expect(send).not.toHaveAttribute("data-done", "");
   await page.goto(preview("download-ring"));
-  const downloaded = page.waitForEvent("download");
-  await page.locator(".download").press("Enter");
-  const file = await downloaded;
-  expect(file.suggestedFilename()).toBe("atlas-demo.txt");
-  await expect(page.locator('[role="progressbar"]')).toHaveAttribute(
-    "aria-valuenow",
-    "100",
-  );
+  let downloads = 0;
+  page.on("download", () => downloads++);
+  const button = page.locator(".dl");
+  await button.press("Enter");
+  await expect(button).toHaveAttribute("data-state", "loading");
+  await button.press("Enter");
+  await expect(button).toHaveAttribute("data-state", "idle");
+  await expect(page.locator("#dl-status")).toHaveText("Download canceled");
+  await button.press("Enter");
+  await expect(button).toHaveAttribute("data-state", "done");
+  expect(downloads).toBe(0);
   await page.goto(preview("checklist"));
-  await page.locator(".checklist input").nth(1).check();
-  await page.locator(".checklist input").nth(2).press("Space");
-  await expect(page.locator(".checklist :checked")).toHaveCount(2);
-  await expect(page.locator("#status")).toHaveText("2 / 3 tasks complete");
-  await page.locator(".checklist input").nth(1).uncheck();
-  await expect(page.locator("#status")).toHaveText("1 / 3 tasks complete");
+  await expect(page.locator(".todo :checked")).toHaveCount(1);
+  await page.locator(".todo label").nth(0).click();
+  await page.locator(".todo input").nth(2).press("Space");
+  await expect(page.locator(".todo :checked")).toHaveCount(3);
+  await page.locator(".todo input").nth(1).press("Space");
+  await expect(page.locator(".todo :checked")).toHaveCount(2);
 });
 
-test("Swipe confirmation requires the drag threshold, handles cancellation and supports keyboard", async ({
+test("Official swipe confirms only completed drags, cancels beyond the threshold and supports keyboard", async ({
   page,
 }) => {
   await page.goto(preview("swipe-confirm"));
-  const handle = page.locator(".swipe button");
+  const handle = page.locator(".swipe-knob");
+  const track = page.locator(".swipe");
   const box = await handle.boundingBox();
+  const rail = await track.boundingBox();
   await handle.click();
-  await expect(page.locator("#status")).toContainText("Not confirmed");
-  await page.mouse.move(box.x + 24, box.y + 24);
-  await page.mouse.down();
-  await page.mouse.move(box.x + 64, box.y + 24, { steps: 5 });
-  await page.mouse.up();
-  await expect(page.locator("#status")).toContainText("Not confirmed");
+  await expect(track).not.toHaveAttribute("data-done", "");
+  async function drag(distance, cancel = false) {
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await handle.evaluate((node) =>
+      node.addEventListener(
+        "pointerdown",
+        (event) => {
+          node.dataset.pointerId = String(event.pointerId);
+        },
+        { once: true },
+      ),
+    );
+    await page.mouse.down();
+    await page.mouse.move(
+      box.x + box.width / 2 + distance,
+      box.y + box.height / 2,
+      { steps: 8 },
+    );
+    if (cancel)
+      await handle.evaluate((node) =>
+        node.dispatchEvent(
+          new PointerEvent("pointercancel", {
+            pointerId: Number(node.dataset.pointerId),
+            bubbles: true,
+          }),
+        ),
+      );
+    await page.mouse.up();
+  }
+  await drag(30);
+  await expect(track).not.toHaveAttribute("data-done", "");
   await expect(handle).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
-  await page.mouse.move(box.x + 24, box.y + 24);
-  await page.mouse.down();
-  await page.mouse.move(box.x + 225, box.y + 24, { steps: 12 });
-  await page.mouse.up();
-  await expect(page.locator("#status")).toContainText("Confirmed");
-  await handle.press("Space");
-  await expect(page.locator("#status")).toContainText("Not confirmed");
-  await handle.dispatchEvent("pointerdown", {
-    button: 0,
-    clientX: box.x + 24,
-    pointerId: 1,
-  });
-  await handle.dispatchEvent("pointercancel", { pointerId: 1 });
-  await expect(page.locator("#status")).toContainText("Not confirmed");
+  await drag(rail.width, true);
+  await expect(track).not.toHaveAttribute("data-done", "");
+  await expect(handle).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
+  await drag(rail.width);
+  await expect(track).toHaveAttribute("data-done", "");
+  await expect(track).not.toHaveAttribute("data-done", "");
   await handle.press("Enter");
-  await expect(page.locator("#status")).toContainText("Confirmed");
+  await expect(track).toHaveAttribute("data-done", "");
+  await expect(track).not.toHaveAttribute("data-done", "");
+  await handle.press("Space");
+  await expect(track).toHaveAttribute("data-done", "");
 });
 
 test("New controls keep their selected values through theme and language configuration", async ({
@@ -192,11 +325,15 @@ test("New controls keep their selected values through theme and language configu
   await expect(page.locator("input")).toBeHidden();
   await expect(page.locator(".rubber-search button")).toBeFocused();
   await page.goto(preview("radial-menu"));
-  await page.locator("[data-toggle]").press("Enter");
-  await expect(page.locator("[data-option]:visible")).toHaveCount(5);
-  await page.locator("[data-option]").nth(2).press("Enter");
-  await expect(page.locator("[data-option]:visible")).toHaveCount(0);
-  await expect(page.locator("[data-toggle]")).toBeFocused();
+  await page.locator(".radial-main").press("Enter");
+  await expect(page.locator(".radial-items")).toHaveAttribute("data-open", "");
+  await expect(page.locator(".radial-items button")).toHaveCount(4);
+  await page.locator(".radial-items button").nth(2).press("Enter");
+  await expect(page.locator(".radial-items")).not.toHaveAttribute(
+    "data-open",
+    "",
+  );
+  await expect(page.locator(".radial-main")).toBeFocused();
 });
 
 test("A delayed viewer module cannot replace a newer library route", async ({
@@ -242,6 +379,6 @@ test("Viewer load failure offers a retry on the same resource", async ({
   await page.locator("[data-reload-viewer]").click();
   await expect(page.locator("#case-preview")).toBeVisible();
   await expect(
-    page.frameLocator("#case-preview").locator(".checklist input"),
+    page.frameLocator("#case-preview").locator(".todo input"),
   ).toHaveCount(3);
 });

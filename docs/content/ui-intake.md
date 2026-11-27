@@ -46,5 +46,5 @@ focus and content visible. A successful build does not replace those interaction
 ## UI Moments video follow-up
 
 The 36 microinteractions from episode 04 are documented in
-[UI Moments intake](ui-moments-intake.md), including the verified source-access
-limitation and the scope of the independent Atlas implementation.
+[UI Moments intake](ui-moments-intake.md), including the pinned official source
+for 23 controls and the 13 remaining independent Atlas references.

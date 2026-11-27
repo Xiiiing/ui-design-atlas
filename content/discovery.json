@@ -123,8 +123,8 @@
         "en": "UI Moments · Episode 04"
       },
       "description": {
-        "zh-CN": "参考视频中的 36 项微动效，本站独立实现。",
-        "en": "Independent Atlas implementations of 36 microinteractions in the reference video."
+        "zh-CN": "观默第四期视频的 36 项微动效：23 项官方源码，13 项本站参考实现。",
+        "en": "36 episode 04 microinteractions: 23 official implementations and 13 Atlas video references."
       },
       "resources": [
         "ui-moments-bars-fade",

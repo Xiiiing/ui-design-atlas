@@ -1,5 +1,11 @@
 import { test, expect } from "@playwright/test";
-import { cases, pages, components, resources, resourcePreview } from "../catalog.js";
+import {
+  cases,
+  pages,
+  components,
+  resources,
+  resourcePreview,
+} from "../catalog.js";
 const example = (path = "/", lang = "en", extra = "") =>
   `examples/shadcn-admin/index.html?lang=${lang}${extra}#${path}`;
 function watch(page) {
@@ -578,7 +584,18 @@ test("Independent upstream resources load locally with source, prompts and reduc
     await page.goto(resourcePreview(r, "en"));
     if (r.codeFormat === "static") {
       await expect(page.locator("#stage")).toBeVisible();
-      await expect.poll(() => page.locator("#stage").evaluate((stage) => stage.querySelectorAll("button, input, svg, [role=img]").length)).toBeGreaterThan(0);
+      await expect
+        .poll(() =>
+          page
+            .locator("#stage")
+            .evaluate(
+              (stage) =>
+                stage.querySelectorAll(
+                  "button, input, svg, canvas, [tabindex], [role=img]",
+                ).length,
+            ),
+        )
+        .toBeGreaterThan(0);
       continue;
     }
     await expect(page.locator(".demo-surface")).not.toContainText(
@@ -679,7 +696,18 @@ for (const lang of ["en", "zh-CN"])
       await page.goto(resourcePreview(r, lang, theme));
       if (r.codeFormat === "static") {
         await expect(page.locator("#stage")).toBeVisible();
-        await expect.poll(() => page.locator("#stage").evaluate((stage) => stage.querySelectorAll("button, input, svg, [role=img]").length)).toBeGreaterThan(0);
+        await expect
+          .poll(() =>
+            page
+              .locator("#stage")
+              .evaluate(
+                (stage) =>
+                  stage.querySelectorAll(
+                    "button, input, svg, canvas, [tabindex], [role=img]",
+                  ).length,
+              ),
+          )
+          .toBeGreaterThan(0);
         await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
       } else {
         await expect(page.locator(".demo-surface")).not.toContainText(
@@ -688,7 +716,9 @@ for (const lang of ["en", "zh-CN"])
         await expect(page.locator(".demo-surface [role=alert]")).toHaveCount(0);
         await expect
           .poll(() =>
-            page.locator("html").evaluate((el) => el.classList.contains("dark")),
+            page
+              .locator("html")
+              .evaluate((el) => el.classList.contains("dark")),
           )
           .toBe(theme === "dark");
       }

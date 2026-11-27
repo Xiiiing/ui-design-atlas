@@ -1,64 +1,65 @@
 # UI Moments episode 04
 
-The reference is [观默's 6 × 6 microinteraction video](https://x.com/guanmo_ai/status/2124714808779972850/video/1).
-All 36 on-screen examples have their own resource record, bilingual design notes
-and prompts, a local preview, light/dark covers and a static source ZIP.
+Reference: [观默's 6 × 6 video](https://x.com/guanmo_ai/status/2124714808779972850/video/1).
+The collection retains all 36 resource IDs, saved-item links and the ui-moments-04
+entry. It now contains 23 official implementations and 13 Atlas video references.
 
-The implementation code is written for Atlas by observing the video.
-It preserves the monochrome forms and interaction ideas while adding keyboard
-controls, responsive framing, explicit completion states and reduced motion.
-The video itself, its thumbnail, and upstream code or assets are not packaged.
+## Official source
 
-The footer links to guanmo-ai/ui-moments. On 2026-11-23 the GitHub API, Git clone,
-raw source and GitHub Pages entry returned 404. A search-index copy of a README
-and license was visible, but actual files and their source version could not be
-verified. Atlas therefore makes no claim to import that repository's code or pin
-its commit. Code provenance is original under ui-moments-atlas, with the video
-as the design reference. The implementation has its own MIT license and
-[attribution](../../examples/ui-market/public/ui-moments/ATTRIBUTION.md).
+On 2026-11-28 the author's [ui-moments repository](https://github.com/guanmo-ai/ui-moments)
+became accessible. The imported snapshot is commit
+cd49fd207d9333d3c442ffdbf39a9b3b055d358f, under the author's MIT license.
+The earlier 2026-11-23 implementation was independently written because the
+repository was unavailable then. That earlier attribution remains applicable
+only to the 13 references without a confirmed match in this snapshot.
 
-## Included patterns
-
-| Video row | Resource slugs |
+| Atlas slug | Official entry (gallery/originals/) |
 | --- | --- |
-| 1 | bars-fade, bloom-toggle, snap-grid, card-fan, gooey-tab-bar, blocks-scale |
-| 2 | stretch-toggle, merge-drops, paper-plane, detent-dial, domino-row, pebble-rating |
-| 3 | jelly-pad, swipe-confirm, bookmark, depth-stack, menu-morph, elastic-string |
-| 4 | ripple-pad, worm-dots, download-ring, leaf-tabs, bell-toggle, ink-switch |
-| 5 | rocker-switch, scrub-wave, squash-play, rubber-search, odometer, tide-progress |
-| 6 | eclipse-half, magnet-grid, checklist, flip-coin, radial-menu, dot-revolve |
+| bloom-toggle, merge-drops, jelly-pad, ripple-pad, magnet-grid | visual.html, same fragment |
+| snap-grid, domino-row, swipe-confirm, elastic-string, rocker-switch, scrub-wave, radial-menu | gestures.html, same fragment |
+| paper-plane, download-ring, bell-toggle | actions.html, same fragment |
+| detent-dial, leaf-tabs, ink-switch, tide-progress | index.html, same fragment |
+| odometer | index.html#odometer-stepper |
+| pebble-rating | inputs.html#pebble-rating |
+| checklist | inputs.html#stroke-checklist |
+| flip-coin | color.html#flip-coin |
 
-Resource IDs use the ui-moments- prefix. Open the ui-moments-04 collection,
-select UI Moments · Atlas as the source project, or search by English or Chinese
-names. Purpose facets cover buttons, forms, navigation, loading, feedback,
-backgrounds, cards, layouts, search and data.
+bars-fade, card-fan, gooey-tab-bar, blocks-scale, stretch-toggle, bookmark,
+depth-stack, menu-morph, worm-dots, squash-play, rubber-search, eclipse-half and
+dot-revolve remain Atlas video references. They are not labelled as upstream code.
+This migration does not import the upstream project's unrelated library galleries.
 
-## Behavior and reuse
+## Source, generation and reuse
 
-Swipe Confirm requires a drag of at least 90% of the track. Short or cancelled
-drags return to the start. Enter or Space provides keyboard confirmation.
-Paper Plane retains a sent state until explicitly reset, and Checklist keeps
-each task independently editable.
+Unmodified pages and their required assets live in
+examples/ui-market/public/ui-moments/upstream/. The existing
+examples/ui-market/sources.lock.json records their SHA-256 values and revision.
+Regenerate the single-control entries with:
 
-Download Ring simulates progress, then generates an actual local text file.
-Scrub Wave demonstrates progress and scrubbing without an audio track.
-Leaf Tabs uses example data. Flip Coin alternates faces, so it is a motion
-demonstration rather than a random-result tool. No external service is used.
+```sh
+node scripts/sync-ui-moments.mjs
+node scripts/sync-ui-moments.mjs --check
+```
 
-Each ZIP contains its entry HTML and the shared readable JavaScript and CSS,
-plus attribution and the implementation's license. The shared script provides
-all 36 implementations and mounts only the one named by the entry HTML.
-Extract the package while preserving relative paths, then open the HTML file
-named in ATLAS-REUSE.md.
+The generator preserves each original control's markup, stylesheet and behavior
+block while removing the multi-control page shell. Atlas adds preview framing,
+language/theme configuration and pause/visibility scheduling. A documented fix
+prevents Swipe Confirm from committing on a cancelled drag beyond the threshold.
 
-## Loading
+Source inspection and ZIP download include the actual entry, Atlas adapter,
+original source page, required font/assets and both MIT and OFL notices. Binary
+font bytes are encoded separately in the source manifest and written losslessly
+to the ZIP; they are not treated as UTF-8 text. Extract the package preserving
+relative paths and open the entry named in ATLAS-REUSE.md. No npm install is needed.
 
-Adding 36 catalog records exceeded the existing 190,000-byte startup-script
-budget. The viewer and its reading/provenance UI now load when a resource is
-opened. Navigation still records the origin, focus and scroll synchronously.
-A delayed viewer import is checked against the current URL and request before
-rendering, and failed imports expose a page-reload retry.
+## Behavior changes
 
-The startup saved-content registry contains identities only. Related guidance
-is resolved from the existing full guidance catalog after opening a resource.
-Production JavaScript uses UTF-8 literals. The existing budget remains in place.
+Paper Plane now follows the official automatic reset. Download Ring shows
+simulated progress with cancellation; it no longer generates the Atlas text file.
+Scrub Wave demonstrates playback and scrubbing without audio. Leaf Tabs uses
+example data. Flip Coin randomly chooses the sun or moon face. There is no backend.
+Descriptions and prompts distinguish the official implementations from the
+remaining video references. Search by UI Moments / uimoments / 观默, use the
+collection, or filter source projects to inspect either source separately.
+
+The existing lazy viewer and 190,000-byte startup budget remain in effect.

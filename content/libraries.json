@@ -136,5 +136,16 @@
       "guanmo_ai",
       "microinteractions"
     ]
+  },
+  "ui-moments": {
+    "id": "ui-moments",
+    "name": "UI Moments",
+    "version": "cd49fd2",
+    "docs": "https://github.com/guanmo-ai/ui-moments",
+    "aliases": [
+      "uimoments",
+      "guanmo_ai",
+      "观默"
+    ]
   }
 }
