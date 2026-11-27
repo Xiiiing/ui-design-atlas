@@ -25,7 +25,10 @@ for (const resource of resources.filter((r) =>
   const work = context.window.WORKS.find(
     (item) => item.id === (aliases[slug] || slug),
   );
-  if (!work) continue;
+  assert.ok(
+    work,
+    `${resource.id}: an official upstream implementation is required`,
+  );
   const path = work.demo.split("#")[0];
   if (!pages.has(path)) pages.set(path, await read("upstream/" + path));
   const source = pages.get(path).replaceAll("\r\n", "\n");

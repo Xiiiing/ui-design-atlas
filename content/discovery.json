@@ -123,17 +123,12 @@
         "en": "UI Moments · Episode 04"
       },
       "description": {
-        "zh-CN": "观默第四期视频的 36 项微动效：23 项官方源码，13 项本站参考实现。",
-        "en": "36 episode 04 microinteractions: 23 official implementations and 13 Atlas video references."
+        "zh-CN": "来自观默 UI Moments 官方开源代码的 23 项微动效。",
+        "en": "23 microinteractions from the official open-source UI Moments implementation."
       },
       "resources": [
-        "ui-moments-bars-fade",
         "ui-moments-bloom-toggle",
         "ui-moments-snap-grid",
-        "ui-moments-card-fan",
-        "ui-moments-gooey-tab-bar",
-        "ui-moments-blocks-scale",
-        "ui-moments-stretch-toggle",
         "ui-moments-merge-drops",
         "ui-moments-paper-plane",
         "ui-moments-detent-dial",
@@ -141,28 +136,20 @@
         "ui-moments-pebble-rating",
         "ui-moments-jelly-pad",
         "ui-moments-swipe-confirm",
-        "ui-moments-bookmark",
-        "ui-moments-depth-stack",
-        "ui-moments-menu-morph",
         "ui-moments-elastic-string",
         "ui-moments-ripple-pad",
-        "ui-moments-worm-dots",
         "ui-moments-download-ring",
         "ui-moments-leaf-tabs",
         "ui-moments-bell-toggle",
         "ui-moments-ink-switch",
         "ui-moments-rocker-switch",
         "ui-moments-scrub-wave",
-        "ui-moments-squash-play",
-        "ui-moments-rubber-search",
         "ui-moments-odometer",
         "ui-moments-tide-progress",
-        "ui-moments-eclipse-half",
         "ui-moments-magnet-grid",
         "ui-moments-checklist",
         "ui-moments-flip-coin",
-        "ui-moments-radial-menu",
-        "ui-moments-dot-revolve"
+        "ui-moments-radial-menu"
       ]
     }
   ],

@@ -107,37 +107,34 @@ test("Atlas pause freezes official progress and theme changes retain checkbox st
   await expect(page.locator(".todo :checked")).toHaveCount(2);
 });
 
-test("All 36 resources retain their IDs, accurate provenance, covers and reusable packages", async ({
+test("Only 23 official UI Moments resources, source and reusable packages are published", async ({
   page,
   request,
 }) => {
-  expect(additions).toHaveLength(36);
+  expect(additions).toHaveLength(23);
   await page.goto("#explore?lang=en&collection=ui-moments-04");
-  await expect(page.locator(".asset-card")).toHaveCount(24);
-  await page.locator("[data-more]").click();
-  await expect(page.locator(".asset-card")).toHaveCount(36);
+  await expect(page.locator(".asset-card")).toHaveCount(23);
+  await expect(page.locator("[data-more]")).toHaveCount(0);
   for (const resource of additions) {
     const code = await (
       await request.get(`code/resources/component-${resource.id}.json`)
     ).json();
     expect(code.project).toBe("static");
     expect(code.files[resource.files[0]]).toContain('id="demo"');
-    if (resource.sourceId === "ui-moments") {
-      expect(code.files["licenses/ui-moments-LICENSE"]).toContain(
-        "Copyright (c) 2026 guanmo-ai",
-      );
-      expect(
-        code.binaryFiles[
-          "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2"
-        ],
-      ).toBeTruthy();
-      expect(resource.provenance).toBe("open-source");
-    } else {
-      expect(code.files["licenses/ui-moments-atlas-LICENSE"]).toContain(
-        "UI Design Atlas contributors",
-      );
-      expect(resource.provenance).toBe("original");
-    }
+    expect(resource.sourceId).toBe("ui-moments");
+    expect(resource.provenance).toBe("open-source");
+    expect(code.files["licenses/ui-moments-LICENSE"]).toContain(
+      "Copyright (c) 2026 guanmo-ai",
+    );
+    expect(code.files["licenses/ui-moments-adapter-LICENSE"]).toContain(
+      "UI Design Atlas contributors",
+    );
+    expect(
+      code.binaryFiles[
+        "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2"
+      ],
+    ).toBeTruthy();
+    expect(code.files["public/ui-moments/shared/demo.js"]).toBeUndefined();
     expect(
       (
         await request.get(`downloads/resources/component-${resource.id}.zip`)
@@ -149,6 +146,13 @@ test("All 36 resources retain their IDs, accurate provenance, covers and reusabl
     ])
       expect((await request.get(cover)).ok()).toBe(true);
   }
+  for (const removed of [
+    "examples/ui-market/ui-moments/rubber-search/index.html",
+    "examples/ui-market/ui-moments/shared/demo.js",
+    "code/resources/component-ui-moments-rubber-search.json",
+    "downloads/resources/component-ui-moments-rubber-search.zip",
+  ])
+    expect((await request.get(removed)).status()).toBe(404);
   await page.goto("#explore?lang=zh-CN&q=纸飞机");
   await expect(page.locator(".asset-card")).toHaveAttribute(
     "data-resource",
@@ -316,14 +320,6 @@ test("New controls keep their selected values through theme and language configu
     "aria-selected",
     "true",
   );
-  await page.goto(preview("rubber-search"));
-  await page.locator(".rubber-search button").click();
-  await page.locator("input").fill("Atlas");
-  await page.locator("input").press("Enter");
-  await expect(page.locator("#status")).toHaveText("Search term: Atlas");
-  await page.locator("input").press("Escape");
-  await expect(page.locator("input")).toBeHidden();
-  await expect(page.locator(".rubber-search button")).toBeFocused();
   await page.goto(preview("radial-menu"));
   await page.locator(".radial-main").press("Enter");
   await expect(page.locator(".radial-items")).toHaveAttribute("data-open", "");

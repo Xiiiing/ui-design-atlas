@@ -127,21 +127,6 @@
     "license": "Effect Atlas License 1.0",
     "licenseFile": "./examples/ui-market/licenses/effect-atlas-LICENSE"
   },
-  "ui-moments-atlas": {
-    "id": "ui-moments-atlas",
-    "name": "UI Moments · Atlas",
-    "author": "UI Design Atlas contributors; visual reference by guanmo_ai",
-    "repo": "https://github.com/Xiiiing/ui-design-atlas",
-    "docs": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "original": true,
-    "license": "MIT (Atlas implementation)",
-    "licenseFile": "./examples/ui-market/licenses/ui-moments-atlas-LICENSE",
-    "notice": {
-      "zh-CN": "视觉参考观默 UI Moments 第四期视频，本站独立实现。源码包包含本站代码和许可。",
-      "en": "Independent Atlas implementation based on guanmo_ai's UI Moments episode 04 video. The download contains Atlas code and its license."
-    },
-    "commit": "6e12ef93f59000b12de1642848e73e7b1a4754e7"
-  },
   "ui-moments": {
     "id": "ui-moments",
     "name": "UI Moments",

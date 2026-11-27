@@ -9879,86 +9879,6 @@
     "sourceUrl": "https://github.com/effect-atlas/effect-atlas/blob/c0f2b5a148a2803d40ca1bc3c1f44e4db7f95b84/effects/scroll-minimap/effect.js"
   },
   {
-    "id": "ui-moments-bars-fade",
-    "type": "component",
-    "sourceId": "ui-moments-atlas",
-    "libraryIds": [
-      "ui-moments-atlas"
-    ],
-    "category": "loading",
-    "categories": [
-      "loading"
-    ],
-    "interactions": [
-      "auto"
-    ],
-    "motion": true,
-    "styleId": "motion-neutral",
-    "style": {
-      "zh-CN": "中性动效",
-      "en": "Neutral motion"
-    },
-    "styleIds": [
-      "minimal"
-    ],
-    "technologyIds": [
-      "native"
-    ],
-    "audience": "b2c",
-    "provenance": "original",
-    "name": {
-      "zh-CN": "条形渐隐",
-      "en": "Bars Fade"
-    },
-    "description": {
-      "zh-CN": "三根竖条依次明暗起伏。",
-      "en": "Three bars fade in a staggered rhythm."
-    },
-    "useCases": {
-      "zh-CN": "加载占位。",
-      "en": "Loading indicator."
-    },
-    "principle": {
-      "zh-CN": "等宽竖条与错开的透明度节奏。",
-      "en": "Equal bars with staggered opacity."
-    },
-    "rules": {
-      "zh-CN": [
-        "参考视频重新实现，保留操作结果；键盘、触屏与减少动态效果可用。"
-      ],
-      "en": [
-        "Independently implement the reference, preserve the result, and support keyboard, touch and reduced motion."
-      ]
-    },
-    "prompt": {
-      "zh-CN": "实现「条形渐隐」（Bars Fade）。行为为三根竖条依次明暗起伏。视觉结构为等宽竖条与错开的透明度节奏。使用随附的 Atlas 原生实现，保持鼠标、触屏和键盘可操作、主题切换不丢状态，减少动态效果时立即展示结果。只加载本地文件，不新增框架或在线资源。参考观默 UI Moments 第四期视频，明确本站代码为独立实现，并在交付中保留署名文件。",
-      "en": "Implement Bars Fade. Three bars fade in a staggered rhythm. Visual structure: Equal bars with staggered opacity. Reuse the included Atlas native implementation. Keep mouse, touch and keyboard controls usable, retain state on appearance changes, and settle immediately with reduced motion. Load local files only, without a framework or remote assets. Credit the UI Moments episode 04 video by guanmo_ai and identify this code as an independent Atlas implementation. Keep the included attribution."
-    },
-    "stylePrompt": {
-      "zh-CN": "借鉴「条形渐隐」的视觉表现：等宽竖条与错开的透明度节奏。把反馈应用于现有内容和操作，保持布局稳定与明暗对比。保留对参考视频的说明和本站独立实现署名。",
-      "en": "Apply the visual treatment of Bars Fade: Equal bars with staggered opacity. Keep the existing workflow and layout, transfer the feedback and light/dark contrast, and retain the video reference and Atlas implementation credit."
-    },
-    "cover": "./assets/previews/component-ui-moments-bars-fade.png",
-    "preview": {
-      "width": 640,
-      "height": 480,
-      "mode": "inline",
-      "url": "./examples/ui-market/ui-moments/bars-fade/index.html"
-    },
-    "codeFormat": "static",
-    "files": [
-      "public/ui-moments/bars-fade/index.html",
-      "public/ui-moments/shared/demo.js",
-      "public/ui-moments/shared/demo.css"
-    ],
-    "supportFiles": [
-      "public/ui-moments/ATTRIBUTION.md",
-      "licenses/ui-moments-atlas-LICENSE"
-    ],
-    "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
-  },
-  {
     "id": "ui-moments-bloom-toggle",
     "type": "component",
     "sourceId": "ui-moments",
@@ -10041,7 +9961,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/visual.html#bloom-toggle",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/visual.html#bloom-toggle"
@@ -10129,331 +10049,10 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#snap-grid",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#snap-grid"
-  },
-  {
-    "id": "ui-moments-card-fan",
-    "type": "component",
-    "sourceId": "ui-moments-atlas",
-    "libraryIds": [
-      "ui-moments-atlas"
-    ],
-    "category": "cards",
-    "categories": [
-      "cards"
-    ],
-    "interactions": [
-      "hover",
-      "click"
-    ],
-    "motion": true,
-    "styleId": "motion-neutral",
-    "style": {
-      "zh-CN": "中性动效",
-      "en": "Neutral motion"
-    },
-    "styleIds": [
-      "minimal"
-    ],
-    "technologyIds": [
-      "native"
-    ],
-    "audience": "b2c",
-    "provenance": "original",
-    "name": {
-      "zh-CN": "扇形卡组",
-      "en": "Card Fan"
-    },
-    "description": {
-      "zh-CN": "悬停或点按，让叠放卡片扇形展开。",
-      "en": "Fan out a stack of cards on hover or activation."
-    },
-    "useCases": {
-      "zh-CN": "作品卡片浏览。",
-      "en": "Portfolio browsing."
-    },
-    "principle": {
-      "zh-CN": "底部为轴、间距逐层展开的卡组。",
-      "en": "Cards spreading around a shared lower pivot."
-    },
-    "rules": {
-      "zh-CN": [
-        "参考视频重新实现，保留操作结果；键盘、触屏与减少动态效果可用。"
-      ],
-      "en": [
-        "Independently implement the reference, preserve the result, and support keyboard, touch and reduced motion."
-      ]
-    },
-    "prompt": {
-      "zh-CN": "实现「扇形卡组」（Card Fan）。行为为悬停或点按，让叠放卡片扇形展开。视觉结构为底部为轴、间距逐层展开的卡组。使用随附的 Atlas 原生实现，保持鼠标、触屏和键盘可操作、主题切换不丢状态，减少动态效果时立即展示结果。只加载本地文件，不新增框架或在线资源。参考观默 UI Moments 第四期视频，明确本站代码为独立实现，并在交付中保留署名文件。",
-      "en": "Implement Card Fan. Fan out a stack of cards on hover or activation. Visual structure: Cards spreading around a shared lower pivot. Reuse the included Atlas native implementation. Keep mouse, touch and keyboard controls usable, retain state on appearance changes, and settle immediately with reduced motion. Load local files only, without a framework or remote assets. Credit the UI Moments episode 04 video by guanmo_ai and identify this code as an independent Atlas implementation. Keep the included attribution."
-    },
-    "stylePrompt": {
-      "zh-CN": "借鉴「扇形卡组」的视觉表现：底部为轴、间距逐层展开的卡组。把反馈应用于现有内容和操作，保持布局稳定与明暗对比。保留对参考视频的说明和本站独立实现署名。",
-      "en": "Apply the visual treatment of Card Fan: Cards spreading around a shared lower pivot. Keep the existing workflow and layout, transfer the feedback and light/dark contrast, and retain the video reference and Atlas implementation credit."
-    },
-    "cover": "./assets/previews/component-ui-moments-card-fan.png",
-    "preview": {
-      "width": 640,
-      "height": 480,
-      "mode": "inline",
-      "url": "./examples/ui-market/ui-moments/card-fan/index.html"
-    },
-    "codeFormat": "static",
-    "files": [
-      "public/ui-moments/card-fan/index.html",
-      "public/ui-moments/shared/demo.js",
-      "public/ui-moments/shared/demo.css"
-    ],
-    "supportFiles": [
-      "public/ui-moments/ATTRIBUTION.md",
-      "licenses/ui-moments-atlas-LICENSE"
-    ],
-    "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
-  },
-  {
-    "id": "ui-moments-gooey-tab-bar",
-    "type": "component",
-    "sourceId": "ui-moments-atlas",
-    "libraryIds": [
-      "ui-moments-atlas"
-    ],
-    "category": "navigation",
-    "categories": [
-      "navigation"
-    ],
-    "interactions": [
-      "click"
-    ],
-    "motion": true,
-    "styleId": "motion-neutral",
-    "style": {
-      "zh-CN": "中性动效",
-      "en": "Neutral motion"
-    },
-    "styleIds": [
-      "minimal"
-    ],
-    "technologyIds": [
-      "native"
-    ],
-    "audience": "b2c",
-    "provenance": "original",
-    "name": {
-      "zh-CN": "弹性标签栏",
-      "en": "Gooey Tab Bar"
-    },
-    "description": {
-      "zh-CN": "切换图标标签，实心指示块弹性跟随。",
-      "en": "A rounded selection follows the active icon with a spring."
-    },
-    "useCases": {
-      "zh-CN": "紧凑导航。",
-      "en": "Compact navigation."
-    },
-    "principle": {
-      "zh-CN": "胶囊底板、图标与高对比圆形选中态。",
-      "en": "A capsule track, icons and a high-contrast selection."
-    },
-    "rules": {
-      "zh-CN": [
-        "参考视频重新实现，保留操作结果；键盘、触屏与减少动态效果可用。"
-      ],
-      "en": [
-        "Independently implement the reference, preserve the result, and support keyboard, touch and reduced motion."
-      ]
-    },
-    "prompt": {
-      "zh-CN": "实现「弹性标签栏」（Gooey Tab Bar）。行为为切换图标标签，实心指示块弹性跟随。视觉结构为胶囊底板、图标与高对比圆形选中态。使用随附的 Atlas 原生实现，保持鼠标、触屏和键盘可操作、主题切换不丢状态，减少动态效果时立即展示结果。只加载本地文件，不新增框架或在线资源。参考观默 UI Moments 第四期视频，明确本站代码为独立实现，并在交付中保留署名文件。",
-      "en": "Implement Gooey Tab Bar. A rounded selection follows the active icon with a spring. Visual structure: A capsule track, icons and a high-contrast selection. Reuse the included Atlas native implementation. Keep mouse, touch and keyboard controls usable, retain state on appearance changes, and settle immediately with reduced motion. Load local files only, without a framework or remote assets. Credit the UI Moments episode 04 video by guanmo_ai and identify this code as an independent Atlas implementation. Keep the included attribution."
-    },
-    "stylePrompt": {
-      "zh-CN": "借鉴「弹性标签栏」的视觉表现：胶囊底板、图标与高对比圆形选中态。把反馈应用于现有内容和操作，保持布局稳定与明暗对比。保留对参考视频的说明和本站独立实现署名。",
-      "en": "Apply the visual treatment of Gooey Tab Bar: A capsule track, icons and a high-contrast selection. Keep the existing workflow and layout, transfer the feedback and light/dark contrast, and retain the video reference and Atlas implementation credit."
-    },
-    "cover": "./assets/previews/component-ui-moments-gooey-tab-bar.png",
-    "preview": {
-      "width": 640,
-      "height": 480,
-      "mode": "inline",
-      "url": "./examples/ui-market/ui-moments/gooey-tab-bar/index.html"
-    },
-    "codeFormat": "static",
-    "files": [
-      "public/ui-moments/gooey-tab-bar/index.html",
-      "public/ui-moments/shared/demo.js",
-      "public/ui-moments/shared/demo.css"
-    ],
-    "supportFiles": [
-      "public/ui-moments/ATTRIBUTION.md",
-      "licenses/ui-moments-atlas-LICENSE"
-    ],
-    "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
-  },
-  {
-    "id": "ui-moments-blocks-scale",
-    "type": "component",
-    "sourceId": "ui-moments-atlas",
-    "libraryIds": [
-      "ui-moments-atlas"
-    ],
-    "category": "loading",
-    "categories": [
-      "loading"
-    ],
-    "interactions": [
-      "auto"
-    ],
-    "motion": true,
-    "styleId": "motion-neutral",
-    "style": {
-      "zh-CN": "中性动效",
-      "en": "Neutral motion"
-    },
-    "styleIds": [
-      "minimal"
-    ],
-    "technologyIds": [
-      "native"
-    ],
-    "audience": "b2c",
-    "provenance": "original",
-    "name": {
-      "zh-CN": "方块缩放",
-      "en": "Blocks Scale"
-    },
-    "description": {
-      "zh-CN": "四个方块按错开的节奏缩放。",
-      "en": "Four blocks scale in a staggered rhythm."
-    },
-    "useCases": {
-      "zh-CN": "网格加载状态。",
-      "en": "Grid loading."
-    },
-    "principle": {
-      "zh-CN": "二乘二方阵与统一缩放节奏。",
-      "en": "A two-by-two grid with staggered scaling."
-    },
-    "rules": {
-      "zh-CN": [
-        "参考视频重新实现，保留操作结果；键盘、触屏与减少动态效果可用。"
-      ],
-      "en": [
-        "Independently implement the reference, preserve the result, and support keyboard, touch and reduced motion."
-      ]
-    },
-    "prompt": {
-      "zh-CN": "实现「方块缩放」（Blocks Scale）。行为为四个方块按错开的节奏缩放。视觉结构为二乘二方阵与统一缩放节奏。使用随附的 Atlas 原生实现，保持鼠标、触屏和键盘可操作、主题切换不丢状态，减少动态效果时立即展示结果。只加载本地文件，不新增框架或在线资源。参考观默 UI Moments 第四期视频，明确本站代码为独立实现，并在交付中保留署名文件。",
-      "en": "Implement Blocks Scale. Four blocks scale in a staggered rhythm. Visual structure: A two-by-two grid with staggered scaling. Reuse the included Atlas native implementation. Keep mouse, touch and keyboard controls usable, retain state on appearance changes, and settle immediately with reduced motion. Load local files only, without a framework or remote assets. Credit the UI Moments episode 04 video by guanmo_ai and identify this code as an independent Atlas implementation. Keep the included attribution."
-    },
-    "stylePrompt": {
-      "zh-CN": "借鉴「方块缩放」的视觉表现：二乘二方阵与统一缩放节奏。把反馈应用于现有内容和操作，保持布局稳定与明暗对比。保留对参考视频的说明和本站独立实现署名。",
-      "en": "Apply the visual treatment of Blocks Scale: A two-by-two grid with staggered scaling. Keep the existing workflow and layout, transfer the feedback and light/dark contrast, and retain the video reference and Atlas implementation credit."
-    },
-    "cover": "./assets/previews/component-ui-moments-blocks-scale.png",
-    "preview": {
-      "width": 640,
-      "height": 480,
-      "mode": "inline",
-      "url": "./examples/ui-market/ui-moments/blocks-scale/index.html"
-    },
-    "codeFormat": "static",
-    "files": [
-      "public/ui-moments/blocks-scale/index.html",
-      "public/ui-moments/shared/demo.js",
-      "public/ui-moments/shared/demo.css"
-    ],
-    "supportFiles": [
-      "public/ui-moments/ATTRIBUTION.md",
-      "licenses/ui-moments-atlas-LICENSE"
-    ],
-    "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
-  },
-  {
-    "id": "ui-moments-stretch-toggle",
-    "type": "component",
-    "sourceId": "ui-moments-atlas",
-    "libraryIds": [
-      "ui-moments-atlas"
-    ],
-    "category": "buttons",
-    "categories": [
-      "buttons"
-    ],
-    "interactions": [
-      "click"
-    ],
-    "motion": true,
-    "styleId": "motion-neutral",
-    "style": {
-      "zh-CN": "中性动效",
-      "en": "Neutral motion"
-    },
-    "styleIds": [
-      "minimal"
-    ],
-    "technologyIds": [
-      "native"
-    ],
-    "audience": "b2c",
-    "provenance": "original",
-    "name": {
-      "zh-CN": "拉伸开关",
-      "en": "Stretch Toggle"
-    },
-    "description": {
-      "zh-CN": "圆形把手在切换时横移，按住时拉宽。",
-      "en": "The thumb moves on toggle and stretches while pressed."
-    },
-    "useCases": {
-      "zh-CN": "二态开关。",
-      "en": "Binary setting."
-    },
-    "principle": {
-      "zh-CN": "宽胶囊轨道与有回弹的实心把手。",
-      "en": "A wide capsule and a springing thumb."
-    },
-    "rules": {
-      "zh-CN": [
-        "参考视频重新实现，保留操作结果；键盘、触屏与减少动态效果可用。"
-      ],
-      "en": [
-        "Independently implement the reference, preserve the result, and support keyboard, touch and reduced motion."
-      ]
-    },
-    "prompt": {
-      "zh-CN": "实现「拉伸开关」（Stretch Toggle）。行为为圆形把手在切换时横移，按住时拉宽。视觉结构为宽胶囊轨道与有回弹的实心把手。使用随附的 Atlas 原生实现，保持鼠标、触屏和键盘可操作、主题切换不丢状态，减少动态效果时立即展示结果。只加载本地文件，不新增框架或在线资源。参考观默 UI Moments 第四期视频，明确本站代码为独立实现，并在交付中保留署名文件。",
-      "en": "Implement Stretch Toggle. The thumb moves on toggle and stretches while pressed. Visual structure: A wide capsule and a springing thumb. Reuse the included Atlas native implementation. Keep mouse, touch and keyboard controls usable, retain state on appearance changes, and settle immediately with reduced motion. Load local files only, without a framework or remote assets. Credit the UI Moments episode 04 video by guanmo_ai and identify this code as an independent Atlas implementation. Keep the included attribution."
-    },
-    "stylePrompt": {
-      "zh-CN": "借鉴「拉伸开关」的视觉表现：宽胶囊轨道与有回弹的实心把手。把反馈应用于现有内容和操作，保持布局稳定与明暗对比。保留对参考视频的说明和本站独立实现署名。",
-      "en": "Apply the visual treatment of Stretch Toggle: A wide capsule and a springing thumb. Keep the existing workflow and layout, transfer the feedback and light/dark contrast, and retain the video reference and Atlas implementation credit."
-    },
-    "cover": "./assets/previews/component-ui-moments-stretch-toggle.png",
-    "preview": {
-      "width": 640,
-      "height": 480,
-      "mode": "inline",
-      "url": "./examples/ui-market/ui-moments/stretch-toggle/index.html"
-    },
-    "codeFormat": "static",
-    "files": [
-      "public/ui-moments/stretch-toggle/index.html",
-      "public/ui-moments/shared/demo.js",
-      "public/ui-moments/shared/demo.css"
-    ],
-    "supportFiles": [
-      "public/ui-moments/ATTRIBUTION.md",
-      "licenses/ui-moments-atlas-LICENSE"
-    ],
-    "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
   },
   {
     "id": "ui-moments-merge-drops",
@@ -10538,7 +10137,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/visual.html#merge-drops",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/visual.html#merge-drops"
@@ -10626,7 +10225,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/actions.html#paper-plane",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/actions.html#paper-plane"
@@ -10714,7 +10313,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/index.html#detent-dial",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/index.html#detent-dial"
@@ -10802,7 +10401,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#domino-row",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#domino-row"
@@ -10890,7 +10489,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/inputs.html#pebble-rating",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/inputs.html#pebble-rating"
@@ -10978,7 +10577,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/visual.html#jelly-pad",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/visual.html#jelly-pad"
@@ -11066,250 +10665,10 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#swipe-confirm",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#swipe-confirm"
-  },
-  {
-    "id": "ui-moments-bookmark",
-    "type": "component",
-    "sourceId": "ui-moments-atlas",
-    "libraryIds": [
-      "ui-moments-atlas"
-    ],
-    "category": "buttons",
-    "categories": [
-      "buttons"
-    ],
-    "interactions": [
-      "click"
-    ],
-    "motion": true,
-    "styleId": "motion-neutral",
-    "style": {
-      "zh-CN": "中性动效",
-      "en": "Neutral motion"
-    },
-    "styleIds": [
-      "minimal"
-    ],
-    "technologyIds": [
-      "native"
-    ],
-    "audience": "b2c",
-    "provenance": "original",
-    "name": {
-      "zh-CN": "收藏书签",
-      "en": "Bookmark"
-    },
-    "description": {
-      "zh-CN": "切换收藏，书签轮廓填实并轻微上提。",
-      "en": "Toggle a bookmark as its outline fills and lifts."
-    },
-    "useCases": {
-      "zh-CN": "收藏反馈。",
-      "en": "Bookmark feedback."
-    },
-    "principle": {
-      "zh-CN": "方形圆角按钮与轮廓书签。",
-      "en": "A rounded square and outlined bookmark."
-    },
-    "rules": {
-      "zh-CN": [
-        "参考视频重新实现，保留操作结果；键盘、触屏与减少动态效果可用。"
-      ],
-      "en": [
-        "Independently implement the reference, preserve the result, and support keyboard, touch and reduced motion."
-      ]
-    },
-    "prompt": {
-      "zh-CN": "实现「收藏书签」（Bookmark）。行为为切换收藏，书签轮廓填实并轻微上提。视觉结构为方形圆角按钮与轮廓书签。使用随附的 Atlas 原生实现，保持鼠标、触屏和键盘可操作、主题切换不丢状态，减少动态效果时立即展示结果。只加载本地文件，不新增框架或在线资源。参考观默 UI Moments 第四期视频，明确本站代码为独立实现，并在交付中保留署名文件。",
-      "en": "Implement Bookmark. Toggle a bookmark as its outline fills and lifts. Visual structure: A rounded square and outlined bookmark. Reuse the included Atlas native implementation. Keep mouse, touch and keyboard controls usable, retain state on appearance changes, and settle immediately with reduced motion. Load local files only, without a framework or remote assets. Credit the UI Moments episode 04 video by guanmo_ai and identify this code as an independent Atlas implementation. Keep the included attribution."
-    },
-    "stylePrompt": {
-      "zh-CN": "借鉴「收藏书签」的视觉表现：方形圆角按钮与轮廓书签。把反馈应用于现有内容和操作，保持布局稳定与明暗对比。保留对参考视频的说明和本站独立实现署名。",
-      "en": "Apply the visual treatment of Bookmark: A rounded square and outlined bookmark. Keep the existing workflow and layout, transfer the feedback and light/dark contrast, and retain the video reference and Atlas implementation credit."
-    },
-    "cover": "./assets/previews/component-ui-moments-bookmark.png",
-    "preview": {
-      "width": 640,
-      "height": 480,
-      "mode": "inline",
-      "url": "./examples/ui-market/ui-moments/bookmark/index.html"
-    },
-    "codeFormat": "static",
-    "files": [
-      "public/ui-moments/bookmark/index.html",
-      "public/ui-moments/shared/demo.js",
-      "public/ui-moments/shared/demo.css"
-    ],
-    "supportFiles": [
-      "public/ui-moments/ATTRIBUTION.md",
-      "licenses/ui-moments-atlas-LICENSE"
-    ],
-    "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
-  },
-  {
-    "id": "ui-moments-depth-stack",
-    "type": "component",
-    "sourceId": "ui-moments-atlas",
-    "libraryIds": [
-      "ui-moments-atlas"
-    ],
-    "category": "cards",
-    "categories": [
-      "cards"
-    ],
-    "interactions": [
-      "click"
-    ],
-    "motion": true,
-    "styleId": "motion-neutral",
-    "style": {
-      "zh-CN": "中性动效",
-      "en": "Neutral motion"
-    },
-    "styleIds": [
-      "minimal"
-    ],
-    "technologyIds": [
-      "native"
-    ],
-    "audience": "b2c",
-    "provenance": "original",
-    "name": {
-      "zh-CN": "纵深卡堆",
-      "en": "Depth Stack"
-    },
-    "description": {
-      "zh-CN": "点击叠层卡片，让卡堆展开成透视序列。",
-      "en": "Spread layered cards into a perspective sequence."
-    },
-    "useCases": {
-      "zh-CN": "卡堆浏览。",
-      "en": "Stacked card browsing."
-    },
-    "principle": {
-      "zh-CN": "错位叠层、透视旋转与柔和投影。",
-      "en": "Offset layers, perspective rotation and soft shadows."
-    },
-    "rules": {
-      "zh-CN": [
-        "参考视频重新实现，保留操作结果；键盘、触屏与减少动态效果可用。"
-      ],
-      "en": [
-        "Independently implement the reference, preserve the result, and support keyboard, touch and reduced motion."
-      ]
-    },
-    "prompt": {
-      "zh-CN": "实现「纵深卡堆」（Depth Stack）。行为为点击叠层卡片，让卡堆展开成透视序列。视觉结构为错位叠层、透视旋转与柔和投影。使用随附的 Atlas 原生实现，保持鼠标、触屏和键盘可操作、主题切换不丢状态，减少动态效果时立即展示结果。只加载本地文件，不新增框架或在线资源。参考观默 UI Moments 第四期视频，明确本站代码为独立实现，并在交付中保留署名文件。",
-      "en": "Implement Depth Stack. Spread layered cards into a perspective sequence. Visual structure: Offset layers, perspective rotation and soft shadows. Reuse the included Atlas native implementation. Keep mouse, touch and keyboard controls usable, retain state on appearance changes, and settle immediately with reduced motion. Load local files only, without a framework or remote assets. Credit the UI Moments episode 04 video by guanmo_ai and identify this code as an independent Atlas implementation. Keep the included attribution."
-    },
-    "stylePrompt": {
-      "zh-CN": "借鉴「纵深卡堆」的视觉表现：错位叠层、透视旋转与柔和投影。把反馈应用于现有内容和操作，保持布局稳定与明暗对比。保留对参考视频的说明和本站独立实现署名。",
-      "en": "Apply the visual treatment of Depth Stack: Offset layers, perspective rotation and soft shadows. Keep the existing workflow and layout, transfer the feedback and light/dark contrast, and retain the video reference and Atlas implementation credit."
-    },
-    "cover": "./assets/previews/component-ui-moments-depth-stack.png",
-    "preview": {
-      "width": 640,
-      "height": 480,
-      "mode": "inline",
-      "url": "./examples/ui-market/ui-moments/depth-stack/index.html"
-    },
-    "codeFormat": "static",
-    "files": [
-      "public/ui-moments/depth-stack/index.html",
-      "public/ui-moments/shared/demo.js",
-      "public/ui-moments/shared/demo.css"
-    ],
-    "supportFiles": [
-      "public/ui-moments/ATTRIBUTION.md",
-      "licenses/ui-moments-atlas-LICENSE"
-    ],
-    "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
-  },
-  {
-    "id": "ui-moments-menu-morph",
-    "type": "component",
-    "sourceId": "ui-moments-atlas",
-    "libraryIds": [
-      "ui-moments-atlas"
-    ],
-    "category": "navigation",
-    "categories": [
-      "navigation"
-    ],
-    "interactions": [
-      "click"
-    ],
-    "motion": true,
-    "styleId": "motion-neutral",
-    "style": {
-      "zh-CN": "中性动效",
-      "en": "Neutral motion"
-    },
-    "styleIds": [
-      "minimal"
-    ],
-    "technologyIds": [
-      "native"
-    ],
-    "audience": "b2c",
-    "provenance": "original",
-    "name": {
-      "zh-CN": "菜单变形",
-      "en": "Menu Morph"
-    },
-    "description": {
-      "zh-CN": "菜单线条变成关闭符号，再点收回。",
-      "en": "Morph three menu strokes into a close mark and back."
-    },
-    "useCases": {
-      "zh-CN": "菜单展开反馈。",
-      "en": "Menu disclosure."
-    },
-    "principle": {
-      "zh-CN": "三条等宽线以同一中心旋转。",
-      "en": "Three equal strokes rotate around a shared center."
-    },
-    "rules": {
-      "zh-CN": [
-        "参考视频重新实现，保留操作结果；键盘、触屏与减少动态效果可用。"
-      ],
-      "en": [
-        "Independently implement the reference, preserve the result, and support keyboard, touch and reduced motion."
-      ]
-    },
-    "prompt": {
-      "zh-CN": "实现「菜单变形」（Menu Morph）。行为为菜单线条变成关闭符号，再点收回。视觉结构为三条等宽线以同一中心旋转。使用随附的 Atlas 原生实现，保持鼠标、触屏和键盘可操作、主题切换不丢状态，减少动态效果时立即展示结果。只加载本地文件，不新增框架或在线资源。参考观默 UI Moments 第四期视频，明确本站代码为独立实现，并在交付中保留署名文件。",
-      "en": "Implement Menu Morph. Morph three menu strokes into a close mark and back. Visual structure: Three equal strokes rotate around a shared center. Reuse the included Atlas native implementation. Keep mouse, touch and keyboard controls usable, retain state on appearance changes, and settle immediately with reduced motion. Load local files only, without a framework or remote assets. Credit the UI Moments episode 04 video by guanmo_ai and identify this code as an independent Atlas implementation. Keep the included attribution."
-    },
-    "stylePrompt": {
-      "zh-CN": "借鉴「菜单变形」的视觉表现：三条等宽线以同一中心旋转。把反馈应用于现有内容和操作，保持布局稳定与明暗对比。保留对参考视频的说明和本站独立实现署名。",
-      "en": "Apply the visual treatment of Menu Morph: Three equal strokes rotate around a shared center. Keep the existing workflow and layout, transfer the feedback and light/dark contrast, and retain the video reference and Atlas implementation credit."
-    },
-    "cover": "./assets/previews/component-ui-moments-menu-morph.png",
-    "preview": {
-      "width": 640,
-      "height": 480,
-      "mode": "inline",
-      "url": "./examples/ui-market/ui-moments/menu-morph/index.html"
-    },
-    "codeFormat": "static",
-    "files": [
-      "public/ui-moments/menu-morph/index.html",
-      "public/ui-moments/shared/demo.js",
-      "public/ui-moments/shared/demo.css"
-    ],
-    "supportFiles": [
-      "public/ui-moments/ATTRIBUTION.md",
-      "licenses/ui-moments-atlas-LICENSE"
-    ],
-    "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
   },
   {
     "id": "ui-moments-elastic-string",
@@ -11394,7 +10753,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#elastic-string",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#elastic-string"
@@ -11482,90 +10841,10 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/visual.html#ripple-pad",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/visual.html#ripple-pad"
-  },
-  {
-    "id": "ui-moments-worm-dots",
-    "type": "component",
-    "sourceId": "ui-moments-atlas",
-    "libraryIds": [
-      "ui-moments-atlas"
-    ],
-    "category": "navigation",
-    "categories": [
-      "navigation"
-    ],
-    "interactions": [
-      "click"
-    ],
-    "motion": true,
-    "styleId": "motion-neutral",
-    "style": {
-      "zh-CN": "中性动效",
-      "en": "Neutral motion"
-    },
-    "styleIds": [
-      "minimal"
-    ],
-    "technologyIds": [
-      "native"
-    ],
-    "audience": "b2c",
-    "provenance": "original",
-    "name": {
-      "zh-CN": "蠕动分页点",
-      "en": "Worm Dots"
-    },
-    "description": {
-      "zh-CN": "点选页码，圆角指示块跟随当前分页。",
-      "en": "Select a page as the rounded indicator follows it."
-    },
-    "useCases": {
-      "zh-CN": "轮播分页。",
-      "en": "Carousel pagination."
-    },
-    "principle": {
-      "zh-CN": "小圆点轨道与有回弹的选中块。",
-      "en": "A dot track and a springing selection."
-    },
-    "rules": {
-      "zh-CN": [
-        "参考视频重新实现，保留操作结果；键盘、触屏与减少动态效果可用。"
-      ],
-      "en": [
-        "Independently implement the reference, preserve the result, and support keyboard, touch and reduced motion."
-      ]
-    },
-    "prompt": {
-      "zh-CN": "实现「蠕动分页点」（Worm Dots）。行为为点选页码，圆角指示块跟随当前分页。视觉结构为小圆点轨道与有回弹的选中块。使用随附的 Atlas 原生实现，保持鼠标、触屏和键盘可操作、主题切换不丢状态，减少动态效果时立即展示结果。只加载本地文件，不新增框架或在线资源。参考观默 UI Moments 第四期视频，明确本站代码为独立实现，并在交付中保留署名文件。",
-      "en": "Implement Worm Dots. Select a page as the rounded indicator follows it. Visual structure: A dot track and a springing selection. Reuse the included Atlas native implementation. Keep mouse, touch and keyboard controls usable, retain state on appearance changes, and settle immediately with reduced motion. Load local files only, without a framework or remote assets. Credit the UI Moments episode 04 video by guanmo_ai and identify this code as an independent Atlas implementation. Keep the included attribution."
-    },
-    "stylePrompt": {
-      "zh-CN": "借鉴「蠕动分页点」的视觉表现：小圆点轨道与有回弹的选中块。把反馈应用于现有内容和操作，保持布局稳定与明暗对比。保留对参考视频的说明和本站独立实现署名。",
-      "en": "Apply the visual treatment of Worm Dots: A dot track and a springing selection. Keep the existing workflow and layout, transfer the feedback and light/dark contrast, and retain the video reference and Atlas implementation credit."
-    },
-    "cover": "./assets/previews/component-ui-moments-worm-dots.png",
-    "preview": {
-      "width": 640,
-      "height": 480,
-      "mode": "inline",
-      "url": "./examples/ui-market/ui-moments/worm-dots/index.html"
-    },
-    "codeFormat": "static",
-    "files": [
-      "public/ui-moments/worm-dots/index.html",
-      "public/ui-moments/shared/demo.js",
-      "public/ui-moments/shared/demo.css"
-    ],
-    "supportFiles": [
-      "public/ui-moments/ATTRIBUTION.md",
-      "licenses/ui-moments-atlas-LICENSE"
-    ],
-    "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
   },
   {
     "id": "ui-moments-download-ring",
@@ -11650,7 +10929,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/actions.html#download-ring",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/actions.html#download-ring"
@@ -11738,7 +11017,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/index.html#leaf-tabs",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/index.html#leaf-tabs"
@@ -11826,7 +11105,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/actions.html#bell-toggle",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/actions.html#bell-toggle"
@@ -11914,7 +11193,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/index.html#ink-switch",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/index.html#ink-switch"
@@ -12002,7 +11281,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#rocker-switch",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#rocker-switch"
@@ -12090,171 +11369,10 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#scrub-wave",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#scrub-wave"
-  },
-  {
-    "id": "ui-moments-squash-play",
-    "type": "component",
-    "sourceId": "ui-moments-atlas",
-    "libraryIds": [
-      "ui-moments-atlas"
-    ],
-    "category": "buttons",
-    "categories": [
-      "buttons"
-    ],
-    "interactions": [
-      "click"
-    ],
-    "motion": true,
-    "styleId": "motion-neutral",
-    "style": {
-      "zh-CN": "中性动效",
-      "en": "Neutral motion"
-    },
-    "styleIds": [
-      "minimal"
-    ],
-    "technologyIds": [
-      "native"
-    ],
-    "audience": "b2c",
-    "provenance": "original",
-    "name": {
-      "zh-CN": "压键播放",
-      "en": "Squash Play"
-    },
-    "description": {
-      "zh-CN": "按下播放键，厚按钮压低并切换暂停图标。",
-      "en": "A thick play key compresses and swaps to pause."
-    },
-    "useCases": {
-      "zh-CN": "播放状态反馈。",
-      "en": "Play state feedback."
-    },
-    "principle": {
-      "zh-CN": "竖向圆角按键、厚底座与黑白图标。",
-      "en": "A tall rounded key, thick base and contrasting icon."
-    },
-    "rules": {
-      "zh-CN": [
-        "参考视频重新实现，保留操作结果；键盘、触屏与减少动态效果可用。"
-      ],
-      "en": [
-        "Independently implement the reference, preserve the result, and support keyboard, touch and reduced motion."
-      ]
-    },
-    "prompt": {
-      "zh-CN": "实现「压键播放」（Squash Play）。行为为按下播放键，厚按钮压低并切换暂停图标。视觉结构为竖向圆角按键、厚底座与黑白图标。使用随附的 Atlas 原生实现，保持鼠标、触屏和键盘可操作、主题切换不丢状态，减少动态效果时立即展示结果。只加载本地文件，不新增框架或在线资源。参考观默 UI Moments 第四期视频，明确本站代码为独立实现，并在交付中保留署名文件。",
-      "en": "Implement Squash Play. A thick play key compresses and swaps to pause. Visual structure: A tall rounded key, thick base and contrasting icon. Reuse the included Atlas native implementation. Keep mouse, touch and keyboard controls usable, retain state on appearance changes, and settle immediately with reduced motion. Load local files only, without a framework or remote assets. Credit the UI Moments episode 04 video by guanmo_ai and identify this code as an independent Atlas implementation. Keep the included attribution."
-    },
-    "stylePrompt": {
-      "zh-CN": "借鉴「压键播放」的视觉表现：竖向圆角按键、厚底座与黑白图标。把反馈应用于现有内容和操作，保持布局稳定与明暗对比。保留对参考视频的说明和本站独立实现署名。",
-      "en": "Apply the visual treatment of Squash Play: A tall rounded key, thick base and contrasting icon. Keep the existing workflow and layout, transfer the feedback and light/dark contrast, and retain the video reference and Atlas implementation credit."
-    },
-    "cover": "./assets/previews/component-ui-moments-squash-play.png",
-    "preview": {
-      "width": 640,
-      "height": 480,
-      "mode": "inline",
-      "url": "./examples/ui-market/ui-moments/squash-play/index.html"
-    },
-    "codeFormat": "static",
-    "files": [
-      "public/ui-moments/squash-play/index.html",
-      "public/ui-moments/shared/demo.js",
-      "public/ui-moments/shared/demo.css"
-    ],
-    "supportFiles": [
-      "public/ui-moments/ATTRIBUTION.md",
-      "licenses/ui-moments-atlas-LICENSE"
-    ],
-    "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
-  },
-  {
-    "id": "ui-moments-rubber-search",
-    "type": "component",
-    "sourceId": "ui-moments-atlas",
-    "libraryIds": [
-      "ui-moments-atlas"
-    ],
-    "category": "search",
-    "categories": [
-      "search"
-    ],
-    "interactions": [
-      "click",
-      "input"
-    ],
-    "motion": true,
-    "styleId": "motion-neutral",
-    "style": {
-      "zh-CN": "中性动效",
-      "en": "Neutral motion"
-    },
-    "styleIds": [
-      "minimal"
-    ],
-    "technologyIds": [
-      "native"
-    ],
-    "audience": "b2c",
-    "provenance": "original",
-    "name": {
-      "zh-CN": "橡皮搜索",
-      "en": "Rubber Search"
-    },
-    "description": {
-      "zh-CN": "点击搜索展开输入，回车反馈关键词，Escape 收起。",
-      "en": "Expand the search, submit a term, or collapse with Escape."
-    },
-    "useCases": {
-      "zh-CN": "紧凑搜索入口。",
-      "en": "Compact search entry."
-    },
-    "principle": {
-      "zh-CN": "从圆形入口拉伸成胶囊输入框。",
-      "en": "A round trigger stretching into a pill input."
-    },
-    "rules": {
-      "zh-CN": [
-        "参考视频重新实现，保留操作结果；键盘、触屏与减少动态效果可用。"
-      ],
-      "en": [
-        "Independently implement the reference, preserve the result, and support keyboard, touch and reduced motion."
-      ]
-    },
-    "prompt": {
-      "zh-CN": "实现「橡皮搜索」（Rubber Search）。行为为点击搜索展开输入，回车反馈关键词，Escape 收起。视觉结构为从圆形入口拉伸成胶囊输入框。使用随附的 Atlas 原生实现，保持鼠标、触屏和键盘可操作、主题切换不丢状态，减少动态效果时立即展示结果。只加载本地文件，不新增框架或在线资源。参考观默 UI Moments 第四期视频，明确本站代码为独立实现，并在交付中保留署名文件。",
-      "en": "Implement Rubber Search. Expand the search, submit a term, or collapse with Escape. Visual structure: A round trigger stretching into a pill input. Reuse the included Atlas native implementation. Keep mouse, touch and keyboard controls usable, retain state on appearance changes, and settle immediately with reduced motion. Load local files only, without a framework or remote assets. Credit the UI Moments episode 04 video by guanmo_ai and identify this code as an independent Atlas implementation. Keep the included attribution."
-    },
-    "stylePrompt": {
-      "zh-CN": "借鉴「橡皮搜索」的视觉表现：从圆形入口拉伸成胶囊输入框。把反馈应用于现有内容和操作，保持布局稳定与明暗对比。保留对参考视频的说明和本站独立实现署名。",
-      "en": "Apply the visual treatment of Rubber Search: A round trigger stretching into a pill input. Keep the existing workflow and layout, transfer the feedback and light/dark contrast, and retain the video reference and Atlas implementation credit."
-    },
-    "cover": "./assets/previews/component-ui-moments-rubber-search.png",
-    "preview": {
-      "width": 640,
-      "height": 480,
-      "mode": "inline",
-      "url": "./examples/ui-market/ui-moments/rubber-search/index.html"
-    },
-    "codeFormat": "static",
-    "files": [
-      "public/ui-moments/rubber-search/index.html",
-      "public/ui-moments/shared/demo.js",
-      "public/ui-moments/shared/demo.css"
-    ],
-    "supportFiles": [
-      "public/ui-moments/ATTRIBUTION.md",
-      "licenses/ui-moments-atlas-LICENSE"
-    ],
-    "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
   },
   {
     "id": "ui-moments-odometer",
@@ -12339,7 +11457,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/index.html#odometer-stepper",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/index.html#odometer-stepper"
@@ -12428,90 +11546,10 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/index.html#tide-progress",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/index.html#tide-progress"
-  },
-  {
-    "id": "ui-moments-eclipse-half",
-    "type": "component",
-    "sourceId": "ui-moments-atlas",
-    "libraryIds": [
-      "ui-moments-atlas"
-    ],
-    "category": "loading",
-    "categories": [
-      "loading"
-    ],
-    "interactions": [
-      "auto"
-    ],
-    "motion": true,
-    "styleId": "motion-neutral",
-    "style": {
-      "zh-CN": "中性动效",
-      "en": "Neutral motion"
-    },
-    "styleIds": [
-      "minimal"
-    ],
-    "technologyIds": [
-      "native"
-    ],
-    "audience": "b2c",
-    "provenance": "original",
-    "name": {
-      "zh-CN": "半月旋转",
-      "en": "Eclipse Half"
-    },
-    "description": {
-      "zh-CN": "一段明暗渐变的圆弧围绕中心旋转。",
-      "en": "A tapered arc revolves around an open center."
-    },
-    "useCases": {
-      "zh-CN": "环形等待状态。",
-      "en": "Circular waiting state."
-    },
-    "principle": {
-      "zh-CN": "留空中心与渐细的单色弧线。",
-      "en": "An open center and tapering monochrome arc."
-    },
-    "rules": {
-      "zh-CN": [
-        "参考视频重新实现，保留操作结果；键盘、触屏与减少动态效果可用。"
-      ],
-      "en": [
-        "Independently implement the reference, preserve the result, and support keyboard, touch and reduced motion."
-      ]
-    },
-    "prompt": {
-      "zh-CN": "实现「半月旋转」（Eclipse Half）。行为为一段明暗渐变的圆弧围绕中心旋转。视觉结构为留空中心与渐细的单色弧线。使用随附的 Atlas 原生实现，保持鼠标、触屏和键盘可操作、主题切换不丢状态，减少动态效果时立即展示结果。只加载本地文件，不新增框架或在线资源。参考观默 UI Moments 第四期视频，明确本站代码为独立实现，并在交付中保留署名文件。",
-      "en": "Implement Eclipse Half. A tapered arc revolves around an open center. Visual structure: An open center and tapering monochrome arc. Reuse the included Atlas native implementation. Keep mouse, touch and keyboard controls usable, retain state on appearance changes, and settle immediately with reduced motion. Load local files only, without a framework or remote assets. Credit the UI Moments episode 04 video by guanmo_ai and identify this code as an independent Atlas implementation. Keep the included attribution."
-    },
-    "stylePrompt": {
-      "zh-CN": "借鉴「半月旋转」的视觉表现：留空中心与渐细的单色弧线。把反馈应用于现有内容和操作，保持布局稳定与明暗对比。保留对参考视频的说明和本站独立实现署名。",
-      "en": "Apply the visual treatment of Eclipse Half: An open center and tapering monochrome arc. Keep the existing workflow and layout, transfer the feedback and light/dark contrast, and retain the video reference and Atlas implementation credit."
-    },
-    "cover": "./assets/previews/component-ui-moments-eclipse-half.png",
-    "preview": {
-      "width": 640,
-      "height": 480,
-      "mode": "inline",
-      "url": "./examples/ui-market/ui-moments/eclipse-half/index.html"
-    },
-    "codeFormat": "static",
-    "files": [
-      "public/ui-moments/eclipse-half/index.html",
-      "public/ui-moments/shared/demo.js",
-      "public/ui-moments/shared/demo.css"
-    ],
-    "supportFiles": [
-      "public/ui-moments/ATTRIBUTION.md",
-      "licenses/ui-moments-atlas-LICENSE"
-    ],
-    "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
   },
   {
     "id": "ui-moments-magnet-grid",
@@ -12596,7 +11634,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/visual.html#magnet-grid",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/visual.html#magnet-grid"
@@ -12684,7 +11722,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/inputs.html#stroke-checklist",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/inputs.html#stroke-checklist"
@@ -12772,7 +11810,7 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/color.html#flip-coin",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/color.html#flip-coin"
@@ -12860,89 +11898,9 @@
       "public/ui-moments/upstream/assets/icon.svg",
       "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
       "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
-      "licenses/ui-moments-atlas-LICENSE"
+      "licenses/ui-moments-adapter-LICENSE"
     ],
     "originalUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#radial-menu",
     "sourceUrl": "https://github.com/guanmo-ai/ui-moments/blob/cd49fd207d9333d3c442ffdbf39a9b3b055d358f/gallery/originals/gestures.html#radial-menu"
-  },
-  {
-    "id": "ui-moments-dot-revolve",
-    "type": "component",
-    "sourceId": "ui-moments-atlas",
-    "libraryIds": [
-      "ui-moments-atlas"
-    ],
-    "category": "loading",
-    "categories": [
-      "loading"
-    ],
-    "interactions": [
-      "auto"
-    ],
-    "motion": true,
-    "styleId": "motion-neutral",
-    "style": {
-      "zh-CN": "中性动效",
-      "en": "Neutral motion"
-    },
-    "styleIds": [
-      "minimal"
-    ],
-    "technologyIds": [
-      "native"
-    ],
-    "audience": "b2c",
-    "provenance": "original",
-    "name": {
-      "zh-CN": "圆点公转",
-      "en": "Dot Revolve"
-    },
-    "description": {
-      "zh-CN": "实心圆点沿低对比圆环连续公转。",
-      "en": "A solid dot revolves around a muted ring."
-    },
-    "useCases": {
-      "zh-CN": "轨道加载状态。",
-      "en": "Orbit loading indicator."
-    },
-    "principle": {
-      "zh-CN": "粗圆环、对比圆点与均匀旋转。",
-      "en": "A thick track, contrasting dot and steady rotation."
-    },
-    "rules": {
-      "zh-CN": [
-        "参考视频重新实现，保留操作结果；键盘、触屏与减少动态效果可用。"
-      ],
-      "en": [
-        "Independently implement the reference, preserve the result, and support keyboard, touch and reduced motion."
-      ]
-    },
-    "prompt": {
-      "zh-CN": "实现「圆点公转」（Dot Revolve）。行为为实心圆点沿低对比圆环连续公转。视觉结构为粗圆环、对比圆点与均匀旋转。使用随附的 Atlas 原生实现，保持鼠标、触屏和键盘可操作、主题切换不丢状态，减少动态效果时立即展示结果。只加载本地文件，不新增框架或在线资源。参考观默 UI Moments 第四期视频，明确本站代码为独立实现，并在交付中保留署名文件。",
-      "en": "Implement Dot Revolve. A solid dot revolves around a muted ring. Visual structure: A thick track, contrasting dot and steady rotation. Reuse the included Atlas native implementation. Keep mouse, touch and keyboard controls usable, retain state on appearance changes, and settle immediately with reduced motion. Load local files only, without a framework or remote assets. Credit the UI Moments episode 04 video by guanmo_ai and identify this code as an independent Atlas implementation. Keep the included attribution."
-    },
-    "stylePrompt": {
-      "zh-CN": "借鉴「圆点公转」的视觉表现：粗圆环、对比圆点与均匀旋转。把反馈应用于现有内容和操作，保持布局稳定与明暗对比。保留对参考视频的说明和本站独立实现署名。",
-      "en": "Apply the visual treatment of Dot Revolve: A thick track, contrasting dot and steady rotation. Keep the existing workflow and layout, transfer the feedback and light/dark contrast, and retain the video reference and Atlas implementation credit."
-    },
-    "cover": "./assets/previews/component-ui-moments-dot-revolve.png",
-    "preview": {
-      "width": 640,
-      "height": 480,
-      "mode": "inline",
-      "url": "./examples/ui-market/ui-moments/dot-revolve/index.html"
-    },
-    "codeFormat": "static",
-    "files": [
-      "public/ui-moments/dot-revolve/index.html",
-      "public/ui-moments/shared/demo.js",
-      "public/ui-moments/shared/demo.css"
-    ],
-    "supportFiles": [
-      "public/ui-moments/ATTRIBUTION.md",
-      "licenses/ui-moments-atlas-LICENSE"
-    ],
-    "originalUrl": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
-    "sourceUrl": "https://github.com/Xiiiing/ui-design-atlas/blob/6e12ef93f59000b12de1642848e73e7b1a4754e7/examples/ui-market/public/ui-moments/shared/demo.js"
   }
 ]
