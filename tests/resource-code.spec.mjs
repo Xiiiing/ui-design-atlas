@@ -25,7 +25,10 @@ test("All archived resources publish complete local dependency closures and down
       ...manifest.entryFiles,
       ...(resource.supportFiles || []),
     ])
-      expect(manifest.files[file], `${slug}: ${file}`).toBeTruthy();
+      expect(
+        manifest.files[file] || manifest.binaryFiles?.[file],
+        `${slug}: ${file}`,
+      ).toBeTruthy();
     for (const [file, content] of Object.entries(manifest.files)) {
       for (const imported of imports(file, content))
         expect(

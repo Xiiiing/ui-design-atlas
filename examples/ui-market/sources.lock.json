@@ -731,6 +731,79 @@
           "sha256": "da93cba610f48bdad8f31afecc99082070f520f4488ecfeadbf395852e605cd4"
         }
       ]
+    },
+    "ui-moments": {
+      "repo": "https://github.com/guanmo-ai/ui-moments",
+      "commit": "cd49fd207d9333d3c442ffdbf39a9b3b055d358f",
+      "license": "MIT",
+      "sourceRoot": "gallery/originals",
+      "files": [
+        {
+          "upstream": "LICENSE",
+          "original": "public/ui-moments/upstream/LICENSE",
+          "sha256": "107769b1b4c64fa831d4e1d9f602044501b5f8da29a51c2de6a55f2ccdd1f299"
+        },
+        {
+          "upstream": "CREDITS.md",
+          "original": "public/ui-moments/upstream/CREDITS.md",
+          "sha256": "40bb8f70b2255d0815ae4fb001fa884d5fc81743974997e21e72c3009f4f38ef"
+        },
+        {
+          "upstream": "gallery/works.js",
+          "original": "public/ui-moments/upstream/gallery/works.js",
+          "sha256": "af0ef1143c3782f70be3c9e2f1322d0053eb120b1e6e7513c3000f382acea046"
+        },
+        {
+          "upstream": "assets/embed.js",
+          "original": "public/ui-moments/upstream/assets/embed.js",
+          "sha256": "46def5ce1facad939e01e06d19ac58b07f36aeeaaf3687a42ad8e6c806650001"
+        },
+        {
+          "upstream": "assets/icon.svg",
+          "original": "public/ui-moments/upstream/assets/icon.svg",
+          "sha256": "ffd7ab411568f3ae37a4fdb05cfd554f15803cf1a5da96b170a93780bcd9aff3"
+        },
+        {
+          "upstream": "assets/fonts/Geist-latin-wght.woff2",
+          "original": "public/ui-moments/upstream/assets/fonts/Geist-latin-wght.woff2",
+          "sha256": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1"
+        },
+        {
+          "upstream": "assets/fonts/OFL-Geist.txt",
+          "original": "public/ui-moments/upstream/assets/fonts/OFL-Geist.txt",
+          "sha256": "71609cbb5c78b5870d712eab73a31d76622635c6ed034ab5cee3b9ecbda8685f"
+        },
+        {
+          "upstream": "gallery/originals/index.html",
+          "original": "public/ui-moments/upstream/gallery/originals/index.html",
+          "sha256": "7bbb1b694c613be66a6f6f419419e08db789a996f816bce3e1c40eb279ca23ab"
+        },
+        {
+          "upstream": "gallery/originals/visual.html",
+          "original": "public/ui-moments/upstream/gallery/originals/visual.html",
+          "sha256": "c36d12721353377c89ecbdcc704a9a8ed7b7e8df25cca356b82130a4bab90549"
+        },
+        {
+          "upstream": "gallery/originals/gestures.html",
+          "original": "public/ui-moments/upstream/gallery/originals/gestures.html",
+          "sha256": "0ae9d5d8d118b61922efc8abcefa1b189b7ae0c3eb7f9961443342b7f928072c"
+        },
+        {
+          "upstream": "gallery/originals/actions.html",
+          "original": "public/ui-moments/upstream/gallery/originals/actions.html",
+          "sha256": "16deda5b727b2f861903c873993bac5d857048f734b57b3855f2c203d0236924"
+        },
+        {
+          "upstream": "gallery/originals/inputs.html",
+          "original": "public/ui-moments/upstream/gallery/originals/inputs.html",
+          "sha256": "869131b4c01d39325da0ba8784c024365fdf36f7c1c17820bf42383209a066e4"
+        },
+        {
+          "upstream": "gallery/originals/color.html",
+          "original": "public/ui-moments/upstream/gallery/originals/color.html",
+          "sha256": "c2d217a3d31a1b3092a710c8efb9a5fd1e32096e6e8f1d13028d7bf82a46e32c"
+        }
+      ]
     }
   },
   "foundation": {

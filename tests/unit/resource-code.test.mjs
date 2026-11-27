@@ -44,6 +44,32 @@ function fixture() {
     "licenses/fluentui-LICENSE": "MIT Microsoft",
   };
 }
+test("Static resource delivery keeps binary font bytes separate from source text", () => {
+  const font = Buffer.from([119, 79, 70, 50, 0, 255, 128]);
+  const source = {
+    ...resource,
+    codeFormat: "static",
+    files: ["public/demo/index.html"],
+    supportFiles: ["public/font.woff2", "licenses/font-OFL"],
+  };
+  const result = resourceCode(
+    source,
+    { "public/demo/index.html": "<h1>Demo</h1>", "licenses/font-OFL": "OFL" },
+    "ui-market",
+    { "public/font.woff2": font.toString("base64") },
+  );
+  assert.deepEqual(
+    Buffer.from(result.binaryFiles["public/font.woff2"], "base64"),
+    font,
+  );
+  assert.ok(!("public/font.woff2" in result.files));
+  assert.equal(result.files["licenses/font-OFL"], "OFL");
+  assert.throws(
+    () =>
+      resourceCode(source, { "public/demo/index.html": "demo" }, "ui-market"),
+    /Missing static resource file/,
+  );
+});
 test("Resource delivery includes aliases, directory exports, dynamic imports, cycles, styles and assets", () => {
   const result = resourceCode(resource, fixture(), "ui-market");
   for (const name of [

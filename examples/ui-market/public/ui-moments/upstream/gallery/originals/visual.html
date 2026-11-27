@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visual · UI Moments Originals</title>
+  <meta name="description" content="UI Moments original wordless interactions: magnet grid, jelly cube, merge drops, ripple pad and bloom toggle.">
+  <link rel="icon" href="../../assets/icon.svg">
+  <script src="../../assets/embed.js"></script>
+  <script>
+    // Standalone pages follow the site theme; embedded pages take it from embed.js.
+    (() => {
+      const root = document.documentElement;
+      if (root.dataset.embedded) return;
+      let theme;
+      try { theme = localStorage.getItem('ui-moments-theme'); } catch {}
+      root.dataset.theme = theme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    })();
+  </script>
+  <style>
+    @font-face { font-family: Geist; src: url('../../assets/fonts/Geist-latin-wght.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+
+    /* standalone:theme */
+    /* Monochrome tokens. Only the Color set adds hues of its own. */
+    :root {
+      color-scheme: light;
+      --page: #fafafa;
+      --surface: #f2f2f3;
+      --raised: #fff;
+      --ink: #18181b;
+      --muted: #6b6b72;
+      --rail: rgb(24 24 27 / .11);
+      --line: rgb(24 24 27 / .09);
+      --accent: #18181b;
+      --on-accent: #fafafa;
+      --accent-soft: rgb(24 24 27 / .07);
+      --danger: var(--ink);
+      --danger-soft: rgb(24 24 27 / .1);
+      --shadow: 0 1px 2px rgb(0 0 0 / .1), 0 6px 18px rgb(0 0 0 / .07);
+      --spring: cubic-bezier(.3, 1.45, .5, 1);
+      --ease: cubic-bezier(.16, 1, .3, 1);
+      --font: Geist, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --page: #0b0b0c;
+      --surface: #161618;
+      --raised: #232326;
+      --ink: #fafafa;
+      --muted: #9a9aa1;
+      --rail: rgb(250 250 250 / .13);
+      --line: rgb(250 250 250 / .09);
+      --accent: #fafafa;
+      --on-accent: #0b0b0c;
+      --accent-soft: rgb(250 250 250 / .09);
+      --danger-soft: rgb(250 250 250 / .12);
+      --shadow: 0 1px 2px rgb(0 0 0 / .5), 0 8px 24px rgb(0 0 0 / .35);
+    }
+    /* /standalone:theme */
+
+    *, *::before, *::after { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { background: var(--page); }
+    body { margin: 0; background: var(--page); color: var(--ink); font: 400 14px/1.6 var(--font); -webkit-font-smoothing: antialiased; }
+    button, input, output { font: inherit; color: inherit; }
+    button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; text-underline-offset: .25em; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+    .page { max-width: 1040px; padding: 0 28px; margin-inline: auto; }
+    .masthead { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 24px; font-size: 12px; color: var(--muted); }
+    .masthead nav { display: flex; align-items: center; gap: 16px; }
+    .brand { color: var(--ink); font-size: 13px; font-weight: 700; text-decoration: none; }
+    .site-link { text-decoration: none; }
+    .site-link:hover { color: var(--ink); }
+    .theme { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 9px; background: none; color: var(--muted); }
+    .theme:hover { color: var(--ink); }
+    .theme svg { width: 15px; height: 15px; }
+    .intro { margin: clamp(48px, 10vh, 96px) 0 26px; }
+    .intro p:first-child { margin: 0 0 8px; font: 500 11px/1.4 ui-monospace, monospace; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(30px, 6vw, 44px); letter-spacing: -.05em; line-height: 1.1; font-weight: 680; }
+    .intro p:last-child { margin: 12px 0 0; max-width: 34em; color: var(--muted); }
+
+    .samples { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    /* standalone:stage */
+    .sample { min-width: 0; }
+    .stage {
+      position: relative;
+      display: grid;
+      grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+      place-items: center;
+      height: 220px;
+      border-radius: 22px;
+      background: var(--surface);
+      container-type: size;
+      overflow: hidden;
+    }
+    .caption { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 11px 4px 0; }
+    .caption h2 { margin: 0; font-size: 14px; line-height: 1.4; font-weight: 650; }
+    .caption p, .credit { margin: 0; font-size: 12px; color: var(--muted); }
+    /* /standalone:stage */
+    .credit { margin: 40px 0 28px; padding-top: 18px; border-top: 1px solid var(--line); }
+
+    /* standalone:widget */
+    /* Controls scale with the card; pointer maths always uses real geometry. */
+    .widget { display: grid; place-items: center; transition: scale .3s var(--ease); }
+    @container (max-height: 160px) { .widget { scale: .82; } }
+    @container (max-width: 215px) { .widget { scale: .8; } }
+    @container (max-height: 128px) { .widget { scale: .7; } }
+    @container (max-width: 180px) { .widget { scale: .66; } }
+    @container (min-height: 300px) and (min-width: 440px) { .widget { scale: 1.35; } }
+    /* /standalone:widget */
+
+    .sets { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 22px; }
+    .sets a { padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 13px; text-decoration: none; }
+    .sets a:hover { color: var(--ink); border-color: var(--rail); }
+    .sets a[aria-current="page"] { background: var(--ink); border-color: var(--ink); color: var(--page); }
+    [data-embedded] .sets { display: none; }
+    :root { --glow: var(--page); }
+    /* standalone:pad */
+    .pad { position: relative; width: 210px; height: 140px; border-radius: 18px; touch-action: none; }
+    .pad:focus-visible { outline-offset: 2px; }
+    /* /standalone:pad */
+
+    /* standalone:magnet-grid-style */
+    /* Magnet Grid */
+    .magnet { display: grid; grid-template-columns: repeat(8, 1fr); place-items: center; padding: 14px; cursor: crosshair; }
+    .magnet i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); opacity: calc(.28 + var(--p, 0) * .72); transform: translate(var(--x, 0), var(--y, 0)) scale(calc(1 + var(--p, 0) * 1.5)); transition: transform .45s var(--spring), opacity .3s; }
+    /* /standalone:magnet-grid-style */
+
+    /* standalone:jelly-pad-style */
+    .jelly { display: grid; place-items: center; padding: 0; border: 0; background: none; cursor: grab; }
+    .jelly[data-drag] { cursor: grabbing; }
+    .jelly-cube { width: 62px; height: 62px; border-radius: 18px; background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 85%, #fff), var(--accent)); box-shadow: inset 0 -6px 12px rgb(0 0 0 / .12), var(--shadow); will-change: transform; }
+    .jelly-cube::after { display: block; width: 18px; height: 9px; margin: 11px 0 0 12px; content: ''; border-radius: 50%; background: rgb(255 255 255 / .55); rotate: -18deg; }
+    /* /standalone:jelly-pad-style */
+
+    /* Merge Drops */
+    .drops { cursor: grab; }
+    .drops svg { width: 100%; height: 100%; overflow: visible; }
+    .drops circle { fill: var(--accent); }
+
+    /* Ripple Pad */
+    .ripples { overflow: hidden; background: color-mix(in srgb, var(--accent) 7%, transparent); box-shadow: inset 0 0 0 1px var(--line); cursor: pointer; }
+    .ripples b { position: absolute; width: var(--d); height: var(--d); margin: calc(var(--d) / -2); border: 2px solid var(--accent); border-radius: 50%; pointer-events: none; }
+    .ripples .seed { position: absolute; width: 10px; height: 10px; margin: -5px; border-radius: 50%; background: var(--accent); pointer-events: none; scale: var(--grow, 1); transition: scale .1s linear; }
+
+    /* Bloom Toggle */
+    .bloom { position: relative; width: 110px; height: 110px; padding: 0; border: 0; border-radius: 50%; background: none; }
+    .bloom i { position: absolute; top: 50%; left: 50%; width: 30px; height: 46px; margin: -46px 0 0 -15px; border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%; background: color-mix(in srgb, var(--accent) 70%, var(--raised)); transform-origin: 50% 100%; transform: rotate(var(--r)) scale(.3, .2); opacity: .5; transition: transform .55s var(--spring) calc(var(--n) * 35ms), opacity .3s, background .3s; }
+    .bloom[aria-checked="true"] i { transform: rotate(var(--r)) scale(1); opacity: 1; background: var(--accent); }
+    .bloom::after { position: absolute; inset: 41px; content: ''; border-radius: 50%; background: var(--raised); box-shadow: var(--shadow); transition: scale .45s var(--spring), background .3s; }
+    .bloom[aria-checked="true"]::after { background: var(--glow); scale: .8; }
+    .bloom:hover::after { scale: 1.08; }
+
+    [data-single] .samples { grid-template-columns: 1fr; }
+    [data-single] .sample { width: min(100%, 420px); }
+    [data-embedded] body, [data-embedded] html { background: var(--surface); }
+    [data-embedded] .page, [data-embedded] .sample { width: 100%; max-width: none; padding: 0; }
+    [data-embedded] .intro, [data-embedded] .masthead, [data-embedded] .credit, [data-embedded] .caption, [data-embedded] .tide-hint { display: none; }
+    [data-embedded] .stage { height: 100dvh; border-radius: 0; }
+
+    @media (max-width: 820px) { .samples { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 520px) {
+      .page { padding: 0 18px; }
+      .samples { grid-template-columns: 1fr; }
+      .stage { height: 190px; }
+    }
+    /* standalone:reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0s !important; transition-delay: 0s !important; }
+    }
+    /* /standalone:reduced-motion */
+    [data-gallery-active="false"] * { transition-duration: 0s !important; transition-delay: 0s !important; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <a class="brand" href="../../">UI Moments</a>
+      <nav>
+        <a class="site-link" id="gallery-link" href="../../">Gallery ↗</a>
+        <a class="site-link" id="all-controls" href="./visual.html" hidden>Whole set ↗</a>
+        <button class="theme" id="theme" type="button" aria-label="Toggle theme"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 3a7 7 0 0 0 0 14Z" fill="currentColor"/></svg></button>
+      </nav>
+    </header>
+    <main>
+      <header class="intro">
+        <p>UI Moments Originals</p>
+        <h1>Visual</h1>
+        <p>Wordless interactions that explain themselves through shape and motion alone. All keyboard accessible.</p>
+      </header>
+      <nav class="sets" aria-label="Original sets"><a href="./index.html">Core</a><a href="./visual.html" aria-current="page">Visual</a><a href="./gestures.html">Gestures</a><a href="./actions.html">Actions</a><a href="./inputs.html">Forms</a><a href="./color.html">Color</a></nav>
+
+      <div class="samples">
+        <!-- standalone:magnet-grid -->
+        <section class="sample" id="magnet-grid" aria-labelledby="magnet-title">
+          <div class="stage"><div class="widget"><div class="pad magnet" tabindex="0" role="img" aria-label="Magnet grid: move the pointer or use the arrow keys and the dots gather toward it"></div></div></div>
+          <div class="caption"><h2 id="magnet-title">Magnet Grid</h2><p>Move the pointer</p></div>
+        </section>
+
+        <!-- /standalone:magnet-grid -->
+
+        <!-- standalone:jelly-pad -->
+        <section class="sample" id="jelly-pad" aria-labelledby="jelly-title">
+          <div class="stage">
+            <div class="widget">
+              <button class="pad jelly" type="button" aria-labelledby="jelly-title" aria-describedby="jelly-help" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown">
+                <span class="jelly-cube" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+          <div class="caption"><h2 id="jelly-title">Jelly Cube</h2><p id="jelly-help">Drag or use arrow keys</p></div>
+        </section>
+        <!-- /standalone:jelly-pad -->
+
+
+        <section class="sample" id="merge-drops" aria-labelledby="drops-title">
+          <div class="stage"><div class="widget"><div class="pad drops" tabindex="0" role="img" aria-label="Merge drops: drag the small drop into the big one and they merge">
+            <svg viewBox="0 0 210 140" aria-hidden="true"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="7"/><feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -9"/></filter></defs><g filter="url(#goo)"><circle class="big" cx="78" cy="70" r="30"/><circle class="small" cx="150" cy="70" r="17"/></g></svg>
+          </div></div></div>
+          <div class="caption"><h2 id="drops-title">Merge Drops</h2><p>Drag it closer</p></div>
+        </section>
+
+
+
+        <section class="sample" id="ripple-pad" aria-labelledby="ripple-title">
+          <div class="stage"><div class="widget"><div class="pad ripples" tabindex="0" role="button" aria-label="Ripple pad: tap to make ripples; hold longer for bigger ones"></div></div></div>
+          <div class="caption"><h2 id="ripple-title">Ripple Pad</h2><p>Tap or hold</p></div>
+        </section>
+
+        <section class="sample" id="bloom-toggle" aria-labelledby="bloom-title">
+          <div class="stage"><div class="widget"><button class="bloom" type="button" role="switch" aria-checked="false" aria-labelledby="bloom-title"></button></div></div>
+          <div class="caption"><h2 id="bloom-title">Bloom Toggle</h2><p>Tap to bloom</p></div>
+        </section>
+      </div>
+    </main>
+    <footer class="credit">Designed and built by UI Moments. Released under the <a href="../../LICENSE">MIT License</a>.</footer>
+  </div>
+
+  <script>
+    /* standalone:helpers */
+    const root = document.documentElement;
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    const motionEnabled = () => !reducedMotion.matches && root.dataset.galleryActive !== 'false';
+    const $ = (selector, scope = document) => scope.querySelector(selector);
+    const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+    /* /standalone:helpers */
+
+    // One control per view: #id when opened directly, ?sample=id when embedded in the gallery.
+    const params = new URLSearchParams(location.search);
+    const sections = $$('.sample');
+    function showSelectedSample() {
+      const id = location.hash.slice(1) || (root.dataset.embedded && params.get('sample'));
+      const selected = sections.find(section => section.id === id) || (root.dataset.embedded && sections[0]);
+      root.toggleAttribute('data-single', Boolean(selected));
+      for (const section of sections) section.hidden = Boolean(selected && section !== selected);
+      $('#gallery-link').hidden = Boolean(selected);
+      $('#all-controls').hidden = !selected;
+    }
+    showSelectedSample();
+    addEventListener('hashchange', showSelectedSample);
+
+    $('#theme').addEventListener('click', () => {
+      root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
+      try { localStorage.setItem('ui-moments-theme', root.dataset.theme); } catch {}
+    });
+
+    /* standalone:spring */
+    // Spring loop: requests frames only while moving and stops once at rest.
+    function spring({ k = 170, c = 13, onFrame, isAtRest }) {
+      let frame = 0, last = 0;
+      function step(now) {
+        if (isAtRest()) { frame = 0; return; }
+        if (!motionEnabled()) { frame = 0; onFrame(1, k, c, true); return; }
+        const dt = Math.min(.032, (now - last) / 1000 || .016);
+        last = now;
+        onFrame(dt, k, c);
+        frame = isAtRest() ? 0 : requestAnimationFrame(step);
+      }
+      return () => {
+        if (frame) return;
+        if (!motionEnabled()) { onFrame(1, k, c, true); return; }
+        last = performance.now();
+        frame = requestAnimationFrame(step);
+      };
+    }
+    /* /standalone:spring */
+
+    /* standalone:magnet-grid-script */
+    /* ---------- Magnet Grid ---------- */
+    {
+      const pad = $('.magnet');
+      const dots = Array.from({ length: 40 }, () => pad.appendChild(document.createElement('i')));
+      let cursor = null;
+      function attract(x, y) {
+        const box = pad.getBoundingClientRect();
+        const scale = box.width / pad.offsetWidth || 1;
+        for (const dot of dots) {
+          const rect = dot.getBoundingClientRect();
+          const dx = x - (rect.left + rect.width / 2 - box.left) / scale + (parseFloat(dot.style.getPropertyValue('--x')) || 0);
+          const dy = y - (rect.top + rect.height / 2 - box.top) / scale + (parseFloat(dot.style.getPropertyValue('--y')) || 0);
+          const distance = Math.hypot(dx, dy);
+          const pull = Math.max(0, 1 - distance / 80);
+          dot.style.setProperty('--x', (dx / (distance || 1)) * pull * 11 + 'px');
+          dot.style.setProperty('--y', (dy / (distance || 1)) * pull * 11 + 'px');
+          dot.style.setProperty('--p', pull.toFixed(3));
+        }
+      }
+      function release() { cursor = null; for (const dot of dots) { dot.style.setProperty('--x', '0px'); dot.style.setProperty('--y', '0px'); dot.style.setProperty('--p', 0); } }
+      pad.addEventListener('pointermove', event => {
+        const box = pad.getBoundingClientRect();
+        const scale = box.width / pad.offsetWidth || 1;
+        cursor = { x: (event.clientX - box.left) / scale, y: (event.clientY - box.top) / scale };
+        attract(cursor.x, cursor.y);
+      });
+      pad.addEventListener('pointerleave', release);
+      pad.addEventListener('blur', release);
+      pad.addEventListener('keydown', event => {
+        const move = { ArrowLeft: [-14, 0], ArrowRight: [14, 0], ArrowUp: [0, -14], ArrowDown: [0, 14] }[event.key];
+        if (!move) return;
+        event.preventDefault();
+        cursor ??= { x: pad.offsetWidth / 2, y: pad.offsetHeight / 2 };
+        cursor.x = clamp(cursor.x + move[0], 0, pad.offsetWidth);
+        cursor.y = clamp(cursor.y + move[1], 0, pad.offsetHeight);
+        attract(cursor.x, cursor.y);
+      });
+    }
+
+    /* /standalone:magnet-grid-script */
+
+    /* standalone:jelly-pad-script */
+    {
+      const pad = $('.jelly');
+      const cube = $('.jelly-cube', pad);
+      const state = { x: 0, y: 0, vx: 0, vy: 0 };
+      let drag = null, resetTimer = 0;
+      function paint() {
+        const position = `translate(${state.x}px, ${state.y}px)`;
+        const stretch = motionEnabled() ? Math.min(.38, Math.hypot(state.vx, state.vy) / 2200) : 0;
+        if (stretch === 0) {
+          cube.style.transform = position;
+          return;
+        }
+        const angle = Math.atan2(state.vy, state.vx) * 180 / Math.PI;
+        cube.style.transform = `${position} rotate(${angle}deg) scale(${1 + stretch}, ${1 - stretch * .6}) rotate(${-angle}deg)`;
+      }
+      function reset() {
+        Object.assign(state, { x: 0, y: 0, vx: 0, vy: 0 });
+        paint();
+      }
+      const atCenter = () => Math.abs(state.x) + Math.abs(state.y) < .2 && Math.hypot(state.vx, state.vy) < 2;
+      const settle = spring({
+        k: 210, c: 11,
+        onFrame(dt, k, c, instant) {
+          if (instant) return reset();
+          state.vx += (-k * state.x - c * state.vx) * dt;
+          state.vy += (-k * state.y - c * state.vy) * dt;
+          state.x += state.vx * dt;
+          state.y += state.vy * dt;
+          if (atCenter()) reset();
+          else paint();
+        },
+        isAtRest: () => drag || atCenter(),
+      });
+      reducedMotion.addEventListener('change', () => { if (drag) paint(); });
+      pad.addEventListener('pointerdown', event => {
+        if (event.button !== 0 || drag) return;
+        clearTimeout(resetTimer);
+        pad.setPointerCapture(event.pointerId);
+        pad.dataset.drag = '';
+        const scale = pad.getBoundingClientRect().width / pad.offsetWidth || 1;
+        const px = event.clientX / scale, py = event.clientY / scale;
+        drag = { id: event.pointerId, scale, x: px - state.x, y: py - state.y, t: performance.now(), px, py };
+      });
+      pad.addEventListener('pointermove', event => {
+        if (drag?.id !== event.pointerId) return;
+        const now = performance.now(), dt = Math.max(8, now - drag.t) / 1000;
+        const px = event.clientX / drag.scale, py = event.clientY / drag.scale;
+        const limitX = pad.offsetWidth / 2 - 30, limitY = pad.offsetHeight / 2 - 30;
+        state.vx = state.vx * .5 + (px - drag.px) / dt * .5;
+        state.vy = state.vy * .5 + (py - drag.py) / dt * .5;
+        state.x = clamp(px - drag.x, -limitX, limitX);
+        state.y = clamp(py - drag.y, -limitY, limitY);
+        Object.assign(drag, { t: now, px, py });
+        paint();
+      });
+      for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) pad.addEventListener(type, event => {
+        if (drag?.id !== event.pointerId) return;
+        drag = null;
+        delete pad.dataset.drag;
+        settle();
+      });
+      function nudge(x, y) {
+        if (drag) return;
+        clearTimeout(resetTimer);
+        if (!motionEnabled()) {
+          Object.assign(state, { x: x * 14, y: y * 14, vx: 0, vy: 0 });
+          paint();
+          resetTimer = setTimeout(reset, 150);
+          return;
+        }
+        state.vx += x * 700;
+        state.vy += y * 700;
+        settle();
+      }
+      pad.addEventListener('keydown', event => {
+        const push = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
+        if (!push) return;
+        event.preventDefault();
+        nudge(...push);
+      });
+      pad.addEventListener('click', event => { if (event.detail === 0) nudge(0, -1); });
+    }
+    /* /standalone:jelly-pad-script */
+
+    /* ---------- Merge Drops ---------- */
+    {
+      const pad = $('.drops');
+      const svg = $('svg', pad);
+      const small = $('.small', pad);
+      const home = { x: 150, y: 70 };
+      const state = { x: home.x, y: home.y, vx: 0, vy: 0 };
+      let dragging = false;
+      function paint() { small.setAttribute('cx', state.x.toFixed(1)); small.setAttribute('cy', state.y.toFixed(1)); }
+      const settle = spring({
+        k: 120, c: 9,
+        onFrame(dt, k, c, instant) {
+          if (instant) { Object.assign(state, { ...home, vx: 0, vy: 0 }); return paint(); }
+          state.vx += (-k * (state.x - home.x) - c * state.vx) * dt;
+          state.vy += (-k * (state.y - home.y) - c * state.vy) * dt;
+          state.x += state.vx * dt;
+          state.y += state.vy * dt;
+          paint();
+        },
+        isAtRest: () => dragging || (Math.hypot(state.x - home.x, state.y - home.y) < .2 && Math.hypot(state.vx, state.vy) < 1),
+      });
+      function toSvg(event) {
+        const point = new DOMPoint(event.clientX, event.clientY).matrixTransform(svg.getScreenCTM().inverse());
+        return { x: clamp(point.x, 18, 192), y: clamp(point.y, 18, 122) };
+      }
+      pad.addEventListener('pointerdown', event => { dragging = true; pad.setPointerCapture(event.pointerId); Object.assign(state, toSvg(event)); paint(); });
+      pad.addEventListener('pointermove', event => { if (dragging) { Object.assign(state, toSvg(event)); paint(); } });
+      for (const type of ['pointerup', 'pointercancel']) pad.addEventListener(type, () => { if (!dragging) return; dragging = false; settle(); });
+      pad.addEventListener('keydown', event => {
+        const move = { ArrowLeft: [-12, 0], ArrowRight: [12, 0], ArrowUp: [0, -12], ArrowDown: [0, 12] }[event.key];
+        if (event.key === ' ' || event.key === 'Enter') { event.preventDefault(); settle(); return; }
+        if (!move) return;
+        event.preventDefault();
+        dragging = true;
+        state.x = clamp(state.x + move[0], 18, 192);
+        state.y = clamp(state.y + move[1], 18, 122);
+        paint();
+        clearTimeout(pad.keyTimer);
+        pad.keyTimer = setTimeout(() => { dragging = false; settle(); }, 900);
+      });
+    }
+
+    /* ---------- Ripple Pad ---------- */
+    {
+      const pad = $('.ripples');
+      let hold = null;
+      function drop(x, y, strength) {
+        if (!motionEnabled()) return;
+        for (let ring = 0; ring < 3; ring++) {
+          const wave = document.createElement('b');
+          const size = 40 + strength * 150;
+          wave.style.cssText = `left:${x}px;top:${y}px;--d:${size}px`;
+          pad.append(wave);
+          wave.animate([{ scale: .05, opacity: .9 }, { scale: 1, opacity: 0 }], {
+            duration: 900 + strength * 600, delay: ring * 140, easing: 'cubic-bezier(.2,.6,.35,1)', fill: 'backwards',
+          }).onfinish = () => wave.remove();
+        }
+      }
+      function local(event) {
+        const box = pad.getBoundingClientRect(), scale = box.width / pad.offsetWidth || 1;
+        return [(event.clientX - box.left) / scale, (event.clientY - box.top) / scale];
+      }
+      pad.addEventListener('pointerdown', event => {
+        const [x, y] = local(event);
+        const seed = document.createElement('span');
+        seed.className = 'seed';
+        seed.style.cssText = `left:${x}px;top:${y}px`;
+        pad.append(seed);
+        hold = { x, y, start: performance.now(), seed, id: event.pointerId };
+        pad.setPointerCapture(event.pointerId);
+        const grow = () => {
+          if (!hold) return;
+          seed.style.setProperty('--grow', 1 + Math.min(1, (performance.now() - hold.start) / 1200) * 2.4);
+          hold.frame = requestAnimationFrame(grow);
+        };
+        grow();
+      });
+      for (const type of ['pointerup', 'pointercancel']) pad.addEventListener(type, () => {
+        if (!hold) return;
+        cancelAnimationFrame(hold.frame);
+        hold.seed.remove();
+        drop(hold.x, hold.y, Math.min(1, (performance.now() - hold.start) / 1200));
+        hold = null;
+      });
+      pad.addEventListener('keydown', event => {
+        if (event.key !== ' ' && event.key !== 'Enter') return;
+        event.preventDefault();
+        drop(pad.offsetWidth / 2, pad.offsetHeight / 2, event.repeat ? 0 : .5);
+      });
+    }
+
+    /* ---------- Bloom Toggle ---------- */
+    {
+      const bloom = $('.bloom');
+      Array.from({ length: 6 }, (_, index) => {
+        const petal = document.createElement('i');
+        petal.style.cssText = `--r:${index * 60}deg;--n:${index}`;
+        bloom.append(petal);
+      });
+      bloom.addEventListener('click', () => {
+        const open = bloom.getAttribute('aria-checked') !== 'true';
+        bloom.setAttribute('aria-checked', String(open));
+      });
+    }
+  </script>
+</body>
+</html>

@@ -125,16 +125,15 @@
       "effect-atlas"
     ]
   },
-  "ui-moments-atlas": {
-    "id": "ui-moments-atlas",
-    "name": "UI Moments · Atlas",
-    "version": "episode-04",
-    "docs": "https://x.com/guanmo_ai/status/2124714808779972850/video/1",
+  "ui-moments": {
+    "id": "ui-moments",
+    "name": "UI Moments",
+    "version": "cd49fd2",
+    "docs": "https://github.com/guanmo-ai/ui-moments",
     "aliases": [
-      "UI Moments",
-      "观默",
+      "uimoments",
       "guanmo_ai",
-      "microinteractions"
+      "观默"
     ]
   }
 }

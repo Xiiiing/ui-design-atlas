@@ -126,6 +126,8 @@ export type LoadCode = (
 ) => Promise<boolean | undefined>;
 export interface SourceManifest {
   files: Record<string, string>;
+  /** Base64-encoded assets; ZIP delivery writes their original bytes. */
+  binaryFiles?: Record<string, string>;
   entryFiles?: string[];
   instructions?: Localized<string[]>;
   install?: string;

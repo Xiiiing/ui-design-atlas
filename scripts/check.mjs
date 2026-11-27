@@ -207,6 +207,13 @@ for (const [id, source] of Object.entries(sourceLock.sources)) {
   }
 }
 console.log("Verified pinned upstream snapshots and SHA-256 checksums.");
+const momentsEntries = spawnSync(
+  process.execPath,
+  [fileURLToPath(new URL("scripts/sync-ui-moments.mjs", base)), "--check"],
+  { encoding: "utf8" },
+);
+assert.equal(momentsEntries.status, 0, momentsEntries.stderr);
+console.log(momentsEntries.stdout.trim());
 
 const shellSources = JSON.parse(
   await readFile(new URL("vendor/yingxu-ui/sources.lock.json", base), "utf8"),

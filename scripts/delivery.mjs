@@ -131,14 +131,17 @@ export async function generateDelivery(root, out) {
   );
 
   const marketFiles = {};
+  const marketBinaryFiles = {};
   for (const file of marketDelivery) {
     const rel = path.relative(market, file).split(path.sep).join("/");
     if (
-      /\.(tsx?|js|css|json|md|html|svg)$/.test(rel) ||
-      rel === "LICENSE" ||
+      /\.(tsx?|js|css|json|md|txt|html|svg)$/.test(rel) ||
+      /(^|\/)LICENSE$/.test(rel) ||
       rel.startsWith("licenses/")
     )
       marketFiles[rel] = await readFile(file, "utf8");
+    else if (/\.(?:woff2?|png|jpe?g|webp|avif|ico)$/i.test(rel))
+      marketBinaryFiles[rel] = (await readFile(file)).toString("base64");
   }
   marketFiles["atlas-catalog.json"] = JSON.stringify(
     resources.map(({ id, name, sourceId }) => ({ id, name, sourceId })),
@@ -211,6 +214,7 @@ export async function generateDelivery(root, out) {
       resource,
       project === "shadcn-admin" ? files : marketFiles,
       project,
+      project === "ui-market" ? marketBinaryFiles : {},
     );
     const slug = `${resource.type}-${resource.id}`;
     await writeFile(
@@ -229,6 +233,8 @@ export async function generateDelivery(root, out) {
     zip.pipe(destination);
     for (const [name, content] of Object.entries(manifest.files))
       zip.append(content, { name: `${slug}/${name}` });
+    for (const [name, content] of Object.entries(manifest.binaryFiles || {}))
+      zip.append(Buffer.from(content, "base64"), { name: `${slug}/${name}` });
     if (manifest.project !== "static")
       zip.append(
         project === "shadcn-admin" ? noticeText : marketNotices.join(""),

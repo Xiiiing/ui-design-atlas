@@ -41,11 +41,16 @@ export function imports(file, content) {
   return [];
 }
 
-export function resourceCode(resource, allFiles, project) {
+export function resourceCode(resource, allFiles, project, binaryFiles = {}) {
   if (resource.codeFormat === "static") {
     const entryFiles = [resource.files[0]];
     const files = {};
+    const assets = {};
     for (const file of [...resource.files, ...(resource.supportFiles || [])]) {
+      if (Object.hasOwn(binaryFiles, file)) {
+        assets[file] = binaryFiles[file];
+        continue;
+      }
       if (!Object.hasOwn(allFiles, file))
         throw Error(`Missing static resource file: ${resource.id} -> ${file}`);
       files[file] = allFiles[file];
@@ -66,6 +71,7 @@ export function resourceCode(resource, allFiles, project) {
       entryFiles,
       instructions,
       files,
+      ...(Object.keys(assets).length ? { binaryFiles: assets } : {}),
     };
   }
   const entryFiles = resource.files?.length ? resource.files : ["src/main.tsx"];

@@ -16,7 +16,7 @@ const rootFiles = new Set([
   "eslint.config.js",
 ]);
 const sourceExtensions =
-  /\.(?:[cm]?[jt]sx?|css|json|html|svg|png|jpe?g|webp|avif|woff2?|ico|md)$/i;
+  /\.(?:[cm]?[jt]sx?|css|json|html|svg|png|jpe?g|webp|avif|woff2?|ico|md|txt)$/i;
 const excluded = (name) =>
   name.startsWith(".") ||
   /(?:~|\.bak|\.backup|\.old|\.tmp|\.sw[op]|\.log|\.tsbuildinfo)$/i.test(name);
@@ -61,6 +61,7 @@ export async function deliveryFiles(root, allowList) {
     } else if (
       info.isFile() &&
       (rootFiles.has(relative) ||
+        path.basename(relative) === "LICENSE" ||
         sourceExtensions.test(relative) ||
         relative.startsWith("licenses" + path.sep))
     )
