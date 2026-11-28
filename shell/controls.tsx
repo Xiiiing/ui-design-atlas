@@ -6,7 +6,7 @@ import {
 } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
-import { Monitor, Moon, Sun, Menu, Ellipsis } from "lucide-react";
+import { Monitor, Moon, Sun, Ellipsis } from "lucide-react";
 import { MarketSelect, MarketMenu } from "./primitives";
 import { lockPageScroll } from "./scroll-lock";
 import { SelectionGroup } from "./SelectionGroup";
@@ -83,21 +83,21 @@ function Appearance({ english }: { english: boolean }) {
     </button>
   );
 }
-function MobileNavigation({ source }: { source: HTMLElement }) {
+function MoreNavigation({ links }: { links: HTMLAnchorElement[] }) {
   const english = document.documentElement.lang === "en";
   return (
     <MarketMenu
-      ariaLabel={english ? "Main navigation" : "主导航"}
-      label={<Menu size={18} aria-hidden="true" />}
-      triggerClassName="mobile-nav-trigger"
-      items={Array.from(
-        document.querySelectorAll<HTMLAnchorElement>(".market-navigation a"),
-      ).map((a) => ({
-        key: a.hash,
+      ariaLabel={english ? "More resources" : "更多资料"}
+      label={<Ellipsis size={18} aria-hidden="true" />}
+      triggerClassName="more-nav-trigger"
+      items={links.map((a) => ({
+        key: a.href,
         label: a.getAttribute("aria-label") || a.textContent,
-        selected: a.classList.contains("active"),
+        selected: a.hasAttribute("aria-current"),
         onSelect: () => {
-          a.click();
+          if (a.target === "_blank")
+            window.open(a.href, "_blank", "noopener,noreferrer");
+          else location.hash = a.hash;
         },
       }))}
     />
@@ -332,8 +332,9 @@ export function refreshShellControls() {
       "[data-shell-navigation]",
     )) {
       if (el.closest("[data-shell-mounted]")) continue;
+      const links = Array.from(el.querySelectorAll<HTMLAnchorElement>("a"));
       const { root } = island(el, "navigation");
-      flushSync(() => root.render(<MobileNavigation source={el} />));
+      flushSync(() => root.render(<MoreNavigation links={links} />));
     }
   });
 }

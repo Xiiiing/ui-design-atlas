@@ -1,10 +1,14 @@
-// Exercise the visible destination, including the existing narrow-screen menu.
+// Use the visible navigation for both main destinations and supporting material.
 export async function activatePrimary(page, view) {
-  const link = page.locator(`[data-primary-view="${view}"]`);
-  if (await link.isVisible()) return link.click();
-  const label = await link.getAttribute("aria-label");
-  await page.locator(".mobile-nav-trigger").click();
-  await page.getByRole("menuitem", { name: label, exact: true }).click();
+  const link = page.locator(`.market-navigation [data-primary-view="${view}"]`);
+  if (await link.count()) return link.click();
+  const names = {
+    guidance: /^(Design guidance|设计指导)$/,
+    tools: /^(Resource directory|资源导航)$/,
+  };
+  if (!names[view]) throw new Error(`Unknown navigation destination: ${view}`);
+  await page.locator(".more-nav-trigger").click();
+  await page.getByRole("menuitem", { name: names[view] }).click();
 }
 
 export async function openFilters(page) {

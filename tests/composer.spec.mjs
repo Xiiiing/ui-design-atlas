@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { readFile } from "node:fs/promises";
+import { activatePrimary } from "./navigation.mjs";
 
 test("Composer assembles ordered content, separates modes, preserves edits and restores private drafts", async ({
   page,
@@ -55,7 +56,7 @@ test("Composer assembles ordered content, separates modes, preserves edits and r
   expect(await readFile(await (await downloaded).path(), "utf8")).toBe(
     await output.inputValue(),
   );
-  await page.locator("#topbar [data-primary-view=guidance]").click();
+  await activatePrimary(page, "guidance");
   await page.locator('.guidance-intro a[href*="compose"]').click();
   await expect(output).toHaveValue(/animate\/SKILL.md/);
 });
@@ -185,10 +186,9 @@ test("Guidance, directory and composer fit four widths in both languages and the
           ),
         ).toBe(true);
         const nav = page.locator(".market-navigation");
-        if (width < 1101) {
-          await expect(nav).toBeHidden();
-          await expect(page.locator(".mobile-nav-trigger")).toBeVisible();
-        }
+        await expect(nav.getByRole("link")).toHaveCount(3);
+        await expect(nav).toBeVisible();
+        await expect(page.locator(".more-nav-trigger")).toBeVisible();
         await page.screenshot({
           path: info.outputPath(`guidance-${width}-${locale}-${theme}.png`),
         });

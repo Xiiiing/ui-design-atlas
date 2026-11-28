@@ -1,11 +1,12 @@
 import { test, expect } from "@playwright/test";
 import { collectionResources, resources } from "../catalog.js";
 
-test("The root opens the library, with collections in more filters and cases in type navigation", async ({ page }) => {
+test("The root opens components with collections still available in filters", async ({ page }) => {
   await page.goto("./");
   await expect(page.locator("#filters")).toBeVisible();
   await expect(page.locator("#results .asset-card")).toHaveCount(24);
-  await expect(page.locator("[data-market-mode=cases]")).toBeVisible();
+  await expect(page.locator("[data-primary-view=designs]")).toBeVisible();
+  await expect(page.locator("[data-gallery-choice]")).toHaveCount(6);
   await page.locator("[data-advanced-filters]").click();
   await page.locator('.collection-shortcuts a[href*="micro-interactions"]').click();
   const collectionCount = collectionResources("micro-interactions").length;

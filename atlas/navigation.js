@@ -5,6 +5,9 @@ import { browseScroll, scrollBrowseTo } from "../shell/controls.tsx";
 /** @type {readonly import('./types').View[]} */
 const views = [
   "discover",
+  "library",
+  "designs",
+  "prompts",
   "explore",
   "favorites",
   "motion",
@@ -30,9 +33,9 @@ export function parse() {
 /** @param {string} hash @returns {import('./types').Route} */
 export function parseHash(hash) {
   const [path, query = ""] = hash.replace(/^#/, "").split("?");
-  const [candidate = "explore", id] = path.split("/");
+  const [candidate, id] = path.split("/");
   return {
-    view: isView(candidate) ? candidate : "explore",
+    view: isView(candidate) ? candidate : "library",
     id,
     params: new URLSearchParams(query),
   };
@@ -60,6 +63,9 @@ export function createNavigation({ appState, href, render }) {
       appState.route.id ||
       appState.selected ||
       ![
+        "library",
+        "designs",
+        "prompts",
         "explore",
         "cases",
         "favorites",
@@ -116,7 +122,7 @@ export function createNavigation({ appState, href, render }) {
     // Main navigation restores the section, not a previous detail-entry focus.
     const browse = {
       hash: previous?.hash || href(target),
-      scroll: previous?.scroll ?? browseScroll(),
+      scroll: previous?.scroll ?? 0,
       limit: previous?.limit || 24,
     };
     const destination = new URLSearchParams(browse.hash.split("?")[1] || "");

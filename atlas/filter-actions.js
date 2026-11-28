@@ -8,7 +8,7 @@ export function createFilterActions({ appState, updateResults, cancelInput }) {
   return function handleFilterAction(b) {
     if (
       !b.matches(
-        "[data-more],[data-category],[data-visual],[data-remove-filter],[data-advanced-filters],[data-reset-filters],[data-classification],[data-compare-cards]",
+        "[data-more],[data-gallery-choice],[data-category],[data-visual],[data-remove-filter],[data-advanced-filters],[data-reset-filters],[data-classification],[data-compare-cards]",
       )
     )
       return false;
@@ -22,6 +22,13 @@ export function createFilterActions({ appState, updateResults, cancelInput }) {
       return true;
     }
     cancelInput();
+    if (b.dataset.galleryChoice) {
+      const field = element(`#filters input[name="${b.dataset.galleryFacet}"]`);
+      if (field instanceof HTMLInputElement) field.value = b.dataset.galleryChoice;
+      appState.limit = 24;
+      updateResults(true);
+      return true;
+    }
     if (b.hasAttribute("data-compare-cards")) {
       const field = element("input[name=compare]");
       field.value = field.value ? "" : "cards";
@@ -88,6 +95,8 @@ export function createFilterActions({ appState, updateResults, cancelInput }) {
         for (const el of all("select.atlas-select-native", form))
           setFieldValue(el.dataset.shellField || "", "all");
         element("[name=q]", form).value = "";
+        for (const field of all("input:is([name=purpose], [name=scope])", form))
+          if (field instanceof HTMLInputElement) field.value = "all";
         element("[name=category]", form).value = "all";
         element("[name=visual]", form).value = "all";
         element("input[name=compare]", form).value = "";

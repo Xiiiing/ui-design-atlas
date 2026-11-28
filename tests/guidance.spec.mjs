@@ -1,3 +1,4 @@
+import { activatePrimary } from "./navigation.mjs";
 import { test, expect } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
@@ -220,7 +221,7 @@ test("Unified quick search reaches guidance and repositories, and no-result Ente
   );
   await page.keyboard.press("Enter");
   await expect(page.locator("h1")).toHaveText("Baseline UI");
-  await page.locator("#topbar [data-primary-view=guidance]").click();
+  await activatePrimary(page, "guidance");
   await expect(page.locator(".guidance-card")).toHaveCount(13);
   await page.keyboard.press("Control+k");
   await page.locator("#quick-search").fill("Element Plus");

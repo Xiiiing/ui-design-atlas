@@ -219,14 +219,13 @@ test("Touch card menus and independent saved shortcut remain operable", async ({
   await context.close();
 });
 
-test("Systems share the library's navigation memory", async ({ page }) => {
-  await page.goto("#cases?lang=en");
-  await page.locator('[data-primary-view="guidance"]').click();
-  await expect(page.locator(".guidance-card").first()).toBeVisible();
-  await page.locator('[data-primary-view="explore"]').click();
-  await expect(page).toHaveURL(/#cases/);
-  await expect(page.locator('[data-market-mode="cases"]')).toHaveAttribute(
-    "aria-current",
-    "page",
+test("Design navigation restores the complete systems selection", async ({ page }) => {
+  await page.goto("#designs?lang=en&scope=case");
+  await page.locator('[data-primary-view="library"]').click();
+  await page.locator('[data-primary-view="designs"]').click();
+  await expect(page).toHaveURL(/#designs.*scope=case/);
+  await expect(page.locator('[data-gallery-choice="case"]')).toHaveAttribute(
+    "aria-pressed",
+    "true",
   );
 });

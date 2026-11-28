@@ -61,6 +61,9 @@ export interface Resource {
 export type View =
   | ResourceType
   | "discover"
+  | "library"
+  | "designs"
+  | "prompts"
   | "explore"
   | "favorites"
   | "motion"

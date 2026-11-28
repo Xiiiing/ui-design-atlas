@@ -1,4 +1,3 @@
-import { createFullscreen } from "./atlas/fullscreen.js";
 // @ts-check
 import { element, maybe, all } from "./atlas/dom.js";
 import {
@@ -36,9 +35,8 @@ import { createNavigation } from "./atlas/navigation.js";
 import { createClipboard } from "./atlas/clipboard.js";
 import { createResourceViews } from "./atlas/resource-views.js";
 
-import { createPreviewActions } from "./atlas/preview-actions.js";
-import { createSourceActions } from "./atlas/source-actions.js";
 import { createLazyViewer } from "./atlas/viewer-loader.js";
+import { isGallery } from "./atlas/library-classification.js";
 import { createBrowse } from "./atlas/browse.js";
 
 /** @type {import("./atlas/types").AppState} */
@@ -123,7 +121,7 @@ const l = (v) =>
     : v;
 
 /** @type {import("./atlas/types").Href} */
-const href = (view = "explore", id = "", params = {}) =>
+const href = (view = "library", id = "", params = {}) =>
   "#" +
   view +
   (id ? "/" + id : "") +
@@ -168,15 +166,26 @@ function render() {
   if (routeTheme === "dark" || routeTheme === "light")
     appState.theme = routeTheme;
   header();
+  main.classList.toggle("atlas-gallery", isGallery(appState.route.view));
+  main.classList.toggle("atlas-prompts", appState.route.view === "prompts");
   main.classList.toggle("library-page", !types[appState.route.view]);
   element("#topbar").hidden = false;
   element("#footer").hidden = false;
   fullscreen.reset();
-  document.body.classList.remove("is-viewer", "is-experience");
+  document.body.classList.remove(
+    "is-viewer",
+    "is-experience",
+    "is-gallery-experience",
+  );
   if (types[appState.route.view]) {
     const r = findResource(appState.route.id || "", appState.route.view);
     if (r) {
       appState.originBrowse = history.state?.background || null;
+      if (
+        appState.originBrowse &&
+        isGallery(parseHash(appState.originBrowse.hash).view)
+      )
+        document.body.classList.add("is-gallery-experience");
       if (routeTheme !== "light" && routeTheme !== "dark")
         appState.theme = shellTheme();
       showViewer(r);
@@ -188,7 +197,7 @@ function render() {
     );
     return;
   }
-  if (["guidance", "tools", "compose"].includes(appState.route.view)) {
+  if (["prompts", "guidance", "tools", "compose"].includes(appState.route.view)) {
     renderGuidance();
     return;
   }
@@ -336,12 +345,13 @@ async function loadCode(resource, scope) {
 }
 
 const {
+  fullscreen,
+  handlePreviewAction,
+  handleSourceAction,
   inspector,
-  loadViewerDetails,
   promptText,
   showViewer,
   previewLoadState,
-  beginPreviewLoad,
   openResource,
   closeViewer,
   syncDetailsPanel,
@@ -356,6 +366,8 @@ const {
 } = createLazyViewer({
   appState,
   labelType,
+  copy,
+  download,
   t,
   saveButton,
   l,
@@ -391,28 +403,6 @@ const handleNavigationClick = createNavigationActions({
   openResource,
 });
 
-const fullscreen = createFullscreen({
-  t,
-  scalePreview,
-  onChange: syncDetailsPanel,
-});
-const handlePreviewAction = createPreviewActions({
-  appState,
-  t,
-  toggleFullscreen: fullscreen.toggle,
-  toggleFullscreenTools: fullscreen.toggleTools,
-  beginPreviewLoad,
-  loadViewerDetails,
-  toggleDetails,
-  scalePreview,
-  updateThemeURL,
-});
-const handleSourceAction = createSourceActions({
-  appState,
-  loadCode,
-  copy,
-  download,
-});
 const favoriteActions = createFavorites({ appState, t, notify, updateResults });
 
 /** @type {ReturnType<typeof import("./atlas/search.js").createSearch>|undefined} */

@@ -2,6 +2,7 @@
 import { all } from "./dom.js";
 import { key } from "./resource-views.js";
 import { findResource } from "../catalog.js";
+import { designScope } from "./library-classification.js";
 import { parse } from "./navigation.js";
 import {
   browseScroll,
@@ -98,10 +99,19 @@ export function createLazyViewer(dependencies) {
       history.go(-history.state.resourceDepth);
       return;
     }
-    location.hash = href("explore").slice(1);
+    location.hash = href(appState.selected && designScope(appState.selected) ? "designs" : "library").slice(1);
   }
 
   return {
+    fullscreen: {
+      sync: () => viewer?.fullscreen.sync(),
+      active: () => viewer?.fullscreen.active() ?? false,
+      reset: () => viewer?.fullscreen.reset(),
+    },
+    /** @param {HTMLButtonElement} button */
+    handlePreviewAction: (button) => viewer?.handlePreviewAction(button),
+    /** @param {HTMLButtonElement} button */
+    handleSourceAction: (button) => viewer?.handleSourceAction(button),
     showViewer,
     openResource,
     closeViewer,
