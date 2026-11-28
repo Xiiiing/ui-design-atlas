@@ -25,6 +25,7 @@ import {
   browseScroll,
   scrollBrowseTo,
 } from "../shell/controls.tsx";
+import { promptTask, promptTasks } from "./library-classification.js";
 import { parse } from "./navigation.js";
 /** @param {import('./types').BaseDependencies & {copy:(text:string)=>Promise<void>;download:(text:string,name:string)=>void;notify:(text:string)=>void}} deps */
 export function createGuidanceViews(deps) {
@@ -69,7 +70,13 @@ export function createGuidanceViews(deps) {
   function list() {
     if (!root) return;
     const tool = appState.route.view === "tools",
+      prompt = appState.route.view === "prompts",
       p = appState.route.params;
+    if (prompt) {
+      replaceShellHTML(root, `<form id="content-filters" class="guidance-filters"><input type="hidden" name="task" value="${esc(p.get("task") || "")}"><div class="gallery-topline"><h1>${t("提示词", "Prompts")}</h1><label class="market-search">${icon("search")}<input type="search" name="q" aria-label="${t("搜索提示词", "Search prompts")}" placeholder="${t("搜索任务或提示词", "Find a task or prompt")}" value="${esc(p.get("q") || "")}"><button type="submit" class="icon-button" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label></div><div class="gallery-toolbar"><div class="gallery-choice-strip" data-shell-group data-shell-key="gallery-prompt-tasks" role="group" aria-label="${t("提示词任务", "Prompt tasks")}">${filterButtons("task", { "": ["全部", "All"], ...promptTasks })}</div><a class="text-link" href="${href("compose")}">${t("组合提示词", "Compose a prompt")} ↗</a></div></form><p class="sr-only guidance-result-count" role="status"></p><div class="guidance-grid prompt-grid" data-content-results></div>`);
+      updateList(false);
+      return;
+    }
     replaceShellHTML(
       root,
       `<section class="guidance-intro content-intro"><h1>${tool ? t("资源导航", "Resource directory") : t("设计指导", "Design guidance")}</h1><a class="button primary" href="${href("compose")}">${t("组合提示词", "Compose a prompt")} ↗</a></section><form id="content-filters" class="guidance-filters"><input type="hidden" name="kind" value="${esc(p.get("kind") || "")}">${tool ? "" : `<input type="hidden" name="purpose" value="${esc(p.get("purpose") || "")}">`}<div class="catalog-toolbar"><div class="market-tabs content-types" data-shell-group data-shell-key="content-types-${tool ? "tools" : "guidance"}" role="group" aria-label="${t("类型", "Type")}">${filterButtons("kind", { "": ["全部类型", "All types"], ...(tool ? toolKinds : guidanceKinds) })}</div><label class="market-search">${icon("search")}<input type="search" name="q" aria-label="${t("搜索", "Search")}" value="${esc(p.get("q") || "")}" placeholder="${tool ? t("搜索组件库、规范、资料…", "Search libraries, specs, resources…") : t("搜索提示词、动效、排版…", "Search prompts, motion, typography…")}"><button type="submit" class="icon-button" aria-label="${t("搜索", "Search")}">${icon("arrow-right")}</button></label></div>${tool ? "" : `<fieldset class="category-facet"><legend class="sr-only">${t("用途", "Purpose")}</legend><div class="category-strip">${filterButtons("purpose", { "": ["全部用途", "All purposes"], ...purposes })}</div></fieldset>`}</form><p class="guidance-result-count" role="status"></p><div class="guidance-grid" data-content-results></div>`,
@@ -97,13 +104,15 @@ export function createGuidanceViews(deps) {
         );
       appState.route = parse();
     }
+    const prompt = appState.route.view === "prompts";
     const tool = appState.route.view === "tools",
       pool = searchContent(
         params.get("q") || "",
-        contentEntries.filter((r) => r.domain === (tool ? "tool" : "guidance")),
+        contentEntries.filter((r) => r.domain === (tool ? "tool" : "guidance") && (!prompt || ("kind" in r.item && r.item.kind === "prompt"))),
       );
     const kind = params.get("kind"),
-      purpose = params.get("purpose");
+      purpose = params.get("purpose"),
+      task = params.get("task");
     const matches = (
       /** @type {typeof pool[number]} */ r,
       /** @type {string} */ omit = "",
@@ -112,6 +121,7 @@ export function createGuidanceViews(deps) {
       return (
         !("preview" in item) &&
         (omit === "kind" || !kind || kind === item.kind) &&
+        (omit === "task" || !task || promptTask(item.id) === task) &&
         (omit === "purpose" ||
           !purpose ||
           ("purposes" in item &&
@@ -144,6 +154,7 @@ export function createGuidanceViews(deps) {
         (r) =>
           matches(r, name) &&
           (!value ||
+            (name === "task" && promptTask(r.item.id) === value) ||
             (name === "kind" && "kind" in r.item && r.item.kind === value) ||
             (name === "purpose" &&
               "purposes" in r.item &&
@@ -157,8 +168,9 @@ export function createGuidanceViews(deps) {
       const count = button.querySelector("[data-filter-count]");
       if (count) count.textContent = String(n);
     }
-    if (tool) lastTools = location.hash;
-    else lastGuidance = location.hash;
+    const listHash = href(appState.route.view, "", Object.fromEntries(params));
+    if (tool) lastTools = listHash;
+    else if (!prompt) lastGuidance = listHash;
   }
   /** @param {import('./guidance-types').Tool} item */
   function toolDetail(item) {
@@ -211,7 +223,7 @@ export function createGuidanceViews(deps) {
       } catch {}
       replaceShellHTML(
         container,
-        `<article class="guidance-reader"><a class="text-link" href="${esc(listURL(lastGuidance))}">← ${t("返回设计指导", "Back to guidance")}</a><header><div class="guidance-card-heading"><span class="guidance-kind">${t(.../** @type {[string,string]} */ (guidanceKinds[item.kind]))}</span>${button("guidance:" + item.id)}</div><h1>${esc(l(item.name))}</h1><p class="guidance-lead">${esc(l(item.description))}</p><div class="guidance-status"><span>${item.checked ? t("内容已核对", "Content checked") : t("内容待核对", "Content not checked")}</span><span>${t("AI 生成效果尚未验证", "AI outcome unverified")}</span></div><div class="button-row"><button type="button" class="button primary" data-guidance-copy="body">${t("复制内容", "Copy content")}</button><button type="button" class="button" data-guidance-download>${t("导出 Markdown", "Export Markdown")}</button><a class="button" href="./downloads/guidance/${item.id}.zip" download>${t("下载完整文件包", "Download complete bundle")}</a><a class="button" href="${href("compose", "", { [item.kind === "prompt" ? "template" : item.kind === "design" ? "design" : item.kind === "skill" ? "skill" : "check"]: item.id })}">${t("加入提示词组合", "Use in a prompt")}</a></div></header><section class="guidance-reading">${renderGuidanceMarkdown(l(data.body))}</section>${
+        `<article class="guidance-reader"><a class="text-link" href="${esc(listURL(appState.route.view === "prompts" ? href("prompts", "", Object.fromEntries(appState.route.params)) : lastGuidance))}">← ${appState.route.view === "prompts" ? t("返回提示词", "Back to prompts") : t("返回设计指导", "Back to guidance")}</a><header><div class="guidance-card-heading"><span class="guidance-kind">${t(.../** @type {[string,string]} */ (guidanceKinds[item.kind]))}</span>${button("guidance:" + item.id)}</div><h1>${esc(l(item.name))}</h1><p class="guidance-lead">${esc(l(item.description))}</p><div class="guidance-status"><span>${item.checked ? t("内容已核对", "Content checked") : t("内容待核对", "Content not checked")}</span><span>${t("AI 生成效果尚未验证", "AI outcome unverified")}</span></div><div class="button-row"><button type="button" class="button primary" data-guidance-copy="body">${t("复制内容", "Copy content")}</button><button type="button" class="button" data-guidance-download>${t("导出 Markdown", "Export Markdown")}</button><a class="button" href="./downloads/guidance/${item.id}.zip" download>${t("下载完整文件包", "Download complete bundle")}</a><a class="button" href="${href("compose", "", { [item.kind === "prompt" ? "template" : item.kind === "design" ? "design" : item.kind === "skill" ? "skill" : "check"]: item.id })}">${t("加入提示词组合", "Use in a prompt")}</a></div></header><section class="guidance-reading">${renderGuidanceMarkdown(l(data.body))}</section>${
           item.kind === "prompt" && l(data.body).includes("{{requirements}}")
             ? `<section class="guidance-template-fields"><h2>${t("填写后复制", "Fill and copy")}</h2><label>${t("项目需求", "Project requirements")}<textarea name="requirements" data-template-value="requirements" rows="3"></textarea></label>${[
                 "audience",
@@ -271,7 +283,7 @@ export function createGuidanceViews(deps) {
     } else if (route.id) {
       const item =
         route.view === "tools" ? findTool(route.id) : findGuidance(route.id);
-      if (!item)
+      if (!item || (route.view === "prompts" && item.kind !== "prompt"))
         replaceShellHTML(
           root,
           `<div class="market-empty"><h1>${t("内容不存在", "Content not found")}</h1><a href="${href(route.view)}">${t("返回列表", "Back to list")}</a></div>`,
@@ -369,7 +381,7 @@ export function createGuidanceViews(deps) {
         if (!b) return;
         if (b.hasAttribute("data-content-filter")) {
           const name = b.dataset.contentFilter;
-          if (name !== "kind" && name !== "purpose") return;
+          if (name !== "kind" && name !== "purpose" && name !== "task") return;
           const field = root?.querySelector(`#content-filters [name=${name}]`);
           if (field instanceof HTMLInputElement) {
             field.value = b.dataset.value || "";
@@ -444,12 +456,12 @@ export function createGuidanceViews(deps) {
           ? "资源导航"
           : route.view === "compose"
             ? "提示词组合器"
-            : "设计指导",
+            : route.view === "prompts" ? "提示词" : "设计指导",
         route.view === "tools"
           ? "Directory"
           : route.view === "compose"
             ? "Prompt composer"
-            : "Design guidance",
+            : route.view === "prompts" ? "Prompts" : "Design guidance",
       ) + " · UI Design Atlas";
     const browse = history.state?.browse;
     if (browse && !route.id)

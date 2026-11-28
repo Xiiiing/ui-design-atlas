@@ -1,4 +1,7 @@
 // @ts-check
+import { createSourceActions } from "./source-actions.js";
+import { createPreviewActions } from "./preview-actions.js";
+import { createFullscreen } from "./fullscreen.js";
 import { createResourceDetails } from "./resource-detail-views.js";
 import { loadResourceDetails } from "./resource-data.js";
 import { element, maybe, all } from "./dom.js";
@@ -20,7 +23,7 @@ import { resourcePresentation, embeddedPreviewURL } from "../presentation.js";
 import { key } from "./resource-views.js";
 import { parse } from "./navigation.js";
 
-/** @param {import("./types").BaseDependencies & Pick<ReturnType<typeof import("./resource-views").createResourceViews>, "labelType"|"saveButton"|"tagLinks"|"language"> & {loadCode:import("./types").LoadCode;stopAllLive:()=>void;main:HTMLElement;shellTheme:()=>import("./types").Theme;render:()=>void}} dependencies */
+/** @param {import("./types").BaseDependencies & Pick<ReturnType<typeof import("./resource-views").createResourceViews>, "labelType"|"saveButton"|"tagLinks"|"language"> & {loadCode:import("./types").LoadCode;stopAllLive:()=>void;main:HTMLElement;copy:(text:string)=>Promise<unknown>;download:(text:string,name:string)=>void;shellTheme:()=>import("./types").Theme;render:()=>void}} dependencies */
 export function createViewer({
   appState,
   labelType,
@@ -33,12 +36,20 @@ export function createViewer({
   stopAllLive,
   main,
   href,
+  copy,
+  download,
 }) {
   const { resourceDetails, related, caseDirectory } = createResourceDetails({
     appState,
     t,
     href,
     l,
+  });
+  const fullscreen = createFullscreen({ t, scalePreview, onChange: syncDetailsPanel });
+  const handleSourceAction = createSourceActions({ appState, loadCode, copy, download });
+  const handlePreviewAction = createPreviewActions({
+    appState, t, toggleFullscreen: fullscreen.toggle, toggleFullscreenTools: fullscreen.toggleTools,
+    beginPreviewLoad, loadViewerDetails, toggleDetails, scalePreview, updateThemeURL,
   });
   let detailsSerial = 0;
   /** @param {import("./types").Resource} resource */
@@ -420,6 +431,9 @@ export function createViewer({
     );
   }
   return {
+    fullscreen,
+    handlePreviewAction,
+    handleSourceAction,
     inspector,
     loadViewerDetails,
     promptText,

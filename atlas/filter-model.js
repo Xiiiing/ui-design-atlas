@@ -1,4 +1,5 @@
 // @ts-check
+import { componentPurpose, designScope } from "./library-classification.js";
 import { searchResources, collectionResources } from "../catalog.js";
 /** @typedef {import('./types').Resource} Resource */
 /** @typedef {{view:string;params:URLSearchParams}} Route */
@@ -7,6 +8,8 @@ export const selections = (value) =>
   (value || "").split(",").filter((v) => v && v !== "all");
 /** @type {Record<string,(resource:Resource)=>readonly string[]>} */
 export const facetValues = {
+  purpose: (r) => [componentPurpose(r)],
+  scope: (r) => [designScope(r)],
   category: (r) => r.categories,
   library: (r) => r.libraryIds,
   interaction: (r) => r.interactions,
@@ -39,8 +42,9 @@ export const cardStyleExamples = [
 ];
 /** @param {Route} route @param {Record<string,string>} values */
 export const canCompareCards = (route, values) =>
-  (route.view === "explore" || route.view === "components") &&
-  values.category === "cards";
+  ["explore", "components", "library"].includes(route.view) &&
+  values.category === "cards" &&
+  (!selections(values.purpose).length || values.purpose === "content");
 /** Explicit inputs: computing counts or detail neighbors never mutates navigation. @param {Resource[]} resources @param {Route} route @param {ReadonlySet<string>} favorites @param {Record<string,string>} [values] @param {string} [omit] */
 export function filterResources(
   resources,
@@ -58,6 +62,8 @@ export function filterResources(
   return searchResources(
     values.q || "",
     resources.filter((r) => {
+      if (route.view === "library" && designScope(r)) return false;
+      if (route.view === "designs" && !designScope(r)) return false;
       if (compare && !cardStyleExamples.includes(r.id)) return false;
       if (collection && !collection.has(r.id)) return false;
       if (route.view === "favorites" && !favorites.has(`${r.type}:${r.id}`))

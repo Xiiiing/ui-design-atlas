@@ -43,7 +43,7 @@ test("IME composition does not update results or activate quick search", async (
 test("Rapid input commits once, navigation flushes current filters and cancels late work", async ({
   page,
 }) => {
-  await page.goto("#components?lang=en");
+  await page.goto("#library?lang=en");
   await page.locator("[name=q]").evaluate((el) => {
     window.atlasUpdates = 0;
     const original = history.replaceState.bind(history);
@@ -62,7 +62,7 @@ test("Rapid input commits once, navigation flushes current filters and cancels l
   await page.locator('[data-primary-view="favorites"]').click();
   await page.waitForTimeout(220);
   await expect(page).toHaveURL(/#favorites/);
-  await page.locator('[data-primary-view="explore"]').click();
+  await page.locator('[data-primary-view="library"]').click();
   await expect(page.locator("[name=q]")).toHaveValue("table");
   await expect(page).toHaveURL(/q=table/);
 });

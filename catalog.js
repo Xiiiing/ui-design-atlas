@@ -1,4 +1,5 @@
 // @ts-check
+import { componentPurpose, componentPurposes, designScope, designScopes } from "./atlas/library-classification.js";
 import { categories, interactions, visualStyles } from "./resource-tags.js";
 import { resolveCasePages } from "./catalog-pages.js";
 import records from "./content/resources.json" with { type: "json" };
@@ -89,6 +90,7 @@ export const resourceSearchFields = (r) => ({
   description: r.description,
   context: [r.categories, r.interactions, r.style, resourceSource(r)?.name],
   labels: [
+    designScopes[designScope(r)] || componentPurposes[componentPurpose(r)],
     r.categories.map((id) => categories[id]),
     r.interactions.map((id) => interactions[id]),
     r.styleIds.map((id) => visualStyles[id]),

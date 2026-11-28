@@ -1,16 +1,16 @@
 import { test, expect } from "@playwright/test";
 import { openClassification } from "./navigation.mjs";
 
-test("Phone library keeps both type rows and the first cover in view", async ({
+test("Phone gallery keeps two purpose rows, early covers and easy access to systems", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("#explore?lang=zh-CN");
+  await page.goto("#library?lang=zh-CN");
   await page.evaluate(() => document.fonts.ready);
-  const types = page.locator("[data-market-mode]");
-  const sizes = await types.evaluateAll((links) =>
-    links.map((link) => {
-      const { top, left, right, height } = link.getBoundingClientRect();
+  const choices = page.locator("[data-gallery-choice]");
+  const sizes = await choices.evaluateAll((buttons) =>
+    buttons.map((button) => {
+      const { top, left, right, height } = button.getBoundingClientRect();
       return { top, left, right, height };
     }),
   );
@@ -25,20 +25,16 @@ test("Phone library keeps both type rows and the first cover in view", async ({
   ).toBe(true);
   expect(
     (await page.locator(".asset-preview").first().boundingBox()).y,
-  ).toBeLessThan(400);
-  for (const [mode, type] of [
-    ["pages", "page"],
-    ["cases", "case"],
-  ]) {
-    await page.locator(`[data-market-mode=${mode}]`).click();
-    await expect(page).toHaveURL(new RegExp(`#${mode}`));
-    await expect(page.locator(`.resource-group[data-type=${type}]`)).toBeVisible();
-    const keys = await page
-      .locator(".asset-card")
-      .evaluateAll((cards) => cards.map((card) => card.dataset.resource));
-    expect(keys.length).toBeGreaterThan(0);
-    expect(keys.every((key) => key.startsWith(`${type}:`))).toBe(true);
-  }
+  ).toBeLessThan(320);
+  await page.locator("[data-primary-view=designs]").click();
+  await page.locator("[data-gallery-choice=page]").click();
+  await expect(page).toHaveURL(/#designs.*scope=page/);
+  await expect(page.locator('[data-resource="block:shadcn-login-01"]')).toBeVisible();
+  await expect(page.locator('.asset-card[data-resource^="case:"]')).toHaveCount(0);
+  await page.locator("[data-gallery-choice=case]").click();
+  await expect(page).toHaveURL(/#designs.*scope=case/);
+  await expect(page.locator('[data-resource="case:shadcn-admin"]')).toBeVisible();
+  await expect(page.locator('.asset-card:not([data-resource^="case:"])')).toHaveCount(0);
 });
 
 test("Card comparison opens four distinct styles, respects filters and restores from its URL", async ({

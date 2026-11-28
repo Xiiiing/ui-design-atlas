@@ -3,6 +3,7 @@ import { element, maybe, all } from "./dom.js";
 import { icon } from "../icons.js";
 import { replaceShellHTML } from "../shell/controls.tsx";
 import { escapeHTML as esc } from "./html.js";
+import { componentPurpose, componentPurposes, designScope, designScopes, isGallery } from "./library-classification.js";
 import { parseHash } from "./navigation.js";
 import { resourceTags, interactions, visualStyles } from "../resource-tags.js";
 import { resourcePresentation } from "../presentation.js";
@@ -41,26 +42,31 @@ export function createResourceViews({
   function header() {
     document.documentElement.lang = appState.locale;
     element("#sidebar").innerHTML = "";
+    const { view } = appState.route;
+    const activeView = view === "compose" ? "prompts"
+      : ["pages", "cases", "page", "case"].includes(view) ? "designs"
+      : ["explore", "components", "blocks", "motion", "component", "block"].includes(view) ? "library"
+      : view;
     const nav = [
-      ["explore", "资源库", "Library", "layers"],
-      ["guidance", "设计指导", "Guidance", "layers"],
-      ["tools", "资源导航", "Directory", "code-xml"],
-    ]
-      .map(([view, zh, en, glyph]) => {
-        const active =
-          appState.route.view === view ||
-          (view === "guidance" && appState.route.view === "compose") ||
-          (view === "explore" &&
-            ["motion", "components", "blocks", "pages", "cases"].includes(
-              appState.route.view,
-            ));
-        const label = t(zh, en);
-        return `<a data-primary-view="${view}" href="${href(view)}" class="${active ? "active" : ""}" aria-label="${label}" title="${label}" ${active ? 'aria-current="page"' : ""}>${icon(glyph)}<span class="nav-label">${label}${view === "favorites" ? ` <small data-favorite-count${appState.favorites.size ? "" : " hidden"}>${appState.favorites.size}</small>` : ""}</span></a>`;
-      })
-      .join("");
+      ["library", "组件", "Components"],
+      ["designs", "界面设计", "Interface design"],
+      ["prompts", "提示词", "Prompts"],
+    ].map(([destination, zh, en]) => {
+      const label = t(zh, en);
+      const active = activeView === destination;
+      return `<a data-primary-view="${destination}" href="${href(destination)}" class="${active ? "active" : ""}" aria-label="${label}" ${active ? 'aria-current="page"' : ""}><span class="nav-label">${label}</span></a>`;
+    }).join("");
+    const more = [
+      ["guidance", "设计指导", "Design guidance"],
+      ["tools", "资源导航", "Resource directory"],
+      ["guide", "使用指南", "How to reuse"],
+      ["resources", "来源与许可", "Sources & licenses"],
+    ].map(([destination, zh, en]) =>
+      `<a data-primary-view="${destination}" href="${href(destination)}" ${view === destination ? 'aria-current="page"' : ""}>${t(zh, en)}</a>`
+    ).join("");
     replaceShellHTML(
       element("#topbar"),
-      `<div class="market-header"><a class="brand" href="${href()}" aria-label="${t("UI 设计图鉴首页", "UI Design Atlas home")}"><img class="brand-mark brand-light" src="./logo.svg" width="32" height="32" alt=""><img class="brand-mark brand-dark" src="./logo-reverse.svg" width="32" height="32" alt=""><span class="brand-name">atlas<span class="brand-dot">.</span></span></a><nav class="market-navigation" data-shell-group data-shell-key="primary-navigation" data-shell-variant="underline" aria-label="${t("主导航", "Main navigation")}">${nav}</nav><div class="market-header-actions"><a class="saved-shortcut icon-button ${appState.route.view === "favorites" ? "active" : ""}" data-primary-view="favorites" href="${href("favorites")}" aria-label="${t("我的收藏", "Saved")}" title="${t("我的收藏", "Saved")}" ${appState.route.view === "favorites" ? 'aria-current="page"' : ""}>${icon("bookmark")}<small data-favorite-count${appState.favorites.size ? "" : " hidden"}>${appState.favorites.size}</small></a><span data-shell-navigation></span><span data-shell-appearance></span><button class="icon-button" data-search aria-label="${t("搜索设计", "Search designs")}" title="${t("搜索设计", "Search designs")}">${icon("search")}</button>${language()}<a class="header-github" href="https://github.com/Xiiiing/ui-design-atlas" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><span class="nav-label">GitHub</span>${icon("github")}</a></div></div>`,
+      `<div class="market-header"><a class="brand" href="${href()}" aria-label="${t("UI 设计图鉴首页", "UI Design Atlas home")}"><img class="brand-mark brand-light" src="./logo.svg" width="32" height="32" alt=""><img class="brand-mark brand-dark" src="./logo-reverse.svg" width="32" height="32" alt=""><span class="brand-name">atlas<span class="brand-dot">.</span></span></a><nav class="market-navigation" data-shell-group data-shell-key="primary-navigation" data-shell-variant="underline" aria-label="${t("主导航", "Main navigation")}">${nav}</nav><div class="market-header-actions"><a class="saved-shortcut icon-button ${appState.route.view === "favorites" ? "active" : ""}" data-primary-view="favorites" href="${href("favorites")}" aria-label="${t("我的收藏", "Saved")}" title="${t("我的收藏", "Saved")}" ${appState.route.view === "favorites" ? 'aria-current="page"' : ""}>${icon("bookmark")}<small data-favorite-count${appState.favorites.size ? "" : " hidden"}>${appState.favorites.size}</small></a><span data-shell-navigation><span hidden>${more}<a href="https://github.com/Xiiiing/ui-design-atlas" target="_blank" rel="noopener noreferrer">GitHub</a></span></span><span data-shell-appearance></span><button class="icon-button" data-search aria-label="${t("搜索设计", "Search designs")}" title="${t("搜索设计", "Search designs")}">${icon("search")}</button>${language()}</div></div>`,
     );
     syncNavigation();
     element("#footer").innerHTML =
@@ -151,20 +157,24 @@ export function createResourceViews({
 
   /** @param {import("./types").Resource} r */
   function card(r) {
-    const framing = resourcePresentation(r),
-      inline = framing.mode === "inline";
+    const framing = resourcePresentation(r);
+    const gallery = isGallery(appState.route.view);
+    const inline = !gallery && framing.mode === "inline";
+    const scope = designScope(r);
+    const purpose = componentPurpose(r);
+    const classification = scope ? designScopes[scope] : componentPurposes[purpose];
     const name =
       r.type === "page" && r.caseId
         ? `${l(getCase(r.caseId)?.name || r.name).split(" · ")[0]} · ${l(r.name)}`
-        : l(r.name);
+        : gallery && scope === "page" ? l(r.name).replace(/区块$/, "页") : l(r.name);
     const cover = coverURL(r.cover, shellTheme());
     const source = responsiveCovers.has(r.cover)
       ? `<source type="image/webp" srcset="${esc(coverSrcset(cover))}" sizes="(max-width: 599px) 90vw, (max-width: 899px) 90vw, (max-width: 1199px) 60vw, 620px">`
       : "";
-    return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${framing.layout}" data-experience="${framing.mode}" ${inline ? 'data-preview-state="idle"' : ""} data-cover-layout="${framing.layout}">
+    return `<article class="asset-card card" data-resource="${key(r)}" data-layout="${framing.layout}" data-experience="${inline ? "inline" : "canvas"}" ${inline ? 'data-preview-state="idle"' : ""} data-cover-layout="${framing.layout}">
   <div class="asset-preview"><picture>${source}<img data-cover="${esc(r.cover)}" src="${esc(cover)}" alt="${esc(name)}" loading="lazy" decoding="async" width="${framing.width}" height="${framing.height}"></picture>${inline ? `<div class="asset-live" data-live="${key(r)}"></div><button class="asset-cover-link" type="button" data-start-preview><span><span data-preview-label>${t("启动预览", "Start preview")}</span><span class="sr-only"> ${esc(name)}</span></span></button><span class="sr-only" role="status" data-preview-status></span>` : `<a class="asset-cover-link" data-open="${key(r)}" href="${href(r.type, r.id)}" aria-label="${t("打开体验", "Open experience")} ${esc(name)}"><span>${icon("arrow-up-right")}${t("打开体验", "Open experience")}</span></a>`}</div>
-  <span class="asset-type">${labelType(r)}</span><span class="asset-style">${t(...visualStyles[r.styleIds[0]])}</span>
-  <div class="asset-caption"><a data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}">${esc(name)}</a><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" title="${esc(libraries[id].name)}">${esc(libraries[id].name)}</span>`).join("")}</span></div>
+  <span class="asset-type">${gallery ? t(...classification) : labelType(r)}</span><span class="asset-style">${t(...visualStyles[r.styleIds[0]])}</span>
+  <div class="asset-caption"><a data-open="${key(r)}" ${gallery ? "" : "data-details"} href="${href(r.type, r.id, gallery ? {} : { panel: "details" })}">${esc(name)}</a><span class="asset-libraries">${r.libraryIds.map((id) => `<span class="library-badge" title="${esc(libraries[id].name)}">${esc(libraries[id].name)}</span>`).join("")}</span></div>
   <p class="asset-description" id="description-${r.id}" title="${esc(l(r.description))}">${esc(l(r.description))}</p><div class="asset-footer">${tagLinks(r)}
   <div class="asset-actions">${saveButton(r)}<span data-shell-card-menu></span><span hidden data-card-actions><button class="icon-button" data-card-prompt="${key(r)}" aria-label="${t("复制提示词", "Copy prompt")}" title="${t("复制提示词", "Copy prompt")}">${icon("copy")}</button><a class="icon-button" data-open="${key(r)}" data-details href="${href(r.type, r.id, { panel: "details" })}" aria-label="${t("查看详情", "Details")}" title="${t("查看详情", "Details")}">${icon("panel-right")}</a></span></div></div></article>`;
   }

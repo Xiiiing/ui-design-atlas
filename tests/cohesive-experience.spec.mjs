@@ -45,27 +45,20 @@ test("Original pages and components follow the shell, retain local overrides and
 test("Primary navigation keeps current scroll and restores each section and history", async ({
   page,
 }) => {
-  await page.goto("#explore?lang=en");
+  await page.goto("#library?lang=en");
   await page.locator("[data-more]").click();
   await page.evaluate(() => scrollTo(0, 650));
   await expect(page.locator("#topbar")).toHaveClass("is-compact");
   const start = await page.evaluate(() => scrollY);
   const count = await page.locator(".asset-card").count();
-  await activatePrimary(page, "explore");
+  await activatePrimary(page, "library");
   expect(await page.evaluate(() => scrollY)).toBe(start);
-  await activatePrimary(page, "guidance");
-  await expect(page).toHaveURL(/#guidance/);
-  await expect(page.locator(".guidance-card").first()).toBeVisible();
-  // Compact content can be shorter than the previous page: native scrolling clamps to its end.
-  const guidanceEnd = await page.evaluate(
-    () => document.documentElement.scrollHeight - innerHeight,
-  );
-  expect(guidanceEnd).toBeGreaterThan(420);
-  await expect
-    .poll(() => page.evaluate(() => scrollY))
-    .toBe(Math.min(start, guidanceEnd));
+  await activatePrimary(page, "designs");
+  await expect(page).toHaveURL(/#designs/);
+  await expect(page.locator(".comparison-designs .asset-card").first()).toBeVisible();
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
   await page.evaluate(() => scrollTo(0, 420));
-  await activatePrimary(page, "explore");
+  await activatePrimary(page, "library");
   await expect(page.locator(".asset-card")).toHaveCount(count);
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(start);
   await expect(page.locator("#topbar")).toHaveClass("is-compact");
@@ -78,9 +71,9 @@ test("Primary navigation keeps current scroll and restores each section and hist
   await expect(
     page.locator(".asset-caption [data-open]").first(),
   ).toBeFocused();
-  await activatePrimary(page, "guidance");
-  await activatePrimary(page, "explore");
-  await expect(page.locator("[data-primary-view=explore]")).toBeFocused();
+  await activatePrimary(page, "designs");
+  await activatePrimary(page, "library");
+  await expect(page.locator("[data-primary-view=library]")).toBeFocused();
 });
 
 test("Cover variants change with appearance without changing card geometry", async ({
@@ -220,17 +213,17 @@ test("Mobile navigation restores combined filters and original compositions rema
   page,
 }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto("#components?lang=zh-CN&source=original&style=neutral");
+  await page.goto("#library?lang=zh-CN&source=original&style=neutral");
   await page.evaluate(() => scrollTo(0, 550));
   await expect(page.locator("#topbar")).toHaveClass("is-compact");
   const before = await page.evaluate(() => scrollY);
   await activatePrimary(page, "guidance");
-  await activatePrimary(page, "explore");
+  await activatePrimary(page, "library");
   await expect(page).toHaveURL(
-    /#components\?lang=zh-CN&source=original&style=neutral/,
+    /#library\?lang=zh-CN&source=original&style=neutral/,
   );
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(before);
-  await activatePrimary(page, "explore");
+  await activatePrimary(page, "library");
   await expect.poll(() => page.evaluate(() => scrollY)).toBe(before);
   await page.goto("#explore?lang=en&source=original&q=Local%20file");
   await expect(

@@ -8,7 +8,7 @@ test("Navigation stays readable and pinned without moving content", async ({
 }) => {
   for (const width of [2560, 1440, 768, 375]) {
     await page.setViewportSize({ width, height: 1000 });
-    await page.goto("#explore?lang=en");
+    await page.goto("#library?lang=en");
     // Each viewport starts a fresh session; returning to a visited section
     // deliberately restores its saved scroll (covered separately).
     await page.reload();
@@ -25,13 +25,9 @@ test("Navigation stays readable and pinned without moving content", async ({
       .poll(() => header.evaluate((el) => el.getBoundingClientRect().width))
       .toBe(headerWidth);
     expect(await documentTop()).toBeCloseTo(before, 0);
-    if (width <= 900) {
-      await expect(page.locator(".market-navigation")).toBeHidden();
-      await expect(page.locator(".mobile-nav-trigger")).toBeVisible();
-    } else await expect(page.locator(".market-navigation")).toBeVisible();
-    for (const link of width <= 900
-      ? []
-      : await page.locator(".market-navigation a").all()) {
+    await expect(page.locator(".market-navigation")).toBeVisible();
+    await expect(page.locator(".more-nav-trigger")).toBeVisible();
+    for (const link of await page.locator(".market-navigation a").all()) {
       const box = await link.boundingBox();
       expect(box.width).toBeGreaterThanOrEqual(44);
       expect(box.x).toBeGreaterThanOrEqual(0);
@@ -48,16 +44,9 @@ test("Navigation stays readable and pinned without moving content", async ({
     ).toHaveAttribute("aria-selected", "true");
     await page.keyboard.press("Escape");
     await expect(page.locator("#site-locale")).toBeFocused();
-    if (width <= 900) {
-      await page.locator(".mobile-nav-trigger").click();
-      await page
-        .getByRole("menuitem", { name: "Library", exact: true })
-        .click();
-    } else {
-      await page.locator(".market-navigation a").first().focus();
-      await page.keyboard.press("Enter");
-    }
-    await expect(page).toHaveURL(/#explore/);
+    await page.locator(".market-navigation a").first().focus();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/#library/);
     await expect(topbar).toHaveClass("is-compact");
     await expect
       .poll(() => page.evaluate(() => scrollY))
